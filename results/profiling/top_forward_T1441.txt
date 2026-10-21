@@ -1,0 +1,31 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                              aten::bmm         0.46%       1.918ms         0.59%       2.440ms      43.567us     131.050ms        30.19%     131.050ms       2.340ms            56  
+                                  volta_sgemm_128x64_tn         0.00%       0.000us         0.00%       0.000us       0.000us      70.823ms        16.32%      70.823ms       2.529ms            28  
+                                  volta_sgemm_128x64_nn         0.00%       0.000us         0.00%       0.000us       0.000us      60.228ms        13.88%      60.228ms       2.151ms            28  
+                                               aten::mm         1.72%       7.142ms         2.69%      11.185ms      56.777us      54.438ms        12.54%      59.889ms     304.003us           197  
+                                            aten::copy_         1.14%       4.740ms        13.68%      56.933ms     111.415us      48.412ms        11.15%      64.012ms     125.269us           511  
+                                    Command Buffer Full        32.79%     136.466ms        32.79%     136.466ms     313.715us      48.400ms        11.15%      48.400ms     111.265us           435  
+                                             aten::add_         0.08%     339.011us         0.13%     558.121us      19.933us      44.596ms        10.27%      44.596ms       1.593ms            28  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      44.596ms        10.27%      44.596ms       1.593ms            28  
+                                         aten::_softmax         0.09%     363.532us         0.14%     563.097us      20.111us      40.461ms         9.32%      40.461ms       1.445ms            28  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us      40.461ms         9.32%      40.461ms       1.445ms            28  
+                                            aten::where         0.24%     984.535us         1.87%       7.784ms      92.661us      32.098ms         7.40%      48.216ms     573.995us            84  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      32.098ms         7.40%      32.098ms     573.185us            56  
+         turing_fp16_s1688gemm_fp16_128x128_ldg8_f2f_tn         0.00%       0.000us         0.00%       0.000us       0.000us      31.954ms         7.36%      31.954ms     228.246us           140  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      29.274ms         6.74%      29.274ms     171.193us           171  
+                                              aten::mul         1.46%       6.092ms         7.12%      29.636ms      69.732us      28.323ms         6.53%      33.539ms      78.916us           425  
+         turing_fp16_s1688gemm_fp16_256x128_ldg8_f2f_tn         0.00%       0.000us         0.00%       0.000us       0.000us      20.873ms         4.81%      20.873ms     372.729us            56  
+                                         aten::isneginf         0.08%     346.703us         0.14%     565.886us      20.210us      17.257ms         3.98%      17.257ms     616.335us            28  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      17.257ms         3.98%      17.257ms     616.335us            28  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      13.029ms         3.00%      13.029ms      57.908us           225  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      12.378ms         2.85%      12.378ms      62.515us           198  
+                                              aten::cat         0.41%       1.692ms         5.05%      21.021ms     186.030us       7.191ms         1.66%       8.347ms      73.867us           113  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us       7.186ms         1.66%       7.186ms      64.159us           112  
+                                              aten::pow         0.49%       2.033ms         0.81%       3.372ms      29.837us       7.026ms         1.62%       8.416ms      74.479us           113  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       7.026ms         1.62%       7.026ms      62.178us           113  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       6.773ms         1.56%       6.773ms      59.412us           114  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 416.211ms
+Self CUDA time total: 434.032ms
