@@ -21,6 +21,6 @@ sh("nvidia-smi", f"nvidia-smi-{TS}.txt")
     f"torch={torch.__version__} cuda={torch.version.cuda} cudnn={torch.backends.cudnn.version()}\n"
     f"transformers={transformers.__version__}\n"
     f"gpu={torch.cuda.get_device_name(0)} cc={torch.cuda.get_device_capability(0)}\n"
-    "model=hivetrace/HiveTraceGuard-Pro seed=42"
+    "model=hipocap/Llama-Prompt-Guard-2-22M (mirror of meta-llama/Llama-Prompt-Guard-2-22M, model.safetensors sha256 5120e30b...) seed=42"
 )
 print((OUT / "versions.txt").read_text())

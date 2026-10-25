@@ -1,0 +1,31 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  Total KFLOPs  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::addmm        11.31%       4.365ms        16.94%       6.538ms      66.714us       7.043ms        62.76%       7.043ms      71.863us            98   9059993.088  
+                                  volta_sgemm_128x64_tn         0.00%       0.000us         0.00%       0.000us       0.000us       4.417ms        39.36%       4.417ms      92.024us            48            --  
+                                  volta_sgemm_32x128_tn         0.00%       0.000us         0.00%       0.000us       0.000us       2.545ms        22.68%       2.545ms      53.018us            48            --  
+                                              aten::bmm         4.94%       1.907ms         6.63%       2.560ms      53.343us       1.724ms        15.36%       1.724ms      35.919us            48   1509949.440  
+                                   volta_sgemm_64x64_tn         0.00%       0.000us         0.00%       0.000us       0.000us       1.272ms        11.34%       1.272ms      35.340us            36            --  
+                                            aten::copy_         4.99%       1.924ms         9.72%       3.750ms      19.229us     806.320us         7.19%     806.320us       4.135us           195            --  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     456.985us         4.07%     456.985us       6.347us            72            --  
+                                   volta_sgemm_64x64_nn         0.00%       0.000us         0.00%       0.000us       0.000us     451.861us         4.03%     451.861us      37.655us            12            --  
+                                           aten::gather         1.80%     693.492us         4.29%       1.655ms      66.219us     359.350us         3.20%     359.350us      14.374us            25            --  
+void at::native::_scatter_gather_elementwise_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us     355.030us         3.16%     355.030us      14.793us            24            --  
+                                              aten::add         4.41%       1.701ms         6.33%       2.441ms      25.427us     303.063us         2.70%     303.063us       3.157us            96      3932.232  
+                                aten::native_layer_norm         1.61%     621.673us         3.75%       1.446ms      55.619us     265.623us         2.37%     265.623us      10.216us            26            --  
+void at::native::(anonymous namespace)::vectorized_l...         0.00%       0.000us         0.00%       0.000us       0.000us     265.623us         2.37%     265.623us      10.216us            26            --  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     240.027us         2.14%     240.027us       6.667us            36            --  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     165.371us         1.47%     165.371us       4.594us            36            --  
+                                             aten::add_         0.36%     139.684us         0.60%     231.702us      19.309us     160.731us         1.43%     160.731us      13.394us            12            --  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     160.731us         1.43%     160.731us      13.394us            12            --  
+                                              aten::div         1.83%     707.336us         2.88%       1.112ms      30.041us     138.622us         1.24%     138.622us       3.747us            37            --  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     138.622us         1.24%     138.622us       3.747us            37            --  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      96.988us         0.86%      96.988us       8.082us            12            --  
+                                            aten::clamp         1.17%     452.852us         1.75%     676.969us      28.207us      90.110us         0.80%      90.110us       3.755us            24            --  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      90.110us         0.80%      90.110us       3.755us            24            --  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      89.500us         0.80%      89.500us       3.729us            24            --  
+                                         aten::_softmax         0.43%     167.830us         0.70%     269.188us      22.432us      78.238us         0.70%      78.238us       6.520us            12            --  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us      78.238us         0.70%      78.238us       6.520us            12            --  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 38.593ms
+Self CUDA time total: 11.221ms
