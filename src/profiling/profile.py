@@ -5,11 +5,11 @@ import numpy as np
 import pandas as pd
 import torch as th
 from torch.profiler import ProfilerActivity, profile
-from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
+from transformers import AutoModel, AutoTokenizer, set_seed
 
 REPO = "hivetrace/HiveTraceGuard-Pro"
-OUT = Path("results/profiling")
-REPEATS = [0, 3, 10, 40, 170]
+OUT = Path("results/profiling/HiveTraceGuard-Pro")
+REPEATS = [1, 32, 256, 512]
 WARMUP = 30
 ITERS = 200
 
@@ -17,11 +17,11 @@ set_seed(42)
 OUT.mkdir(parents=True, exist_ok=True)
 
 tok = AutoTokenizer.from_pretrained(REPO)
-model = AutoModelForCausalLM.from_pretrained(REPO, dtype=th.float16, device_map="cuda").eval()
+model = AutoModel.from_pretrained(REPO, dtype=th.float16, device_map="cuda").eval()
 
 MODES = {
     "generate": lambda x: model.generate(**x, max_new_tokens=1, do_sample=False),
-    "forward": lambda x: model(**x, logits_to_keep=1),
+    # "forward": lambda x: model(**x, logits_to_keep=1),
 }
 
 rows = []
@@ -36,6 +36,7 @@ with th.inference_mode():
                 fn(x)
                 th.cuda.synchronize()
 
+            th.cuda.reset_peak_memory_stats()
             lat = []
             for _ in range(ITERS):
                 t0 = time.perf_counter()
@@ -43,7 +44,9 @@ with th.inference_mode():
                 th.cuda.synchronize()
                 lat.append((time.perf_counter() - t0) * 1000)
 
-            with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+            with profile(
+                activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_shapes=True, with_flops=True
+            ) as prof:
                 fn(x)
                 th.cuda.synchronize()
 
@@ -60,6 +63,7 @@ with th.inference_mode():
                 "p95_ms": round(p95, 2),
                 "gpu_ms": round(gpu_ms, 2),
                 "gpu_busy": round(gpu_ms / p50, 2),
+                "peak_mem_mib": round(th.cuda.max_memory_allocated() / 2**20),
             })
             print(rows[-1])
 
@@ -68,5 +72,17 @@ with th.inference_mode():
                 events.table(sort_by="self_device_time_total",row_limit=25)
             )
             prof.export_chrome_trace(str(OUT / f"trace_{mode}_T{T}.json"))
+
+            pd.DataFrame([
+                {
+                    "op": e.key,
+                    "shapes": str(e.input_shapes),
+                    "calls": e.count,
+                    "device_ms": e.self_device_time_total / 1000,
+                    "flops": e.flops,
+                }
+                for e in prof.key_averages(group_by_input_shape=True)
+                if e.key in ("aten::mm", "aten::bmm")
+            ]).to_csv(OUT / f"ops_{mode}_T{T}.csv", index=False)
 
 pd.DataFrame(rows).to_csv(OUT / "summary.csv", index=False)
