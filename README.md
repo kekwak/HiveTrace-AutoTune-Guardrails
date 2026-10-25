@@ -10,3 +10,6 @@
 Обе модели выполнены на Colab T4; CSV и отчёты сохранены.
 Laya: FP32-веса + SDK autocast FP16. ShieldGemma: FP32 + eager attention.
 Разные задачи, инструкции и dtype: цифры не являются сравнением качества моделей.
+
+Полные исходные baseline traces включены в `results/profiling/*/traces/baseline.zip`
+с SHA256. [Пересчёт анализа и контрольные GPU-прогоны](src/profiling/README.md).

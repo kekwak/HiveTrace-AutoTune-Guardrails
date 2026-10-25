@@ -25,8 +25,13 @@ Transformers 4.57.1, 2 CPU-потока. Веса FP32 (1.57 GiB), SDK autocast 
 `manifest.json`, `trace_L*.json`, `viz_*.json` и ZIP рядом с каталогом.
 `manifest.json` со статусом completed создаётся только в конце.
 
-Большие traces не включены в git. Локальный архив исходного прогона:
-`docs/research/laya-20261025-071618.zip` (игнорируется); ноутбук создаёт их заново.
+Исходные traces доступны после clone: [`traces/baseline.zip`](traces/baseline.zip),
+контрольная сумма — [`traces/SHA256SUMS`](traces/SHA256SUMS).
+Воспроизводимый пересчёт corrected kernel shares, операторной атрибуции и
+визуализаций: [`src/profiling/README.md`](../../../src/profiling/README.md).
+
+Аннотированные timelines из исходных events (не screenshots интерфейса Perfetto):
+[L16](figures/timeline_L16.svg), [L512](figures/timeline_L512.svg).
 
 ## Ключевые цифры
 
@@ -60,12 +65,12 @@ L512/L1024 измеряют один и тот же сохранённый пр�
    но разность независимых p50 не является точным разложением e2e.
    В forward-трейсах `aten::_local_scalar_dense` не обнаружен.
 
-## Идеи ускорения — пока не измерены
+## Гипотезы ускорения и статус проверки
 
 | Идея | Основание | Что проверить перед применением |
 |---|---|---|
-| Дольше удерживать autocast scope и его weight cache в inference worker | сотни conversions на запрос | поведение cache, конкурентность, память и равенство SDK probabilities |
-| Постоянно хранить часть/все веса в FP16 | убрать повторное приведение и сократить весовую память | LayerNorm/decision head, finite outputs и оценки на редких/обфусцированных запросах; не гарантировано эквивалентно |
+| `no_grad` + persistent autocast, отдельно от `inference_mode` | сотни conversions на запрос | Проверено: conversions 319→183, но стабильное wall-time ускорение не доказано; цена — дополнительный weight cache |
+| Постоянно хранить часть/все веса в FP16 | убрать повторное приведение и сократить весовую память | Проверено: `.half()` без AMP падает; FP16+AMP сокращает память, но не показал устойчивого ускорения и меняет probabilities |
 | `torch.compile` / CUDA Graphs с фиксированными shapes | >1100 kernels на forward | graph breaks, padding/marker shapes, разогрев и сравнение вердиктов |
 | Batching через SDK | batch=1 оставляет маленькие операции | throughput отдельно от per-request p95, одинаковое число вопросов |
 | Слияние elementwise/RoPE/norm | доля мелких операций растёт | numerics и реальное уменьшение числа запусков |
@@ -81,12 +86,99 @@ Smoke прошёл без NaN/Inf на реальных marker logits и action 
 SDK предупредил о clamp температуры bucket `choice:11+`; в эксперименте
 используется другой bucket, `choice:2`.
 
-Одна сессия, один синтетический текст, 50 замеров на длину; частоты/температура
-GPU не контролировались. Kernel categories — эвристика. После прогона
+Исходный baseline — одна сессия, один синтетический текст, 50 замеров на длину;
+частоты/температура GPU в нём не контролировались. Дополнительные независимые
+повторы и A/B сохраняются отдельно в `validation/`, не заменяют исходные samples.
+Kernel categories — эвристика. После прогона
 исправлено ошибочное совпадение `cast` с `nocast` в классификаторе: доли и
 top kernels пересчитаны **из полных исходных traces**, сами задержки не изменены.
-Источник и дополнительные счётчики — `analysis.json`.
+Источник и дополнительные счётчики — `analysis.json`; воспроизводимый пересчёт
+по архиву — `src/profiling/analyze.py`, SHA256 всех файлов и аудит — `trace_audit.json`.
 
 `latency_samples.csv` содержит 700 raw samples; все семь forward traces и
 три phase traces проверены на наличие CUDA kernels. Phase traces размечают
-модули и перенос результата, но не полный SDK postprocessing.
+модули и перенос результата, но не полный SDK postprocessing. CPU ranges
+асинхронны: D2H span может ждать предшествующий forward, а не только копировать.
+В follow-up снимается `actual_e2e.json` настоящего SDK-пути и CUDA Events
+forward interval; CPU/D2H range не трактуется как самостоятельная стоимость.
+
+Исправление рекомендации про cache основано на
+[PyTorch v2.11.0 `cached_cast`](https://github.com/pytorch/pytorch/blob/v2.11.0/aten/src/ATen/autocast_mode.cpp):
+условие кэширования включает `!c10::InferenceMode::is_enabled()`.
+
+## Контроль после независимого ревью
+
+### Три независимых kernel runs
+
+Новая T4 VM, три свежих ядра; по 400 raw samples на run, **1200 всего**.
+Общий прогрев 40 запросов, затем 20 warmup + 50 samples на case/mode.
+Порядок восьми case/mode блоков перемешан независимо в каждом run.
+Проверены два разных текста — benign и danger_request — при одинаковых
+фактических длинах 16/512 текстовых токенов. Длинные Laya-входы по-прежнему усечены.
+
+| Case | SDK e2e p50: диапазон между runs, мс | p95: диапазон между runs, мс |
+|---|---|---|
+| benign L16 | 33.56–35.97 | 41.51–48.72 |
+| benign L512 | 41.73–42.30 | 45.95–47.05 |
+| danger_request L16 | 33.74–34.83 | 42.49–48.66 |
+| danger_request L512 | 41.04–42.29 | 49.75–55.21 |
+
+Полные forward/e2e агрегаты — [`validation/repeat_aggregate.csv`](validation/repeat_aggregate.csv).
+Секундная telemetry, idle/peak/incremental allocated и reserved memory сохранены.
+Диапазоны — **не confidence interval production p95**; три ядра одной VM не равны
+трём независимым GPU. Telemetry включает загрузку, reference, idle и A/B, поэтому
+минимальные clocks всего файла не описывают clocks конкретного latency-блока.
+
+### Precision/cache A/B — измерен, не обещан
+
+Ниже отдельный run-0, direct forward, **не e2e** и не те же samples, что baseline.
+Режимы измерялись блоками в случайном порядке, а не попарно чередовались на каждом
+запросе; маленькие различия и причинность wall-time эффекта остаются неопределёнными.
+
+| Режим | `_to_copy`/forward | p50 L16 / L512, мс | peak allocated L16, GiB |
+|---|---|---|---|
+| inference_mode, autocast на вызов | 319 | 32.09 / 44.96 | 1.59 |
+| inference_mode, внешний autocast | 319 | 40.20 / 41.46 | 1.59 |
+| no_grad, внешний autocast | 183 | 41.16 / 43.09 | 2.27 |
+| FP16-веса + autocast | 251 | 43.26 / 44.52 | 0.82 |
+| FP16-веса без AMP | — | ошибка Float/Half | — |
+
+Чистый `.half()` не является готовым решением: `DecisionModel.forward` приводит
+pooled/features к FP32, затем передаёт их в FP16 `act_head`; без autocast это
+несовместимые dtype. Неудачный кандидат записан в `validation/run-0/ab_failures.json`.
+
+Targeted traces с shapes подтвердили именно **weight casts**: `[5248,1024]`,
+`[3072,1024]`, `[1024,2624]` — формы MLP/attention matrices. В no_grad/persistent
+режиме эти большие copy kernels исчезают, остаются activation/mask copies.
+L16 copy kernel time под profiler: **9.29→0.82 мс**, kernels/forward **1259→1123**.
+Это подтверждает механизм cache, **но не гарантирует wall-time ускорение**:
+в обычных samples уверенного выигрыша не получили. Разница profiler timings
+не вычитается из обычного p50. Следовательно, casts — доказанная GPU-стоимость,
+но главная причинная составляющая обычного wall time пока не установлена.
+
+Результаты: `validation/run-0/ab_summary.csv`, `ab_samples.csv`,
+`validation/ab_copy_shapes.csv`, `ab_profile_summary.csv`; полные targeted traces
+в `validation/run-0/artifacts.zip`. Восстановление между кандидатами включает
+nonpersistent RoPE buffers: одного state_dict после `.half()` недостаточно.
+
+### Численные и контекстные проверки
+
+- **11 sanity cases**, включая длинные benign/danger, обфускацию и русский:
+  baseline mixed precision против FP32 reference, max |ΔP(A)| **0.001540**,
+  смены argmax не обнаружены. Это не размеченный quality benchmark.
+- Direct forward совпал с округлёнными SDK probabilities в пределах **0.0002**.
+- FP32-weight cache/context candidates дали те же probabilities, что baseline;
+  FP16+AMP: max |ΔP(A)| относительно baseline **0.001437**, относительно FP32
+  **0.002059**, смены argmax на этих 11 cases не обнаружены.
+- 477/478/479 текстовых токенов → 511/512/512 общего входа;
+  только последний случай усечён. Опасный suffix после 478 токенов полностью
+  исчезает: input_ids совпали с benign prefix. Это демонстрация границы,
+  не доказательство способности модели обнаружить атаку.
+- Новый `actual_e2e.json` вызывает настоящий `agent.predict`; отдельно сохранены
+  CUDA Events forward intervals. CPU ranges остаются асинхронными.
+
+Исходные и follow-up samples не смешиваются. Полные follow-up ZIP, SHA256,
+численные проверки и telemetry доступны в [`validation/`](validation/).
+Точный исходник validation runner в завершённых прогонах не сохранялся;
+текущий скрипт не заявляется идентичным исполненному. Ограничение отмечено
+в `validation/provenance.json`; будущий runpy-рецепт сохраняет source и SHA256.

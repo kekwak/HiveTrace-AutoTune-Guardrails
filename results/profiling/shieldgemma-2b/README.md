@@ -31,7 +31,7 @@ Transformers 4.57.1, batch=1, 2 CPU-потока. Фактические вес�
 Артефакты в `/content/results/profiling/shieldgemma-2b/<timestamp>/`:
 среда, smoke, latency и raw samples, GPU-профиль, доли и топ CUDA-ядер,
 Perfetto traces, итоговый report и ZIP. `manifest.json` со статусом completed
-создаётся только в конце; большие traces не добавлять в git.
+создаётся только в конце. Сжатый архив исходного baseline включён в git.
 
 ## Ключевые цифры
 
@@ -54,7 +54,12 @@ Perfetto traces, итоговый report и ZIP. `manifest.json` со стату
    L16 и 90.7% при L1024. Основные kernels — `volta_sgemm_*`; имя Volta —
    название ядра cuBLAS, а не другая GPU. В FP32 на T4 не используются
    быстрые FP16 Tensor Core GEMM. Категория matmul включает и линейные слои,
-   и QK/AV attention; их отдельные доли этим классификатором не определяются.
+   и QK/AV attention; их отдельные доли по именам kernels не определяются.
+   После ревью добавлена атрибуция через `External id`:
+   `aten::mm` / `aten::bmm` занимают **304.36 / 5.16 мс** при L16 и
+   **1381.19 / 89.59 мс** при L1024 в профилированном forward.
+   Это усиливает приоритет линейных matmul над attention для данного baseline;
+   значения — из profiler, не разложение обычного latency p50.
 2. **GPU почти непрерывно занята:** 96.8–99.5% внутри профилированного окна.
    1612 kernels на forward, но уменьшение CPU launch overhead само по себе
    здесь не выглядит главным источником ускорения. Profiler меняет абсолютные
@@ -96,12 +101,67 @@ Decode и генерация объяснения не измеряются: ш�
 вычисления, но из этого прогона нельзя утверждать отсутствие потери качества.
 
 Сохранены CSV, среда, smoke и `analysis.json`. Все семь forward traces и
-три phase traces проверены на наличие CUDA kernels; они лежат в локальном
-игнорируемом архиве `docs/research/shieldgemma-fp32-20261025-073514.zip`.
-Ноутбук генерирует traces заново. Разметка phase traces включает модули,
-template/tokenize/H2D, forward и D2H; она не включает CPU softmax P(Yes).
+три phase traces доступны после clone в [`traces/baseline.zip`](traces/baseline.zip),
+контрольная сумма — [`traces/SHA256SUMS`](traces/SHA256SUMS).
+Пересчёт kernel shares и атрибуции CPU operations через External id:
+[`src/profiling/README.md`](../../../src/profiling/README.md).
+Аудит и SHA256 всех файлов — `trace_audit.json`, операторные доли —
+`operator_kernel_breakdown.csv`.
+
+Аннотированные timelines из исходных events, не screenshots интерфейса Perfetto:
+[L16](figures/timeline_L16.svg), [L512](figures/timeline_L512.svg).
+Старая разметка phase traces включает модули, template/tokenize/H2D, forward
+и D2H, но не CPU softmax P(Yes); переносит больше logits, чем реальный scoring.
+CPU spans асинхронны: D2H range может в основном ждать forward, а не копировать.
+В follow-up отдельно снимается настоящий scoring e2e и CUDA Events forward interval.
+
+Исходный baseline остаётся односессионным. Новые независимые повторы,
+GPU telemetry и full-logits/last-token numerical comparison сохраняются
+отдельно в `validation/`; небольшой sanity set не является benchmark качества.
 
 Первый прогон 25.10.2026 завершился в BF16 через эмуляцию, а не в планируемом
 FP32. Это установлено по фактическому dtype в `env.json`; его цифры не
 выдаются за FP32 baseline. Архив сохранён локально в игнорируемом
 `docs/research/shieldgemma-20261025-071902.zip`.
+
+## Контроль после независимого ревью
+
+Три свежих ядра на новой T4 VM, одинаковый FP32/eager checkpoint. В каждом run
+400 raw samples: два разных текста × длины 16/512 × forward/e2e × 50 iterations.
+Общий прогрев 40 запросов; перед каждым блоком ещё 20 warmup. Порядок блоков
+перемешан независимо, telemetry записывалась раз в секунду.
+
+| Case | scoring e2e p50: диапазон между runs, мс | p95: диапазон между runs, мс |
+|---|---|---|
+| benign L16 | 308.88–314.54 | 313.11–318.95 |
+| benign L512 | 815.05–834.06 | 819.92–839.50 |
+| danger_request L16 | 307.48–310.62 | 311.87–313.89 |
+| danger_request L512 | 785.33–830.57 | 797.22–833.83 |
+
+Всего **1200 дополнительных samples**; исходный baseline не перезаписан.
+Отличия от исходной сессии заметны: односессионные p50/p95 не следует считать
+универсальными для T4. Содержимое и hardware state менялись; этот эксперимент
+не разделяет их вклады. Диапазон трёх runs — не confidence interval production
+p95. Порядок перемешивался по блокам, не по отдельным запросам.
+
+В каждом run сохранены allocated/reserved/incremental memory и GPU telemetry.
+Telemetry охватывает весь процесс, включая idle/loading: её общий минимум
+частот не описывает частоты конкретного блока.
+
+Численные проверки на **9 sanity cases**:
+- last-token logits против полного forward: max |ΔP(Yes)| **1.32e-6**,
+  max |Δlogit| **7.06e-5**;
+- все выбранные outputs finite; это численная согласованность, не accuracy;
+- ввод больше 8192 отклонён на encode без дорогостоящего forward;
+  полный длинноконтекстный performance sweep по-прежнему не выполнялся;
+- `actual_e2e.json` вызывает настоящий scoring путь с выбором Yes/No и scalar
+  result; отдельные CUDA Events показывают forward interval. CPU/D2H spans
+  не интерпретируются как изолированная стоимость передачи.
+
+Данные и полные исходные follow-up ZIP с SHA256 — [`validation/`](validation/),
+агрегаты — [`validation/repeat_aggregate.csv`](validation/repeat_aggregate.csv).
+Повторы усиливают достоверность baseline, но не превращают его в production
+latency SLA или доказательство отсутствия потерь при будущем FP16/quantization.
+Точный исходник runner этих прогонов не сохранён: текущая версия расширяет
+sanity set до 11 cases, опубликованный архив содержит 9. Это отражено
+в `validation/provenance.json`; цифры выше относятся только к архивным 9 cases.
