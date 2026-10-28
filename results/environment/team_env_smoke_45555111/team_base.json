@@ -1,0 +1,104 @@
+{
+  "id": "u1-team-base-v1",
+  "recorded_on": "2026-10-29",
+  "status": "installation_cuda_and_ort_primitive_passed_model_smoke_pending_fixes",
+  "smoke_evidence": {
+    "run": "team_env_smoke_64014dfd",
+    "seconds": 365.112299635,
+    "installation": "passed",
+    "torch_cuda": "passed",
+    "ort_cuda_matmul": "passed_one_cuda_node_zero_cpu_nodes",
+    "gliner": "failed_input_normalization_on_synthetic_trailing_space",
+    "halo": "failed_historical_adapter_api_removed_in_transformers_5.20.1",
+    "environment_validated": false
+  },
+  "complete_lock": false,
+  "source": {
+    "repository": "kekwak/HiveTrace-AutoTune-Guardrails",
+    "commit": "c94afd857838fed7be3e1505734cd3a5f89ebdcf",
+    "notebook": "notebooks/koala_profile.ipynb",
+    "observed_environment": "results/profiling/KoalaAI-Text-Moderation/env.json",
+    "corroborating_commit": "709ec61c39ea93912fab252eaf9de4671fa5de04",
+    "corroborating_environment": "results/profiling/OpenGuardrails-Text-4B-0124/env.json"
+  },
+  "reference_runtime": {
+    "provider": "Kaggle",
+    "python": "3.13.15",
+    "gpu": "Tesla T4",
+    "gpu_count_used": 1,
+    "device": "cuda:0",
+    "torch_cuda_runtime": "13.0",
+    "cudnn_observed": 91900,
+    "driver_observed": "580.178.04",
+    "cpu_model_observed": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+    "cpu_count_observed": 4,
+    "ram_gb_observed": 31.3
+  },
+  "package_pins": {
+    "torch": "2.11.0+cu130",
+    "torchvision": "0.26.0+cu130",
+    "torchaudio": "2.11.0+cu130",
+    "transformers": "5.20.1",
+    "tokenizers": "0.23.3",
+    "accelerate": "1.15.0",
+    "safetensors": "0.8.0",
+    "huggingface_hub": "1.33.0",
+    "numpy": "2.1.3",
+    "pandas": "2.2.3"
+  },
+  "installation_notes": {
+    "torch_index": "https://download.pytorch.org/whl/cu130",
+    "automatic_torch_replacement": false,
+    "nvrtc_requirement_in_source_notebook": "nvidia-cuda-nvrtc==13.0.88",
+    "nvrtc_workaround_in_source_notebook": "preload libnvrtc-builtins.so.13.0 via ctypes.RTLD_GLOBAL",
+    "resolved_transitive_lock": null,
+    "container_digest": null,
+    "driver_is_host_managed_not_a_pip_requirement": true
+  },
+  "u1_protocol_settings_proposed": {
+    "model_seed": 42,
+    "workload_order_seeds": [
+      17,
+      42,
+      123
+    ],
+    "batch_size": 1,
+    "concurrency": 1,
+    "cpu_threads": 2,
+    "tf32": false,
+    "cudnn_benchmark": false,
+    "deterministic_algorithms": "warn_only_with_warnings_recorded",
+    "cublas_workspace_config": ":4096:8",
+    "model_eval": true,
+    "inference_mode": true,
+    "main_latency_boundary": "text_to_verdict",
+    "project_target_metric": "p95",
+    "project_target_latency_reduction_fraction": 0.2,
+    "dataset_for_quality": null,
+    "dataset_owner": "U2_and_curator"
+  },
+  "extension_pins_selected_not_yet_validated": {
+    "onnxruntime-gpu": "1.23.2",
+    "onnx": "1.20.1",
+    "gliner2": "2.1.0",
+    "flash-linear-attention": "0.4.2",
+    "fla-core": "0.4.2",
+    "einops": "0.8.2",
+    "sentence-transformers": "5.7.0",
+    "sentencepiece": "0.2.2"
+  },
+  "ort_cuda12_runtime_pins_from_our_successful_environment": {
+    "nvidia-cuda-runtime-cu12": "12.8.90",
+    "nvidia-cublas-cu12": "12.8.4.1",
+    "nvidia-cudnn-cu12": "9.19.0.56",
+    "nvidia-cufft-cu12": "11.3.3.83",
+    "nvidia-curand-cu12": "10.3.9.90"
+  },
+  "extensions_not_yet_selected_or_validated_on_this_base": [
+    "Laya-specific dependencies"
+  ],
+  "historical_results": {
+    "ours": "torch 2.11.0+cu128, CUDA 12.8; preserve frozen notebooks and approvals",
+    "comparison_policy": "Do not combine measurements across runtime fingerprints; no automatic full rerun"
+  }
+}

@@ -1,6 +1,17 @@
 # HiveTrace-AutoTune-Guardrails
 Найти ускорения guardrail-моделей без скрытого падения качества на редких атаках, обфускации и неанглийских текстах в продукте
 
+## К синку 30 октября: среда и протокол У1
+
+- **[Skeleton notebook](notebooks/team_environment_skeleton.ipynb)**: загрузить в Kaggle/Colab с T4 и Python 3.13, выполнить шапку, заменить пример своим кодом. Полный lock встроен; установка идёт в отдельный venv, каждый запуск кода — в свежем процессе. Основной notebook-runtime не меняется. [Порядок запуска и ограничения](docs/team_environment.md).
+- **[Полный lock](env/team_environment.lock.txt)**: 96 пакетов, точные wheel URL и SHA256; [происхождение и сверка с четырьмя workers](env/team_environment.lock.json). База torch 2.11.0+cu130 / Transformers 5.20.1, дополнения ORT / GLiNER2 / FLA сохранены.
+- **[Предложение протокола v1](docs/measurement_protocol_v1.md)**: p95 полного запроса, парные A/B и A/A на одной VM, отдельные измерения памяти в свежих процессах, численная регрессия отдельно от качества. Цель задания: ≥20% по p95 и нулевая деградация на хвостах; способ агрегации p95 и проверку качества обсуждаем на синке. Это ещё не принятый командой стандарт и не готовый измерительный runner.
+- **[Успешный smoke и границы проверки](docs/team_environment_smoke.md)**, [артефакты и SHA256](results/environment/team_env_smoke_45555111/artifact_index.json): на T4 проверены HaloGuard reference/FLA и GLiNER eager/ORT. Compile и остальные модели на этой базе не проверены; прежние ускорения на новую среду не переносим.
+
+**Статус нового комплекта:** CPU-тесты и формат notebooks проверены. Исходная установка smoke прошла на GPU; повторная установка именно из нового lock и skeleton на T4 ещё не выполнялись. Skeleton не запускает benchmarks или обучение автоматически. Старые результаты, approvals и traces ниже не изменены.
+
+Исходники сборки notebooks: `followup/team_*.py`; CPU-тесты: `python -m unittest discover -s tests -p 'test_team*.py' -v`. `experiments/` содержит зависимости существующего smoke, а не новый общий runner. Исторические замороженные пакеты остаются в `u1/` и внутри notebooks.
+
 ## Новое: GLiNER ONNX против compile, 28 октября
 
 Все три парных сравнения завершены в одной T4-сессии за 1 ч 48 мин: ONNX–compile, ONNX–eager, compile–eager. FP32, batch 1, одинаковые входы внутри пар; A/A 2×30 и A/B 3×100 на семи сценариях и двух границах тайминга. Это screening, не три независимых подтверждения.
