@@ -1,0 +1,246 @@
+{
+  "run_id": "20261025T222702Z_274343fd",
+  "scope": "Historical T4 confirmation attempt; CPU reanalysis only",
+  "profiles": [
+    {
+      "variant": "H2_linear",
+      "scenario": "legacy_long",
+      "iterations": 3,
+      "trace_path": "results/optimization/haloguard-fla/traces/H2_linear_legacy_long.json.gz",
+      "trace_gz_sha256": "94aabc0d57ec9de25e4f0ae358b47d1b10622379a574f6ed3096110e7d6359b6",
+      "trace_raw_sha256": "0202b4eb6a538ccd30aa173cf85ea134ce9bcea0e67948111a097b4b42e2c94f",
+      "attribution_sha256": "b7b778f46932d4ff612deb15be21a2b231f85c32902549c6852431e618191f20",
+      "kernel_count": 7005,
+      "components": {
+        "copies": {
+          "kernels_total": 1202,
+          "kernels_per_iteration": 400.6666666666667,
+          "summed_gpu_ms_total": 48.74232799999998,
+          "summed_gpu_ms_per_iteration": 16.24744266666666
+        },
+        "full_attention": {
+          "kernels_total": 504,
+          "kernels_per_iteration": 168,
+          "summed_gpu_ms_total": 37.25935899999998,
+          "summed_gpu_ms_per_iteration": 12.419786333333327
+        },
+        "linear_attention": {
+          "kernels_total": 2052,
+          "kernels_per_iteration": 684,
+          "summed_gpu_ms_total": 459.03777900000006,
+          "summed_gpu_ms_per_iteration": 153.012593
+        },
+        "mlp": {
+          "kernels_total": 360,
+          "kernels_per_iteration": 120,
+          "summed_gpu_ms_total": 49.057097999999996,
+          "summed_gpu_ms_per_iteration": 16.352366
+        },
+        "norm_conv": {
+          "kernels_total": 2586,
+          "kernels_per_iteration": 862,
+          "summed_gpu_ms_total": 52.63047200000001,
+          "summed_gpu_ms_per_iteration": 17.54349066666667
+        },
+        "unknown": {
+          "kernels_total": 301,
+          "kernels_per_iteration": 100.33333333333333,
+          "summed_gpu_ms_total": 9.038206000000002,
+          "summed_gpu_ms_per_iteration": 3.012735333333334
+        }
+      }
+    },
+    {
+      "variant": "H2_linear",
+      "scenario": "legacy_short",
+      "iterations": 3,
+      "trace_path": "results/optimization/haloguard-fla/traces/H2_linear_legacy_short.json.gz",
+      "trace_gz_sha256": "31e476d9d71ff12c232048e3ad1155658324ac5c518d315198d4c001f642374b",
+      "trace_raw_sha256": "3e52642a4fed92a6fcc87dfd0e3832f3c03291cfe992e859b2772d58fc8d8b75",
+      "attribution_sha256": "4fc53da05fd266c9626e2706b3eb7e1e471f980343c7f3781d814d902fe924c2",
+      "kernel_count": 7114,
+      "components": {
+        "copies": {
+          "kernels_total": 1202,
+          "kernels_per_iteration": 400.6666666666667,
+          "summed_gpu_ms_total": 24.479665000000004,
+          "summed_gpu_ms_per_iteration": 8.159888333333335
+        },
+        "full_attention": {
+          "kernels_total": 504,
+          "kernels_per_iteration": 168,
+          "summed_gpu_ms_total": 14.649198000000007,
+          "summed_gpu_ms_per_iteration": 4.883066000000002
+        },
+        "linear_attention": {
+          "kernels_total": 2160,
+          "kernels_per_iteration": 720,
+          "summed_gpu_ms_total": 244.72175299999986,
+          "summed_gpu_ms_per_iteration": 81.57391766666662
+        },
+        "mlp": {
+          "kernels_total": 360,
+          "kernels_per_iteration": 120,
+          "summed_gpu_ms_total": 31.735421000000013,
+          "summed_gpu_ms_per_iteration": 10.578473666666671
+        },
+        "norm_conv": {
+          "kernels_total": 2586,
+          "kernels_per_iteration": 862,
+          "summed_gpu_ms_total": 25.570418000000014,
+          "summed_gpu_ms_per_iteration": 8.523472666666672
+        },
+        "unknown": {
+          "kernels_total": 302,
+          "kernels_per_iteration": 100.66666666666667,
+          "summed_gpu_ms_total": 8.040707,
+          "summed_gpu_ms_per_iteration": 2.6802356666666665
+        }
+      }
+    },
+    {
+      "variant": "P1",
+      "scenario": "legacy_long",
+      "iterations": 3,
+      "trace_path": "results/optimization/haloguard-fla/traces/P1_legacy_long.json.gz",
+      "trace_gz_sha256": "f338e577e865967b636d4c15722c1d2505d473a46528c6ed51091b1e778364b7",
+      "trace_raw_sha256": "8fffcabc12d286a248f33ee16d7d843c4e1bee55d30289938cea5c42005fdd7a",
+      "attribution_sha256": "3108600e2ac0bfaa12a94bd30c5f1180cc97ca40daa5fe12de7d92b544c4b8de",
+      "kernel_count": 49638,
+      "components": {
+        "copies": {
+          "kernels_total": 12812,
+          "kernels_per_iteration": 4270.666666666667,
+          "summed_gpu_ms_total": 114.08003999999991,
+          "summed_gpu_ms_per_iteration": 38.02667999999997
+        },
+        "full_attention": {
+          "kernels_total": 504,
+          "kernels_per_iteration": 168,
+          "summed_gpu_ms_total": 32.505307,
+          "summed_gpu_ms_per_iteration": 10.835102333333333
+        },
+        "linear_attention": {
+          "kernels_total": 33047,
+          "kernels_per_iteration": 11015.666666666666,
+          "summed_gpu_ms_total": 278.9623239999995,
+          "summed_gpu_ms_per_iteration": 92.98744133333317
+        },
+        "mlp": {
+          "kernels_total": 360,
+          "kernels_per_iteration": 120,
+          "summed_gpu_ms_total": 43.94283999999999,
+          "summed_gpu_ms_per_iteration": 14.64761333333333
+        },
+        "norm_conv": {
+          "kernels_total": 2586,
+          "kernels_per_iteration": 862,
+          "summed_gpu_ms_total": 50.22773499999991,
+          "summed_gpu_ms_per_iteration": 16.742578333333302
+        },
+        "unknown": {
+          "kernels_total": 329,
+          "kernels_per_iteration": 109.66666666666667,
+          "summed_gpu_ms_total": 8.930033000000003,
+          "summed_gpu_ms_per_iteration": 2.9766776666666677
+        }
+      }
+    },
+    {
+      "variant": "P1",
+      "scenario": "legacy_short",
+      "iterations": 3,
+      "trace_path": "results/optimization/haloguard-fla/traces/P1_legacy_short.json.gz",
+      "trace_gz_sha256": "5d7e3097e2bb0ccc2e90831068aa0b72f9eb6c41929d9b3aa0bbaa4f202a38d1",
+      "trace_raw_sha256": "7bc86429d711e8d98eda5192db2d90be8b83aef7588b102dfe670d18868f807b",
+      "attribution_sha256": "7bb6e080d1315098cb33f00b21ff4756e22a872bb11a1fafe317acf7403bc6fb",
+      "kernel_count": 43917,
+      "components": {
+        "copies": {
+          "kernels_total": 12489,
+          "kernels_per_iteration": 4163,
+          "summed_gpu_ms_total": 71.106133,
+          "summed_gpu_ms_per_iteration": 23.702044333333333
+        },
+        "full_attention": {
+          "kernels_total": 504,
+          "kernels_per_iteration": 168,
+          "summed_gpu_ms_total": 14.912433999999998,
+          "summed_gpu_ms_per_iteration": 4.970811333333333
+        },
+        "linear_attention": {
+          "kernels_total": 27648,
+          "kernels_per_iteration": 9216,
+          "summed_gpu_ms_total": 180.64154100000007,
+          "summed_gpu_ms_per_iteration": 60.21384700000002
+        },
+        "mlp": {
+          "kernels_total": 360,
+          "kernels_per_iteration": 120,
+          "summed_gpu_ms_total": 31.984986000000006,
+          "summed_gpu_ms_per_iteration": 10.661662000000002
+        },
+        "norm_conv": {
+          "kernels_total": 2586,
+          "kernels_per_iteration": 862,
+          "summed_gpu_ms_total": 25.32070799999999,
+          "summed_gpu_ms_per_iteration": 8.440235999999997
+        },
+        "unknown": {
+          "kernels_total": 330,
+          "kernels_per_iteration": 110,
+          "summed_gpu_ms_total": 8.419958,
+          "summed_gpu_ms_per_iteration": 2.8066526666666665
+        }
+      }
+    }
+  ],
+  "latency": [
+    {
+      "variant": "H2_linear",
+      "scenario": "legacy_short",
+      "blocks": 5,
+      "median_block_p50_ms": 126.42183599996315,
+      "median_block_p95_ms": 127.68618890006564
+    },
+    {
+      "variant": "H2_linear",
+      "scenario": "legacy_medium",
+      "blocks": 5,
+      "median_block_p50_ms": 159.5775545001743,
+      "median_block_p95_ms": 160.72616279966496
+    },
+    {
+      "variant": "H2_linear",
+      "scenario": "legacy_long",
+      "blocks": 5,
+      "median_block_p50_ms": 232.0005514998229,
+      "median_block_p95_ms": 233.90110789964638
+    },
+    {
+      "variant": "P1",
+      "scenario": "legacy_short",
+      "blocks": 5,
+      "median_block_p50_ms": 349.28006300015113,
+      "median_block_p95_ms": 364.0456160499525
+    },
+    {
+      "variant": "P1",
+      "scenario": "legacy_medium",
+      "blocks": 5,
+      "median_block_p50_ms": 373.3894445003898,
+      "median_block_p95_ms": 386.6884485494211
+    },
+    {
+      "variant": "P1",
+      "scenario": "legacy_long",
+      "blocks": 5,
+      "median_block_p50_ms": 428.34929700006796,
+      "median_block_p95_ms": 449.3556066498513
+    }
+  ],
+  "summary_sha256": "134c6254e93f3832c24a11960dd13c1242e1d55fc81957060e928d3a2f188e38",
+  "published_commit": "7f07499df15f28b2452406995630a97cda211d4b",
+  "quality_evaluated": false,
+  "aggregation": "Sum attribution rows by component; any fused operator/kernel kept as fused_composite. Divide by manifest iterations (3) for per-iteration values. Latency is median of five block quantiles, not pooled quantile. CPU reanalysis, no new model execution."
+}

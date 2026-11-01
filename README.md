@@ -1,6 +1,16 @@
 # HiveTrace-AutoTune-Guardrails
 Найти ускорения guardrail-моделей без скрытого падения качества на редких атаках, обфускации и неанглийских текстах в продукте
 
+## Профилирование: почему выбрали эти оптимизации
+
+- [HaloGuard1-Gen-0.8B: reference linear attention, мелкие запуски и проверка FLA](results/profiling/HaloGuard1-Gen-0.8B/README.md).
+- [GLiNER Guard Omni: encoder, относительные позиции, compile и ONNX](results/profiling/GLiNER-Guard-Omni/README.md).
+
+Это анализ исторических T4-прогонов 25–28 октября, а не новые замеры.
+Отчёты отделяют наблюдения от гипотез и связывают их с опубликованными
+short/long-трейсами и численными результатами. Новая среда, новый корпус и RTX
+4090/5090 требуют отдельных проверок; сохранение safety-качества здесь не оценено.
+
 ## К синку 30 октября: среда и протокол У1
 
 - **[Skeleton notebook](notebooks/team_environment_skeleton.ipynb)**: загрузить в Kaggle/Colab с T4 и Python 3.13, выполнить шапку, заменить пример своим кодом. Полный lock встроен; установка идёт в отдельный venv, каждый запуск кода — в свежем процессе. Основной notebook-runtime не меняется. [Порядок запуска и ограничения](docs/team_environment.md).
