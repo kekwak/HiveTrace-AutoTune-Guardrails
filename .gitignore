@@ -218,3 +218,23 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local U1 runtimes, datasets and measurement archives are not Git artifacts.
+.venv-role-data/
+.venv-gliner-validation/
+.venv-validation/
+u1-rtx-env/
+u1-rtx-env.zip
+data/speed/
+benchmark_runs/
+*.onnx
+*.onnx.data
+*.safetensors
+
+# Runtime locks are source artifacts, not local virtual environments.
+!env/
+env/*
+!env/team_environment.lock.json
+!env/team_environment.lock.txt
+!env/team_rtx.lock.json
+!env/team_rtx.lock.txt

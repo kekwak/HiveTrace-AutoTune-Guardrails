@@ -1,6 +1,40 @@
 # HiveTrace-AutoTune-Guardrails
 Найти ускорения guardrail-моделей без скрытого падения качества на редких атаках, обфускации и неанглийских текстах в продукте
 
+## У1: общий измеритель, роли и RTX — 1 ноября
+
+**[Порядок работы и контракты](docs/u1_handoff.md)** · [готовность и ограничения](docs/u1_handoff_readiness.md).
+Запуск из клона, ZIP и новый notebook не нужны. Восемь baseline-адаптеров, внешний
+candidate/квантованный артефакт, сменные speed/quality-наборы и offline report/table.
+Квантование и подготовка safety-данных в этот комплект не входят.
+
+Скоростной [корпус v4 на HF](https://huggingface.co/datasets/vXofi/guardrails-speed-en-ru/tree/v4)
+закреплён на `7324b8823ded971c05076e0c7f4ace5d9b867863`: 12000 общих ролевых записей,
+20 модельных бакетов по 400 уникальных эффективных входов. Вход готовится нативно;
+бакеты определяются токенизатором модели. Baseline/candidate одной модели получают
+одинаковые ID, входы и порядок. Старый v3 не изменён. Набор не имеет safety-разметки.
+
+Linux x86_64 / Python 3.13 / GPU 0 RTX 4090 либо 5090. Начало работы:
+
+```bash
+python tools/benchmark.py setup --profile team-rtx --environment ./u1-rtx-env
+./u1-rtx-env/venv/bin/python tools/benchmark.py auth-check --model shield
+./u1-rtx-env/venv/bin/python tools/benchmark.py fetch-data
+python tools/benchmark.py preflight --config configs/benchmark-v3/gliner_baseline.json --environment ./u1-rtx-env --output runs/gliner-preflight
+python tools/benchmark.py run --pilot --config configs/benchmark-v3/gliner_compile.json --environment ./u1-rtx-env --output runs/gliner-pilot
+```
+
+В [configs/benchmark-v3](configs/benchmark-v3) — восемь baseline-конфигураций и три
+сравнения: Halo FLA, GLiNER compile и ORT. [RTX lock](env/team_rtx.lock.json) сохраняет
+прежние 96 wheels и добавляет Laya 0.3.20. Автоматической смены версий/CPU fallback нет.
+Полные screening запускают владельцы после preflight/pilot. Доступ HF предоставляет
+сам владелец runtime; токен не передаётся в конфигурациях или результатах.
+
+**Границы подтверждения:** CPU и воспроизводимость корпуса проверены; RTX inference,
+реальный квантованный артефакт и качество на будущем размеченном наборе не проверены.
+Baseline-отчёты показывают A/A, дрейф и блочные интервалы без нового порога стабильности.
+Исторические T4-результаты и материалы ниже сохраняются и не являются RTX-приёмкой.
+
 ## Профилирование: почему выбрали эти оптимизации
 
 - [HaloGuard1-Gen-0.8B: reference linear attention, мелкие запуски и проверка FLA](results/profiling/HaloGuard1-Gen-0.8B/README.md).
