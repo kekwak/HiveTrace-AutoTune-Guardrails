@@ -1,0 +1,300 @@
+test_boundaries (test_speed_dataset.SpeedCorpusTests.test_boundaries) ... ok
+test_changed_input_rejected (test_speed_dataset.SpeedCorpusTests.test_changed_input_rejected) ... ok
+test_four_bucket_model_membership (test_speed_dataset.SpeedCorpusTests.test_four_bucket_model_membership) ... ok
+test_full_release_then_missing_model_does_not_leave_stale_b1 (test_speed_dataset.SpeedCorpusTests.test_full_release_then_missing_model_does_not_leave_stale_b1) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpctmdx0cs/releases/608e462b1b47e8eb",
+  "selected": 1600,
+  "blockers": {}
+}
+{
+  "status": "not_ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpctmdx0cs/releases/d3a78f36b08a5a01",
+  "selected": 1200,
+  "blockers": {
+    "llama": "[Errno 2] No such file or directory: '/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpctmdx0cs/indices/llama.meta.json'"
+  }
+}
+ok
+test_handoff_notebook (test_speed_dataset.SpeedCorpusTests.test_handoff_notebook) ... ok
+test_import_validates_before_replacing (test_speed_dataset.SpeedCorpusTests.test_import_validates_before_replacing) ... ok
+test_incomplete_finalize_and_histogram (test_speed_dataset.SpeedCorpusTests.test_incomplete_finalize_and_histogram) ... /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpiofbdih_/handoff
+Validated and imported: llama
+{
+  "status": "not_ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp4tbodmtz/releases/a87228f2a7dee168",
+  "selected": 0,
+  "blockers": {}
+}
+ok
+test_literal_prompt_not_executed (test_speed_dataset.SpeedCorpusTests.test_literal_prompt_not_executed) ... ok
+test_long_synthetic_is_deterministic_not_repeated_filler (test_speed_dataset.SpeedCorpusTests.test_long_synthetic_is_deterministic_not_repeated_filler) ... ok
+test_mirror_is_explicit_and_original_index_is_stale (test_speed_dataset.SpeedCorpusTests.test_mirror_is_explicit_and_original_index_is_stale) ... ok
+test_pool_corruption (test_speed_dataset.SpeedCorpusTests.test_pool_corruption) ... ok
+test_reuse_requires_same_assets (test_speed_dataset.SpeedCorpusTests.test_reuse_requires_same_assets) ... ok
+test_selection_intersection_and_quotas (test_speed_dataset.SpeedCorpusTests.test_selection_intersection_and_quotas) ... ok
+test_source_offsets_and_determinism (test_speed_dataset.SpeedCorpusTests.test_source_offsets_and_determinism) ... ok
+test_stale_missing_and_duplicate_index (test_speed_dataset.SpeedCorpusTests.test_stale_missing_and_duplicate_index) ... ok
+test_unicode_and_no_padding (test_speed_dataset.SpeedCorpusTests.test_unicode_and_no_padding) ... ok
+test_allowlisted_compact_reproducible_package (test_speed_export.SpeedExportTests.test_allowlisted_compact_reproducible_package) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpvo8c4azy/source/releases/46b0c05f628480f1",
+  "selected": 1600,
+  "blockers": {}
+}
+ok
+test_incomplete_release_rejected (test_speed_export.SpeedExportTests.test_incomplete_release_rejected) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpd7m2yox4/source/releases/46b0c05f628480f1",
+  "selected": 1600,
+  "blockers": {}
+}
+{
+  "status": "not_ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpd7m2yox4/source/releases/4487c22582da69d7",
+  "selected": 1200,
+  "blockers": {
+    "llama": "[Errno 2] No such file or directory: '/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpd7m2yox4/source/indices/llama.meta.json'"
+  }
+}
+ok
+test_tampered_release_rejected_before_export (test_speed_export.SpeedExportTests.test_tampered_release_rejected_before_export) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp_jvxk_82/source/releases/46b0c05f628480f1",
+  "selected": 1600,
+  "blockers": {}
+}
+ok
+test_fla_only_and_error_restoration (test_team_halo.TeamHaloDispatchTests.test_fla_only_and_error_restoration) ... ok
+test_real_5201_adapter_with_tiny_local_checkpoint (test_team_halo.TeamHaloDispatchTests.test_real_5201_adapter_with_tiny_local_checkpoint) ... W1101 23:10:02.016000 94333 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 343.99it/s]
+
+Loading weights:   0%|          | 0/49 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 49/49 [00:00<00:00, 16621.18it/s]
+ok
+test_unknown_dispatch_cannot_pass (test_team_halo.TeamHaloDispatchTests.test_unknown_dispatch_cannot_pass) ... ok
+test_unwrap_and_call_reference_then_restore (test_team_halo.TeamHaloDispatchTests.test_unwrap_and_call_reference_then_restore) ... ok
+test_checked_in_lock_exact_and_scoped (test_team_lock.TeamLockTests.test_checked_in_lock_exact_and_scoped) ... ok
+test_failed_smoke_cannot_be_source (test_team_lock.TeamLockTests.test_failed_smoke_cannot_be_source) ... ok
+test_generation_verifies_every_worker_and_is_deterministic (test_team_lock.TeamLockTests.test_generation_verifies_every_worker_and_is_deterministic) ... ok
+test_inventory_rejects_missing_extra_version_and_duplicates (test_team_lock.TeamLockTests.test_inventory_rejects_missing_extra_version_and_duplicates) ... ok
+test_missing_hash_bad_platform_or_source_rejected (test_team_lock.TeamLockTests.test_missing_hash_bad_platform_or_source_rejected) ... ok
+test_archive_excludes_inputs_weights_secrets_and_large_files (test_team_skeleton.SkeletonTests.test_archive_excludes_inputs_weights_secrets_and_large_files) ... ok
+test_child_env_does_not_leak_host_python_configuration (test_team_skeleton.SkeletonTests.test_child_env_does_not_leak_host_python_configuration) ... ok
+test_each_experiment_snapshots_source_and_preserves_error (test_team_skeleton.SkeletonTests.test_each_experiment_snapshots_source_and_preserves_error) ... ok
+test_incomplete_existing_venv_is_not_reinstalled (test_team_skeleton.SkeletonTests.test_incomplete_existing_venv_is_not_reinstalled) ... ok
+test_install_failure_and_tampered_lock_stop_setup (test_team_skeleton.SkeletonTests.test_install_failure_and_tampered_lock_stop_setup) ... ok
+test_notebook_self_contained_fresh_and_syntax (test_team_skeleton.SkeletonTests.test_notebook_self_contained_fresh_and_syntax) ... ok
+test_precheck_failure_does_not_install_and_archives (test_team_skeleton.SkeletonTests.test_precheck_failure_does_not_install_and_archives) ... ok
+test_precheck_rejects_wrong_python_before_inspecting_gpu (test_team_skeleton.SkeletonTests.test_precheck_rejects_wrong_python_before_inspecting_gpu) ... ok
+test_real_process_logs_failure_and_timeout (test_team_skeleton.SkeletonTests.test_real_process_logs_failure_and_timeout) ... {
+  "stage": "setup",
+  "status": "passed",
+  "model_tested": false,
+  "lock_inventory_verified": true,
+  "cuda_primitive_passed": true
+}
+fixture log
+{
+  "stage": "experiment",
+  "status": "passed",
+  "run": "run_a1c3b714",
+  "source_sha256": "b80792336156c7b0f7fe02eeef24610d2d52a10d1810397744471d1dc5738180"
+}
+Результаты: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp4u803tc5/work/runs/run_a1c3b714/results
+fixture log
+{
+  "stage": "experiment",
+  "status": "failed",
+  "run": "run_277a8719",
+  "source_sha256": "b3c52fecfffc5d3d229b07d7139d5d09be7a3e4aa6d1f87276a187f3ce469014",
+  "error": "fixture failure"
+}
+Результаты: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp4u803tc5/work/runs/run_277a8719/results
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "GPU gone"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp4u803tc5/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "Неполная или другая среда: повторите ячейку подготовки нового рабочего каталога."
+}
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "fixture failure"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmprryugcsk/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "fixture failure"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpkp345p8h/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "fixture failure"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmphd3mh8xj/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "Embedded lock text and manifest disagree"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpe53m6anr/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "Wrong Python"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpbl1lwsr0/work.zip
+Запуск: ok.log | лог: /var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpqttn6x21/ok.log
+Запуск: failure.log | лог: /var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpqttn6x21/failure.log
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    raise ValueError("fixture")
+ValueError: fixture
+
+Запуск: timeout.log | лог: /var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpqttn6x21/timeout.log
+ok
+test_setup_targets_only_venv_and_reuses_after_verification (test_team_skeleton.SkeletonTests.test_setup_targets_only_venv_and_reuses_after_verification) ... ok
+test_archive_keeps_failures_but_excludes_weights (test_team_smoke.TeamEnvironmentSmokeTests.test_archive_keeps_failures_but_excludes_weights) ... ok
+test_child_python_environment_is_clean_and_restored_on_failure (test_team_smoke.TeamEnvironmentSmokeTests.test_child_python_environment_is_clean_and_restored_on_failure) ... ok
+test_cuda_failure_skips_models (test_team_smoke.TeamEnvironmentSmokeTests.test_cuda_failure_skips_models) ... 
+{
+  "stage": "setup",
+  "status": "passed",
+  "model_tested": false,
+  "lock_inventory_verified": true,
+  "cuda_primitive_passed": true
+}
+{
+  "stage": "setup",
+  "status": "passed",
+  "model_tested": false,
+  "lock_inventory_verified": true,
+  "cuda_primitive_passed": true
+}
+Smoke: cuda
+ok
+test_install_timeout_preserves_partial_archive_without_workers (test_team_smoke.TeamEnvironmentSmokeTests.test_install_timeout_preserves_partial_archive_without_workers) ... ok
+test_notebook_is_fresh_valid_and_self_contained (test_team_smoke.TeamEnvironmentSmokeTests.test_notebook_is_fresh_valid_and_self_contained) ... ok
+test_ort_failure_does_not_cancel_gliner_or_halo (test_team_smoke.TeamEnvironmentSmokeTests.test_ort_failure_does_not_cancel_gliner_or_halo) ... Smoke: cuda
+Smoke: ort_cuda
+Smoke: gliner
+Smoke: halo
+ok
+test_ort_needs_real_cuda_nodes_and_no_cpu_fallback (test_team_smoke.TeamEnvironmentSmokeTests.test_ort_needs_real_cuda_nodes_and_no_cpu_fallback) ... ok
+test_partial_scores_survive_next_input_failure (test_team_smoke.TeamEnvironmentSmokeTests.test_partial_scores_survive_next_input_failure) ... ok
+test_pins_retain_measured_extensions_and_reject_drift (test_team_smoke.TeamEnvironmentSmokeTests.test_pins_retain_measured_extensions_and_reject_drift) ... ok
+test_real_pip_targets_pipless_venv_offline (test_team_smoke.TeamEnvironmentSmokeTests.test_real_pip_targets_pipless_venv_offline) ... ok
+test_scores_reject_drift_flips_and_nonfinite (test_team_smoke.TeamEnvironmentSmokeTests.test_scores_reject_drift_flips_and_nonfinite) ... ok
+test_smoke_texts_survive_real_gliner_normalization (test_team_smoke.TeamEnvironmentSmokeTests.test_smoke_texts_survive_real_gliner_normalization) ... ok
+test_success_uses_isolated_venv_and_does_not_benchmark (test_team_smoke.TeamEnvironmentSmokeTests.test_success_uses_isolated_venv_and_does_not_benchmark) ... Smoke: cuda
+Smoke: ort_cuda
+Smoke: gliner
+Smoke: halo
+ok
+test_worker_pin_failure_prevents_models_and_is_saved (test_team_smoke.TeamEnvironmentSmokeTests.test_worker_pin_failure_prevents_models_and_is_saved) ... ok
+test_compile_scores_routing_and_restore (test_u1_benchmark.AdapterRouting.test_compile_scores_routing_and_restore) ... [transformers] The new embeddings will be initialized from a multivariate normal distribution that has old embeddings' mean and covariance. As described in this article: https://nlp.stanford.edu/~johnhew/vocab-expansion.html. To disable this, use `mean_resizing=False`
+ok
+test_ort_route_wrapper_restores_shared_validation_texts (test_u1_benchmark.AdapterRouting.test_ort_route_wrapper_restores_shared_validation_texts) ... ok
+test_size_does_not_require_unloaded_model_card_files (test_u1_benchmark.AdapterRouting.test_size_does_not_require_unloaded_model_card_files) ... ok
+test_config_limits (test_u1_benchmark.CorpusAndStatistics.test_config_limits) ... ok
+test_halo_preparation_covers_only_worker_shapes (test_u1_benchmark.CorpusAndStatistics.test_halo_preparation_covers_only_worker_shapes) ... ok
+test_noise_and_strict_threshold (test_u1_benchmark.CorpusAndStatistics.test_noise_and_strict_threshold) ... ok
+test_pair_order_and_hashes (test_u1_benchmark.CorpusAndStatistics.test_pair_order_and_hashes) ... ok
+test_pinned_data_and_tamper (test_u1_benchmark.CorpusAndStatistics.test_pinned_data_and_tamper) ... ok
+test_pooled_quantile_not_mean_of_quantiles (test_u1_benchmark.CorpusAndStatistics.test_pooled_quantile_not_mean_of_quantiles) ... ok
+test_schedule_exact_pairs_and_pilot (test_u1_benchmark.CorpusAndStatistics.test_schedule_exact_pairs_and_pilot) ... ok
+test_verdicts_unique_ids_and_instability (test_u1_benchmark.CorpusAndStatistics.test_verdicts_unique_ids_and_instability) ... ok
+test_complete_report_and_missing_side (test_u1_benchmark.OfflineReport.test_complete_report_and_missing_side) ... ok
+test_fast_candidate_with_unstable_verdict_cannot_pass (test_u1_benchmark.OfflineReport.test_fast_candidate_with_unstable_verdict_cannot_pass) ... ok
+test_pilot_never_passes_and_environment_mismatch (test_u1_benchmark.OfflineReport.test_pilot_never_passes_and_environment_mismatch) ... ok
+test_preflight_failure_stops_before_latency_and_archives (test_u1_benchmark.OfflineReport.test_preflight_failure_stops_before_latency_and_archives) ... gliner_compile: preflight baseline baseline
+ok
+test_actual_process_timeout_partial_artifact (test_u1_benchmark.ProcessesAndMemory.test_actual_process_timeout_partial_artifact) ... ok
+test_archive_keeps_required_results_beyond_optional_budget (test_u1_benchmark.ProcessesAndMemory.test_archive_keeps_required_results_beyond_optional_budget) ... ok
+test_archive_no_weights_secrets_or_symlinks (test_u1_benchmark.ProcessesAndMemory.test_archive_no_weights_secrets_or_symlinks) ... ok
+test_boundary_two_token_unit_does_not_skip_even_length (test_u1_benchmark.ProcessesAndMemory.test_boundary_two_token_unit_does_not_skip_even_length) ... ok
+test_boundary_with_long_prompt_and_restore (test_u1_benchmark.ProcessesAndMemory.test_boundary_with_long_prompt_and_restore) ... ok
+test_memory_pid_uuid_and_separate_windows (test_u1_benchmark.ProcessesAndMemory.test_memory_pid_uuid_and_separate_windows) ... ok
+test_quiet_dispatch_restores_after_error (test_u1_benchmark.ProcessesAndMemory.test_quiet_dispatch_restores_after_error) ... ok
+test_recompilation_not_silent (test_u1_benchmark.ProcessesAndMemory.test_recompilation_not_silent) ... ok
+test_eight_models_and_limits (test_u1_handoff.Contracts.test_eight_models_and_limits) ... ok
+test_external_source_and_contract_swap (test_u1_handoff.Contracts.test_external_source_and_contract_swap) ... ok
+test_generate_elided_mask_still_checks_actual_tokens (test_u1_handoff.Contracts.test_generate_elided_mask_still_checks_actual_tokens) ... ok
+test_responses_are_native (test_u1_handoff.Contracts.test_responses_are_native) ... ok
+test_size_uses_loaded_files_not_unrelated_exports (test_u1_handoff.Contracts.test_size_uses_loaded_files_not_unrelated_exports) ... ok
+test_boundaries_empty_unicode_special_tokens (test_u1_handoff.Data.test_boundaries_empty_unicode_special_tokens) ... ok
+test_quality_import_rejects_duplicate_ids_and_partial_slices (test_u1_handoff.Data.test_quality_import_rejects_duplicate_ids_and_partial_slices) ... ok
+test_repeatability_private_archive_and_not_ready (test_u1_handoff.Data.test_repeatability_private_archive_and_not_ready) ... ok
+test_baseline_only_complete_and_table_rejects_fixture (test_u1_handoff.EndToEnd.test_baseline_only_complete_and_table_rejects_fixture) ... ok
+test_baseline_schedule_and_current_shapes (test_u1_handoff.EndToEnd.test_baseline_schedule_and_current_shapes) ... ok
+test_quantized_fixture_fresh_processes_and_report (test_u1_handoff.EndToEnd.test_quantized_fixture_fresh_processes_and_report) ... ok
+test_real_quality_worker_with_cpu_fixture_and_private_texts (test_u1_handoff.EndToEnd.test_real_quality_worker_with_cpu_fixture_and_private_texts) ... ok
+test_redaction_preserves_json_with_quotes (test_u1_handoff.EndToEnd.test_redaction_preserves_json_with_quotes) ... ok
+test_timeout_and_partial_archive (test_u1_handoff.EndToEnd.test_timeout_and_partial_archive) ... ok
+test_metrics_coverage_and_undefined_denominators (test_u1_handoff.Quality.test_metrics_coverage_and_undefined_denominators) ... ok
+test_unique_ids_and_instability (test_u1_handoff.Quality.test_unique_ids_and_instability) ... ok
+test_assistant_projection_and_aba (test_u1_laya.LayaInputGuard.test_assistant_projection_and_aba) ... ok
+test_constructor_installs_guard_and_close_restores (test_u1_laya.LayaInputGuard.test_constructor_installs_guard_and_close_restores) ... ok
+test_legacy_text_path_still_uses_one_encoding (test_u1_laya.LayaInputGuard.test_legacy_text_path_still_uses_one_encoding) ... ok
+test_limit_and_rejection_before_forward_without_truncation (test_u1_laya.LayaInputGuard.test_limit_and_rejection_before_forward_without_truncation) ... ok
+test_one_sdk_encoding_and_native_scores_inputs (test_u1_laya.LayaInputGuard.test_one_sdk_encoding_and_native_scores_inputs) ... ok
+test_restore_on_forward_error_and_idempotent_close (test_u1_laya.LayaInputGuard.test_restore_on_forward_error_and_idempotent_close) ... ok
+test_restore_original_override_on_encoding_error (test_u1_laya.LayaInputGuard.test_restore_original_override_on_encoding_error) ... ok
+test_unexpected_budget_rejected_and_config_unchanged (test_u1_laya.LayaInputGuard.test_unexpected_budget_rejected_and_config_unchanged) ... ok
+test_factory_only_overrides_open (test_u1_open_task.OpenTask.test_factory_only_overrides_open) ... ok
+test_other_seven_preparation_contracts_are_unchanged (test_u1_open_task.OpenTask.test_other_seven_preparation_contracts_are_unchanged) ... ok
+test_reindex_keeps_corpus_and_other_indices_and_repeats (test_u1_open_task.OpenTask.test_reindex_keeps_corpus_and_other_indices_and_repeats) ... ok
+test_task_uses_selected_user_with_no_context_or_parser_change (test_u1_open_task.OpenTask.test_task_uses_selected_user_with_no_context_or_parser_change) ... ok
+test_eleven_real_configs_not_generated_by_zip (test_u1_repo_handoff.RepositoryHandoff.test_eleven_real_configs_not_generated_by_zip) ... ok
+test_hf_snapshot_symlinks_materialize_before_validation (test_u1_repo_handoff.RepositoryHandoff.test_hf_snapshot_symlinks_materialize_before_validation) ... ok
+test_historical_source_fetch_is_not_current_runtime_approval (test_u1_repo_handoff.RepositoryHandoff.test_historical_source_fetch_is_not_current_runtime_approval) ... ok
+test_local_install_verified_and_no_overwrite (test_u1_repo_handoff.RepositoryHandoff.test_local_install_verified_and_no_overwrite) ... ok
+test_missing_cpu_helper_is_an_error_not_a_skip (test_u1_repo_handoff.RepositoryHandoff.test_missing_cpu_helper_is_an_error_not_a_skip) ... ok
+test_only_explicit_runtime_locks_escape_env_ignore (test_u1_repo_handoff.RepositoryHandoff.test_only_explicit_runtime_locks_escape_env_ignore) ... ok
+test_unpublished_or_moving_revision_never_downloads (test_u1_repo_handoff.RepositoryHandoff.test_unpublished_or_moving_revision_never_downloads) ... ok
+test_wrong_corpus_cannot_be_installed (test_u1_repo_handoff.RepositoryHandoff.test_wrong_corpus_cannot_be_installed) ... ok
+test_actual_tensor_index_does_not_copy_wrong_role_from_expected (test_u1_roles.BuiltinRoleIndex.test_actual_tensor_index_does_not_copy_wrong_role_from_expected) ... ok
+test_actual_tensor_index_keeps_role_metadata_for_eight_models (test_u1_roles.BuiltinRoleIndex.test_actual_tensor_index_keeps_role_metadata_for_eight_models) ... ok
+test_auth_check_only_fetches_metadata (test_u1_roles.EnvironmentAndNoise.test_auth_check_only_fetches_metadata) ... ok
+test_auth_failure_never_exposes_token_or_exception_text (test_u1_roles.EnvironmentAndNoise.test_auth_failure_never_exposes_token_or_exception_text) ... ok
+test_baseline_noise_is_diagnostic_not_acceptance (test_u1_roles.EnvironmentAndNoise.test_baseline_noise_is_diagnostic_not_acceptance) ... ok
+test_extended_t4_setup_routes_explicit_profile (test_u1_roles.EnvironmentAndNoise.test_extended_t4_setup_routes_explicit_profile) ... ok
+test_extended_t4_uses_existing_lock_without_rtx_fallback (test_u1_roles.EnvironmentAndNoise.test_extended_t4_uses_existing_lock_without_rtx_fallback) ... ok
+test_gpu_names_no_fallback (test_u1_roles.EnvironmentAndNoise.test_gpu_names_no_fallback) ... ok
+test_old_profile_default_and_new_lock (test_u1_roles.EnvironmentAndNoise.test_old_profile_default_and_new_lock) ... ok
+test_rtx_lock_only_adds_laya (test_u1_roles.EnvironmentAndNoise.test_rtx_lock_only_adds_laya) ... ok
+test_boundaries_and_unicode (test_u1_roles.Roles.test_boundaries_and_unicode) ... ok
+test_canonical_validation_and_hash (test_u1_roles.Roles.test_canonical_validation_and_hash) ... ok
+test_depletion_is_not_ready (test_u1_roles.Roles.test_depletion_is_not_ready) ... ok
+test_effective_input_deduplication_and_length_strata (test_u1_roles.Roles.test_effective_input_deduplication_and_length_strata) ... ok
+test_eight_role_contracts (test_u1_roles.Roles.test_eight_role_contracts) ... ok
+test_model_buckets_reproducible_and_stale_contract_rejected (test_u1_roles.Roles.test_model_buckets_reproducible_and_stale_contract_rejected) ... ok
+test_native_templates_local_cache (test_u1_roles.Roles.test_native_templates_local_cache) ... ok
+test_new_contract_does_not_replace_old_open (test_u1_roles.Roles.test_new_contract_does_not_replace_old_open) ... ok
+test_quality_target_coverage_and_mapping (test_u1_roles.Roles.test_quality_target_coverage_and_mapping) ... ok
+test_quantized_fixture_unique_flips (test_u1_roles.Roles.test_quantized_fixture_unique_flips) ... ok
+test_real_role_quality_worker_target_mismatch_and_privacy (test_u1_roles.Roles.test_real_role_quality_worker_target_mismatch_and_privacy) ... ok
+test_role_quantization_full_fresh_process_path (test_u1_roles.Roles.test_role_quantization_full_fresh_process_path) ... ok
+test_target_change_cannot_pass_index_check (test_u1_roles.Roles.test_target_change_cannot_pass_index_check) ... ok
+
+----------------------------------------------------------------------
+Ran 134 tests in 8.931s
+
+OK

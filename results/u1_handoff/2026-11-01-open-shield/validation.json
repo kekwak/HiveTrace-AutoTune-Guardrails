@@ -1,0 +1,80 @@
+{
+  "status": "two_smokes_passed",
+  "profile": "team-t4-laya",
+  "gpu_index": 0,
+  "models": {
+    "open": {
+      "status": "smoke_passed",
+      "checkpoint": "openguardrails/OpenGuardrails-Text-4B-0124",
+      "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b",
+      "preparation_sha256": "3e59ed4f2852cdd77ae4222ef969f3305a85c3bfd777a0abe90123b02f41d733",
+      "preparation_profile": "open-0124-task-2510-v1",
+      "rules": "0124 weights; pinned 2510 task template; user-only; greedy generate max_new_tokens=10; native EOS; SDPA math; safe/unsafe and category",
+      "dtype": "float16",
+      "backend": "native_eager",
+      "timed_inputs": 8,
+      "worker_seconds": 142.61517151999988,
+      "boundary": {
+        "tokens": 4096,
+        "score": {
+          "label": "safe",
+          "category": null,
+          "generated_tokens": 2
+        },
+        "over_limit_rejected": true
+      },
+      "gpu": "Tesla T4",
+      "offline_rebuild_matches": true,
+      "source_hashes_match": true
+    },
+    "shield": {
+      "status": "smoke_passed",
+      "checkpoint": "google/shieldgemma-2b",
+      "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8",
+      "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+      "preparation_profile": "native",
+      "rules": "Dangerous Content; eager softcap; Yes/No softmax; tie=No; native prompt/response Dangerous Content wording",
+      "dtype": "float32",
+      "backend": "native_eager",
+      "timed_inputs": 8,
+      "worker_seconds": 124.97833006299993,
+      "boundary": {
+        "tokens": 4096,
+        "score": {
+          "label": "No",
+          "scores": {
+            "Yes": 0.00501594040542841,
+            "No": 0.9949840307235718
+          },
+          "score_type": "probabilities"
+        },
+        "over_limit_rejected": true
+      },
+      "gpu": "Tesla T4",
+      "offline_rebuild_matches": true,
+      "source_hashes_match": true
+    }
+  },
+  "bundle_sha256": "7c8de81d3a62b24ad67a147e48ed19458938fe8d9042142a1b36c772e75c4079",
+  "corpus_manifest_sha256": "9cf510a3664e1a2d1bee5f4dc30259925b531d5028a5acca83976606fce1509b",
+  "cpu_tests": {
+    "run": 134,
+    "skipped": 0,
+    "status": "passed"
+  },
+  "cpu_input_validation": "passed; all 8000 model inputs; repeated manifest identical",
+  "hf_auth": {
+    "shield_config_and_weight_metadata": "passed",
+    "mechanism": "notebook-scoped Kaggle HF_TOKEN Secret",
+    "credential_value_recorded": false
+  },
+  "gpu_session_stopped": true,
+  "notebook_private": true,
+  "notebook": "https://www.kaggle.com/code/avxofi/u1-current-adapters-smoke-v3/edit",
+  "quality_evaluated": false,
+  "screening_run": false,
+  "rtx_checked": false,
+  "published": false,
+  "archive_sha256": "18a7a4c24e400504599f6b6e8b56f9a3a8a685f9bab157e0f6cf96fcaec8664e",
+  "scope": "Two baseline adapter smoke runs; prior six models were not rerun"
+}

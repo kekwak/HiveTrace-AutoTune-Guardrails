@@ -1,4 +1,8 @@
 import json
+import os
+import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -11,6 +15,19 @@ from test_u1_roles import fixture_data
 
 
 class RepositoryHandoff(unittest.TestCase):
+    def test_missing_cpu_helper_is_an_error_not_a_skip(self):
+        self.assertTrue((ROOT / "tests/u1_fixtures.py").is_file())
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copyfile(ROOT / "tests/test_u1_benchmark.py", root / "test_u1_benchmark.py")
+            environment = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
+            environment.pop("PYTHONPATH", None)
+            result = subprocess.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", str(root)],
+                                    cwd=root, env=environment, capture_output=True, text=True, timeout=60)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("No module named 'u1_fixtures'", result.stderr)
+            self.assertNotIn("OK (skipped=", result.stderr)
+
     def test_eleven_real_configs_not_generated_by_zip(self):
         files = list((ROOT / "configs/benchmark-v3").glob("*.json"))
         self.assertEqual(len(files), 11)
@@ -23,7 +40,8 @@ class RepositoryHandoff(unittest.TestCase):
         for path in files:
             cfg = read(path)
             self.assertEqual(cfg["schema_version"], 3)
-            self.assertEqual(cfg["data"], {"path": release["destination"], "manifest_sha256": release["manifest_sha256"]})
+            expected = read(ROOT / "configs/data/role_speed_open_task.json") if cfg["model"] == "open" else release
+            self.assertEqual(cfg["data"], {"path": expected["destination"], "manifest_sha256": expected["manifest_sha256"]})
             self.assertNotIn("/Users/", path.read_text())
         self.assertNotIn("add(f\"configs/benchmark-v3/", (ROOT / "tools/package_role_handoff.py").read_text())
 
@@ -56,6 +74,22 @@ class RepositoryHandoff(unittest.TestCase):
             with self.assertRaises(ValueError):
                 distribution.fetch(root / "installed", source=data["path"])
             self.assertFalse((root / "installed").exists())
+
+    def test_historical_source_fetch_is_not_current_runtime_approval(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data = fixture_data(root)
+            release = {"manifest_sha256": data["manifest_sha256"], "revision": None}
+            with patch.object(distribution, "read", return_value=release), \
+                 patch.object(distribution, "MODEL_SPECS", {"gliner": {}}), \
+                 patch.object(distribution, "model_contract", return_value={"different": True}):
+                result = distribution.fetch(root / "installed", source=data["path"])
+                self.assertEqual(result["model_contract_status"], {"gliner": "requires_reindex"})
+                self.assertEqual(result["scope"], "pinned_source_integrity")
+            from u1_benchmark.datasets import load_speed
+            with patch("u1_benchmark.role_data.model_contract", return_value={"different": True}):
+                with self.assertRaisesRegex(ValueError, "Stale role"):
+                    load_speed(root / "installed", "gliner", "screening")
 
     def test_hf_snapshot_symlinks_materialize_before_validation(self):
         try:

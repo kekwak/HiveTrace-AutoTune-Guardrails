@@ -48,6 +48,7 @@ class Builtin:
         self.contract = model_contract(model, input_version)
         self.limit, self.backend = self.contract["limit"], spec.get("backend", "eager")
         self.legacy = None
+        self._restore_laya_encoding = None
         self.device = torch.device("cuda:0")
         self.forward_calls = 0
         self.metadata = {"model": model, "backend_requested": self.backend, "dtype": DTYPES[model], "input_version": input_version}
@@ -56,11 +57,11 @@ class Builtin:
             self.legacy = load(model, "baseline" if self.backend == "eager" else "candidate", self.backend, directory)
             self.model, self.tokenizer = self.legacy.model, self.legacy.tokenizer
             if input_version == 3:
-                from .native_preparation import Preparer
+                from .role_preparation import Preparer
                 self.role_preparer = Preparer(model)
         else:
             if input_version == 3:
-                from .native_preparation import Preparer
+                from .role_preparation import Preparer
             else:
                 from speed_dataset.preparation import Preparer
             self.preparer = Preparer(model)
@@ -98,6 +99,38 @@ class Builtin:
         # Hook enabled only for diagnostics; removed before timing.
         self._hook = None
         self.check_device()
+        if self.name == "laya":
+            self._install_laya_input_guard()
+
+    def _install_laya_input_guard(self):
+        if self._restore_laya_encoding is not None:
+            raise RuntimeError("Laya input guard already installed")
+        if self.agent.cfg.get("max_len") != self.limit:
+            raise ValueError("Laya checkpoint input budget changed")
+        original = self.agent._encode_state
+        agent = self.agent
+        had_override = "_encode_state" in vars(agent)
+
+        def encode(state, ids, internal, max_len=None, head_max_len=None):
+            if not isinstance(state, str) or max_len not in (None, self.limit):
+                raise ValueError("Unexpected Laya state or input budget override")
+            # Observe the full SDK sequence once; never truncate and then accept it.
+            items = original(state, ids, internal,
+                             max_len=max(self.limit, len(state) * 8 + 4096),
+                             head_max_len=head_max_len)
+            if not items or any(not 0 < len(item["ids"]) <= self.limit for item in items):
+                raise ValueError("Input exceeds limit before forward")
+            return items
+
+        def restore():
+            if had_override:
+                agent._encode_state = original
+            else:
+                del agent._encode_state
+
+        agent._encode_state = encode
+        self._restore_laya_encoding = restore
+        self.metadata["input_guard"] = "single SDK encoding; full length checked before forward"
 
     def check_device(self):
         import torch
@@ -132,13 +165,14 @@ class Builtin:
 
     def index(self, text):
         if self.input_version == 3:
-            from .messages import UnsupportedInput, messages
+            from .messages import UnsupportedInput, messages, select
             p = self.role_preparer if self.legacy is not None else self.preparer
             value = p.index({"id": "index", "messages": messages(text)})
             if value.get("total_tokens") is None:
                 raise UnsupportedInput(value["reason"])
             # Also execute actual adapter preparation; never trust a parallel tokenizer path alone.
             actual = input_index(self.prepare(text, enforce=False), value["user_tokens"])
+            actual.update({k: v for k, v in select(self.name, text).items() if k != "effective_messages"})
             check_index(actual, value)
             return {k: v for k, v in value.items() if k != "id"}
         n = len(self.tokenizer.encode(text, add_special_tokens=False))
@@ -150,7 +184,6 @@ class Builtin:
             value = self.legacy.scores([self.legacy_text(text)])[0]
             return {**value, "scores": {"safe": value["p_safe"], "unsafe": value["p_unsafe"]},
                     "score_type": "probabilities"}
-        inputs = self.prepare(text)
         if self.name == "laya":
             from speed_dataset.preparation import QUESTIONS
             answer = self.agent.predict(self.legacy_text(text), QUESTIONS)["answers"]["danger"]
@@ -158,6 +191,7 @@ class Builtin:
             if answer["choice"] not in ("A", "B"):
                 raise ValueError("Invalid Laya native choice")
             return {"label": answer["choice"], "scores": answer["probabilities"], "score_type": "probabilities"}
+        inputs = self.prepare(text)
         context = nullcontext()
         if self.name in ("hive", "open"):
             from torch.nn.attention import sdpa_kernel, SDPBackend
@@ -297,6 +331,10 @@ class Builtin:
                 "dtypes": sorted({str(t.dtype) for t in tensors}), "export_files_bytes": {}}
 
     def close(self):
+        restore = getattr(self, "_restore_laya_encoding", None)
+        if restore is not None:
+            restore()
+            self._restore_laya_encoding = None
         if self.legacy is not None:
             self.legacy.close()
 

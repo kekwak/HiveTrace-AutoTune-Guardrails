@@ -11,9 +11,9 @@ ENTRY = ROOT / "tools/benchmark.py"
 
 
 def setup(directory, profile="team-t4"):
-    if profile == "team-rtx":
+    if profile in ("team-rtx", "team-t4-laya"):
         from .environment import setup_rtx
-        return setup_rtx(directory)
+        return setup_rtx(directory, profile)
     if profile != "team-t4":
         raise ValueError("Unknown environment profile")
     from followup.team_skeleton import precheck

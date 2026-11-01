@@ -35,7 +35,11 @@ def model_contract(model, version=2):
         result["role_policy"] = {"formats": ["user-only", "assistant-only", "user+assistant"],
                                  "unsupported": "explicit; never relabel or synthesize context"}
         if model == "open":
-            result["rules"] = RULES[model].replace("pinned 2510 template", "native 0124 template; user-only")
+            result["rules"] = RULES[model].replace("pinned 2510 template", "0124 weights; pinned 2510 task template; user-only")
+            result["preparation_sha256"] = digest({"native": result["preparation_sha256"],
+                "task_override": sha(ROOT / "u1_benchmark/role_preparation.py")})
+            result["preparation_spec"] = spec
+            result["preparation_profile"] = "open-0124-task-2510-v1"
         if model == "shield":
             result["rules"] += "; native prompt/response Dangerous Content wording"
     elif version != 2:

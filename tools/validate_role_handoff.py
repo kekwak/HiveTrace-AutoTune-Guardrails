@@ -1,4 +1,4 @@
-"""CPU-only acceptance: repeat hashes, native inputs and local handoff archives."""
+"""CPU-only acceptance: repeat hashes and inputs from the current explicit contracts."""
 import argparse
 import importlib.metadata
 import json
@@ -12,7 +12,7 @@ from u1_benchmark.contracts import MODEL_SPECS
 from u1_benchmark.datasets import load_speed, verified
 from u1_benchmark.adapters import check_index
 from u1_benchmark.messages import payload
-from u1_benchmark.native_preparation import Preparer
+from u1_benchmark.role_preparation import Preparer
 
 
 def validate(dataset, repeat, output):
@@ -34,7 +34,7 @@ def validate(dataset, repeat, output):
         p = Preparer(model)
         parity = p.parity()
         if parity["status"] != "passed":
-            raise ValueError("Native CPU parity failed")
+            raise ValueError("CPU preparation parity failed")
         for bucket, values in data.items():
             if len(values) != 400 or len({row["index"]["input_sha256"] for row in values}) != 400:
                 raise ValueError("Incomplete or duplicate effective inputs")
@@ -44,7 +44,7 @@ def validate(dataset, repeat, output):
         result["models"][model] = {"status": "cpu_preparation_passed", "parity": parity,
             "bucket_counts": {k: len(v) for k, v in data.items()}, "gpu": "not_checked"}
         write(output, result)
-        print(model + ": selected native inputs verified", flush=True)
+        print(model + ": selected prepared inputs verified", flush=True)
     result.update(status="passed", ids_with_different_model_buckets=sum(len(v) > 1 for v in assignments.values()))
     write(output, result)
     return result

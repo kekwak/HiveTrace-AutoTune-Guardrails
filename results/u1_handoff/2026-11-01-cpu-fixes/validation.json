@@ -1,0 +1,56 @@
+{
+  "status": "cpu_validated",
+  "published": false,
+  "based_on_commit": "d7418a15e78e569a55da913d0b1f3891b3302a8a",
+  "scope": "Laya single SDK encoding and standalone compile/ORT CPU fixtures",
+  "cpu_tests": {
+    "run": 125,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "status": "passed",
+    "clean_tree": true,
+    "network_disabled": true,
+    "log": "cpu-tests.txt"
+  },
+  "prior_attempt": {
+    "status": "failed",
+    "reason": "nbformat missing from local CPU test environment",
+    "runtime_lock_changed": false,
+    "resolution": "Installed nbformat==5.11.1 in local CPU validation venv only; reran complete suite"
+  },
+  "environment": {
+    "scope": "local macOS CPU validation; not Linux RTX lock",
+    "python": "3.14.5",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.20.1",
+      "gliner2": "2.1.0",
+      "laya": "0.3.20",
+      "tokenizers": "0.23.3",
+      "nbformat": "5.11.1"
+    }
+  },
+  "checks": {
+    "laya_single_sdk_encoding": true,
+    "laya_native_input_and_score_parity": true,
+    "laya_limit_512_513_before_forward": true,
+    "laya_legacy_text_and_role_inputs": true,
+    "laya_restore_after_error": true,
+    "compile_ort_routing_tests_executed": 3,
+    "missing_helper_fails_not_skips": true
+  },
+  "source_sha256": {
+    "u1_benchmark/adapters.py": "604e6441204934004b892568caf6d7675cafdf954dfd81b5f6505ecf9d20abdd",
+    "tests/u1_fixtures.py": "0a72f3dd6beb7cbee06c8a38934fca80936afa21c22012a220a0267290ec9732",
+    "tests/test_u1_benchmark.py": "1dc77848188fbe442ce66ed0e73aff1adcb8bb82cede1a243f209e9debe37bcd",
+    "tests/test_u1_laya.py": "cfd2c695a817506f28b3654b86c62d3215da27c24c7744c1b6f52eb427921ca5",
+    "tests/test_u1_repo_handoff.py": "ee6b8778bb43f08380277ed1b6ab9d92908c82bc5bae095e003c99796379f2fa"
+  },
+  "corpus_changed": false,
+  "lock_changed": false,
+  "historical_results_changed": false,
+  "gpu_checked": false,
+  "quality_evaluated": false,
+  "note": "Real pinned Laya SDK with random local CPU weights; not checkpoint, performance, RTX or safety acceptance"
+}

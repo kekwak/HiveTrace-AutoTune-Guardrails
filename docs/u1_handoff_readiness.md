@@ -36,16 +36,82 @@ commit `7324b8823ded971c05076e0c7f4ace5d9b867863` закреплён в реес
 CPU-прогоны и отдельная проверка опубликованного checkout описаны в
 [проверке передачи](../results/u1_handoff/2026-11-01/publication.json).
 
-Модель | Применимые форматы | CPU-подготовка | RTX GPU
---- | --- | --- | ---
-HaloGuard | user; в паре только user | passed | not_checked
-GLiNER | assistant если есть, иначе user | passed | not_checked
-Koala | assistant если есть, иначе user | passed | not_checked
-Llama Prompt Guard | assistant если есть, иначе user | passed | not_checked
-Laya | assistant если есть, иначе user; SDK | passed | not_checked
-HiveTraceGuard-Pro | user / assistant / pair; последний ход | passed | not_checked
-OpenGuardrails 0124 | user-only; собственный шаблон | passed | not_checked
-ShieldGemma | user / pair; policy зависит от цели | passed | not_checked
+**Последующие исправления:** у Laya удалена повторная подготовка в полном запросе;
+единственное кодирование SDK проверяет полный вход до forward и восстанавливается при
+закрытии адаптера. Независимый CPU-helper возвращает в прогон три теста compile/ORT.
+Чистая копия с исправлениями: **125 тестов, 0 пропусков**; Laya 0.3.20 проверена с
+локальными случайными CPU-весами, не с реальным checkpoint на GPU.
+[Новый validation и журнал](../results/u1_handoff/2026-11-01-cpu-fixes/validation.json).
+Прежняя проверка публикации выше остаётся историческим снимком, а не результатом нового кода.
+
+Модель | Применимые форматы | CPU-подготовка | Текущий T4 smoke | RTX GPU
+--- | --- | --- | --- | ---
+HaloGuard | user; в паре только user | passed | smoke_passed | not_checked
+GLiNER | assistant если есть, иначе user | passed | smoke_passed | not_checked
+Koala | assistant если есть, иначе user | passed | smoke_passed | not_checked
+Llama Prompt Guard | assistant если есть, иначе user | passed | smoke_passed | not_checked
+Laya | assistant если есть, иначе user; SDK | passed | smoke_passed | not_checked
+HiveTraceGuard-Pro | user / assistant / pair; последний ход | passed | smoke_passed | not_checked
+OpenGuardrails 0124 | user-only; веса 0124 + task-шаблон 2510 | passed | smoke_passed (follow-up) | not_checked
+ShieldGemma | user / pair; policy зависит от цели | passed | smoke_passed (follow-up) | not_checked
+
+### GPU-smoke текущего скрипта и ролевого корпуса
+
+Первая проверка 1 ноября: schema 3, корпус v4, `mode=smoke`, восемь baseline-конфигураций, T4 GPU 0.
+Профиль `team-t4-laya` использует прежние 97 wheels без изменения lock; старый T4-профиль
+с 96 wheels сохранён. Проверка новой сборки: **129 CPU-тестов, 0 пропусков**.
+Исходники bundle `80a276dcda902fa7c128ce6a99220e2e88f929667549be836f65f99d43d7b232`
+сверены с текущими файлами; семь worker-отчётов пересобраны offline и совпали с архивными.
+[Validation](../results/u1_handoff/2026-11-01-smoke-v3/validation.json).
+
+- Шесть моделей прошли загрузку, фактические входы/роли, короткий и длинный пример каждого
+  обязательного бакета, CUDA backend proof, A→B→A, границу/превышение лимита и сбор памяти.
+- Первая попытка выявила ошибку `Builtin.index`: фактические тензоры сравнивались без полей
+  роли/контекста. Проверка исправлена без копирования ожидаемых метаданных; добавлены тесты
+  реального метода для восьми моделей. Неудачная попытка сохранена отдельно.
+- OpenGuardrails: на входе из 513 токенов выдаёт `unsafe` пять раз вместо документированного
+  формата. Строгий parser отклоняет ответ; prompt, precision, лимит генерации 10 и правила
+  решения не менялись ради успешного smoke.
+  [Диагностика](../results/u1_handoff/2026-11-01-smoke-v3/open_reply_diagnostic.json),
+  [формат авторов](https://huggingface.co/openguardrails/OpenGuardrails-Text-4B-0124/blob/9bdd1fb549e01b5f6aae4e9c395998492a08830b/README.md#output-format).
+- ShieldGemma: в Kaggle нет доступного HF_TOKEN; проверка доступа к config/weights не пройдена,
+  GPU-inference не запускался. Локальный токен на сторонний сервис не копировался.
+- GPU-сессия остановлена после скачивания архивов. Screening, кандидаты оптимизаций,
+  RTX-совместимость и качество на разметке в этот запуск не входили.
+
+Архивы и исходные неудачные попытки: `benchmark_runs/current_smoke_2026-11-01-v2/results/`.
+JSON-отчёты сохраняют состояние на момент проверки; поле `published=false` не является
+текущим статусом Git-ветки. Предыдущая публикация не выдаётся за проверку новой сборки.
+
+### Закрытие OpenGuardrails и ShieldGemma
+
+Повторно запускались только две модели, `mode=smoke`, T4 GPU 0, тот же 97-wheel lock.
+Обе получили `smoke_passed`: по два входа каждого B1–B4, CUDA backend proof, A→B→A,
+4096/4097 и память. Архивы проверены, отчёты offline совпали с исходными; GPU остановлена.
+[Validation](../results/u1_handoff/2026-11-01-open-shield/validation.json).
+
+- **Open:** родной шаблон 0124 повторял метки даже на коротком примере из карточки.
+  Смена FP16/BF16, eager/SDPA math, отключение KV-cache и параметры генерации карточки
+  это не исправили. С теми же весами/текстами task-шаблон 2510 даёт документированный
+  формат. По отдельному согласованию введён профиль `open-0124-task-2510-v1`, FP16,
+  greedy до 10 токенов; tokenizer/checkpoint 0124 и строгий parser сохранены.
+  [Шесть диагностических вариантов](../results/u1_handoff/2026-11-01-open-shield/diagnostics.json).
+- **Данные:** опубликованный native-v4 не изменён. Общие 12000 сообщений и семь остальных
+  индексов байтово сохранены; Open переиндексирован в отдельный каталог. Все четыре бакета
+  имеют по 400 уникальных входов, manifest `9cf510a3664e1a2d1bee5f4dc30259925b531d5028a5acca83976606fce1509b`.
+  Повторная сборка идентична; все 8000 выбранных модельных входов сверены на CPU.
+  [Проверка входов](../results/u1_handoff/2026-11-01-open-shield/input_validation.json).
+- **Shield:** для приватного notebook явно разрешён существующий Kaggle `HF_TOKEN`.
+  Метаданные и веса доступны; token value не записывается в исходники/логи/архивы.
+- **CPU:** чистая копия, 134 теста, без ошибок и пропусков.
+  [Журнал](../results/u1_handoff/2026-11-01-open-shield/cpu-tests.txt).
+
+Исходники GPU bundle `7c8de81d3a62b24ad67a147e48ed19458938fe8d9042142a1b36c772e75c4079`
+совпали с текущими runtime-файлами. Шесть предыдущих моделей не перезапускались; их
+контракты и подготовленные входы не изменились. Это не screening, RTX-проверка или оценка
+safety-качества. Производный профиль Open пока не опубликован на HF: он воспроизводится
+командой из [инструкции](u1_handoff.md#входы-моделей). Код и компактные свидетельства
+передаются в рабочей Git-ветке; исторические validation/approval не переписываются.
 
 В Halo/Hive короткий бакет фактически начинается около 400 токенов из-за обязательного
 шаблона; отсутствующие нижние интервалы не являются поводом сокращать политику.

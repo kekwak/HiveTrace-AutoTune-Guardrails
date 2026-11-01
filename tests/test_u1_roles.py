@@ -12,7 +12,7 @@ from unittest.mock import patch
 from u1_benchmark import contracts, datasets, quality, role_data, runner_v2
 from u1_benchmark.adapters import check_index, load
 from u1_benchmark.core import ROOT, digest, read, sha, write
-from u1_benchmark.environment import auth_check, expected_lock, rtx_name, rtx_requirements
+from u1_benchmark.environment import auth_check, expected_lock, extended_gpu, rtx_name, rtx_requirements
 from u1_benchmark.messages import UnsupportedInput, content_hash, messages, payload, select
 from u1_benchmark.statistics import baseline_diagnostics
 
@@ -102,8 +102,10 @@ class Roles(unittest.TestCase):
     def test_new_contract_does_not_replace_old_open(self):
         old, new = contracts.model_contract("open"), contracts.model_contract("open", 3)
         self.assertIn("2510", old["rules"])
-        self.assertIn("native 0124", new["rules"])
-        self.assertNotIn("template_repo", new["preparation_spec"])
+        self.assertIn("0124 weights", new["rules"])
+        self.assertIn("2510 task template", new["rules"])
+        self.assertIn("template_repo", new["preparation_spec"])
+        self.assertEqual(new["preparation_profile"], "open-0124-task-2510-v1")
         self.assertEqual(old["revision"], new["revision"])
         self.assertNotEqual(old["preparation_sha256"], new["preparation_sha256"])
 
@@ -276,6 +278,22 @@ class Roles(unittest.TestCase):
 
 
 class EnvironmentAndNoise(unittest.TestCase):
+    def test_extended_t4_uses_existing_lock_without_rtx_fallback(self):
+        for name in ("Tesla T4", "NVIDIA T4"):
+            self.assertTrue(extended_gpu(name, "team-t4-laya"))
+            self.assertFalse(extended_gpu(name, "team-rtx"))
+        for name in ("NVIDIA GeForce RTX 4090", "NVIDIA GeForce RTX 5090", "CPU"):
+            self.assertFalse(extended_gpu(name, "team-t4-laya"))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write(root / "setup/profile.json", {"profile": "team-t4-laya"})
+            self.assertEqual(expected_lock(root), read(ROOT / "env/team_rtx.lock.json"))
+
+    def test_extended_t4_setup_routes_explicit_profile(self):
+        from u1_benchmark.orchestrator import setup
+        with patch("u1_benchmark.environment.setup_rtx", return_value={"status": "fixture"}) as install:
+            self.assertEqual(setup("fixture-env", "team-t4-laya"), {"status": "fixture"})
+        install.assert_called_once_with("fixture-env", "team-t4-laya")
     def test_auth_failure_never_exposes_token_or_exception_text(self):
         try:
             import huggingface_hub
@@ -341,6 +359,49 @@ class EnvironmentAndNoise(unittest.TestCase):
         self.assertEqual(result, baseline_diagnostics(blocks, [([100.] * 30, [300.] * 30)] * 2))
         with self.assertRaises(ValueError):
             baseline_diagnostics([[]], [([1], [1])])
+
+
+class BuiltinRoleIndex(unittest.TestCase):
+    def adapter(self, model):
+        import torch
+        from u1_benchmark.adapters import Builtin
+
+        adapter = Builtin.__new__(Builtin)
+        adapter.name, adapter.input_version = model, 3
+        adapter.legacy = object() if model in ("halo", "gliner") else None
+        adapter.preparer = adapter.role_preparer = ToyRolePreparer(model)
+
+        def prepare(value, enforce=True):
+            text = select(model, value)["effective_messages"][-1]["content"]
+            ids = [ord(ch) for ch in text] or [0]
+            return {"input_ids": torch.tensor([ids]), "attention_mask": torch.tensor([[1] * len(ids)])}
+
+        adapter.prepare = prepare
+        return adapter
+
+    def test_actual_tensor_index_keeps_role_metadata_for_eight_models(self):
+        for model in contracts.MODEL_SPECS:
+            adapter = self.adapter(model)
+            for value in ([U], [A], [U, A]):
+                with self.subTest(model=model, roles=[m["role"] for m in value]):
+                    try:
+                        expected = adapter.preparer.index({"id": "fixture", "messages": value})
+                    except UnsupportedInput:
+                        with self.assertRaises(UnsupportedInput):
+                            adapter.index(value)
+                    else:
+                        check_index(adapter.index(value), expected)
+
+    def test_actual_tensor_index_does_not_copy_wrong_role_from_expected(self):
+        adapter = self.adapter("gliner")
+        original = adapter.preparer.index
+
+        def wrong_target(row):
+            return {**original(row), "target_role": "user"}
+
+        with patch.object(adapter.preparer, "index", side_effect=wrong_target):
+            with self.assertRaisesRegex(ValueError, "evaluated message/context"):
+                adapter.index([U, A])
 
 
 if __name__ == "__main__":

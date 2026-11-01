@@ -1,0 +1,133 @@
+{
+  "diagnostic_only": true,
+  "quality_evaluated": false,
+  "contract": {
+    "model": "openguardrails/OpenGuardrails-Text-4B-0124",
+    "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b",
+    "tokenizer": {
+      "repo": "openguardrails/OpenGuardrails-Text-4B-0124",
+      "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b",
+      "subfolder": ""
+    },
+    "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+    "preparation_spec": {
+      "repo": "openguardrails/OpenGuardrails-Text-4B-0124",
+      "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b",
+      "limit": 4096
+    },
+    "rules": "native 0124 template; user-only; greedy generate max_new_tokens=10; native EOS; SDPA math; safe/unsafe and category",
+    "limit": 4096,
+    "input_version": 3,
+    "role_policy": {
+      "formats": [
+        "user-only",
+        "assistant-only",
+        "user+assistant"
+      ],
+      "unsupported": "explicit; never relabel or synthesize context"
+    }
+  },
+  "max_new_tokens": 10,
+  "cases": [
+    {
+      "id": "7df6fdec6d68783e3dc0ddf35321d1fb9cbb6aeac8c5e8a6ac0af986266bd9d5",
+      "index": {
+        "id": "7df6fdec6d68783e3dc0ddf35321d1fb9cbb6aeac8c5e8a6ac0af986266bd9d5",
+        "source_sha256": "7df6fdec6d68783e3dc0ddf35321d1fb9cbb6aeac8c5e8a6ac0af986266bd9d5",
+        "source_mode": "user-only",
+        "target_index": 0,
+        "target_role": "user",
+        "context_indices": [],
+        "user_tokens": 3,
+        "content_tokens": 3,
+        "total_tokens": 11,
+        "bucket": "B1",
+        "supported": true,
+        "reason": null,
+        "input_changed": false,
+        "ids_sha256": "1d9284961cf1044cd58760811b011072bc7940523d6cc976a42fb37ffc4e23d2",
+        "mask_sha256": "d124fa2628a818b2bbe8c0418f663933c21044061f62178eca3121a8251280e5",
+        "input_sha256": "807c3636509f2f716ca5339decc69702bc16b065dde7eea34c489f2166d500ab"
+      },
+      "output_ids": [
+        18675,
+        151645
+      ],
+      "raw_output": "safe<|im_end|>",
+      "decoded_output": "safe",
+      "parsed": {
+        "label": "safe",
+        "category": null,
+        "generated_tokens": 2
+      }
+    },
+    {
+      "id": "f55e9bbc96fa667a77af110a8b87f2b32b813fe37b4ab91ad6d04a53fe5c160b",
+      "index": {
+        "id": "f55e9bbc96fa667a77af110a8b87f2b32b813fe37b4ab91ad6d04a53fe5c160b",
+        "source_sha256": "f55e9bbc96fa667a77af110a8b87f2b32b813fe37b4ab91ad6d04a53fe5c160b",
+        "source_mode": "user-only",
+        "target_index": 0,
+        "target_role": "user",
+        "context_indices": [],
+        "user_tokens": 503,
+        "content_tokens": 503,
+        "total_tokens": 511,
+        "bucket": "B1",
+        "supported": true,
+        "reason": null,
+        "input_changed": false,
+        "ids_sha256": "e3abf0a6f1fc52bf1606e0752558e9fbc967cb28e04ed2971d458748f099d744",
+        "mask_sha256": "12f870deed96752966dd889eed793b24b9bfea5cf35d9e748e8570044cf690e6",
+        "input_sha256": "f83ddf63af63c70be154499f03083579fdb70acee496af23149f07327f2359dc"
+      },
+      "output_ids": [
+        18675,
+        151645
+      ],
+      "raw_output": "safe<|im_end|>",
+      "decoded_output": "safe",
+      "parsed": {
+        "label": "safe",
+        "category": null,
+        "generated_tokens": 2
+      }
+    },
+    {
+      "id": "31a74c1a864ef268dbc8a0423c5d36d3b378bd347cc3a29993a05fd613cd168a",
+      "index": {
+        "id": "31a74c1a864ef268dbc8a0423c5d36d3b378bd347cc3a29993a05fd613cd168a",
+        "source_sha256": "31a74c1a864ef268dbc8a0423c5d36d3b378bd347cc3a29993a05fd613cd168a",
+        "source_mode": "user-only",
+        "target_index": 0,
+        "target_role": "user",
+        "context_indices": [],
+        "user_tokens": 505,
+        "content_tokens": 505,
+        "total_tokens": 513,
+        "bucket": "B2",
+        "supported": true,
+        "reason": null,
+        "input_changed": false,
+        "ids_sha256": "91db65c3d36c656de0dc17d5a4a81bee077c6087976b0f76071aeb8580f462d4",
+        "mask_sha256": "4bf2661d25e0981ed1a2016fe999f7ab0b7a9afdbbf1fafdbb354270c16df00a",
+        "input_sha256": "d642cba129284e1007d8a7a22e7c7a0c8a03528a72794de723d1df9016787d4b"
+      },
+      "output_ids": [
+        38157,
+        198,
+        38157,
+        198,
+        38157,
+        198,
+        38157,
+        198,
+        38157,
+        198
+      ],
+      "raw_output": "unsafe\nunsafe\nunsafe\nunsafe\nunsafe\n",
+      "decoded_output": "unsafe\nunsafe\nunsafe\nunsafe\nunsafe\n",
+      "parse_error": "Unexpected OpenGuardrails verdict/category"
+    }
+  ]
+}

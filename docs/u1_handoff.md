@@ -12,6 +12,30 @@ lock-файла находятся в репозитории; ZIP не нуже�
 исторические измерения сохранены. Старые approvals не распространяются на новые входы.
 GPU-приёмку RTX выполняют владельцы моделей; наша текущая приёмка — CPU и индексация.
 
+### Исправления после проверки публикации
+
+Laya готовит вход один раз внутри SDK 0.3.20: обёртка кодирования проверяет полную
+последовательность и передаёт её дальше без повторной токенизации или неиспользуемых
+GPU-тензоров. Лимит 512 проверяется до forward, усечённый вход не принимается;
+`close()` восстанавливает исходный метод SDK, включая путь после ошибки.
+
+Три CPU-теста маршрутизации compile/ORT используют самостоятельный локальный helper,
+не исторические тесты или ноутбуки. Отсутствующий helper вызывает ошибку импорта,
+а не скрытый пропуск. Чистая копия: **125 тестов, без ошибок и пропусков**.
+[Сведения о проверке](../results/u1_handoff/2026-11-01-cpu-fixes/validation.json).
+Проверки Laya используют настоящий SDK и маленькие случайные CPU-веса; это не проверка
+checkpoint на RTX и не оценка скорости или качества. Корпус и lock не менялись.
+
+Первая GPU-проверка schema 3 на T4 дала шесть успешных baseline-smoke и два blocker:
+формат OpenGuardrails и авторизация ShieldGemma. Затем оба blocker закрыты отдельными
+smoke на T4, по два входа B1–B4: Open использует согласованный task-промпт 2510 с весами
+0124, Shield получает доступ через Kaggle Secret. Parser не ослаблен. Новая CPU-проверка:
+**134 теста без пропусков**, все 8000 выбранных модельных входов сверены с подготовкой.
+Архивные отчёты пересобраны локально и совпали; шесть прежних моделей повторно не запускались.
+[Проверка двух моделей](../results/u1_handoff/2026-11-01-open-shield/validation.json).
+[Текущий статус моделей](u1_handoff_readiness.md#gpu-smoke-текущего-скрипта-и-ролевого-корпуса).
+Это не screening и не проверка RTX; исторический T4-smoke v2 ниже остаётся отдельным.
+
 ### Установка и доступ
 
 Linux x86_64 / Python 3.13; GPU 0 должна быть RTX 4090 или RTX 5090. Из корня клона:
@@ -20,6 +44,12 @@ Linux x86_64 / Python 3.13; GPU 0 должна быть RTX 4090 или RTX 5090
 python tools/benchmark.py setup --profile team-rtx --environment ./u1-rtx-env
 ./u1-rtx-env/venv/bin/python tools/benchmark.py auth-check --model shield
 ```
+
+Для короткого smoke актуального кода на Kaggle T4 есть явный профиль
+`setup --profile team-t4-laya --environment ./u1-t4-laya-env`. Он использует тот же
+97-wheel lock (файл исторически называется `team_rtx.lock.json`), но требует T4 на
+GPU 0, а не RTX. Старый `team-t4` и его 96-wheel lock не меняются. Это позволяет
+проверить Laya без ручного добавления пакетов; успешный T4 smoke не подтверждает RTX.
 
 97 точных wheels закреплены в `env/team_rtx.lock.json`/`.txt`: прежние 96 артефактов без
 изменений плюс `laya==0.3.20`, без extras. Проверки объявленных зависимостей выполнены
@@ -34,8 +64,11 @@ CUDA 13 PyTorch и CUDA 12 библиотеки ORT сосуществуют к�
 копируется автоматически с этого компьютера. `auth-check` читает только метаданные
 конфигурации и одного файла весов; весов и GPU-проверки нет. Локальная проверка Shield
 1 ноября успешна, это не авторизация чужого сервера.
+В приватном Kaggle notebook: Add-ons → Secrets → разрешить `HF_TOKEN` этому notebook.
+Получать значение через `UserSecretsClient`, передавать процессу через окружение и не
+печатать его. Этот способ проверен реальным smoke ShieldGemma; сам notebook не публиковался.
 
-### Нативные входы
+### Входы моделей
 
 Модель | Применимые сообщения и цель
 --- | ---
@@ -43,14 +76,36 @@ GLiNER / Koala / Llama / Laya | Если есть assistant, только его
 HaloGuard | Последний user через авторский prompt, thinking off и `Safety: `. В паре assistant игнорируется; assistant-only неприменим.
 HiveTraceGuard-Pro | Собственный шаблон: цель — последнее сообщение, предшествующий user сохраняется как контекст. Assistant-only технически принимается шаблоном, качество без контекста не подтверждается.
 ShieldGemma | User-only или user+assistant; во втором случае оценивается ответ. Авторские Dangerous Content guidelines различаются для prompt/response. Assistant-only неприменим.
-OpenGuardrails 0124 | Только user-only, собственный шаблон закреплённой ревизии, `add_generation_prompt=True`, greedy generation до 10 токенов. Режимы ответа неподтверждены, в основной замер не включаются.
+OpenGuardrails 0124 | Только user-only; веса/tokenizer 0124, явно закреплённый task-шаблон 2510; `add_generation_prompt=True`, greedy до 10 токенов, native EOS. Ответы/pair неприменимы.
 
-OpenGuardrails 0124 не использует шаблон 2510 в новом пути. Исторические результаты с
-2510 не переписываются и не являются baseline для новой подготовки. Источники:
+**Уточнение OpenGuardrails, 1 ноября:** профиль `open-0124-task-2510-v1` согласован отдельно.
+Собственный шаблон 0124 воспроизводимо выдаёт повторяющиеся метки на примере из карточки;
+FP16/BF16, eager/SDPA math и отключение KV-cache это не устранили. С task-шаблоном 2510
+те же веса/тексты дают корректный формат. Parser не ослаблен; это новый контракт подготовки,
+а не изменение checkpoint или наследование прежнего approval. Категории возвращаются как
+выданы моделью по закреплённой task-политике, без переименования.
+[Аналогичное сообщение в Community](https://huggingface.co/openguardrails/OpenGuardrails-Text-4B-0124/discussions/1).
+Исторические результаты и опубликованный v4 с native-шаблоном не переписываются. Источники:
 [0124](https://huggingface.co/openguardrails/OpenGuardrails-Text-4B-0124#quick-start),
 [HaloGuard](https://huggingface.co/astroware/HaloGuard1-Gen-0.8B#highlights),
 [HiveTrace](https://huggingface.co/hivetrace/HiveTraceGuard-Pro#guard-modes),
 [ShieldGemma](https://huggingface.co/google/shieldgemma-2b#usage-with-chat-templates).
+
+После `fetch-data` пересоберите только Open-индекс (CPU, без весов):
+
+```bash
+./u1-rtx-env/venv/bin/python tools/reindex_role_model.py \
+  --source data/speed/role-corpus --output data/speed/role-corpus-open-task \
+  --models open --version u1-role-speed-v4-open-task2510-v1
+```
+
+Запускайте команду в среде с закреплёнными tokenizer-зависимостями. Ожидаемый manifest:
+`9cf510a3664e1a2d1bee5f4dc30259925b531d5028a5acca83976606fce1509b`.
+Preset `open_baseline.json` ссылается на этот каталог. Новые бакеты содержат по 400 входов;
+общие сообщения и файлы семи остальных моделей байтово сохранены. Повторная сборка
+воспроизводит manifest. Локальный профиль описан в `configs/data/role_speed_open_task.json`;
+новый snapshot на HF пока не публиковался. `fetch-data` проверяет целостность исторического
+снимка и отдельно показывает `requires_reindex`; запуск устаревшего Open-индекса запрещён.
 
 ### Корпус и модельные бакеты
 

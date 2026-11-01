@@ -5,8 +5,8 @@ import shutil
 import tempfile
 
 from .core import ROOT, read, sha
-from .contracts import MODEL_SPECS
-from .datasets import load_speed, verified
+from .contracts import MODEL_SPECS, model_contract
+from .datasets import verified
 
 
 def fetch(output=None, source=None, revision=None):
@@ -53,10 +53,17 @@ def fetch(output=None, source=None, revision=None):
             destination = staging / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(origin, destination)
-        verified(staging, expected)
+        rows, staged = verified(staging, expected)
+        from .role_data import load_speed as load_declared_speed
+        compatibility = {}
         for model in MODEL_SPECS:
-            load_speed(staging, model, "screening", expected)
+            declared = staged["indices"][model]["contract"]
+            # Fetch verifies the pinned historical source, not a new runtime approval.
+            # Actual runs still require the current contract and reject stale indices.
+            load_declared_speed(staging, model, "screening", staged, rows, expected_contract=declared)
+            compatibility[model] = "current" if declared == model_contract(model, 3) else "requires_reindex"
         staging.rename(target)
     return {"status": "ready", "path": str(target), "manifest_sha256": expected,
+            "scope": "pinned_source_integrity", "model_contract_status": compatibility,
             "origin": "local" if revision is None else "huggingface", "revision": revision,
             "gpu_checked": False, "published": False}

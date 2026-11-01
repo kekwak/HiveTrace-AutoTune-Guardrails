@@ -1,5 +1,6 @@
 import copy
 import hashlib
+import importlib.util
 import json
 import os
 import sys
@@ -11,6 +12,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from u1_fixtures import tiny_gliner_adapter
 from u1_benchmark import core
 from u1_benchmark.statistics import assess, compare_scores, paired, paired_rows, quantile
 from u1_benchmark.models import quiet_dispatch, filtered, stable_call
@@ -357,22 +359,15 @@ class OfflineReport(unittest.TestCase):
             self.assertTrue(out.with_suffix(".zip").exists())
 
 
+@unittest.skipUnless(importlib.util.find_spec("torch") and importlib.util.find_spec("gliner2"),
+                     "Install torch/gliner2 for CPU integration tests")
 class AdapterRouting(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        try:
-            from test_experiments import ExperimentGlinerCPU
-            ExperimentGlinerCPU.setUpClass()
-            cls.fixture = ExperimentGlinerCPU()
-        except ImportError as e:
-            raise unittest.SkipTest(str(e))
-
     def test_compile_scores_routing_and_restore(self):
         import torch
         from u1_benchmark.models import activate
         from u1_benchmark.worker import verify_actual_request
         from u1_benchmark.models import normalized
-        a = self.fixture.adapter()
+        a = tiny_gliner_adapter()
         a.compile_count = 0
         text = "The public library."
         with tempfile.TemporaryDirectory() as tmp, torch.inference_mode():
@@ -411,7 +406,7 @@ class AdapterRouting(unittest.TestCase):
         import torch
         from u1_benchmark.models import activate
         from followup import onnx_service
-        a = self.fixture.adapter()
+        a = tiny_gliner_adapter()
         a.compile_count = 0
         old = onnx_service.VALIDATION_TEXTS
         visited = []

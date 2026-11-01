@@ -122,7 +122,7 @@ def prepare(spec, output, preparer_factory=None):
         if not models or len(set(models)) != len(models) or not set(models) <= MODEL_SPECS.keys():
             raise ValueError("Explicit unique participating models required")
         if preparer_factory is None:
-            from .native_preparation import Preparer
+            from .role_preparation import Preparer
             preparer_factory = Preparer
         for model in models:
             try:
@@ -183,8 +183,9 @@ def prepare(spec, output, preparer_factory=None):
     return {"status": manifest["status"], "path": str(output.resolve()), "manifest_sha256": sha(output / "manifest.json")}
 
 
-def load_speed(root, model, mode, manifest, rows):
-    if manifest["kind"] != "speed" or manifest["indices"][model]["contract"] != model_contract(model, 3):
+def load_speed(root, model, mode, manifest, rows, *, expected_contract=None):
+    expected = model_contract(model, 3) if expected_contract is None else expected_contract
+    if manifest["kind"] != "speed" or manifest["indices"][model]["contract"] != expected:
         raise ValueError("Stale role preparation/checkpoint contract")
     indices = lines(Path(root) / f"indices/{model}.jsonl")
     index = {r["id"]: r for r in indices}
