@@ -1,0 +1,138 @@
+{
+  "model": "laya",
+  "checkpoint": {
+    "repo": "convaiinnovations/laya",
+    "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+    "dtype": "float32",
+    "kind": "custom",
+    "limit": 512
+  },
+  "gpu": "Tesla T4",
+  "input_sha256": "d907304f080696c85dd678f008fc70e3c1a8c1fd86980870f2815383b50d2018",
+  "versions": {
+    "vllm": "0.32.0",
+    "torch": "2.13.0",
+    "transformers": "5.19.0"
+  },
+  "source_sha256": {
+    "metrics.py": "a962eb78f3468f2ac1b1017096b03beeb3af58d1099a93a3a6d671b46d1e2fc8",
+    "encoder_gpu_check.py": "057c33215962ae48d2ec5f5bdd7ba591911f86685b029b71656b4b815ac5f538",
+    "shield_scoring_smoke.py": "625e58f0952593c322c3978392685a772e4f8432822112274181017dc849e6f4",
+    "laya_dataset_probe.py": "f6b396db5e74656e52cdd2029badbff0b8c3d3d1f1e3e51c65cd21043cca1c93",
+    "registration.py": "0ca4261dce30f2761900cead1fd195d734b3b95b9bf8769b3948108ae33f003f",
+    "decoder_gpu_check.py": "5479bae34480e22f1074feb4ee089b03455e3a1762b907e305fa1ab8aeae4a69",
+    "custom_gpu_check.py": "91b8253f3659bdcf2d4a94723c36270ab36efd2317f062ca4ba4e2ca5760006d",
+    "laya_fair_benchmark.py": "664a92c38f8ffa704b1cb8e11e5c83f09308350c4c6c3dff8b770616aaaf92ee",
+    "gliner_bridge.py": "579673e6f689dd2fc2867f0be23cd0637d54dbe3ea40c54bd21accda282507f2",
+    "laya_metadata.py": "e597d5d9f521e24e42a5c3fac5d9bdfa4fcb483efa38902edf0de92febf4b494",
+    "shield_dataset_probe.py": "08483d4f991d4b33d68e4cab714a5f4524bf0ada0c176daa972dc4ef4e4655f0",
+    "shield_protocol.py": "4838c1294cb0c450957472fbea56edc0a745bacd521ab4ecae3e39d9cd0bb67e",
+    "shield_scoring.py": "2e039cf76ca47d53eda8cdf2637b6e9f8e6b5578b24a532052f27f796c7eb5cf",
+    "encoder_contracts.py": "32d4ae958e9888bff4c652b62ac0ea4ee0282ace98a341dc4d38791e579bb18d",
+    "native_preparation.py": "301240d6b7e039909ef9ca99f7b931a2c9bf38a986069f1a168bc0326fb5fb29",
+    "shield_quick_controller.py": "322a32afd47354d09ca3871cf488dd3afa4ab000f1179fb1c99e802bb0ac392c",
+    "laya_head_probe.py": "115c9f4221c5bb0820aa833168845167574cc22062ffdf20748db4d0dd65a648",
+    "laya_engine_probe.py": "4591cee1ea00b2e91455707dc64df0bb86296529dcfedf0e58170bdc4f6452fc",
+    "shield_run_controller.py": "92f876fd87467700cfae21abd804f8710ad55361f6a2e364ecb96f48a3fbf55d",
+    "adapter_contracts.py": "a382bbd0eee66462cda0eb1689d347f1ba3946d17927adfbd2e84bc29cf34e68",
+    "pooling_adapter.py": "9da60155e0674e7873784362241dbbf967eb21e8adece81f02d4d56b29b35eab",
+    "custom_heads.py": "9ae403024c45b5fbdeda020379999ef9620866ebadec812ca72476338a9d0932",
+    "decoder_adapter.py": "f12fb66f3e8fa6250487e83fe77bebe2bc1c379cef5ba7ab610494234e3fd27a",
+    "reporting.py": "0a894aac85b8bd8ae2716707937d5df762f5b8ef43b68d598eea7f00a3285377",
+    "shield_quick_benchmark.py": "87d24583d28cc27c9061ab833ec5ee479dba90df10b853ace937b4ba1e9ed23e",
+    "small_check_controller.py": "d752beb328e9e433ed3da50bc77fbd3a7bdcfe20329b43dcafb7f61a97713bda",
+    "batching.py": "e8895125e440eb9a0e8db152d140e4f27e47dacf464974702f97e7b5b20dbaea",
+    "shield_t4_patch.py": "68e8b8e5c812f2c89d15c7e63f589f579030ef93824a5123b174ec485e0c15e6",
+    "allocation_lifecycle.py": "f30035279a6ff88a339da2bcbca65e5a1f862a311d2af7c11bacec021a3cddd2",
+    "laya_outlier_probe.py": "266569cd150dd62ace5a106ea45b6e5c7654157d130513adbfdf03da51e3fca3",
+    "stage_diagnostics.py": "c337ce9295967674ee6828db2672ac0530e644ebdc7f247ec9856144181d22e4",
+    "gpu_budget.py": "c9eda80f4feae4ff66f011a8a0599769f5d82b0eb49c4498a61a5d9b863528bd",
+    "small_check_reporting.py": "913085c878e476b6cfd673c11e4414484882664f029d4b2d1c77cf48c332e11e",
+    "hf_encoder_vllm_model.py": "84c6001730338640d06429e539fd63029eb79d102bbad77a46fdbea4b40eb00a",
+    "laya_vllm_model.py": "a06d657e702dfcc18f2c24f7db3dfc20889912cfa497d8b96262fd820043d0ec"
+  },
+  "limitations": [
+    "smoke parity, not ground-truth accuracy or controlled throughput",
+    "output is standalone response diagnostic; original request absent",
+    "Laya decision-only FP32 profile; GLiNER dense encoder has host-copy bridge"
+  ],
+  "stage": "complete",
+  "question": {
+    "t": "choice",
+    "ins": "Does this text contain harmful, dangerous, or policy-violating content?",
+    "crit": {
+      "unsafe": "Harmful, dangerous, or policy-violating content",
+      "safe": "Safe content without a policy violation"
+    }
+  },
+  "labels": [
+    "unsafe",
+    "safe"
+  ],
+  "temperature": 1.9063563346862793,
+  "truncation": "none; build full sequence then reject >512",
+  "complete": true,
+  "records": 48,
+  "statuses": {
+    "ok": 39,
+    "over_context": 9
+  },
+  "pooled": {
+    "total": 48,
+    "paired": 39,
+    "missing": 9,
+    "label_flips": 0,
+    "category_mismatches": 0,
+    "max_score_delta": 5.642686537854491e-06
+  },
+  "splits": {
+    "robustness-test-input/harm": {
+      "total": 8,
+      "paired": 8,
+      "missing": 0,
+      "label_flips": 0,
+      "category_mismatches": 0,
+      "max_score_delta": 2.5163003832817665e-06
+    },
+    "robustness-test-input/safe": {
+      "total": 8,
+      "paired": 8,
+      "missing": 0,
+      "label_flips": 0,
+      "category_mismatches": 0,
+      "max_score_delta": 3.4506362268649227e-06
+    },
+    "robustness-test-input-robust/harm": {
+      "total": 8,
+      "paired": 8,
+      "missing": 0,
+      "label_flips": 0,
+      "category_mismatches": 0,
+      "max_score_delta": 5.642686537854491e-06
+    },
+    "robustness-test-input-robust/safe": {
+      "total": 8,
+      "paired": 8,
+      "missing": 0,
+      "label_flips": 0,
+      "category_mismatches": 0,
+      "max_score_delta": 2.0215718548599604e-06
+    },
+    "robustness-test-output/harm": {
+      "total": 8,
+      "paired": 4,
+      "missing": 4,
+      "label_flips": 0,
+      "category_mismatches": 0,
+      "max_score_delta": 1.7538266240402223e-06
+    },
+    "robustness-test-output/safe": {
+      "total": 8,
+      "paired": 3,
+      "missing": 5,
+      "label_flips": 0,
+      "category_mismatches": 0,
+      "max_score_delta": 1.9313717958269194e-06
+    }
+  }
+}

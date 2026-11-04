@@ -1,0 +1,136 @@
+{
+  "session": "vllm-small-1793806511",
+  "allocation_request_id": "16b9e5ce-6fb3-4550-a514-1fed60cf1f7b",
+  "sample_manifest": "sample-manifest-2-per-split.json",
+  "status": "finished",
+  "records": 12,
+  "stages": [
+    {
+      "stage": "provision",
+      "cli_exit": 0,
+      "adopted": false,
+      "elapsed": 2.23
+    },
+    {
+      "stage": "source_upload",
+      "cli_exit": 0,
+      "elapsed": 3.94
+    },
+    {
+      "stage": "sample_upload",
+      "cli_exit": 0,
+      "elapsed": 5.41
+    },
+    {
+      "stage": "credential_upload",
+      "cli_exit": 0,
+      "elapsed": 6.82
+    },
+    {
+      "stage": "initialize",
+      "cli_exit": 0,
+      "elapsed": 9.55
+    },
+    {
+      "stage": "setup",
+      "cli_exit": 0,
+      "elapsed": 264.15
+    },
+    {
+      "stage": "open",
+      "cli_exit": 0,
+      "elapsed": 569.06
+    },
+    {
+      "stage": "open_report",
+      "cli_exit": 0,
+      "elapsed": 570.85
+    },
+    {
+      "stage": "open_reference",
+      "cli_exit": 0,
+      "elapsed": 571.75
+    },
+    {
+      "stage": "halo",
+      "cli_exit": 0,
+      "elapsed": 659.91
+    },
+    {
+      "stage": "halo_report",
+      "cli_exit": 0,
+      "elapsed": 661.7
+    },
+    {
+      "stage": "halo_diagnostics",
+      "cli_exit": 0,
+      "elapsed": 663.03
+    },
+    {
+      "stage": "halo_reference",
+      "cli_exit": 1,
+      "elapsed": 664.24
+    },
+    {
+      "stage": "shield",
+      "cli_exit": 0,
+      "elapsed": 1088.92
+    },
+    {
+      "stage": "shield_report",
+      "cli_exit": 0,
+      "elapsed": 1090.23
+    },
+    {
+      "stage": "shield_diagnostics",
+      "cli_exit": 0,
+      "elapsed": 1091.07
+    },
+    {
+      "stage": "shield_reference",
+      "cli_exit": 0,
+      "elapsed": 1092.05
+    }
+  ],
+  "total_budget_seconds": 1200,
+  "budget_limits": {
+    "work_seconds": 1135,
+    "watchdog_seconds": 1140,
+    "model_stage_seconds": 300,
+    "setup_seconds": 420
+  },
+  "setup": {
+    "stage": "setup",
+    "status": "exited",
+    "exit": 0,
+    "error_types": []
+  },
+  "open": {
+    "stage": "open",
+    "status": "timeout",
+    "exit": null,
+    "error_types": [
+      "TimeoutExpired"
+    ]
+  },
+  "halo": {
+    "stage": "halo",
+    "status": "exited",
+    "exit": 1,
+    "error_types": [
+      "RuntimeError"
+    ]
+  },
+  "shield": {
+    "stage": "shield",
+    "status": "exited",
+    "exit": 0,
+    "error_types": []
+  },
+  "cleanup": {
+    "exit": 0,
+    "confirmed": true,
+    "elapsed": 1093.94
+  },
+  "wall_seconds": 1093.94
+}

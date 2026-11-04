@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hivetrace-vllm-research-adapters"
+version = "0.1.0"
+description = "Experimental non-quantized guardrail adapters for vLLM 0.32.0"
+requires-python = ">=3.11"
+
+[project.entry-points."vllm.general_plugins"]
+guardrail_adapters = "src.vllm_probe.registration:register"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src.vllm_probe*"]
+namespaces = true
