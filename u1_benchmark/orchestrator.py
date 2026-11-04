@@ -5,7 +5,7 @@ import traceback
 from pathlib import Path
 
 from .core import ROOT, PRESETS, DATASET, REVISION, config as parse_config, load_data, read, schedule, sha, write
-from .process import archive, invoke
+from .process import check_archive_target, finish_archive, invoke
 
 ENTRY = ROOT / "tools/benchmark.py"
 
@@ -19,6 +19,7 @@ def setup(directory, profile="team-t4"):
     from followup.team_skeleton import precheck
     from followup.team_lock import requirements
     directory = Path(directory).resolve()
+    check_archive_target(directory)
     directory.mkdir(parents=True, exist_ok=False)
     folder = directory / "setup"
     folder.mkdir()
@@ -41,11 +42,11 @@ def setup(directory, profile="team-t4"):
         invoke([python, ENTRY, "_probe", "--environment", directory, "--output", folder], folder / "probe.log", 180)
         state.update(status="passed", lock_sha256=sha(folder / "lock.json"), cuda_primitive_passed=True)
     except BaseException as e:
-        state.update(status="failed", error=str(e))
+        state.update(status="failed", error_type=type(e).__name__, error=str(e))
         (folder / "error.txt").write_text(traceback.format_exc())
     finally:
         write(folder / "status.json", state)
-        archive(directory)
+        finish_archive(directory, state, folder / "status.json")
     return state
 
 
@@ -75,6 +76,7 @@ def run(config, output_dir, *, preflight_only=False):
         return run_v2(raw, output_dir, preflight_only=preflight_only)
     cfg = parse_config(config)
     output = Path(output_dir).resolve()
+    check_archive_target(output)
     output.mkdir(parents=True, exist_ok=False)
     env = Path(cfg["environment"])
     python = env / "venv/bin/python"
@@ -141,7 +143,7 @@ def run(config, output_dir, *, preflight_only=False):
             write(output / "preflight_summary.json", {"status": "execution_passed", "buckets": checks,
                   "speed_measured": False, "quality_evaluated": False})
     except BaseException as e:
-        state.update(status="timeout" if isinstance(e, TimeoutError) else "failed", error=str(e))
+        state.update(status="timeout" if isinstance(e, TimeoutError) else "failed", error_type=type(e).__name__, error=str(e))
         (output / "error.txt").write_text(traceback.format_exc())
     finally:
         write(output / "status.json", state)
@@ -152,5 +154,5 @@ def run(config, output_dir, *, preflight_only=False):
                 state["execution_status"] = state["status"]
                 state["status"] = summary["status"]
         finally:
-            archive(output)
+            finish_archive(output, state, output / "status.json")
     return state

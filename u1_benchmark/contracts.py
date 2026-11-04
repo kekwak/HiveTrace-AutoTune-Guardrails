@@ -116,7 +116,7 @@ def parse_config(value):
     if cfg.get("candidate") is not None:
         cfg["candidate"] = adapter_spec(cfg["candidate"], cfg["model"], cfg["comparison"], True)
     for key in ("data", "quality_data"):
-        if key not in cfg:
+        if key not in cfg or (key == "data" and cfg["mode"] == "quality"):
             continue
         d = cfg[key]
         if d == {"profile": "published"} and key == "data":

@@ -1,9 +1,49 @@
 """U1 console entry point; no notebook required."""
 import argparse
+import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+
+def public_result(command, result, args):
+    fields = {"status", "error_type", "phase", "archive_error_type", "archive_status"}
+    if command == "auth-check":
+        fields |= {"model", "revision", "credential_available", "access", "weights_downloaded", "gpu_checked"}
+    elif command in ("fetch-data", "prepare-data"):
+        fields |= {"path", "manifest_sha256", "scope", "revision", "origin", "gpu_checked"}
+    elif command == "table":
+        fields |= {"rows", "omitted"}
+    elif command == "setup":
+        fields |= {"profile", "lock_sha256", "cuda_primitive_passed", "gpu_verified_for_models"}
+    summary = {key: result[key] for key in sorted(fields) if key in result}
+    if command == "fetch-data" and "model_contract_status" in result:
+        from u1_benchmark.contracts import MODEL_SPECS
+        summary["model_contract_status"] = {
+            model: status for model, status in result["model_contract_status"].items()
+            if model in MODEL_SPECS and status in ("current", "requires_reindex")}
+    if command in ("run", "preflight", "quality", "report", "setup"):
+        from u1_benchmark.core import read
+        from u1_benchmark.process import archive_path
+        root = Path(args.environment if command == "setup" else args.output).resolve()
+        summary["output_path"] = str(root)
+        status = root / ("setup/status.json" if command == "setup" else "status.json")
+        if status.is_file():
+            try:
+                saved = read(status)
+            except (OSError, ValueError):
+                saved = {}
+            for key in ("error_type", "phase", "archive_error_type", "archive_status"):
+                if key in saved:
+                    summary[key] = saved[key]
+        if command != "setup" and (root / "summary.json").is_file():
+            summary["report_path"] = str(root / "summary.json")
+        if archive_path(root).is_file():
+            summary["archive_path"] = str(archive_path(root))
+    elif command == "table":
+        summary["output_path"] = str(Path(args.output).resolve())
+    return summary
 
 
 def main():
@@ -46,6 +86,18 @@ def main():
     p = commands.add_parser("_dataset")
     p.add_argument("--output", required=True)
     args = parser.parse_args()
+    try:
+        result = execute(args, parser)
+    except Exception as error:
+        # Exception messages may contain HF credentials or private model inputs.
+        result = {"status": "failed", "error_type": type(error).__name__}
+    print(json.dumps(public_result(args.command, result, args), ensure_ascii=False))
+    return 0 if result["status"] in ("passed", "completed", "screening_pass", "pilot_complete", "ready",
+                                    "smoke_passed", "preflight_passed", "baseline_complete", "quality_complete",
+                                    "quantization_measured") else 1
+
+
+def execute(args, parser):
     if args.command == "setup":
         from u1_benchmark.orchestrator import setup
         result = setup(args.environment, args.profile)
@@ -83,19 +135,15 @@ def main():
     elif args.command == "_probe":
         from u1_benchmark.environment import probe
         probe(Path(args.environment), Path(args.output))
-        return 0
+        return {"status": "passed"}
     elif args.command == "_dataset":
         from u1_benchmark.orchestrator import download
         download(args.output)
-        return 0
+        return {"status": "completed"}
     else:
         from u1_benchmark.worker import execute
         result = execute(args.job)
-    import json
-    print(json.dumps({k: result[k] for k in ("status", "error") if k in result}, ensure_ascii=False))
-    return 0 if result["status"] in ("passed", "completed", "screening_pass", "pilot_complete", "ready",
-                                    "smoke_passed", "preflight_passed", "baseline_complete", "quality_complete",
-                                    "quantization_measured") else 1
+    return result
 
 
 if __name__ == "__main__":

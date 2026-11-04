@@ -108,10 +108,11 @@ def probe(environment, directory):
 
 def setup_rtx(directory, selected="team-rtx"):
     from followup.team_lock import requirements
-    from .process import archive, invoke
+    from .process import check_archive_target, finish_archive, invoke
     if selected not in ("team-rtx", "team-t4-laya"):
         raise ValueError("Unknown extended environment profile")
     directory = Path(directory).resolve()
+    check_archive_target(directory)
     folder = directory / "setup"
     folder.mkdir(parents=True, exist_ok=False)
     write(folder / "profile.json", {"profile": selected})
@@ -138,7 +139,7 @@ def setup_rtx(directory, selected="team-rtx"):
         (folder / "error.txt").write_text(traceback.format_exc())
     finally:
         write(folder / "status.json", state)
-        archive(directory)
+        finish_archive(directory, state, folder / "status.json")
     return state
 
 

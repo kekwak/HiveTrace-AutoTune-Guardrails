@@ -3,6 +3,7 @@ import signal
 import subprocess
 import time
 import zipfile
+from contextlib import contextmanager
 from pathlib import Path
 
 from .core import ROOT, write
@@ -55,11 +56,58 @@ OPTIONAL_FILE_LIMIT = 64 * 1024**2
 OPTIONAL_ARCHIVE_LIMIT = 200 * 1024**2
 
 
+def archive_path(directory):
+    directory = Path(directory).resolve()
+    return directory.parent / (directory.name + ".zip")
+
+
+def check_archive_target(directory, *, target=None):
+    target = Path(target) if target is not None else archive_path(directory)
+    if target.exists() or target.is_symlink():
+        raise FileExistsError("Archive target already exists: " + str(target))
+    return target
+
+
+def finish_archive(directory, state, status_path):
+    """Keep the experiment's original failure even if final packaging also fails."""
+    directory = Path(directory)
+    result = {"archive_status": "created", "archive_path": str(archive_path(directory))}
+    try:
+        write(directory / "archive_status.json", result)
+        archive(directory)
+    except Exception as error:
+        result.update(archive_status="failed", archive_error_type=type(error).__name__)
+        state.update(result)
+        if state["status"] not in ("failed", "timeout", "interrupted"):
+            state.update(status="failed", phase="archive")
+        try:
+            write(directory / "archive_status.json", result)
+            write(status_path, state)
+        except OSError:
+            pass  # A full/unavailable filesystem must not replace the original failure.
+        return False
+    return True
+
+
+@contextmanager
+def exclusive_zip(target):
+    z = zipfile.ZipFile(target, "x", zipfile.ZIP_DEFLATED)
+    try:
+        with z:
+            yield z
+    except BaseException:
+        try:
+            target.unlink()
+        except OSError:
+            pass
+        raise
+
+
 def archive(directory, *, target=None):
     directory = Path(directory).resolve()
     skipped, size, required_size, optional_size = [], 0, 0, 0
-    target = Path(target) if target is not None else directory.with_suffix(".zip")
-    with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as z:
+    target = check_archive_target(directory, target=target)
+    with exclusive_zip(target) as z:
         for p in sorted(directory.rglob("*")):
             if not p.is_file():
                 continue

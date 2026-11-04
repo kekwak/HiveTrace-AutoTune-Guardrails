@@ -6,7 +6,31 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import sys
 import zipfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+
+def validate_overlay(source, folder):
+    from u1_benchmark.contracts import model_contract
+    from u1_benchmark.datasets import load_speed
+
+    source, folder = Path(source), Path(folder)
+    expected = json.loads((source / "configs/benchmark-v3/open_baseline.json").read_text())["data"]["manifest_sha256"]
+    _, manifest = load_speed(folder, "open", "screening", expected)
+    release = json.loads((source / "configs/data/role_speed_v4.json").read_text())
+    if (manifest["status"] != "ready"
+            or manifest["provenance"]["reindexed_models"] != ["open"]
+            or manifest["provenance"]["parent_manifest_sha256"] != release["manifest_sha256"]
+            or manifest["indices"]["open"]["contract"] != model_contract("open", 3)):
+        raise ValueError("Expected the pinned, ready Open task overlay of the common corpus")
+    names = ["manifest.json", "REPORT.md", "indices/open.jsonl",
+             *[f"buckets/open/B{i}.json" for i in range(1, 5)]]
+    for name in names:
+        if not (folder / name).is_file():
+            raise ValueError("Open overlay file missing: " + name)
+    return manifest, names
 
 
 def build(source, output, reuse_environment=None, previous_root=None, open_diagnostic=False, models=None, dataset_overlay=None):
@@ -17,6 +41,11 @@ def build(source, output, reuse_environment=None, previous_root=None, open_diagn
     if not selected or len(set(selected)) != len(selected) or set(selected) - {
             "gliner", "halo", "koala", "llama", "laya", "hive", "open", "shield"}:
         raise ValueError("Unknown or repeated smoke model")
+    if open_diagnostic and dataset_overlay is not None:
+        raise ValueError("Native Open diagnostic uses the pinned source corpus, not a smoke overlay")
+    if not open_diagnostic and "open" in selected and dataset_overlay is None:
+        raise ValueError("Open smoke requires --dataset-overlay with the current task-contract index")
+    overlay_data = validate_overlay(source, dataset_overlay) if dataset_overlay is not None else None
     output.mkdir(parents=True, exist_ok=False)
     paths = []
     for package in ("u1_benchmark", "experiments", "followup", "speed_dataset"):
@@ -40,11 +69,7 @@ def build(source, output, reuse_environment=None, previous_root=None, open_diagn
             archive.writestr(name, raw)
         if dataset_overlay:
             folder = Path(dataset_overlay)
-            manifest = json.loads((folder / "manifest.json").read_text())
-            if manifest["status"] != "ready" or manifest["provenance"]["reindexed_models"] != ["open"]:
-                raise ValueError("Expected a ready Open-only reindex of the common corpus")
-            names = ["manifest.json", "REPORT.md", "indices/open.jsonl",
-                     *[f"buckets/open/B{i}.json" for i in range(1, 5)]]
+            manifest, names = overlay_data
             overlay = {"base_manifest_sha256": manifest["provenance"]["parent_manifest_sha256"],
                        "manifest_sha256": hashlib.sha256((folder / "manifest.json").read_bytes()).hexdigest(),
                        "corpus_sha256": manifest["files"]["corpus.jsonl"], "files": names}
@@ -114,8 +139,9 @@ else:
              '--environment', str(ENV)], 'setup-launcher.log', 4200)
 assert json.loads((ENV / 'setup/status.json').read_text())['status'] == 'passed'
 PYTHON = str(ENV / 'venv/bin/python')
-if ENV.with_suffix('.zip').exists():
-    shutil.copyfile(ENV.with_suffix('.zip'), ROOT / 'setup-diagnostics.zip')
+SETUP_ARCHIVE = ENV.parent / (ENV.name + '.zip')
+if SETUP_ARCHIVE.exists():
+    shutil.copyfile(SETUP_ARCHIVE, ROOT / 'setup-diagnostics.zip')
 print('Isolated T4 environment ready. Host packages unchanged.')
 """
     data = """# Use only an already available secret. Never paste or print credentials here.
@@ -211,6 +237,7 @@ try:
     for dtype in ('float16', 'bfloat16'):
         command([PYTHON, 'tools/diagnose_open_precision.py', '--environment', str(ENV),
                  '--dataset', str(ROOT / 'data/speed/role-corpus'), '--dtype', dtype,
+                 '--input-profile', 'native',
                  '--output', str(ROOT / 'diagnostic' / dtype)], dtype + '.log', 900)
         state = json.loads((ROOT / 'diagnostic' / dtype / 'precision.json').read_text())
         print('PRECISION', dtype, state['status'], flush=True)

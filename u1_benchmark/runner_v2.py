@@ -8,7 +8,7 @@ from pathlib import Path
 from .contracts import parse_config
 from .core import ROOT, digest, read, sha, write
 from .datasets import load_speed, verified
-from .process import archive, invoke
+from .process import check_archive_target, finish_archive, invoke
 
 ENTRY = ROOT / "tools/benchmark.py"
 
@@ -42,6 +42,7 @@ def public_rows(rows):
 def run(value, output_dir, preflight_only=False):
     cfg = parse_config(value)
     output = Path(output_dir).resolve()
+    check_archive_target(output)
     output.mkdir(parents=True, exist_ok=False)
     write(output / "config.json", cfg)
     state = {"schema_version": cfg["schema_version"], "status": "running", "phase": "environment", "quality_evaluated": False}
@@ -147,5 +148,6 @@ def run(value, output_dir, preflight_only=False):
         write(output / "status.json", state)
         from .report_v2 import build
         summary = build(output)
-        archive(output)
+        if not finish_archive(output, state, output / "status.json"):
+            summary = build(output)
     return summary

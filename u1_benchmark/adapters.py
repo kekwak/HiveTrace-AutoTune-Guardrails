@@ -2,6 +2,7 @@
 import importlib.util
 import importlib.metadata
 import re
+import sys
 from contextlib import nullcontext
 from pathlib import Path
 
@@ -353,9 +354,23 @@ def load(model, spec, directory, input_version=2):
     for package, expected in spec["dependencies"].items():
         if importlib.metadata.version(package) != expected:
             raise ValueError("External adapter dependency mismatch: " + package)
-    definition = importlib.util.spec_from_file_location("u1_external_" + spec["source_sha256"], spec["module"])
-    module = importlib.util.module_from_spec(definition)
-    definition.loader.exec_module(module)
+    name = "u1_external_" + spec["source_sha256"]
+    module = sys.modules.get(name)
+    if module is not None:
+        if Path(module.__file__).resolve() != Path(spec["module"]).resolve():
+            raise ValueError("External adapter module name collision")
+    else:
+        definition = importlib.util.spec_from_file_location(name, spec["module"])
+        if definition is None or definition.loader is None:
+            raise ValueError("External adapter module cannot be loaded")
+        module = importlib.util.module_from_spec(definition)
+        sys.modules[name] = module
+        try:
+            definition.loader.exec_module(module)
+        except BaseException:
+            if sys.modules.get(name) is module:
+                del sys.modules[name]
+            raise
     adapter = module.create(model=model, spec=spec, directory=Path(directory), contract=model_contract(model, input_version))
     for method in ("index", "request", "verify", "prepare_backend", "boundary", "reject_over_limit", "size", "close"):
         if not callable(getattr(adapter, method, None)):
