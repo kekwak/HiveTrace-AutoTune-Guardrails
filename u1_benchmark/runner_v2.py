@@ -9,6 +9,7 @@ from .contracts import parse_config
 from .core import ROOT, digest, read, sha, write
 from .datasets import load_speed, verified
 from .process import check_archive_target, finish_archive, invoke
+from .precision import PrecisionTracker
 
 ENTRY = ROOT / "tools/benchmark.py"
 
@@ -52,6 +53,7 @@ def run(value, output_dir, preflight_only=False):
     python = env / "venv/bin/python"
     sources = {}
     variants = ["baseline"] + (["candidate"] if cfg.get("candidate") else [])
+    precision = PrecisionTracker(cfg["comparison"])
     def launch(phase, variant, directory, measurement=None):
         for name, checksum in sources.items():
             if sha(name) != checksum:
@@ -65,6 +67,7 @@ def run(value, output_dir, preflight_only=False):
         write(directory / "job.json", job)
         invoke([python, ENTRY, "_worker_v2", "--job", directory / "job.json"],
                directory / "stdout.log", deadline - time.monotonic())
+        precision.add(variant, read(directory / "result.json"))
     try:
         from .environment import expected_lock
         if read(env / "setup/status.json")["status"] != "passed" or read(env / "setup/lock.json") != expected_lock(env):

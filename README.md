@@ -1,39 +1,41 @@
 # HiveTrace-AutoTune-Guardrails
 Найти ускорения guardrail-моделей без скрытого падения качества на редких атаках, обфускации и неанглийских текстах в продукте
 
-## У1: общий измеритель, роли и RTX — 1 ноября
+## У1: общий измеритель — 8 ноября
 
-**[Порядок работы и контракты](docs/u1_handoff.md)** · [готовность и ограничения](docs/u1_handoff_readiness.md).
-Запуск из клона, ZIP и новый notebook не нужны. Восемь baseline-адаптеров, внешний
-candidate/квантованный артефакт, сменные speed/quality-наборы и offline report/table.
-Квантование и подготовка safety-данных в этот комплект не входят.
+**[Запуск из клона и контракты](docs/u1_handoff.md)** ·
+[актуальный протокол](docs/measurement_protocol_v1.md) ·
+[готовность](docs/u1_handoff_readiness.md) ·
+[план роли](docs/u1_protocol_plan.md) · [тезисы четырёх слайдов](docs/u1_sync_brief.md).
 
-Скоростной [корпус v4 на HF](https://huggingface.co/datasets/vXofi/guardrails-speed-en-ru/tree/v4)
-закреплён на `7324b8823ded971c05076e0c7f4ace5d9b867863`: 12000 общих ролевых записей,
-20 модельных бакетов по 400 уникальных эффективных входов. Вход готовится нативно;
-бакеты определяются токенизатором модели. Baseline/candidate одной модели получают
-одинаковые ID, входы и порядок. Старый v3 не изменён. Набор не имеет safety-разметки.
+Готовы восемь baseline-адаптеров, три comparison-пресета, подключение внешнего
+candidate/квантованного артефакта, сменные speed/quality-наборы и offline report/table.
+**[151 CPU-тест и smoke 8/8 на T4](results/u1_handoff/2026-11-04-review-smoke/validation.json)**
+прошли 4 ноября; это не screening или подтверждение RTX.
+Laya сохраняет нативный выбор autocast SDK без привязки к названию GPU и без
+принудительного FP16. Precision записывается и проверяется внутри worker и между
+процессами; старые индексы входов остаются применимыми. Исправление прошло
+**[smoke Laya на RTX 4090](results/u1_handoff/2026-11-08-laya-rtx4090/validation.json)**:
+FP32-веса, нативный BF16 autocast, неизменённый 97-wheel lock. Это не screening;
+остальные модели и RTX 5090 не проверены. Pod удалён, архив проверен локально.
+После исправления в чистой копии прошли **169 CPU-тестов без ошибок и пропусков**.
 
-Linux x86_64 / Python 3.13 / GPU 0 RTX 4090 либо 5090. Начало работы:
+Общий [корпус v4](https://huggingface.co/datasets/vXofi/guardrails-speed-en-ru/tree/7324b8823ded971c05076e0c7f4ace5d9b867863):
+12000 ролевых записей, 20 модельных бакетов по 400 уникальных эффективных входов.
+Бакеты определяются полной нативной длиной независимо для модели; внутри пары
+baseline/candidate совпадают ID, входы и порядок. Safety-разметки нет.
+**Для OpenGuardrails требуется пересборка индекса** под веса 0124 + task-промпт 2510;
+точная команда и manifest находятся в инструкции.
 
-```bash
-python tools/benchmark.py setup --profile team-rtx --environment ./u1-rtx-env
-./u1-rtx-env/venv/bin/python tools/benchmark.py auth-check --model shield
-./u1-rtx-env/venv/bin/python tools/benchmark.py fetch-data
-python tools/benchmark.py preflight --config configs/benchmark-v3/gliner_baseline.json --environment ./u1-rtx-env --output runs/gliner-preflight
-python tools/benchmark.py run --pilot --config configs/benchmark-v3/gliner_compile.json --environment ./u1-rtx-env --output runs/gliner-pilot
-```
+Целевая среда — Linux/Python 3.13, GPU 0 RTX 4090 либо RTX 5090, закреплённый lock.
+Владельцы проверяют RTX и снимают полные baseline; У1 сопровождает инструмент
+и собирает таблицу. Настоящий квантованный артефакт и quality-набор ожидаются от У2.
+T4, 4090 и 5090 не объединяются в одну группу результатов.
 
-В [configs/benchmark-v3](configs/benchmark-v3) — восемь baseline-конфигураций и три
-сравнения: Halo FLA, GLiNER compile и ORT. [RTX lock](env/team_rtx.lock.json) сохраняет
-прежние 96 wheels и добавляет Laya 0.3.20. Автоматической смены версий/CPU fallback нет.
-Полные screening запускают владельцы после preflight/pilot. Доступ HF предоставляет
-сам владелец runtime; токен не передаётся в конфигурациях или результатах.
-
-**Границы подтверждения:** CPU и воспроизводимость корпуса проверены; RTX inference,
-реальный квантованный артефакт и качество на будущем размеченном наборе не проверены.
-Baseline-отчёты показывают A/A, дрейф и блочные интервалы без нового порога стабильности.
-Исторические T4-результаты и материалы ниже сохраняются и не являются RTX-приёмкой.
+Команды установки, авторизации, получения данных, preflight/pilot,
+baseline/comparison и quality находятся **только в основной инструкции** выше.
+ZIP и новый notebook для обычного запуска не нужны. Квантование, создание safety-набора,
+vLLM и интеграция с CLI/autotune не входят в этот комплект.
 
 ## Профилирование: почему выбрали эти оптимизации
 
@@ -45,18 +47,22 @@ Baseline-отчёты показывают A/A, дрейф и блочные и�
 short/long-трейсами и численными результатами. Новая среда, новый корпус и RTX
 4090/5090 требуют отдельных проверок; сохранение safety-качества здесь не оценено.
 
-## К синку 30 октября: среда и протокол У1
+## История: комплект к синку 30 октября
 
-- **[Skeleton notebook](notebooks/team_environment_skeleton.ipynb)**: загрузить в Kaggle/Colab с T4 и Python 3.13, выполнить шапку, заменить пример своим кодом. Полный lock встроен; установка идёт в отдельный venv, каждый запуск кода — в свежем процессе. Основной notebook-runtime не меняется. [Порядок запуска и ограничения](docs/team_environment.md).
-- **[Полный lock](env/team_environment.lock.txt)**: 96 пакетов, точные wheel URL и SHA256; [происхождение и сверка с четырьмя workers](env/team_environment.lock.json). База torch 2.11.0+cu130 / Transformers 5.20.1, дополнения ORT / GLiNER2 / FLA сохранены.
-- **[Предложение протокола v1](docs/measurement_protocol_v1.md)**: p95 полного запроса, парные A/B и A/A на одной VM, отдельные измерения памяти в свежих процессах, численная регрессия отдельно от качества. Цель задания: ≥20% по p95 и нулевая деградация на хвостах; способ агрегации p95 и проверку качества обсуждаем на синке. Это ещё не принятый командой стандарт и не готовый измерительный runner.
-- **[Успешный smoke и границы проверки](docs/team_environment_smoke.md)**, [артефакты и SHA256](results/environment/team_env_smoke_45555111/artifact_index.json): на T4 проверены HaloGuard reference/FLA и GLiNER eager/ORT. Compile и остальные модели на этой базе не проверены; прежние ускорения на новую среду не переносим.
+[Предложение и статус на 30 октября](https://github.com/kekwak/HiveTrace-AutoTune-Guardrails/blob/23a4874a183f0815e22e4b33b785d13c16e5c7be/README.md#к-синку-30-октября-среда-и-протокол-у1)
+сохранены отдельно от текущего протокола. [T4 lock](env/team_environment.lock.json),
+[skeleton notebook](notebooks/team_environment_skeleton.ipynb),
+[среда](docs/team_environment.md) и [исходный smoke](docs/team_environment_smoke.md)
+относятся к тому этапу, не заменяют нынешний измеритель.
 
-**Статус нового комплекта:** CPU-тесты и формат notebooks проверены. Исходная установка smoke прошла на GPU; повторная установка именно из нового lock и skeleton на T4 ещё не выполнялись. Skeleton не запускает benchmarks или обучение автоматически. Старые результаты, approvals и traces ниже не изменены.
+## История: screening измерителя 30–31 октября
 
-Исходники сборки notebooks: `followup/team_*.py`; CPU-тесты: `python -m unittest discover -s tests -p 'test_team*.py' -v`. `experiments/` содержит зависимости существующего smoke, а не новый общий runner. Исторические замороженные пакеты остаются в `u1/` и внутри notebooks.
+[Полный разбор](docs/benchmark.md): GLiNER compile и ORT прошли T4-screening B1;
+HaloGuard FLA замедлился во всех четырёх бакетах и отклонён.
+Это более поздний результат, чем положительные FLA-эксперименты ниже.
+Среда/корпус отличаются от текущих ролевых входов; старые проценты на RTX не переносятся.
 
-## Новое: GLiNER ONNX против compile, 28 октября
+## История: GLiNER ONNX против compile, 28 октября
 
 Все три парных сравнения завершены в одной T4-сессии за 1 ч 48 мин: ONNX–compile, ONNX–eager, compile–eager. FP32, batch 1, одинаковые входы внутри пар; A/A 2×30 и A/B 3×100 на семи сценариях и двух границах тайминга. Это screening, не три независимых подтверждения.
 
@@ -76,7 +82,7 @@ short/long-трейсами и численными результатами. Н
 - [Самостоятельный сравнительный notebook](notebooks/gliner_runtime_comparison.ipynb): чистая Kaggle T4 + Internet → Run All, без ручного флага runtime. Выполненный запуск использовал seed 17. Скачать `gliner_comparison_*.zip`, в том числе при ошибке. Лимит 10 часов; наблюдавшиеся 1 ч 48 мин не гарантируют длительность нового запуска.
 - [Точные исходники сравнения](u1/gliner_comparison/experiments), hash `b44c4f9d20530520e0b7b8c2e82ebcf6d9f4db6a17f45aeac69b5f1a2544f85c`. Отдельный пакет не заменяет исторические исходники подтверждения ниже.
 
-## Предыдущий этап: HaloGuard FLA и GLiNER compile
+## История: ранние HaloGuard FLA и GLiNER compile
 
 Компактная публикация результатов, самостоятельных ноутбуков и выбранных профилей. Одна используемая T4 (`cuda:0`), batch 1; в runtime видны две GPU, multi-GPU не используется. Выполнена **первая из трёх** подтверждающих сессий для каждой модели, не окончательная валидация.
 

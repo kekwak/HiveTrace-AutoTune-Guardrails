@@ -33,21 +33,102 @@ class LayaInputGuard(unittest.TestCase):
         from types import SimpleNamespace
 
         native = self.agent._encode_state
-        self.agent.dtype, self.agent.amp_enabled = torch.float16, True
         preparer = SimpleNamespace(tokenizer=self.agent.tok, parity=lambda: {"status": "passed"})
         with tempfile.TemporaryDirectory() as tmp, patch("u1_benchmark.native_preparation.Preparer", return_value=preparer), \
                 patch("huggingface_hub.snapshot_download", return_value=tmp), patch("laya.load", return_value=self.agent), \
                 patch.object(Builtin, "check_device"):
-            adapter = Builtin("laya", {"backend": "eager"}, tmp, input_version=3)
-            try:
-                self.assertNotEqual(self.agent._encode_state, native)
-                self.agent.dtype, self.agent.amp_enabled = torch.float32, False
-                with patch.object(adapter, "prepare", side_effect=AssertionError("Unused preparation")):
-                    adapter.request([{"role": "user", "content": "library"}])
-            finally:
-                adapter.close()
+            for sdk_dtype in (torch.float16, torch.bfloat16):
+                with self.subTest(sdk_dtype=sdk_dtype):
+                    self.agent.device = torch.device("cuda:0")
+                    self.agent.dtype, self.agent.amp_enabled = sdk_dtype, True
+                    config = dict(self.agent.cfg)
+                    adapter = Builtin("laya", {"backend": "eager"}, tmp, input_version=3)
+                    try:
+                        self.assertNotEqual(self.agent._encode_state, native)
+                        self.assertEqual(self.agent.dtype, sdk_dtype)
+                        self.assertTrue(self.agent.amp_enabled)
+                        self.assertEqual(self.agent.cfg, config)
+                        self.assertTrue(all(p.dtype == torch.float32 for p in self.agent.model.parameters()))
+                        self.assertEqual(adapter.metadata["precision"], {
+                            "parameter_dtypes": ["float32"], "autocast_enabled": True,
+                            "autocast_dtype": str(sdk_dtype).removeprefix("torch."), "policy": "native_sdk"})
+                        # Run the real SDK request on CPU after the mocked CUDA initialization.
+                        self.agent.device = torch.device("cpu")
+                        self.agent.dtype, self.agent.amp_enabled = torch.float32, False
+                        with patch.object(adapter, "prepare", side_effect=AssertionError("Unused preparation")):
+                            adapter.request([{"role": "user", "content": "library"}])
+                    finally:
+                        adapter.close()
         self.assertEqual(self.agent._encode_state, native)
         self.assertNotIn("_encode_state", vars(self.agent))
+
+    def test_constructor_rejects_fallback_disabled_amp_and_unexpected_dtype(self):
+        import torch
+        from types import SimpleNamespace
+
+        preparer = SimpleNamespace(tokenizer=self.agent.tok, parity=lambda: {"status": "passed"})
+        cases = (("cpu", torch.float32, False, "Laya SDK CPU fallback"),
+                 ("cuda:0", torch.float16, False, "Laya CUDA autocast disabled"),
+                 ("cuda:0", torch.float32, True, "Unsupported Laya SDK autocast dtype"))
+        with tempfile.TemporaryDirectory() as tmp, patch("u1_benchmark.native_preparation.Preparer", return_value=preparer), \
+                patch("huggingface_hub.snapshot_download", return_value=tmp), patch("laya.load", return_value=self.agent), \
+                patch.object(Builtin, "check_device"):
+            for device, dtype, enabled, error in cases:
+                with self.subTest(device=device, dtype=dtype, enabled=enabled):
+                    self.agent.device = torch.device(device)
+                    self.agent.dtype, self.agent.amp_enabled = dtype, enabled
+                    with self.assertRaisesRegex(ValueError, error):
+                        Builtin("laya", {"backend": "eager"}, tmp, input_version=3)
+                    self.assertEqual(self.agent.dtype, dtype)
+                    self.assertEqual(self.agent.amp_enabled, enabled)
+                    self.assertNotIn("_encode_state", vars(self.agent))
+
+    def test_check_device_rejects_precision_drift_after_loading(self):
+        import torch
+
+        self.adapter.device = torch.device("cuda:0")
+        self.adapter.model = Mock()
+        self.adapter.model.parameters.return_value = []
+        self.adapter.model.buffers.return_value = []
+        for native in (torch.float16, torch.bfloat16):
+            self.adapter._laya_autocast_dtype = native
+            self.agent.device = torch.device("cuda")
+            self.agent.dtype, self.agent.amp_enabled = native, True
+            Builtin.check_device(self.adapter)
+            other = torch.bfloat16 if native == torch.float16 else torch.float16
+            for dtype, enabled in ((other, True), (torch.float32, True), (native, False)):
+                with self.subTest(native=native, dtype=dtype, enabled=enabled):
+                    self.agent.dtype, self.agent.amp_enabled = dtype, enabled
+                    with self.assertRaisesRegex(ValueError, "Laya native autocast policy changed"):
+                        Builtin.check_device(self.adapter)
+
+    def test_device_and_parameter_drift_are_rejected(self):
+        import torch
+
+        self.adapter.device = torch.device("cuda:0")
+        self.adapter._laya_autocast_dtype = torch.bfloat16
+        self.adapter.model = Mock()
+        self.adapter.model.parameters.return_value = []
+        self.adapter.model.buffers.return_value = []
+        self.agent.dtype, self.agent.amp_enabled = torch.bfloat16, True
+        for device in ("cpu", "cuda:1"):
+            with self.subTest(device=device):
+                self.agent.device = torch.device(device)
+                with self.assertRaisesRegex(ValueError, "Laya SDK CPU fallback or device changed"):
+                    Builtin.check_device(self.adapter)
+        self.agent.device = self.adapter.device
+        self.adapter.model.parameters.return_value = [Mock(device=self.adapter.device, dtype=torch.float16)]
+        with self.assertRaisesRegex(ValueError, "parameter dtype changed"):
+            Builtin.check_device(self.adapter)
+
+    def test_failed_sdk_request_still_checks_fallback(self):
+        from u1_benchmark.precision import PrecisionError
+
+        self.adapter.check_device = Mock(side_effect=PrecisionError("Laya SDK CPU fallback"))
+        with patch.object(self.agent, "predict", side_effect=RuntimeError("fixture CUDA failure")):
+            with self.assertRaisesRegex(PrecisionError, "Laya SDK CPU fallback"):
+                self.adapter.request("library")
+        self.adapter.check_device.assert_called_once_with()
 
     def test_one_sdk_encoding_and_native_scores_inputs(self):
         internal = {k: self.agent._to_internal(v) for k, v in QUESTIONS.items()}

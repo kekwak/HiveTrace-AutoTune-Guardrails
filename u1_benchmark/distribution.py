@@ -5,7 +5,7 @@ import shutil
 import tempfile
 
 from .core import ROOT, read, sha
-from .contracts import MODEL_SPECS, model_contract
+from .contracts import MODEL_SPECS, model_contract, preparation_contract
 from .datasets import verified
 
 
@@ -59,9 +59,9 @@ def fetch(output=None, source=None, revision=None):
         for model in MODEL_SPECS:
             declared = staged["indices"][model]["contract"]
             # Fetch verifies the pinned historical source, not a new runtime approval.
-            # Actual runs still require the current contract and reject stale indices.
+            # Input compatibility is separate from current execution/scoring rules.
             load_declared_speed(staging, model, "screening", staged, rows, expected_contract=declared)
-            compatibility[model] = "current" if declared == model_contract(model, 3) else "requires_reindex"
+            compatibility[model] = "current" if preparation_contract(declared) == preparation_contract(model_contract(model, 3)) else "requires_reindex"
         staging.rename(target)
     return {"status": "ready", "path": str(target), "manifest_sha256": expected,
             "scope": "pinned_source_integrity", "model_contract_status": compatibility,

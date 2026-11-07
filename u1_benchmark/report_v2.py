@@ -12,6 +12,7 @@ from .core import digest, lines, read, sha, write
 from .quality import agreement
 from .runner_v2 import schedule
 from .statistics import assess, paired, paired_rows, quantile, baseline_diagnostics
+from .precision import PrecisionTracker, physical_precision
 
 
 def validate_worker(path, cfg, variant, inputs_hash):
@@ -54,6 +55,7 @@ def build(directory):
         expected_contract = None
         identities = set()
         fixtures = []
+        precision = PrecisionTracker(cfg["comparison"])
         def checked(path, variant):
             nonlocal expected_contract
             value = validate_worker(path, cfg, variant, ih)
@@ -61,6 +63,7 @@ def build(directory):
                 expected_contract = value["contract"]
             if value["contract"] != expected_contract:
                 raise ValueError("Inference contract changed")
+            precision.add(variant, value)
             if value.get("metadata", {}).get("test_fixture"):
                 fixtures.append(str(path))
             identities.add(identity(path))
@@ -186,6 +189,8 @@ def build(directory):
         if len(identities) != 1:
             raise ValueError("Workers used different runtime/GPU/package identities")
         result.update(runtime_identity=next(iter(identities)), dataset_identity=read(root / "dataset_identity.json"))
+        if cfg["model"] == "laya" or any(v is not None for v in precision.variants.values()):
+            result.update(precision.summary())
         if fixtures:
             result.update(status="fixture_complete", gpu_acceptance=False, acceptance="interface_test_only")
     except (OSError, ValueError, KeyError, TypeError, ZeroDivisionError, EOFError) as error:
@@ -247,7 +252,10 @@ def table(paths, output):
             gpu = read(root / "preflight/baseline/telemetry_before.json")
             environment = {k: runtime.get(k) for k in ("python", "torch", "cuda", "cudnn", "gpu", "cpu_threads", "tf32", "hub_kernels")}
             environment.update(driver=gpu.get("driver"), packages=read(root / "preflight/baseline/packages.json"))
-            group = digest({"lock": read(root / "lock.json"), "data": dataset["manifest_sha256"], "environment": environment})
+            group_identity = {"lock": read(root / "lock.json"), "data": dataset["manifest_sha256"], "environment": environment}
+            if pf["metadata"].get("precision") is not None:
+                group_identity["precision"] = physical_precision(pf["metadata"]["precision"])
+            group = digest(group_identity)
             memory = [m for m in summary["memory"] if m["variant"] == "baseline"]
             for bucket, item in summary["buckets"].items():
                 rows.append({"source": str(path), "comparison_group": group, "model": summary.get("model", cfg.get("preset")),
@@ -258,6 +266,8 @@ def table(paths, output):
                     "aa": item.get("aa"), "stability_assessed": item.get("stability_assessed", False),
                     "memory": memory, "size": pf["size"], "contract": pf["contract"], "metadata": pf["metadata"],
                     "status": summary["status"], "environment": environment})
+                if "precision_status" in summary:
+                    rows[-1].update(precision_status=summary["precision_status"], precision=pf["metadata"].get("precision"))
     result = {"rows": rows, "omitted": omitted, "note": "Different comparison_group values are not silently pooled; baseline performance does not rank safety quality."}
     write(output, result)
     return {"status": "completed", "rows": len(rows), "omitted": len(omitted)}

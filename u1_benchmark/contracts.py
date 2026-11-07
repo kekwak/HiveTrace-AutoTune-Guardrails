@@ -12,7 +12,7 @@ RULES = {
     "gliner": "extract safety [safe,unsafe]; argmax; tie=safe",
     "koala": "native nine-class argmax; tie=lowest class index",
     "llama": "native benign/malicious argmax; tie=lowest class index; selected hipocap mirror",
-    "laya": "SDK predict; danger choice A/B; FP32 weights; per-request FP16 autocast; efficient SDPA",
+    "laya": "SDK predict; danger choice A/B; FP32 weights; per-request native SDK autocast; efficient SDPA",
     "hive": "native template; greedy generate max_new_tokens=1; native EOS; SDPA math; parse safe/unsafe",
     "open": "pinned 2510 template; greedy generate max_new_tokens=10; native EOS; SDPA math; safe/unsafe and category",
     "shield": "Dangerous Content; eager softcap; Yes/No softmax; tie=No",
@@ -45,6 +45,11 @@ def model_contract(model, version=2):
     elif version != 2:
         raise ValueError("Unknown input contract version")
     return result
+
+
+def preparation_contract(value):
+    """Execution/scoring rules do not change a tokenizer index."""
+    return {k: v for k, v in value.items() if k != "rules"}
 
 
 def required_buckets(model):

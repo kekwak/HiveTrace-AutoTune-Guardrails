@@ -4,7 +4,7 @@ from pathlib import Path
 import random
 
 from .core import digest, lines, read, sha, write
-from .contracts import BUCKETS, MODEL_SPECS, model_contract, required_buckets
+from .contracts import BUCKETS, MODEL_SPECS, model_contract, preparation_contract, required_buckets
 from .messages import content_hash, messages, payload
 from .statistics import quantile
 
@@ -185,7 +185,7 @@ def prepare(spec, output, preparer_factory=None):
 
 def load_speed(root, model, mode, manifest, rows, *, expected_contract=None):
     expected = model_contract(model, 3) if expected_contract is None else expected_contract
-    if manifest["kind"] != "speed" or manifest["indices"][model]["contract"] != expected:
+    if manifest["kind"] != "speed" or preparation_contract(manifest["indices"][model]["contract"]) != preparation_contract(expected):
         raise ValueError("Stale role preparation/checkpoint contract")
     indices = lines(Path(root) / f"indices/{model}.jsonl")
     index = {r["id"]: r for r in indices}

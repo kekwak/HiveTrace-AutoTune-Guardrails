@@ -5,7 +5,7 @@ import random
 from pathlib import Path
 
 from .core import MANIFEST_SHA, digest, lines, read, sha, write
-from .contracts import BUCKETS, MODEL_SPECS, model_contract, required_buckets
+from .contracts import BUCKETS, MODEL_SPECS, model_contract, preparation_contract, required_buckets
 
 
 def jsonl(path, rows):
@@ -134,7 +134,7 @@ def load_speed(root, model, mode, expected=None):
     published = sha(Path(root) / "manifest.json") == MANIFEST_SHA
     if not published and manifest.get("kind") != "speed":
         raise ValueError("Expected speed dataset")
-    if not published and manifest["indices"][model]["contract"] != model_contract(model):
+    if not published and preparation_contract(manifest["indices"][model]["contract"]) != preparation_contract(model_contract(model)):
         raise ValueError("Stale input preparation/checkpoint contract")
     if published and manifest["indices"][model]["contract"] != MODEL_SPECS[model]:
         raise ValueError("Published model contract mismatch")

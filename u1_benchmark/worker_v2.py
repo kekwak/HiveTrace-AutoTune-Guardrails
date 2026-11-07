@@ -11,6 +11,7 @@ from .contracts import model_contract, parse_config, validate_response
 from .core import digest, read, write
 from .datasets import jsonl, load_speed, verified
 from .messages import payload, private_strings, UnsupportedInput
+from .precision import PrecisionError, PrecisionGuard
 
 
 @contextlib.contextmanager
@@ -45,9 +46,9 @@ def current_rows(phase, data, measurement=None):
     return rows
 
 
-def stable_request(adapter, text):
+def stable_request(adapter, text, precision=None):
     count = adapter.compile_count
-    value = adapter.request(text)
+    value = precision.call(adapter.request, text) if precision is not None else adapter.request(text)
     if adapter.compile_count != count:
         raise RuntimeError("New compilation during measurement")
     return validate_response(value)
@@ -67,6 +68,12 @@ def redact_files(directory, texts):
                        "adapter_spec", "job", "config_sha256", "inputs_sha256", "text_sha256",
                        "input_sha256", "mask_sha256", "ids_sha256", "variant", "phase", "status"}:
                 return value
+            if key == "precision":
+                from .precision import validate_precision
+                try:
+                    return validate_precision(value)
+                except PrecisionError:
+                    pass
             if isinstance(value, dict):
                 return {k: clean(v, k) for k, v in value.items()}
             if isinstance(value, list):
@@ -100,6 +107,8 @@ def execute(job_path):
     with private_output(job["private"]):
         try:
             cfg = parse_config(job["config"])
+            if cfg["model"] == "laya":
+                result["precision_policy_version"] = 1
             from .environment import probe
             probe(Path(cfg["environment"]), directory)
             import torch
@@ -130,6 +139,8 @@ def execute(job_path):
                     raise ValueError("Adapter contract changed")
                 result["contract"] = adapter.contract
                 result["adapter_spec"] = cfg[job["variant"]]
+                precision = PrecisionGuard(adapter, required=cfg["model"] == "laya")
+                result["metadata"] = adapter.metadata
                 if phase == "quality":
                     values = []
                     quality_indices, quality_errors, shapes = {}, {}, {}
@@ -142,12 +153,14 @@ def execute(job_path):
                             quality_indices[row["id"]] = index
                             if 0 < index["total_tokens"] <= adapter.limit:
                                 shapes.setdefault(index["total_tokens"], payload(row))
+                        except PrecisionError:
+                            raise
                         except UnsupportedInput:
                             quality_errors[row["id"]] = "not_applicable"
                         except Exception as error:
                             quality_errors[row["id"]] = type(error).__name__
                     if shapes:
-                        adapter.prepare_backend(list(shapes.values()))
+                        precision.call(adapter.prepare_backend, list(shapes.values()))
                     result["metadata"] = adapter.metadata
                     for row in rows:
                         item = {k: row[k] for k in ("id", "text_sha256", "content_sha256") if k in row}
@@ -163,7 +176,9 @@ def execute(job_path):
                                 item["status"] = "over_limit"
                             else:
                                 # Quality has no latency; all required preparation stays separate.
-                                item.update(status="passed", score=adapter.verify(payload(row), index))
+                                item.update(status="passed", score=precision.call(adapter.verify, payload(row), index))
+                        except PrecisionError:
+                            raise
                         except Exception as error:
                             item.update(status="error", error_type=type(error).__name__)
                         values.append(item)
@@ -179,12 +194,12 @@ def execute(job_path):
                         shapes.setdefault(row["index"]["total_tokens"], payload(row))
                     edge = above = None
                     if phase in ("preflight", "smoke"):
-                        edge, above = adapter.boundary()
+                        edge, above = precision.call(adapter.boundary)
                         shapes[adapter.limit] = edge
                     t = time.monotonic()
-                    adapter.prepare_backend(list(shapes.values()))
+                    precision.call(adapter.prepare_backend, list(shapes.values()))
                     if hasattr(adapter, "prove_backend"):
-                        adapter.prove_backend(payload(rows[0]))
+                        precision.call(adapter.prove_backend, payload(rows[0]))
                     elif not adapter.metadata.get("test_fixture"):
                         raise ValueError("External adapter must provide backend proof")
                     torch.cuda.synchronize()
@@ -195,19 +210,19 @@ def execute(job_path):
                     if phase in ("preflight", "smoke"):
                         values = []
                         for row in rows:
-                            values.append({"id": row["id"], "bucket": row["bucket"], "score": adapter.verify(payload(row), row["index"])})
+                            values.append({"id": row["id"], "bucket": row["bucket"], "score": precision.call(adapter.verify, payload(row), row["index"])})
                             jsonl(directory / "scores.jsonl", values)
                         first, last = payload(rows[0]), payload(rows[-1])
-                        a = stable_request(adapter, first)
-                        stable_request(adapter, last)
-                        b = stable_request(adapter, first)
+                        a = stable_request(adapter, first, precision)
+                        stable_request(adapter, last, precision)
+                        b = stable_request(adapter, first, precision)
                         if a["label"] != b["label"]:
                             raise ValueError("A-B-A instability")
                         for key in a.get("scores", {}):
                             if abs(a["scores"][key] - b["scores"][key]) > 1e-6:
                                 raise ValueError("A-B-A numeric instability")
-                        boundary = stable_request(adapter, edge)
-                        adapter.reject_over_limit(above)
+                        boundary = stable_request(adapter, edge, precision)
+                        precision.call(adapter.reject_over_limit, above)
                         result.update(aba=[a, b], boundary={"tokens": adapter.limit, "score": boundary, "over_limit_rejected": True})
                         if phase == "smoke":
                             result["timings"] = []
@@ -215,13 +230,13 @@ def execute(job_path):
                             for row in rows:
                                 torch.cuda.synchronize()
                                 t0 = time.perf_counter_ns()
-                                score = stable_request(adapter, payload(row))
+                                score = stable_request(adapter, payload(row), precision)
                                 torch.cuda.synchronize()
                                 result["timings"].append({"id": row["id"], "bucket": row["bucket"], "latency_ms": (time.perf_counter_ns() - t0) / 1e6, "score": score})
                     elif phase == "latency":
                         t = time.monotonic()
                         for i in range(20):
-                            stable_request(adapter, payload(rows[i % len(rows)]))
+                            stable_request(adapter, payload(rows[i % len(rows)]), precision)
                         torch.cuda.synchronize()
                         result.update(warmup_seconds=time.monotonic() - t, started_unix=time.time())
                         values = []
@@ -230,7 +245,7 @@ def execute(job_path):
                                 before = adapter.compile_count
                                 torch.cuda.synchronize()
                                 t0 = time.perf_counter_ns()
-                                score = adapter.request(payload(row))
+                                score = precision.call(adapter.request, payload(row))
                                 torch.cuda.synchronize()
                                 elapsed = (time.perf_counter_ns() - t0) / 1e6
                                 if adapter.compile_count != before:
@@ -244,20 +259,20 @@ def execute(job_path):
                         result.update(rows=values, finished_unix=time.time())
                     elif phase == "memory":
                         for i in range(20):
-                            stable_request(adapter, payload(rows[i % len(rows)]))
+                            stable_request(adapter, payload(rows[i % len(rows)]), precision)
                         torch.cuda.synchronize()
                         result["torch_setup"] = {"allocated": torch.cuda.max_memory_allocated(), "reserved": torch.cuda.max_memory_reserved()}
                         torch.cuda.reset_peak_memory_stats()
                         sampler.inference()
                         for row in rows:
-                            stable_request(adapter, payload(row))
+                            stable_request(adapter, payload(row), precision)
                         torch.cuda.synchronize()
                         result["torch_inference"] = {"allocated": torch.cuda.max_memory_allocated(), "reserved": torch.cuda.max_memory_reserved()}
                     elif phase == "profile":
                         ordered = sorted(rows, key=lambda r: r["index"]["total_tokens"])
                         for name, row in (("short", ordered[0]), ("long", ordered[-1])):
                             with torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CPU, torch.profiler.ProfilerActivity.CUDA], record_shapes=True) as profiler:
-                                stable_request(adapter, payload(row))
+                                stable_request(adapter, payload(row), precision)
                                 torch.cuda.synchronize()
                             trace = directory / (name + ".trace.json")
                             profiler.export_chrome_trace(str(trace))
@@ -267,6 +282,7 @@ def execute(job_path):
                             (directory / (name + ".operators.txt")).write_text(profiler.key_averages().table(sort_by="self_device_time_total", row_limit=40))
                     else:
                         raise ValueError("Unknown phase")
+                precision.check()
                 result["status"] = "passed"
         except BaseException as error:
             result.update(status="failed", error_type=type(error).__name__)

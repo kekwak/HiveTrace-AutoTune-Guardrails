@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .contracts import DTYPES, MODEL_SPECS, model_contract, validate_response
 from .core import digest, sha
+from .precision import PrecisionError
 
 
 def normalize(inputs):
@@ -76,8 +77,19 @@ class Builtin:
                     allow_patterns=["rl_agent_config.json", "model.safetensors", "tokenizer/*", "encoder/*"])
                 self.agent = laya.load(local, device="cuda", fast=False)
                 self.model = self.agent.model
-                if self.agent.dtype != torch.float16 or not self.agent.amp_enabled:
-                    raise ValueError("Laya native FP16 autocast changed")
+                if self.agent.device.type != "cuda":
+                    raise PrecisionError("Laya SDK CPU fallback")
+                if not self.agent.amp_enabled:
+                    raise PrecisionError("Laya CUDA autocast disabled")
+                if self.agent.dtype not in (torch.float16, torch.bfloat16):
+                    raise PrecisionError("Unsupported Laya SDK autocast dtype")
+                self._laya_autocast_dtype = self.agent.dtype
+                self.metadata["precision"] = {
+                    "parameter_dtypes": sorted({str(p.dtype).removeprefix("torch.") for p in self.model.parameters()}),
+                    "autocast_enabled": self.agent.amp_enabled,
+                    "autocast_dtype": str(self.agent.dtype).removeprefix("torch."),
+                    "policy": "native_sdk",
+                }
             else:
                 from transformers import AutoModelForCausalLM, AutoModelForSequenceClassification
                 loader = AutoModelForSequenceClassification if model in ("koala", "llama") else AutoModelForCausalLM
@@ -135,12 +147,15 @@ class Builtin:
 
     def check_device(self):
         import torch
+        if self.name == "laya":
+            if self.agent.device.type != "cuda" or self.agent.device.index not in (None, self.device.index):
+                raise PrecisionError("Laya SDK CPU fallback or device changed")
+            if self.agent.dtype != self._laya_autocast_dtype or not self.agent.amp_enabled:
+                raise PrecisionError("Laya native autocast policy changed during inference")
         if any(t.device != self.device for t in list(self.model.parameters()) + list(self.model.buffers())):
-            raise ValueError("Unexpected CPU/offloaded tensor")
+            raise (PrecisionError if self.name == "laya" else ValueError)("Unexpected CPU/offloaded tensor")
         if self.legacy is None and any(t.is_floating_point() and t.dtype != getattr(torch, DTYPES[self.name]) for t in self.model.parameters()):
-            raise ValueError("Native baseline parameter dtype changed")
-        if self.name == "laya" and self.agent.device.type != "cuda":
-            raise ValueError("Laya SDK CPU fallback")
+            raise (PrecisionError if self.name == "laya" else ValueError)("Native baseline parameter dtype changed")
 
     @property
     def compile_count(self):
@@ -187,8 +202,10 @@ class Builtin:
                     "score_type": "probabilities"}
         if self.name == "laya":
             from speed_dataset.preparation import QUESTIONS
-            answer = self.agent.predict(self.legacy_text(text), QUESTIONS)["answers"]["danger"]
-            self.check_device()
+            try:
+                answer = self.agent.predict(self.legacy_text(text), QUESTIONS)["answers"]["danger"]
+            finally:
+                self.check_device()
             if answer["choice"] not in ("A", "B"):
                 raise ValueError("Invalid Laya native choice")
             return {"label": answer["choice"], "scores": answer["probabilities"], "score_type": "probabilities"}

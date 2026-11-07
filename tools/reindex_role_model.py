@@ -7,7 +7,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from u1_benchmark.core import read, sha, write
-from u1_benchmark.contracts import model_contract
+from u1_benchmark.contracts import model_contract, preparation_contract
 from u1_benchmark.datasets import load_speed, verified
 from u1_benchmark.role_data import prepare
 
@@ -21,7 +21,7 @@ def rebuild(source, output, models, version, preparer_factory=None):
         raise ValueError("Select existing unique model names")
     preserved = set(previous["indices"]) - set(models)
     for model in preserved:
-        if previous["indices"][model]["contract"] != model_contract(model, 3):
+        if preparation_contract(previous["indices"][model]["contract"]) != preparation_contract(model_contract(model, 3)):
             raise ValueError("Another model also needs reindexing: " + model)
     fields = {key: key for key in rows[0] if key != "content_sha256"}
     spec = {"schema_version": 3, "kind": "speed", "source": str(source / "corpus.jsonl"),
