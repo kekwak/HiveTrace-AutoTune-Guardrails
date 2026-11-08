@@ -7,6 +7,7 @@ from typing import Any
 
 from .benchmark import run_benchmark
 from .datasets import DatasetSource, load_source
+from .optimize import optimize
 
 
 def read_model(model: str, revision: str | None) -> tuple[Path, str | None]:
@@ -128,29 +129,33 @@ def main() -> int:
     datasets_parser = commands.add_parser(
         "datasets", help="Load and inspect quality and performance datasets"
     )
-    benchmark_parser = commands.add_parser(
-        "benchmark", help="Compare PyTorch and ONNX Runtime sequence classification"
-    )
-    benchmark_parser.add_argument("model", help="Hugging Face model ID or local model directory")
-    benchmark_parser.add_argument("--revision", help="Hugging Face model revision")
-    benchmark_parser.add_argument("--device", choices=("cpu", "cuda"), required=True)
-    benchmark_parser.add_argument(
-        "--output-mode", choices=("multiclass", "multilabel", "logits"), required=True
-    )
-    benchmark_parser.add_argument("--threshold", type=float, default=0.5)
-    benchmark_parser.add_argument("--text-column", default="text")
-    benchmark_parser.add_argument("--quality-text-column")
-    benchmark_parser.add_argument("--performance-text-column")
-    benchmark_parser.add_argument("--max-length", type=int, default=512)
-    benchmark_parser.add_argument("--warmup", type=int, default=5)
-    benchmark_parser.add_argument("--max-logit-error", type=float, default=0.001)
+    for name in ("benchmark", "optimize"):
+        run_parser = commands.add_parser(
+            name, help="Compare PyTorch and ONNX Runtime sequence classification"
+        )
+        run_parser.add_argument("model", help="Hugging Face model ID or local model directory")
+        run_parser.add_argument("--revision", help="Hugging Face model revision")
+        run_parser.add_argument("--device", choices=("cpu", "cuda"), required=True)
+        run_parser.add_argument(
+            "--output-mode", choices=("multiclass", "multilabel", "logits"), required=True
+        )
+        run_parser.add_argument("--threshold", type=float, default=0.5)
+        run_parser.add_argument("--text-column", default="text")
+        run_parser.add_argument("--quality-text-column")
+        run_parser.add_argument("--performance-text-column")
+        run_parser.add_argument("--max-length", type=int, default=512)
+        run_parser.add_argument("--warmup", type=int, default=5)
+        run_parser.add_argument("--max-logit-error", type=float, default=0.001)
+        if name == "optimize":
+            run_parser.add_argument("--output-dir", required=True)
+        for role in ("quality", "performance"):
+            add_dataset_options(run_parser, role)
     for role in ("quality", "performance"):
-        for dataset_parser in (datasets_parser, benchmark_parser):
-            add_dataset_options(dataset_parser, role)
+        add_dataset_options(datasets_parser, role)
     args = parser.parse_args()
 
     try:
-        if args.command in ("datasets", "benchmark"):
+        if args.command in ("datasets", "benchmark", "optimize"):
             sources = {role: dataset_source(args, role) for role in ("quality", "performance")}
             if args.command == "datasets":
                 result = {role: load_source(source)[1] for role, source in sources.items()}
@@ -163,7 +168,9 @@ def main() -> int:
                     raise ValueError("--max-logit-error must be finite and non-negative")
                 if not math.isfinite(args.threshold) or not 0 <= args.threshold <= 1:
                     raise ValueError("--threshold must be finite and between 0 and 1")
-                result = run_benchmark(
+                runner = optimize if args.command == "optimize" else run_benchmark
+                options = {"output_dir": args.output_dir} if args.command == "optimize" else {}
+                result = runner(
                     args.model,
                     args.revision,
                     args.device,
@@ -176,6 +183,7 @@ def main() -> int:
                     args.max_logit_error,
                     args.output_mode,
                     args.threshold,
+                    **options,
                 )
         else:
             result = inspect_model(args.model, args.revision)
@@ -185,6 +193,8 @@ def main() -> int:
         parser.exit(1, f"guardrail-tuner: {exc}\n")
 
     print(json.dumps(result, indent=2, ensure_ascii=False))
+    if args.command == "optimize" and result["status"] != "selected":
+        return 1
     if args.command == "benchmark" and not result["quality"]["passed"]:
         return 1
     return 0

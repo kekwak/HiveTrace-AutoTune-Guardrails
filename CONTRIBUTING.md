@@ -20,14 +20,18 @@
 Для несовместимого изменения добавьте `!` после типа или scope и опишите
 изменение в теле коммита через `BREAKING CHANGE:`.
 
-## Проверки
+## Разработка и проверки
 
-Перед отправкой изменений выполните:
+Для разработки по умолчанию используется Python 3.12. Выбирайте окружение
+явно при каждом запуске. Для CPU:
 
 ```bash
-uv sync --extra hub --extra datasets --extra inference --extra inference-cpu
-uv run --no-sync ruff check .
-uv run --no-sync ruff format --check .
-uv run --no-sync mypy
-uv run --no-sync pytest
+uv run --extra inference --extra inference-cpu guardrail-tuner --help
+uv run --extra inference --extra inference-cpu ruff check .
+uv run --extra inference --extra inference-cpu ruff format --check .
+uv run --extra inference --extra inference-cpu mypy
+uv run --extra inference --extra inference-cpu pytest
 ```
+
+Для CUDA замените `inference-cpu` на `inference-cuda` во всех командах.
+Варианты ONNX Runtime взаимоисключающие.

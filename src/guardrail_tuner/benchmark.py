@@ -41,6 +41,8 @@ def run_benchmark(
     tolerance: float,
     output_mode: str,
     threshold: float,
+    ort_optimization: str = "all",
+    ort_threads: int = 0,
 ) -> dict[str, Any]:
     try:
         import numpy as np
@@ -77,8 +79,15 @@ def run_benchmark(
 
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForSequenceClassification.from_pretrained(model_path).to(device).eval()
+    session_options = ort.SessionOptions()
+    levels = {
+        "all": ort.GraphOptimizationLevel.ORT_ENABLE_ALL,
+        "extended": ort.GraphOptimizationLevel.ORT_ENABLE_EXTENDED,
+    }
+    session_options.graph_optimization_level = levels[ort_optimization]
+    session_options.intra_op_num_threads = ort_threads
     ort_model = ORTModelForSequenceClassification.from_pretrained(
-        model_path, export=True, provider=provider
+        model_path, export=True, provider=provider, session_options=session_options
     )
     actual_providers = ort_model.model.get_providers()
     if actual_providers[0] != provider:
@@ -165,6 +174,8 @@ def run_benchmark(
             "performance_text_column": performance_text_column,
             "max_length": max_length,
             "warmup": warmup,
+            "ort_optimization": ort_optimization,
+            "ort_intra_op_threads": ort_threads,
             "max_logit_error": tolerance,
             "output_mode": output_mode,
             "threshold": threshold if output_mode == "multilabel" else None,

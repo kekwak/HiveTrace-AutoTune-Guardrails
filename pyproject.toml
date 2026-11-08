@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 [project.optional-dependencies]
 hub = ["huggingface-hub>=0.26"]
 datasets = ["datasets>=3.0", "huggingface-hub>=0.26"]
-inference = ["datasets>=3.0", "huggingface-hub>=0.26", "torch>=2.5,<2.9; python_version < '3.11'", "torch>=2.5; python_version >= '3.11'", "transformers>=4.50,<5", "optimum-onnx>=0.0.3,<1", "onnx>=1.16"]
+inference = ["datasets>=3.0", "huggingface-hub>=0.26", "torch>=2.5,<2.9; python_version < '3.11'", "torch>=2.5; python_version >= '3.11'", "transformers>=4.50,<5", "optimum-onnx>=0.0.3,<1", "onnx>=1.16", "pyyaml>=6"]
 inference-cpu = [
     "onnxruntime>=1.21,<1.24; python_version < '3.11'",
     "onnxruntime>=1.21; python_version >= '3.11'",
@@ -29,6 +29,7 @@ dev = [
     "mypy>=1.13,<2",
     "pytest>=8,<10",
     "ruff>=0.9,<1",
+    "types-PyYAML>=6,<7",
 ]
 
 [tool.ruff]

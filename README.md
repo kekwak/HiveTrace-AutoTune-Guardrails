@@ -1,30 +1,38 @@
 # HiveTrace-AutoTune-Guardrails
 Найти ускорения guardrail-моделей без скрытого падения качества на редких атаках, обфускации и неанглийских текстах в продукте
 
-## Скелет CLI
+## Установка CLI
 
-Минимальная версия Python — **3.10**. Для разработки по умолчанию используется
-Python 3.12 из `.python-version`. Зависимости и команды запуска управляются через
-[uv](https://docs.astral.sh/uv/). GPU-бэкенды могут иметь дополнительные
-ограничения по Python, CUDA и операционной системе.
+Минимальная версия Python — **3.10**. Из каталога репозитория установите CLI
+через [uv](https://docs.astral.sh/uv/) и запускайте его напрямую.
 
-```bash
-uv sync --extra hub --extra datasets --extra inference --extra inference-cpu
-uv run --no-sync ruff check .
-uv run --no-sync ruff format --check .
-uv run --no-sync mypy
-uv run --no-sync pytest
-```
-
-Для локального каталога модели достаточно базовой установки.
-Дополнение `hub` позволяет читать метаданные Hugging Face.
+Для CPU:
 
 ```bash
-uv sync --extra hub
-uv run --no-sync guardrail-tuner inspect KoalaAI/Text-Moderation
-uv run --no-sync guardrail-tuner plan KoalaAI/Text-Moderation
-uv run --no-sync guardrail-tuner plan ./local-checkpoint
+uv tool install '.[inference,inference-cpu]'
+guardrail-tuner --help
 ```
+
+Для NVIDIA CUDA:
+
+```bash
+uv tool install '.[inference,inference-cuda]'
+guardrail-tuner --help
+```
+
+CPU и CUDA варианты устанавливаются отдельно. Для смены варианта используйте
+`uv tool install --force` с нужными extras. Если команда после установки не
+найдена, выполните `uv tool update-shell` и перезапустите терминал. Установка
+инструмента разрешает версии зависимостей отдельно от проектного `uv.lock`.
+
+```bash
+guardrail-tuner inspect KoalaAI/Text-Moderation
+guardrail-tuner plan KoalaAI/Text-Moderation
+guardrail-tuner plan ./local-checkpoint
+```
+
+Для разработки используйте команды и выбор окружения из
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 `inspect` читает `config.json`. Для Hugging Face можно указать `--revision`.
 На этом этапе CLI загружает только конфиг.
@@ -37,8 +45,8 @@ uv run --no-sync guardrail-tuner plan ./local-checkpoint
 `needs_inference_contract` означает, что CLI пока нужен способ подготовить
 вход и сравнить выход модели с эталоном.
 
-Результаты `plan` описывают кандидатов. Команда `benchmark` выполняет
-сравнение PyTorch и ONNX Runtime для sequence classification.
+Результаты `plan` описывают кандидатов. Команды `benchmark` и `optimize`
+сравнивают PyTorch и ONNX Runtime для sequence classification.
 
 ## Как работает CLI
 
@@ -63,8 +71,8 @@ flowchart LR
 [«Первый прогон классификатора»](#первый-прогон-классификатора).
 
 Сейчас `benchmark` поддерживает sequence classification и последовательные
-запросы с batch size 1. Он сравнивает выходы с PyTorch; метрики по разметке и
-автоматический подбор конфигурации ещё не реализованы.
+запросы с batch size 1. Он сравнивает выходы с PyTorch; оценка качества
+по разметке ещё не реализована.
 
 ## Датасеты качества и скорости
 
@@ -73,8 +81,7 @@ flowchart LR
 доступ на чтение приватных наборов.
 
 ```bash
-uv sync --extra datasets
-uv run --no-sync guardrail-tuner datasets \
+guardrail-tuner datasets \
   --quality-hf my-org/quality --quality-split test --quality-revision main \
   --performance-hf my-org/performance --performance-split test --performance-revision main
 ```
@@ -83,7 +90,7 @@ uv run --no-sync guardrail-tuner datasets \
 `--performance-file` с путём к JSON, JSONL, CSV или Parquet. Например:
 
 ```bash
-uv run --no-sync guardrail-tuner datasets \
+guardrail-tuner datasets \
   --quality-hf my-org/quality --quality-split test \
   --performance-file ./performance.jsonl
 ```
@@ -109,8 +116,7 @@ ID и схема приватных наборов задаются при за�
 команды `datasets`.
 
 ```bash
-uv sync --extra inference --extra inference-cpu
-uv run --no-sync guardrail-tuner benchmark KoalaAI/Text-Moderation \
+guardrail-tuner benchmark KoalaAI/Text-Moderation \
   --device cpu --output-mode multilabel --threshold 0.5 \
   --quality-file ./quality.jsonl --performance-file ./speed.jsonl
 ```
@@ -119,13 +125,12 @@ uv run --no-sync guardrail-tuner benchmark KoalaAI/Text-Moderation \
 GPU-версию ONNX Runtime:
 
 ```bash
-uv sync --extra inference --extra inference-cuda
-uv run --no-sync guardrail-tuner benchmark MODEL_ID --device cuda \
+guardrail-tuner benchmark MODEL_ID --device cuda \
   --output-mode multiclass --quality-file ./quality.jsonl --performance-file ./speed.jsonl
 ```
 
-CPU и CUDA extras взаимоисключающие. `--no-sync` сохраняет выбранные extras при
-запуске. Для CUDA версии PyTorch и ONNX Runtime должны быть совместимы по CUDA
+CPU и CUDA extras взаимоисключающие. Для CUDA версии PyTorch и ONNX Runtime
+должны быть совместимы по CUDA
 и cuDNN. CLI проверяет доступность CUDA и активного ONNX Runtime provider.
 ONNX Runtime может размещать отдельные неподдерживаемые операции на CPU.
 
@@ -145,3 +150,29 @@ ONNX Runtime может размещать отдельные неподдерж
 Имя колонки по умолчанию — `text`. Общую замену задаёт `--text-column`,
 а разные колонки для наборов — `--quality-text-column` и
 `--performance-text-column`.
+
+## Автоподбор конфигурации
+
+```bash
+guardrail-tuner optimize KoalaAI/Text-Moderation \
+  --device cpu --output-mode multilabel --threshold 0.5 \
+  --quality-file ./quality.jsonl --performance-file ./speed.jsonl \
+  --output-dir ./results/run-1
+```
+
+Для CUDA выберите `--device cuda` и установите `inference-cuda` вместо
+`inference-cpu`. Параметры датасетов и выходов совпадают с `benchmark`.
+Каталог результатов должен быть пустым или отсутствовать.
+
+Команда проверяет уровни оптимизации графа ONNX Runtime `all` и `extended`.
+На CPU также сравнивает число intra-op потоков 0 (авто) и 1. Каждый вариант
+проверяется на датасете качества и измеряется на наборе скорости. CLI выбирает
+вариант с минимальным p95 среди прошедших проверку или исходный PyTorch, если он
+быстрее. Он сохраняет `config.yaml` с параметрами и `report.md` с результатами
+всех кандидатов. Если ни один прогон не завершился, создаётся только отчёт,
+а команда возвращает код 1.
+
+Конфигурация предназначена для воспроизведения настроек. CLI пока не запускает
+сервер из `config.yaml` и не сохраняет экспортированный ONNX. Это сравнение
+одной последовательной нагрузки, без проверки метрик по разметке. Для режима
+`logits` совпадение решений и вероятностей не проверяется.
