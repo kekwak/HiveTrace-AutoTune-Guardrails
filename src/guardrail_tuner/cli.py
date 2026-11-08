@@ -34,7 +34,9 @@ def inspect_model(model: str, revision: str | None) -> dict[str, Any]:
     config = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(config, dict):
         raise ValueError("config.json must contain a JSON object")
-    architectures = config.get("architectures") or []
+    architectures = config.get("architectures")
+    if architectures is None:
+        architectures = []
     if not isinstance(architectures, list) or not all(
         isinstance(name, str) for name in architectures
     ):

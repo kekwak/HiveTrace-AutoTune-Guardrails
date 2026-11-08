@@ -1,4 +1,5 @@
 import contextlib
+import hashlib
 import io
 import json
 import sys
@@ -7,6 +8,8 @@ import types
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+
+import pytest
 
 from guardrail_tuner.cli import main
 from guardrail_tuner.datasets import DatasetSource, load_source
@@ -85,3 +88,19 @@ class DatasetTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_local_file_glob_characters_select_exact_file(tmp_path, monkeypatch):
+    pytest.importorskip("datasets")
+    monkeypatch.setenv("HF_DATASETS_OFFLINE", "1")
+    directory = tmp_path / "dir[1]"
+    directory.mkdir()
+    target = directory / "data[1].jsonl"
+    target.write_text('{"text":"target"}\n')
+    (directory / "data1.jsonl").write_text('{"text":"wrong"}\n{"text":"wrong"}\n')
+
+    dataset, metadata = load_source(DatasetSource("file", str(target)))
+
+    assert len(dataset) == 1
+    assert dataset[0]["text"] == "target"
+    assert metadata["sha256"] == hashlib.sha256(target.read_bytes()).hexdigest()

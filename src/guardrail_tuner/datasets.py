@@ -2,6 +2,7 @@
 
 import hashlib
 from dataclasses import dataclass
+from glob import escape
 from pathlib import Path
 from typing import Any
 
@@ -58,7 +59,7 @@ def load_source(source: DatasetSource) -> tuple[Any, dict[str, Any]]:
             for chunk in iter(lambda: file.read(1024 * 1024), b""):
                 digest.update(chunk)
         try:
-            dataset = load_dataset(file_format, data_files=str(path), split="train")
+            dataset = load_dataset(file_format, data_files=escape(str(path)), split="train")
         except Exception as exc:
             raise ValueError(f"Cannot load dataset file {path}: {exc}") from exc
         metadata = {"source": "file", "path": str(path), "sha256": digest.hexdigest()}
