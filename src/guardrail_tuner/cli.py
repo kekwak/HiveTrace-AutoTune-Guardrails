@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .datasets import DatasetSource, load_source
+
 
 def read_model(model: str, revision: str | None) -> tuple[Path, str | None]:
     path = Path(model).expanduser()
@@ -33,7 +35,9 @@ def inspect_model(model: str, revision: str | None) -> dict[str, Any]:
     if not isinstance(config, dict):
         raise ValueError("config.json must contain a JSON object")
     architectures = config.get("architectures") or []
-    if not isinstance(architectures, list) or not all(isinstance(name, str) for name in architectures):
+    if not isinstance(architectures, list) or not all(
+        isinstance(name, str) for name in architectures
+    ):
         raise ValueError("architectures must be a list of strings")
 
     return {
@@ -54,37 +58,52 @@ def plan_checks(metadata: dict[str, Any]) -> dict[str, Any]:
 
     if any(name.endswith("ForSequenceClassification") for name in architectures):
         mode = "sequence_classification"
-        candidates.append({
-            "runtime": "onnxruntime",
-            "mode": "sequence_classification",
-            "next_check": "Export or load ONNX and compare logits against Transformers.",
-        })
-        candidates.append({
-            "runtime": "vllm",
-            "mode": "pooling_classify",
-            "next_check": "Verify checkpoint support and compare the required outputs.",
-        })
+        candidates.append(
+            {
+                "runtime": "onnxruntime",
+                "mode": "sequence_classification",
+                "next_check": "Export or load ONNX and compare logits against Transformers.",
+            }
+        )
+        candidates.append(
+            {
+                "runtime": "vllm",
+                "mode": "pooling_classify",
+                "next_check": "Verify checkpoint support and compare the required outputs.",
+            }
+        )
     elif any(name.endswith("ForCausalLM") for name in architectures):
         mode = "generation"
-        candidates.append({
-            "runtime": "vllm",
-            "mode": "generation",
-            "next_check": "Probe the model with the application's prompt and validate its output.",
-        })
+        candidates.append(
+            {
+                "runtime": "vllm",
+                "mode": "generation",
+                "next_check": (
+                    "Probe the model with the application's prompt and validate its output."
+                ),
+            }
+        )
 
     if mode is not None:
-        candidates.extend([
-            {
-                "runtime": "torch_compile",
-                "mode": mode,
-                "next_check": "Compile the model forward and compare outputs against eager PyTorch.",
-            },
-            {
-                "runtime": "tensorrt",
-                "mode": mode,
-                "next_check": "Verify ONNX export and CUDA support, then compare TensorRT outputs against eager PyTorch.",
-            },
-        ])
+        candidates.extend(
+            [
+                {
+                    "runtime": "torch_compile",
+                    "mode": mode,
+                    "next_check": (
+                        "Compile the model forward and compare outputs against eager PyTorch."
+                    ),
+                },
+                {
+                    "runtime": "tensorrt",
+                    "mode": mode,
+                    "next_check": (
+                        "Verify ONNX export and CUDA support, then compare TensorRT outputs "
+                        "against eager PyTorch."
+                    ),
+                },
+            ]
+        )
 
     return {
         **metadata,
@@ -103,12 +122,44 @@ def main() -> int:
         subparser = commands.add_parser(command, help=help_text)
         subparser.add_argument("model", help="Hugging Face model ID or local model directory")
         subparser.add_argument("--revision", help="Hugging Face branch, tag or commit")
+    datasets_parser = commands.add_parser(
+        "datasets", help="Load and inspect quality and performance datasets"
+    )
+    for role in ("quality", "performance"):
+        group = datasets_parser.add_mutually_exclusive_group(required=True)
+        group.add_argument(f"--{role}-hf", help="Hugging Face dataset ID")
+        group.add_argument(f"--{role}-file", help="Local JSON, JSONL, CSV or Parquet file")
+        datasets_parser.add_argument(f"--{role}-split", help="Hugging Face split (default: train)")
+        datasets_parser.add_argument(f"--{role}-revision", help="Hugging Face revision")
+        datasets_parser.add_argument(f"--{role}-config", help="Hugging Face dataset configuration")
     args = parser.parse_args()
 
     try:
-        result = inspect_model(args.model, args.revision)
-        if args.command == "plan":
-            result = plan_checks(result)
+        if args.command == "datasets":
+            result = {}
+            for role in ("quality", "performance"):
+                hub_id = getattr(args, f"{role}_hf")
+                file_path = getattr(args, f"{role}_file")
+                split = getattr(args, f"{role}_split")
+                revision = getattr(args, f"{role}_revision")
+                config = getattr(args, f"{role}_config")
+                if file_path and any(value is not None for value in (split, revision, config)):
+                    raise ValueError(
+                        f"--{role}-split, --{role}-revision and --{role}-config "
+                        f"apply only to --{role}-hf"
+                    )
+                source = DatasetSource(
+                    kind="hub" if hub_id else "file",
+                    path=hub_id or file_path,
+                    split=split,
+                    revision=revision,
+                    config=config,
+                )
+                _, result[role] = load_source(source)
+        else:
+            result = inspect_model(args.model, args.revision)
+            if args.command == "plan":
+                result = plan_checks(result)
     except (OSError, ValueError) as exc:
         parser.exit(1, f"guardrail-tuner: {exc}\n")
 

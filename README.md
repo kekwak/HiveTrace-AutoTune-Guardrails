@@ -3,14 +3,27 @@
 
 ## Скелет CLI
 
-Python 3.10 или новее. Для локального каталога модели достаточно базовой установки.
+Минимальная версия Python — **3.10**. Для разработки по умолчанию используется
+Python 3.12 из `.python-version`. Зависимости и команды запуска управляются через
+[uv](https://docs.astral.sh/uv/). GPU-бэкенды могут иметь дополнительные
+ограничения по Python, CUDA и операционной системе.
+
+```bash
+uv sync --all-extras
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy
+uv run pytest
+```
+
+Для локального каталога модели достаточно базовой установки.
 Дополнение `hub` позволяет читать метаданные Hugging Face.
 
 ```bash
-python -m pip install -e '.[hub]'
-guardrail-tuner inspect KoalaAI/Text-Moderation
-guardrail-tuner plan KoalaAI/Text-Moderation
-guardrail-tuner plan ./local-checkpoint
+uv sync --extra hub
+uv run guardrail-tuner inspect KoalaAI/Text-Moderation
+uv run guardrail-tuner plan KoalaAI/Text-Moderation
+uv run guardrail-tuner plan ./local-checkpoint
 ```
 
 `inspect` читает `config.json`. Для Hugging Face можно указать `--revision`.
@@ -26,3 +39,35 @@ guardrail-tuner plan ./local-checkpoint
 
 Следующий этап — выполнять эти проверки, а затем измерять прошедшие варианты
 на заданной нагрузке. Результаты текущего `plan` описывают кандидатов.
+
+## Датасеты качества и скорости
+
+Установите поддержку датасетов и авторизуйтесь в Hugging Face через
+`hf auth login` или переменную окружения `HF_TOKEN`. Токен должен иметь
+доступ на чтение приватных наборов.
+
+```bash
+uv sync --extra datasets
+uv run guardrail-tuner datasets \
+  --quality-hf my-org/quality --quality-split test --quality-revision main \
+  --performance-hf my-org/performance --performance-split test --performance-revision main
+```
+
+Вместо каждого HF ID можно независимо передать `--quality-file` или
+`--performance-file` с путём к JSON, JSONL, CSV или Parquet. Например:
+
+```bash
+uv run guardrail-tuner datasets \
+  --quality-hf my-org/quality --quality-split test \
+  --performance-file ./performance.jsonl
+```
+
+Для HF также доступны `--quality-config` и `--performance-config` для выбора
+конфигурации датасета. По умолчанию используется split `train`. Команда
+загружает данные в стандартный кэш Hugging Face и выводит количество строк,
+названия колонок и точный commit SHA. Для локальных файлов выводится SHA-256.
+Сами записи в отчёт не попадают.
+
+ID и схема приватных наборов пока не известны, поэтому они передаются при
+запуске. Команда проверяет загрузку обоих источников. Выполнение оценки качества
+и замера скорости требует реализации инференса и сопоставления полей датасета.
