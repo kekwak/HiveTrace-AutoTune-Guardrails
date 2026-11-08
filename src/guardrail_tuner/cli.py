@@ -50,8 +50,10 @@ def inspect_model(model: str, revision: str | None) -> dict[str, Any]:
 def plan_checks(metadata: dict[str, Any]) -> dict[str, Any]:
     architectures = metadata["architectures"]
     candidates = []
+    mode = None
 
     if any(name.endswith("ForSequenceClassification") for name in architectures):
+        mode = "sequence_classification"
         candidates.append({
             "runtime": "onnxruntime",
             "mode": "sequence_classification",
@@ -63,11 +65,26 @@ def plan_checks(metadata: dict[str, Any]) -> dict[str, Any]:
             "next_check": "Verify checkpoint support and compare the required outputs.",
         })
     elif any(name.endswith("ForCausalLM") for name in architectures):
+        mode = "generation"
         candidates.append({
             "runtime": "vllm",
             "mode": "generation",
             "next_check": "Probe the model with the application's prompt and validate its output.",
         })
+
+    if mode is not None:
+        candidates.extend([
+            {
+                "runtime": "torch_compile",
+                "mode": mode,
+                "next_check": "Compile the model forward and compare outputs against eager PyTorch.",
+            },
+            {
+                "runtime": "tensorrt",
+                "mode": mode,
+                "next_check": "Verify ONNX export and CUDA support, then compare TensorRT outputs against eager PyTorch.",
+            },
+        ])
 
     return {
         **metadata,

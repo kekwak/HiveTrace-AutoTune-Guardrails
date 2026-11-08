@@ -16,7 +16,10 @@ guardrail-tuner plan ./local-checkpoint
 `inspect` читает `config.json`. Для Hugging Face можно указать `--revision`.
 На этом этапе CLI загружает только конфиг.
 
-`plan` предлагает проверки по типу архитектуры из конфига. Статус
+`plan` предлагает проверки по типу архитектуры из конфига. Среди кандидатов
+есть vLLM, ONNX Runtime, `torch.compile` и TensorRT через ONNX. Для
+`torch.compile` план предусматривает сравнение с PyTorch eager, а для TensorRT
+сначала нужно проверить экспорт и запуск на CUDA. Статус
 `unverified` означает, что совместимость нужно подтвердить запуском.
 `needs_inference_contract` означает, что CLI пока нужен способ подготовить
 вход и сравнить выход модели с эталоном.
