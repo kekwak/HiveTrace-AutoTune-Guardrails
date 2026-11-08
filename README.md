@@ -9,11 +9,11 @@ Python 3.12 из `.python-version`. Зависимости и команды з�
 ограничения по Python, CUDA и операционной системе.
 
 ```bash
-uv sync --all-extras
-uv run ruff check .
-uv run ruff format --check .
-uv run mypy
-uv run pytest
+uv sync --extra hub --extra datasets --extra inference --extra inference-cpu
+uv run --no-sync ruff check .
+uv run --no-sync ruff format --check .
+uv run --no-sync mypy
+uv run --no-sync pytest
 ```
 
 Для локального каталога модели достаточно базовой установки.
@@ -21,9 +21,9 @@ uv run pytest
 
 ```bash
 uv sync --extra hub
-uv run guardrail-tuner inspect KoalaAI/Text-Moderation
-uv run guardrail-tuner plan KoalaAI/Text-Moderation
-uv run guardrail-tuner plan ./local-checkpoint
+uv run --no-sync guardrail-tuner inspect KoalaAI/Text-Moderation
+uv run --no-sync guardrail-tuner plan KoalaAI/Text-Moderation
+uv run --no-sync guardrail-tuner plan ./local-checkpoint
 ```
 
 `inspect` читает `config.json`. Для Hugging Face можно указать `--revision`.
@@ -37,8 +37,30 @@ uv run guardrail-tuner plan ./local-checkpoint
 `needs_inference_contract` означает, что CLI пока нужен способ подготовить
 вход и сравнить выход модели с эталоном.
 
-Следующий этап — выполнять эти проверки, а затем измерять прошедшие варианты
-на заданной нагрузке. Результаты текущего `plan` описывают кандидатов.
+Результаты `plan` описывают кандидатов. Команда `benchmark` выполняет
+сравнение PyTorch и ONNX Runtime для sequence classification.
+
+## Текущий пайплайн CLI
+
+```mermaid
+flowchart TD
+    A["Модель и параметры CLI"] --> B{"Команда"}
+    B -->|inspect| C["Прочитать config.json"]
+    B -->|plan| D["По метаданным предложить непроверенные бэкенды"]
+    B -->|datasets| E["Загрузить два датасета и показать метаданные"]
+    B -->|benchmark| F["Проверить устройство и загрузить датасеты"]
+    F --> G["Загрузить PyTorch-модель и экспортировать ONNX"]
+    G --> H["Сравнить logits и решения на наборе качества"]
+    H --> I["Замерить PyTorch и ONNX Runtime на наборе скорости"]
+    I --> J["Вывести JSON с качеством, задержкой и окружением"]
+    J --> K{"Расхождение в пределах допуска?"}
+    K -->|Да| L["Код выхода 0"]
+    K -->|Нет| M["Код выхода 1"]
+```
+
+`benchmark` выполняет два прогона с batch size 1 и последовательными
+запросами. Сейчас он проверяет воспроизведение выходов PyTorch, без подсчёта
+метрик по разметке и без автоподбора конфигурации.
 
 ## Датасеты качества и скорости
 
@@ -48,7 +70,7 @@ uv run guardrail-tuner plan ./local-checkpoint
 
 ```bash
 uv sync --extra datasets
-uv run guardrail-tuner datasets \
+uv run --no-sync guardrail-tuner datasets \
   --quality-hf my-org/quality --quality-split test --quality-revision main \
   --performance-hf my-org/performance --performance-split test --performance-revision main
 ```
@@ -57,7 +79,7 @@ uv run guardrail-tuner datasets \
 `--performance-file` с путём к JSON, JSONL, CSV или Parquet. Например:
 
 ```bash
-uv run guardrail-tuner datasets \
+uv run --no-sync guardrail-tuner datasets \
   --quality-hf my-org/quality --quality-split test \
   --performance-file ./performance.jsonl
 ```
@@ -73,3 +95,49 @@ ID и схема приватных наборов пока не известн�
 и замера скорости требует реализации инференса и сопоставления полей датасета.
 
 Правила разработки и формат коммитов описаны в [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Первый прогон классификатора
+
+Команда `benchmark` поддерживает модели Transformers для sequence classification.
+Два датасета должны содержать строковую колонку с текстом. Для Hugging Face
+наборов вместо файлов доступны те же параметры `--quality-hf`,
+`--performance-hf`, `--*-split`, `--*-revision` и `--*-config`, что и у
+команды `datasets`.
+
+```bash
+uv sync --extra inference --extra inference-cpu
+uv run --no-sync guardrail-tuner benchmark KoalaAI/Text-Moderation \
+  --device cpu --output-mode multilabel --threshold 0.5 \
+  --quality-file ./quality.jsonl --performance-file ./speed.jsonl
+```
+
+Для CUDA установите совместимые драйвер и библиотеки CUDA/cuDNN, затем выберите
+GPU-версию ONNX Runtime:
+
+```bash
+uv sync --extra inference --extra inference-cuda
+uv run --no-sync guardrail-tuner benchmark MODEL_ID --device cuda \
+  --output-mode multiclass --quality-file ./quality.jsonl --performance-file ./speed.jsonl
+```
+
+CPU и CUDA extras взаимоисключающие. `--no-sync` сохраняет выбранные extras при
+запуске. Для CUDA версии PyTorch и ONNX Runtime должны быть совместимы по CUDA
+и cuDNN. CLI проверяет доступность CUDA и активного ONNX Runtime provider.
+ONNX Runtime может размещать отдельные неподдерживаемые операции на CPU.
+
+Укажите `--output-mode multiclass` для softmax и argmax,
+`--output-mode multilabel` для sigmoid и общего порога `--threshold`, либо
+`--output-mode logits` для сравнения только логитов. Выбор зависит от модели.
+`--max-logit-error` задаёт допустимое максимальное абсолютное отклонение
+(по умолчанию 0.001). При превышении или несовпадении решений команда
+возвращает код 1 и сохраняет результаты в JSON на stdout. Для анализа разметки
+и отдельных порогов классов нужен отдельный контракт данных.
+
+Замер последовательный, с batch size 1 и без имитации очереди. Он включает
+токенизацию, инференс и перенос выхода на CPU. Число запросов равно количеству
+строк датасета скорости, поэтому для устойчивого p95/p99 нужен достаточно
+большой набор. Экспорт ONNX и загрузка моделей выполняются до замера.
+
+Имя колонки по умолчанию — `text`. Общую замену задаёт `--text-column`,
+а разные колонки для наборов — `--quality-text-column` и
+`--performance-text-column`.

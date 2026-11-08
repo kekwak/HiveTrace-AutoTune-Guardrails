@@ -25,9 +25,9 @@
 Перед отправкой изменений выполните:
 
 ```bash
-uv sync --all-extras
-uv run ruff check .
-uv run ruff format --check .
-uv run mypy
-uv run pytest
+uv sync --extra hub --extra datasets --extra inference --extra inference-cpu
+uv run --no-sync ruff check .
+uv run --no-sync ruff format --check .
+uv run --no-sync mypy
+uv run --no-sync pytest
 ```

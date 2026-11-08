@@ -11,6 +11,15 @@ requires-python = ">=3.10"
 [project.optional-dependencies]
 hub = ["huggingface-hub>=0.26"]
 datasets = ["datasets>=3.0", "huggingface-hub>=0.26"]
+inference = ["datasets>=3.0", "huggingface-hub>=0.26", "torch>=2.5,<2.9; python_version < '3.11'", "torch>=2.5; python_version >= '3.11'", "transformers>=4.50,<5", "optimum-onnx>=0.0.3,<1", "onnx>=1.16"]
+inference-cpu = [
+    "onnxruntime>=1.21,<1.24; python_version < '3.11'",
+    "onnxruntime>=1.21; python_version >= '3.11'",
+]
+inference-cuda = [
+    "onnxruntime-gpu>=1.21,<1.24; python_version < '3.11'",
+    "onnxruntime-gpu>=1.21; python_version >= '3.11'",
+]
 
 [project.scripts]
 guardrail-tuner = "guardrail_tuner.cli:main"
@@ -37,9 +46,17 @@ warn_unused_ignores = true
 follow_untyped_imports = false
 
 [[tool.mypy.overrides]]
-module = ["datasets", "datasets.*", "huggingface_hub", "huggingface_hub.*"]
+module = ["datasets", "datasets.*", "huggingface_hub", "huggingface_hub.*", "torch", "torch.*", "transformers", "transformers.*", "optimum", "optimum.*", "onnxruntime", "onnxruntime.*"]
 follow_imports = "skip"
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.uv]
+conflicts = [[{ extra = "inference-cpu" }, { extra = "inference-cuda" }]]
+
+[[tool.mypy.overrides]]
+module = ["numpy", "numpy.*"]
+follow_imports = "skip"
+follow_imports_for_stubs = true

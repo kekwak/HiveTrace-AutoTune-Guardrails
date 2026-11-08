@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .benchmark import run_benchmark
 from .datasets import DatasetSource, load_source
 
 
@@ -127,37 +128,55 @@ def main() -> int:
     datasets_parser = commands.add_parser(
         "datasets", help="Load and inspect quality and performance datasets"
     )
+    benchmark_parser = commands.add_parser(
+        "benchmark", help="Compare PyTorch and ONNX Runtime sequence classification"
+    )
+    benchmark_parser.add_argument("model", help="Hugging Face model ID or local model directory")
+    benchmark_parser.add_argument("--revision", help="Hugging Face model revision")
+    benchmark_parser.add_argument("--device", choices=("cpu", "cuda"), required=True)
+    benchmark_parser.add_argument(
+        "--output-mode", choices=("multiclass", "multilabel", "logits"), required=True
+    )
+    benchmark_parser.add_argument("--threshold", type=float, default=0.5)
+    benchmark_parser.add_argument("--text-column", default="text")
+    benchmark_parser.add_argument("--quality-text-column")
+    benchmark_parser.add_argument("--performance-text-column")
+    benchmark_parser.add_argument("--max-length", type=int, default=512)
+    benchmark_parser.add_argument("--warmup", type=int, default=5)
+    benchmark_parser.add_argument("--max-logit-error", type=float, default=0.001)
     for role in ("quality", "performance"):
-        group = datasets_parser.add_mutually_exclusive_group(required=True)
-        group.add_argument(f"--{role}-hf", help="Hugging Face dataset ID")
-        group.add_argument(f"--{role}-file", help="Local JSON, JSONL, CSV or Parquet file")
-        datasets_parser.add_argument(f"--{role}-split", help="Hugging Face split (default: train)")
-        datasets_parser.add_argument(f"--{role}-revision", help="Hugging Face revision")
-        datasets_parser.add_argument(f"--{role}-config", help="Hugging Face dataset configuration")
+        for dataset_parser in (datasets_parser, benchmark_parser):
+            add_dataset_options(dataset_parser, role)
     args = parser.parse_args()
 
     try:
-        if args.command == "datasets":
-            result = {}
-            for role in ("quality", "performance"):
-                hub_id = getattr(args, f"{role}_hf")
-                file_path = getattr(args, f"{role}_file")
-                split = getattr(args, f"{role}_split")
-                revision = getattr(args, f"{role}_revision")
-                config = getattr(args, f"{role}_config")
-                if file_path and any(value is not None for value in (split, revision, config)):
-                    raise ValueError(
-                        f"--{role}-split, --{role}-revision and --{role}-config "
-                        f"apply only to --{role}-hf"
-                    )
-                source = DatasetSource(
-                    kind="hub" if hub_id else "file",
-                    path=hub_id or file_path,
-                    split=split,
-                    revision=revision,
-                    config=config,
+        if args.command in ("datasets", "benchmark"):
+            sources = {role: dataset_source(args, role) for role in ("quality", "performance")}
+            if args.command == "datasets":
+                result = {role: load_source(source)[1] for role, source in sources.items()}
+            else:
+                import math
+
+                if args.max_length < 1 or args.warmup < 0:
+                    raise ValueError("--max-length must be positive; --warmup must be non-negative")
+                if not math.isfinite(args.max_logit_error) or args.max_logit_error < 0:
+                    raise ValueError("--max-logit-error must be finite and non-negative")
+                if not math.isfinite(args.threshold) or not 0 <= args.threshold <= 1:
+                    raise ValueError("--threshold must be finite and between 0 and 1")
+                result = run_benchmark(
+                    args.model,
+                    args.revision,
+                    args.device,
+                    sources["quality"],
+                    sources["performance"],
+                    args.quality_text_column or args.text_column,
+                    args.performance_text_column or args.text_column,
+                    args.max_length,
+                    args.warmup,
+                    args.max_logit_error,
+                    args.output_mode,
+                    args.threshold,
                 )
-                _, result[role] = load_source(source)
         else:
             result = inspect_model(args.model, args.revision)
             if args.command == "plan":
@@ -166,7 +185,37 @@ def main() -> int:
         parser.exit(1, f"guardrail-tuner: {exc}\n")
 
     print(json.dumps(result, indent=2, ensure_ascii=False))
+    if args.command == "benchmark" and not result["quality"]["passed"]:
+        return 1
     return 0
+
+
+def add_dataset_options(parser: argparse.ArgumentParser, role: str) -> None:
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(f"--{role}-hf", help="Hugging Face dataset ID")
+    group.add_argument(f"--{role}-file", help="Local JSON, JSONL, CSV or Parquet file")
+    parser.add_argument(f"--{role}-split", help="Hugging Face split (default: train)")
+    parser.add_argument(f"--{role}-revision", help="Hugging Face revision")
+    parser.add_argument(f"--{role}-config", help="Hugging Face dataset configuration")
+
+
+def dataset_source(args: argparse.Namespace, role: str) -> DatasetSource:
+    hub_id = getattr(args, f"{role}_hf")
+    file_path = getattr(args, f"{role}_file")
+    split = getattr(args, f"{role}_split")
+    revision = getattr(args, f"{role}_revision")
+    config = getattr(args, f"{role}_config")
+    if file_path and any(value is not None for value in (split, revision, config)):
+        raise ValueError(
+            f"--{role}-split, --{role}-revision and --{role}-config apply only to --{role}-hf"
+        )
+    return DatasetSource(
+        kind="hub" if hub_id else "file",
+        path=hub_id or file_path,
+        split=split,
+        revision=revision,
+        config=config,
+    )
 
 
 if __name__ == "__main__":

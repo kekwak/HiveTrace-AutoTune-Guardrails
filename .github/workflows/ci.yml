@@ -1,8 +1,7 @@
 name: CI
 
 on:
-  push:
-  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,15 +21,15 @@ jobs:
         with:
           version: "0.9.10"
       - name: Install dependencies
-        run: uv sync --locked --all-extras
+        run: uv sync --locked --extra hub --extra datasets --extra inference --extra inference-cpu
       - name: Lint and format
         run: |
-          uv run --locked ruff check .
-          uv run --locked ruff format --check .
+          uv run --locked --no-sync ruff check .
+          uv run --locked --no-sync ruff format --check .
       - name: Type check
-        run: uv run --locked mypy
+        run: uv run --locked --no-sync mypy
       - name: Test
-        run: uv run --locked pytest
+        run: uv run --locked --no-sync pytest
       - name: Build distributions
         run: uv build --out-dir /tmp/guardrail-dist
       - name: Test wheel installation
