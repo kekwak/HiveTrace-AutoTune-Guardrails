@@ -1,0 +1,122 @@
+=== openguardrails: эталон без квантования
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__none__float16] 512/14180  (7.6 текстов/с)
+[openguardrails__none__float16] 1024/14180  (7.3 текстов/с)
+[openguardrails__none__float16] 1536/14180  (7.1 текстов/с)
+[openguardrails__none__float16] 2048/14180  (7.0 текстов/с)
+[openguardrails__none__float16] 2560/14180  (6.9 текстов/с)
+[openguardrails__none__float16] 3072/14180  (6.8 текстов/с)
+[openguardrails__none__float16] 3584/14180  (6.7 текстов/с)
+[openguardrails__none__float16] 4096/14180  (6.7 текстов/с)
+[openguardrails__none__float16] 4608/14180  (6.6 текстов/с)
+[openguardrails__none__float16] 5120/14180  (6.6 текстов/с)
+[openguardrails__none__float16] 5632/14180  (6.6 текстов/с)
+[openguardrails__none__float16] 6144/14180  (6.5 текстов/с)
+[openguardrails__none__float16] 6656/14180  (6.5 текстов/с)
+[openguardrails__none__float16] 7168/14180  (6.4 текстов/с)
+[openguardrails__none__float16] 7680/14180  (6.4 текстов/с)
+[openguardrails__none__float16] 8192/14180  (6.3 текстов/с)
+[openguardrails__none__float16] 8704/14180  (6.3 текстов/с)
+[openguardrails__none__float16] 9216/14180  (6.3 текстов/с)
+[openguardrails__none__float16] 9728/14180  (6.2 текстов/с)
+[openguardrails__none__float16] 10240/14180  (6.2 текстов/с)
+[openguardrails__none__float16] 10752/14180  (6.1 текстов/с)
+[openguardrails__none__float16] 11264/14180  (6.1 текстов/с)
+[openguardrails__none__float16] 11776/14180  (6.0 текстов/с)
+[openguardrails__none__float16] 12288/14180  (5.9 текстов/с)
+[openguardrails__none__float16] 12800/14180  (5.8 текстов/с)
+[openguardrails__none__float16] 13312/14180  (5.7 текстов/с)
+[openguardrails__none__float16] 13824/14180  (5.6 текстов/с)
+[openguardrails__none__float16] 14180/14180  (5.2 текстов/с)
+         aggregate    fnr    fpr  macro_f1
+            pooled 0.2648 0.1633    0.7848
+macro_by_benchmark 0.2279 0.2010    0.7901
+отчёт: /kaggle/working/guard-eval/reports/openguardrails__none__float16/summary.md
+=== openguardrails: torchao_int8_dyn
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] нужно посчитать 6 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__none__float16] ОСТАНОВЛЕНО: все первые 6 текстов упали с ошибкой: OutOfMemoryError: CUDA out of memory. Tried to allocate 1.67 GiB. GPU 0 has a total capacity of 14.56 GiB of which 1.22 GiB is free. Including non-PyTorch memory, this process has 13.34 GiB memory in use. Of the allocated memory 11.95 GiB is allocated by PyTorch, and 1.26 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://doc
+[openguardrails__torchao_int8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/b655dc21ad34
+[openguardrails__torchao_int8_dyn__float16] 512/14180  (3.2 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 1024/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 1536/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 2048/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 2560/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 3072/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 3584/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 4096/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 4608/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 5120/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 5632/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 6144/14180  (3.1 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 6656/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 7168/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 7680/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 8192/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 8704/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 9216/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 9728/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 10240/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 10752/14180  (3.0 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 11264/14180  (2.9 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 11776/14180  (2.9 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 12288/14180  (2.9 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 12800/14180  (2.8 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 13312/14180  (2.8 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 13824/14180  (2.7 текстов/с)
+[openguardrails__torchao_int8_dyn__float16] 14180/14180  (2.6 текстов/с)
+openguardrails__none__float16: прогон не выполнен (OutOfMemoryError: CUDA out of memory. Tried to allocate 1.67 GiB. GPU 0 has a total capacity of 14.56 GiB of which 1.22 GiB is free. Including non-PyTorch memory, this process has 13.34 GiB memory in use. Of the allocated memory 11.95 GiB is allocated by PyTorch, and 1.26 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://doc) — сравнение невозможно
+!!! openguardrails / torchao_int8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== openguardrails: torchao_fp8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] нужно посчитать 6 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__none__float16] ОСТАНОВЛЕНО: все первые 6 текстов упали с ошибкой: OutOfMemoryError: CUDA out of memory. Tried to allocate 1.67 GiB. GPU 0 has a total capacity of 14.56 GiB of which 1.22 GiB is free. Including non-PyTorch memory, this process has 13.34 GiB memory in use. Of the allocated memory 11.95 GiB is allocated by PyTorch, and 1.26 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://doc
+[openguardrails__torchao_fp8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/27d2bdcbda3e
+[openguardrails__torchao_fp8_dyn__float16] метод не поддерживается: FP8 требует sm_89+, у GPU sm_75
+openguardrails__none__float16: прогон не выполнен (OutOfMemoryError: CUDA out of memory. Tried to allocate 1.67 GiB. GPU 0 has a total capacity of 14.56 GiB of which 1.22 GiB is free. Including non-PyTorch memory, this process has 13.34 GiB memory in use. Of the allocated memory 11.95 GiB is allocated by PyTorch, and 1.26 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://doc) — сравнение невозможно
+!!! openguardrails / torchao_fp8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== openguardrails: bnb_int8
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] нужно посчитать 6 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__none__float16] 6/6  (0.3 текстов/с)
+[openguardrails__bnb_int8__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/1b5ae80d6ea5
+[openguardrails__bnb_int8__float16] 512/14180  (6.5 текстов/с)
+[openguardrails__bnb_int8__float16] 1024/14180  (6.4 текстов/с)
+[openguardrails__bnb_int8__float16] 1536/14180  (6.4 текстов/с)
+[openguardrails__bnb_int8__float16] 2048/14180  (6.4 текстов/с)
+[openguardrails__bnb_int8__float16] 2560/14180  (6.4 текстов/с)
+[openguardrails__bnb_int8__float16] 3072/14180  (6.3 текстов/с)
+[openguardrails__bnb_int8__float16] 3584/14180  (6.3 текстов/с)
+[openguardrails__bnb_int8__float16] 4096/14180  (6.3 текстов/с)
+[openguardrails__bnb_int8__float16] 4608/14180  (6.3 текстов/с)
+[openguardrails__bnb_int8__float16] 5120/14180  (6.3 текстов/с)
+[openguardrails__bnb_int8__float16] 5632/14180  (6.2 текстов/с)
+[openguardrails__bnb_int8__float16] 6144/14180  (6.2 текстов/с)
+[openguardrails__bnb_int8__float16] 6656/14180  (6.2 текстов/с)
+[openguardrails__bnb_int8__float16] 7168/14180  (6.2 текстов/с)
+[openguardrails__bnb_int8__float16] 7680/14180  (6.1 текстов/с)
+[openguardrails__bnb_int8__float16] 8192/14180  (6.1 текстов/с)
+[openguardrails__bnb_int8__float16] 8704/14180  (6.1 текстов/с)
+[openguardrails__bnb_int8__float16] 9216/14180  (6.1 текстов/с)
+[openguardrails__bnb_int8__float16] 9728/14180  (6.0 текстов/с)
+[openguardrails__bnb_int8__float16] 10240/14180  (6.0 текстов/с)
+[openguardrails__bnb_int8__float16] 10752/14180  (5.9 текстов/с)
+[openguardrails__bnb_int8__float16] 11264/14180  (5.9 текстов/с)
+[openguardrails__bnb_int8__float16] 11776/14180  (5.8 текстов/с)
+[openguardrails__bnb_int8__float16] 12288/14180  (5.7 текстов/с)
+[openguardrails__bnb_int8__float16] 12800/14180  (5.6 текстов/с)
+[openguardrails__bnb_int8__float16] 13312/14180  (5.5 текстов/с)
+[openguardrails__bnb_int8__float16] 13824/14180  (5.4 текстов/с)
+[openguardrails__bnb_int8__float16] 14180/14180  (5.0 текстов/с)
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0195        0.0174        0.0217    -0.0088     0.0037          0.0028
+macro_by_benchmark     0.0221        0.0178        0.0269    -0.0085     0.0030          0.0002
+отчёт: /kaggle/working/guard-eval/reports/openguardrails__none__float16__vs__openguardrails__bnb_int8__float16/summary.md
+сравнений: 7; сводка: /kaggle/working/guard-eval/reports/SUMMARY.md

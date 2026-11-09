@@ -1,0 +1,58 @@
+{
+  "spec": {
+    "name": "gliner-guard",
+    "adapter": "gliner",
+    "model_id": "hivetrace/gliner-guard-omni",
+    "revision": "main",
+    "dtype": "float16",
+    "quant": "bnb_int8",
+    "batch_size": 32,
+    "max_length": 512,
+    "threshold": 0.5,
+    "task": "safety",
+    "labels": [
+      "safe",
+      "unsafe"
+    ]
+  },
+  "spec_hash": "02b6fa9bb917",
+  "environment": {
+    "python": "3.13.15",
+    "packages": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.20.1",
+      "torchao": "0.10.0",
+      "bitsandbytes": "0.50.2",
+      "gliner2": "2.1.0",
+      "numpy": "2.1.3",
+      "pandas": "2.3.3",
+      "huggingface_hub": "1.33.0"
+    },
+    "cpu_count": 4,
+    "device": "cuda:0",
+    "gpu": "Tesla T4",
+    "capability": "sm_75",
+    "gpu_memory_gb": 14.6,
+    "cuda_runtime": "12.8",
+    "driver": "580.178.04",
+    "device_class": "Tesla T4 (sm_75)"
+  },
+  "status": "complete",
+  "updated_at": "2026-11-04T22:08:58+00:00",
+  "quant": {
+    "method": "bnb_int8",
+    "quantized_linear": 81,
+    "eligible_linear": 81,
+    "kept_linear": 3,
+    "kept_examples": [
+      "classifier.0",
+      "classifier.2",
+      "count_pred.2"
+    ],
+    "weight_bytes": 504494122,
+    "params_cast_to_dtype": 0
+  },
+  "load_seconds": 13.8,
+  "predicted": 14180,
+  "errors": 0
+}

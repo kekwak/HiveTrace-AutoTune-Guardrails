@@ -1,0 +1,62 @@
+{
+  "spec": {
+    "name": "hivetrace-guard-pro",
+    "adapter": "causal_verdict",
+    "model_id": "hivetrace/HiveTraceGuard-Pro",
+    "revision": "main",
+    "dtype": "float16",
+    "quant": "none",
+    "batch_size": 16,
+    "max_length": 4096,
+    "threshold": 0.5,
+    "prompt": {
+      "kind": "chat_template",
+      "add_generation_prompt": false
+    },
+    "verdict": {
+      "prefix": "",
+      "safe": "safe",
+      "unsafe": "unsafe"
+    },
+    "compile": true
+  },
+  "spec_hash": "d16258ea9790",
+  "environment": {
+    "python": "3.13.15",
+    "packages": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.20.1",
+      "torchao": "0.10.0",
+      "bitsandbytes": "0.50.2",
+      "gliner2": "2.1.0",
+      "numpy": "2.1.3",
+      "pandas": "2.3.3",
+      "huggingface_hub": "1.33.0"
+    },
+    "cpu_count": 4,
+    "device": "cuda:0",
+    "gpu": "Tesla T4",
+    "capability": "sm_75",
+    "gpu_memory_gb": 14.6,
+    "cuda_runtime": "12.8",
+    "driver": "580.178.04",
+    "device_class": "Tesla T4 (sm_75)"
+  },
+  "status": "complete",
+  "updated_at": "2026-11-05T06:54:55+00:00",
+  "quant": {
+    "method": "none",
+    "quantized_linear": 0,
+    "eligible_linear": 196,
+    "kept_linear": 1,
+    "kept_examples": [
+      "lm_head"
+    ],
+    "weight_bytes": 1192100096,
+    "params_cast_to_dtype": 0,
+    "compiled": "forward"
+  },
+  "load_seconds": 8.7,
+  "predicted": 950,
+  "errors": 0
+}

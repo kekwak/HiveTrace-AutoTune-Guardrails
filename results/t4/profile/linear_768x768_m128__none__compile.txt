@@ -1,0 +1,35 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                Activity Buffer Request        48.77%       2.818ms        48.77%       2.818ms       2.818ms       0.000us         0.00%       0.000us       0.000us             1  
+## Call CompiledFxGraph figotb5chfyxtvdpffadqgmqchvp...        14.78%     854.448us        79.01%       4.566ms     228.306us       0.000us         0.00%     672.436us      33.622us            20  
+                             Torch-Compiled Region: 0/0        12.38%     715.476us        94.62%       5.468ms     273.400us       0.000us         0.00%     672.436us      33.622us            20  
+                                            aten::addmm         9.95%     575.038us        15.46%     893.264us      44.663us     672.436us       100.00%     672.436us      33.622us            20  
+                               TorchDynamo Cache Lookup         4.97%     287.481us         4.97%     287.481us      14.374us       0.000us         0.00%       0.000us       0.000us            20  
+                                       cudaLaunchKernel         4.81%     278.060us         4.81%     278.060us      13.903us       0.000us         0.00%       0.000us       0.000us            20  
+                 AOTDispatcher Runtime Wrapper Prologue         1.95%     112.926us         1.95%     112.926us       5.646us       0.000us         0.00%       0.000us       0.000us            20  
+                                      Pregraph bytecode         1.27%      73.474us         1.27%      73.474us       3.674us       0.000us         0.00%       0.000us       0.000us            20  
+          cudaOccupancyMaxActiveBlocksPerMultiprocessor         0.70%      40.166us         0.70%      40.166us       2.008us       0.000us         0.00%       0.000us       0.000us            20  
+                                  cudaDeviceSynchronize         0.41%      23.709us         0.41%      23.709us      11.854us       0.000us         0.00%       0.000us       0.000us             2  
+turing_fp16_s1688gemm_fp16_64x64_sliced1x4_ldg8_relu...         0.00%       0.000us         0.00%       0.000us       0.000us     672.436us       100.00%     672.436us      35.391us            19  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 5.779ms
+Self CUDA time total: 672.436us
+
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::addmm         9.95%     575.038us        15.46%     893.264us      44.663us     672.436us       100.00%     672.436us      33.622us            20  
+turing_fp16_s1688gemm_fp16_64x64_sliced1x4_ldg8_relu...         0.00%       0.000us         0.00%       0.000us       0.000us     672.436us       100.00%     672.436us      35.391us            19  
+                               TorchDynamo Cache Lookup         4.97%     287.481us         4.97%     287.481us      14.374us       0.000us         0.00%       0.000us       0.000us            20  
+                             Torch-Compiled Region: 0/0        12.38%     715.476us        94.62%       5.468ms     273.400us       0.000us         0.00%     672.436us      33.622us            20  
+                                      Pregraph bytecode         1.27%      73.474us         1.27%      73.474us       3.674us       0.000us         0.00%       0.000us       0.000us            20  
+                 AOTDispatcher Runtime Wrapper Prologue         1.95%     112.926us         1.95%     112.926us       5.646us       0.000us         0.00%       0.000us       0.000us            20  
+## Call CompiledFxGraph figotb5chfyxtvdpffadqgmqchvp...        14.78%     854.448us        79.01%       4.566ms     228.306us       0.000us         0.00%     672.436us      33.622us            20  
+                                Activity Buffer Request        48.77%       2.818ms        48.77%       2.818ms       2.818ms       0.000us         0.00%       0.000us       0.000us             1  
+          cudaOccupancyMaxActiveBlocksPerMultiprocessor         0.70%      40.166us         0.70%      40.166us       2.008us       0.000us         0.00%       0.000us       0.000us            20  
+                                       cudaLaunchKernel         4.81%     278.060us         4.81%     278.060us      13.903us       0.000us         0.00%       0.000us       0.000us            20  
+                                  cudaDeviceSynchronize         0.41%      23.709us         0.41%      23.709us      11.854us       0.000us         0.00%       0.000us       0.000us             2  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 5.779ms
+Self CUDA time total: 672.436us

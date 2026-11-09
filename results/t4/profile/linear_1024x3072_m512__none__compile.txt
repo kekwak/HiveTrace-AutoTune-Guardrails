@@ -1,0 +1,37 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                        cudaMemsetAsync        15.57%     804.276us        15.57%     804.276us      40.214us       0.000us         0.00%       0.000us       0.000us            20  
+## Call CompiledFxGraph fccsuhrj72fjp6h3xesgr2ngxabp...        15.44%     797.791us        61.92%       3.199ms     159.960us       0.000us         0.00%       4.343ms     217.161us            20  
+                             Torch-Compiled Region: 0/2        14.84%     766.921us        80.85%       4.177ms     208.865us       0.000us         0.00%       4.343ms     217.161us            20  
+                                  cudaDeviceSynchronize        13.38%     691.107us        13.38%     691.107us     345.553us       0.000us         0.00%       0.000us       0.000us             2  
+                                            aten::addmm        13.23%     683.393us        34.43%       1.779ms      88.936us       4.343ms       100.00%       4.343ms     217.161us            20  
+                                Activity Buffer Request        12.05%     622.685us        12.05%     622.685us     622.685us       0.000us         0.00%       0.000us       0.000us             1  
+                               TorchDynamo Cache Lookup         5.78%     298.415us         5.78%     298.415us      14.921us       0.000us         0.00%       0.000us       0.000us            20  
+                                       cudaLaunchKernel         4.89%     252.878us         4.89%     252.878us      12.644us       0.000us         0.00%       0.000us       0.000us            20  
+                 AOTDispatcher Runtime Wrapper Prologue         2.55%     131.638us         2.55%     131.638us       6.582us       0.000us         0.00%       0.000us       0.000us            20  
+                                      Pregraph bytecode         1.54%      79.542us         1.54%      79.542us       3.977us       0.000us         0.00%       0.000us       0.000us            20  
+          cudaOccupancyMaxActiveBlocksPerMultiprocessor         0.74%      38.176us         0.74%      38.176us       1.909us       0.000us         0.00%       0.000us       0.000us            20  
+    turing_fp16_s1688gemm_fp16_128x128_ldg8_relu_f2f_tn         0.00%       0.000us         0.00%       0.000us       0.000us       4.330ms        99.69%       4.330ms     216.493us            20  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 5.167ms
+Self CUDA time total: 4.343ms
+
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::addmm        13.23%     683.393us        34.43%       1.779ms      88.936us       4.343ms       100.00%       4.343ms     217.161us            20  
+    turing_fp16_s1688gemm_fp16_128x128_ldg8_relu_f2f_tn         0.00%       0.000us         0.00%       0.000us       0.000us       4.330ms        99.69%       4.330ms     216.493us            20  
+                                        Memset (Device)         0.00%       0.000us         0.00%       0.000us       0.000us      13.375us         0.31%      13.375us       0.704us            19  
+                               TorchDynamo Cache Lookup         5.78%     298.415us         5.78%     298.415us      14.921us       0.000us         0.00%       0.000us       0.000us            20  
+                             Torch-Compiled Region: 0/2        14.84%     766.921us        80.85%       4.177ms     208.865us       0.000us         0.00%       4.343ms     217.161us            20  
+                                      Pregraph bytecode         1.54%      79.542us         1.54%      79.542us       3.977us       0.000us         0.00%       0.000us       0.000us            20  
+                 AOTDispatcher Runtime Wrapper Prologue         2.55%     131.638us         2.55%     131.638us       6.582us       0.000us         0.00%       0.000us       0.000us            20  
+## Call CompiledFxGraph fccsuhrj72fjp6h3xesgr2ngxabp...        15.44%     797.791us        61.92%       3.199ms     159.960us       0.000us         0.00%       4.343ms     217.161us            20  
+                                Activity Buffer Request        12.05%     622.685us        12.05%     622.685us     622.685us       0.000us         0.00%       0.000us       0.000us             1  
+                                        cudaMemsetAsync        15.57%     804.276us        15.57%     804.276us      40.214us       0.000us         0.00%       0.000us       0.000us            20  
+          cudaOccupancyMaxActiveBlocksPerMultiprocessor         0.74%      38.176us         0.74%      38.176us       1.909us       0.000us         0.00%       0.000us       0.000us            20  
+                                       cudaLaunchKernel         4.89%     252.878us         4.89%     252.878us      12.644us       0.000us         0.00%       0.000us       0.000us            20  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 5.167ms
+Self CUDA time total: 4.343ms

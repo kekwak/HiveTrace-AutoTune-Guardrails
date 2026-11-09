@@ -1,0 +1,63 @@
+=== koala: эталон без квантования
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer DebertaTokenizer. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (1936 > 512). Running this sequence through the model will result in indexing errors
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__none__float16] замер скорости
+  legacy_short     p50    24.12 мс   p95    25.42 мс
+  varying_short    p50    24.30 мс   p95    25.96 мс
+  legacy_medium    p50    25.21 мс   p95    26.60 мс
+  varying_medium   p50    24.59 мс   p95    26.82 мс
+  legacy_long      p50    26.68 мс   p95    28.55 мс
+  varying_long     p50    26.07 мс   p95    27.84 мс
+  mixed            p50    24.55 мс   p95    27.19 мс
+         aggregate    fnr    fpr  macro_f1
+            pooled 0.9877 0.0007    0.3430
+macro_by_benchmark 0.9926 0.0005    0.3981
+отчёт: /kaggle/working/guard-eval/reports/koala__none__float16/summary.md
+=== koala: torchao_int8_dyn
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer DebertaTokenizer. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (1936 > 512). Running this sequence through the model will result in indexing errors
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__torchao_int8_dyn__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/7d2fcf428563
+[koala__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a/speed.json
+[koala__torchao_int8_dyn__float16] замер скорости
+  legacy_short     p50   161.65 мс   p95   167.29 мс
+  varying_short    p50   162.95 мс   p95   172.06 мс
+  legacy_medium    p50   164.17 мс   p95   171.44 мс
+  varying_medium   p50   164.11 мс   p95   170.05 мс
+  legacy_long      p50   164.94 мс   p95   170.62 мс
+  varying_long     p50   164.76 мс   p95   170.10 мс
+  mixed            p50   163.54 мс   p95   170.20 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0007        0.0004        0.0013     0.0003     0.0006         -0.0004
+macro_by_benchmark     0.0005        0.0002        0.0009     0.0001     0.0004         -0.0001
+отчёт: /kaggle/working/guard-eval/reports/koala__none__float16__vs__koala__torchao_int8_dyn__float16/summary.md
+=== koala: torchao_fp8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__torchao_fp8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/koala/2ec3b5cc01d0
+[koala__torchao_fp8_dyn__float16] метод не поддерживается: FP8 требует sm_89+, у GPU sm_75
+koala__torchao_fp8_dyn__float16: прогон не выполнен (FP8 требует sm_89+, у GPU sm_75) — сравнение невозможно
+!!! koala / torchao_fp8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== koala: bnb_int8
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer DebertaTokenizer. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (1936 > 512). Running this sequence through the model will result in indexing errors
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__bnb_int8__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/8a045250cd4d
+[koala__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a/speed.json
+[koala__bnb_int8__float16] замер скорости
+  legacy_short     p50    69.20 мс   p95    72.26 мс
+  varying_short    p50    70.20 мс   p95    73.24 мс
+  legacy_medium    p50    70.05 мс   p95    73.92 мс
+  varying_medium   p50    70.07 мс   p95    73.10 мс
+  legacy_long      p50    74.38 мс   p95    76.83 мс
+  varying_long     p50    72.71 мс   p95    76.29 мс
+  mixed            p50    71.65 мс   p95    78.65 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0004        0.0001        0.0008     0.0006     0.0003         -0.0007
+macro_by_benchmark     0.0004        0.0001        0.0006     0.0003     0.0002         -0.0001
+отчёт: /kaggle/working/guard-eval/reports/koala__none__float16__vs__koala__bnb_int8__float16/summary.md
+сравнений: 7; сводка: /kaggle/working/guard-eval/reports/SUMMARY.md

@@ -1,0 +1,37 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                             Torch-Compiled Region: 0/3        24.29%       2.062ms        91.38%       7.757ms     387.825us       0.000us         0.00%       3.888ms     194.382us            20  
+## Call CompiledFxGraph fjxiwgai6qwu62evljqfozv3b7nr...        23.65%       2.008ms        64.22%       5.451ms     272.546us       0.000us         0.00%       3.888ms     194.382us            20  
+                                         cuLaunchKernel        15.65%       1.328ms        15.65%       1.328ms      22.134us       0.000us         0.00%       0.000us       0.000us            60  
+                                Activity Buffer Request        10.07%     854.906us        10.07%     854.906us     854.906us       0.000us         0.00%       0.000us       0.000us             1  
+                               TorchDynamo Cache Lookup         7.93%     673.384us         7.93%     673.384us      33.669us       0.000us         0.00%       0.000us       0.000us            20  
+                                          aten::_int_mm         6.95%     589.871us         9.69%     822.417us      41.121us       2.821ms        72.55%       2.821ms     141.033us            20  
+triton_poi_fused__to_copy_add_clamp_div_expand_maxim...         4.03%     341.678us         6.06%     514.734us      25.737us     772.021us        19.86%     772.021us      38.601us            20  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ma...         3.70%     313.778us        14.74%       1.251ms      62.552us     294.969us         7.59%     294.969us      14.748us            20  
+                 AOTDispatcher Runtime Wrapper Prologue         1.87%     158.864us         1.87%     158.864us       7.943us       0.000us         0.00%       0.000us       0.000us            20  
+                                      Pregraph bytecode         1.00%      85.201us         1.00%      85.201us       4.260us       0.000us         0.00%       0.000us       0.000us            20  
+                                  cudaDeviceSynchronize         0.69%      58.274us         0.69%      58.274us      29.137us       0.000us         0.00%       0.000us       0.000us             2  
+                                 cudaDeviceGetAttribute         0.17%      14.791us         0.17%      14.791us       0.740us       0.000us         0.00%       0.000us       0.000us            20  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.488ms
+Self CUDA time total: 3.888ms
+
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                          aten::_int_mm         6.95%     589.871us         9.69%     822.417us      41.121us       2.821ms        72.55%       2.821ms     141.033us            20  
+void cutlass::Kernel2<cutlass_75_tensorop_i8816gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us       2.821ms        72.55%       2.821ms     141.033us            20  
+triton_poi_fused__to_copy_add_clamp_div_expand_maxim...         4.03%     341.678us         6.06%     514.734us      25.737us     772.021us        19.86%     772.021us      38.601us            20  
+triton_poi_fused__to_copy_add_clamp_div_expand_maxim...         0.00%       0.000us         0.00%       0.000us       0.000us     772.021us        19.86%     772.021us      38.601us            20  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ma...         3.70%     313.778us        14.74%       1.251ms      62.552us     294.969us         7.59%     294.969us      14.748us            20  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ma...         0.00%       0.000us         0.00%       0.000us       0.000us     294.969us         7.59%     294.969us      15.525us            19  
+                               TorchDynamo Cache Lookup         7.93%     673.384us         7.93%     673.384us      33.669us       0.000us         0.00%       0.000us       0.000us            20  
+                             Torch-Compiled Region: 0/3        24.29%       2.062ms        91.38%       7.757ms     387.825us       0.000us         0.00%       3.888ms     194.382us            20  
+                                      Pregraph bytecode         1.00%      85.201us         1.00%      85.201us       4.260us       0.000us         0.00%       0.000us       0.000us            20  
+                 AOTDispatcher Runtime Wrapper Prologue         1.87%     158.864us         1.87%     158.864us       7.943us       0.000us         0.00%       0.000us       0.000us            20  
+## Call CompiledFxGraph fjxiwgai6qwu62evljqfozv3b7nr...        23.65%       2.008ms        64.22%       5.451ms     272.546us       0.000us         0.00%       3.888ms     194.382us            20  
+                                Activity Buffer Request        10.07%     854.906us        10.07%     854.906us     854.906us       0.000us         0.00%       0.000us       0.000us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.488ms
+Self CUDA time total: 3.888ms

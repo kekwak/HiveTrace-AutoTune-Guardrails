@@ -1,0 +1,60 @@
+=== hivetrace-guard-pro: эталон без квантования
+[transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[hivetrace-guard-pro__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/3cf73c6e8232
+[hivetrace-guard-pro__none__float16] замер скорости
+  legacy_short     p50    83.49 мс   p95    85.93 мс
+  varying_short    p50    82.97 мс   p95    85.67 мс
+  legacy_medium    p50   101.87 мс   p95   102.99 мс
+  varying_medium   p50   105.30 мс   p95   107.68 мс
+  legacy_long      p50   186.42 мс   p95   190.42 мс
+  varying_long     p50   186.65 мс   p95   190.29 мс
+  mixed            p50   103.68 мс   p95   187.91 мс
+         aggregate    fnr    fpr  macro_f1
+            pooled 0.2199 0.1245    0.8268
+macro_by_benchmark 0.1711 0.1696    0.8579
+отчёт: /kaggle/working/guard-eval/reports/hivetrace-guard-pro__none__float16/summary.md
+=== hivetrace-guard-pro: torchao_int8_dyn
+[transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[hivetrace-guard-pro__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/3cf73c6e8232
+[hivetrace-guard-pro__torchao_int8_dyn__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/bda52d739efb
+[hivetrace-guard-pro__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/3cf73c6e8232/speed.json
+[hivetrace-guard-pro__torchao_int8_dyn__float16] замер скорости
+  legacy_short     p50   401.69 мс   p95   418.20 мс
+  varying_short    p50   402.49 мс   p95   418.77 мс
+  legacy_medium    p50   410.22 мс   p95   423.06 мс
+  varying_medium   p50   411.32 мс   p95   423.70 мс
+  legacy_long      p50   472.67 мс   p95   487.89 мс
+  varying_long     p50   470.97 мс   p95   485.50 мс
+  mixed            p50   412.71 мс   p95   477.46 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0396        0.0366        0.0429     0.0264    -0.0004         -0.0134
+macro_by_benchmark     0.0400        0.0346        0.0453     0.0261    -0.0023         -0.0063
+отчёт: /kaggle/working/guard-eval/reports/hivetrace-guard-pro__none__float16__vs__hivetrace-guard-pro__torchao_int8_dyn__float16/summary.md
+=== hivetrace-guard-pro: torchao_fp8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[hivetrace-guard-pro__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/3cf73c6e8232
+[hivetrace-guard-pro__torchao_fp8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/ff51e66238f3
+[hivetrace-guard-pro__torchao_fp8_dyn__float16] метод не поддерживается: FP8 требует sm_89+, у GPU sm_75
+hivetrace-guard-pro__torchao_fp8_dyn__float16: прогон не выполнен (FP8 требует sm_89+, у GPU sm_75) — сравнение невозможно
+!!! hivetrace-guard-pro / torchao_fp8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== hivetrace-guard-pro: bnb_int8
+[transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[hivetrace-guard-pro__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/3cf73c6e8232
+[hivetrace-guard-pro__bnb_int8__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/17fc4a1e584b
+[hivetrace-guard-pro__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/hivetrace-guard-pro/3cf73c6e8232/speed.json
+[hivetrace-guard-pro__bnb_int8__float16] замер скорости
+  legacy_short     p50   202.12 мс   p95   209.50 мс
+  varying_short    p50   204.47 мс   p95   219.07 мс
+  legacy_medium    p50   217.17 мс   p95   223.17 мс
+  varying_medium   p50   219.54 мс   p95   230.08 мс
+  legacy_long      p50   290.53 мс   p95   295.93 мс
+  varying_long     p50   291.45 мс   p95   298.69 мс
+  mixed            p50   221.14 мс   p95   293.48 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0208        0.0188        0.0232     0.0019     0.0021         -0.0020
+macro_by_benchmark     0.0216        0.0177        0.0257    -0.0001     0.0002         -0.0007
+отчёт: /kaggle/working/guard-eval/reports/hivetrace-guard-pro__none__float16__vs__hivetrace-guard-pro__bnb_int8__float16/summary.md
+сравнений: 7; сводка: /kaggle/working/guard-eval/reports/SUMMARY.md

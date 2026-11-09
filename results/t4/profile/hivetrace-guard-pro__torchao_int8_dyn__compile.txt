@@ -1,0 +1,63 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+## Call CompiledFxGraph fxrsdfdxgjnezkiy7pvhwquskvf4...        22.29%     184.340ms        59.12%     488.939ms      24.447ms       0.000us         0.00%     568.321ms      28.416ms            20  
+                                  cudaStreamSynchronize        12.92%     106.874ms        12.92%     106.874ms       1.336ms       0.000us         0.00%       0.000us       0.000us            80  
+                            Torch-Compiled Region: 20/0        12.15%     100.470ms        73.42%     607.209ms      30.360ms       0.000us         0.00%     568.321ms      28.416ms            20  
+                               TorchDynamo Cache Lookup        11.44%      94.615ms        12.21%     100.956ms       5.048ms       0.000us         0.00%       0.000us       0.000us            20  
+                                          aten::_int_mm         8.75%      72.353ms        12.09%      99.972ms      25.503us     234.408ms        41.22%     234.467ms      59.813us          3920  
+                                         cuLaunchKernel         8.04%      66.509ms         8.04%      66.509ms       7.390us       0.000us         0.00%       0.000us       0.000us          9000  
+                                      Pregraph bytecode         1.83%      15.149ms         2.09%      17.310ms     865.489us       0.000us         0.00%       0.000us       0.000us            20  
+triton_poi_fused__scaled_dot_product_efficient_atten...         1.83%      15.096ms         2.75%      22.711ms      20.277us      14.863ms         2.61%      14.863ms      13.271us          1120  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ex...         1.63%      13.517ms         2.23%      18.424ms      34.118us      10.779ms         1.90%      10.799ms      19.998us           540  
+                                            aten::empty         1.62%      13.385ms         1.62%      13.385ms       1.804us       0.000us         0.00%       0.000us       0.000us          7420  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ex...         1.55%      12.780ms         2.06%      17.056ms      32.800us       9.512ms         1.67%       9.512ms      18.293us           520  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ex...         1.53%      12.641ms         2.05%      16.977ms      30.317us      43.608ms         7.67%      43.608ms      77.871us           560  
+          aten::_scaled_dot_product_efficient_attention         1.17%       9.647ms         4.71%      38.967ms      69.584us       0.000us         0.00%     178.987ms     319.619us           560  
+                                       cuLaunchKernelEx         1.16%       9.608ms         1.16%       9.608ms       6.863us       0.000us         0.00%       0.000us       0.000us          1400  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ma...         1.15%       9.474ms         1.74%      14.359ms      25.641us       7.798ms         1.37%       7.798ms      13.926us           560  
+triton_per_fused__to_copy_clamp_div_expand_maximum_m...         1.13%       9.367ms         1.66%      13.762ms      24.575us      10.484ms         1.84%      10.484ms      18.721us           560  
+triton_per_fused__to_copy_clamp_div_expand_maximum_m...         1.11%       9.160ms         1.64%      13.524ms      24.150us       5.250ms         0.92%       5.250ms       9.375us           560  
+                     aten::_efficient_attention_forward         1.00%       8.306ms         2.86%      23.669ms      42.267us     178.987ms        31.47%     178.987ms     319.619us           560  
+                                       cudaLaunchKernel         0.91%       7.511ms         0.91%       7.511ms      10.729us       0.000us         0.00%       0.000us       0.000us           700  
+triton_poi_fused__to_copy_clamp_div_expand_maximum_m...         0.90%       7.434ms         1.41%      11.694ms      20.882us       4.125ms         0.73%       4.125ms       7.366us           560  
+                                             aten::item         0.89%       7.389ms         1.14%       9.394ms       1.505us       0.000us         0.00%       0.000us       0.000us          6240  
+triton_poi_fused__to_copy_add_cat_cos_mul_neg_sin_sl...         0.79%       6.533ms         1.32%      10.896ms      19.458us      13.311ms         2.34%      13.311ms      23.770us           560  
+triton_poi_fused__to_copy_add_cat_cos_mul_neg_sin_sl...         0.72%       5.990ms         1.25%      10.328ms      18.444us       7.497ms         1.32%       7.497ms      13.388us           560  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.46%       3.813ms         0.70%       5.807ms      20.740us       3.728ms         0.66%       3.728ms      13.314us           280  
+                                        aten::transpose         0.44%       3.635ms         0.68%       5.651ms       2.523us       0.000us         0.00%       0.000us       0.000us          2240  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 827.040ms
+Self CUDA time total: 568.718ms
+
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                          aten::_int_mm         8.75%      72.353ms        12.09%      99.972ms      25.503us     234.408ms        41.22%     234.467ms      59.813us          3920  
+void cutlass::Kernel2<cutlass_75_tensorop_i8816gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us     234.408ms        41.22%     234.408ms      59.798us          3920  
+                     aten::_efficient_attention_forward         1.00%       8.306ms         2.86%      23.669ms      42.267us     178.987ms        31.47%     178.987ms     319.619us           560  
+fmha_cutlassF_f16_aligned_32x128_rf_sm75(PyTorchMemE...         0.00%       0.000us         0.00%       0.000us       0.000us     178.987ms        31.47%     178.987ms     319.619us           560  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ex...         1.53%      12.641ms         2.05%      16.977ms      30.317us      43.608ms         7.67%      43.608ms      77.871us           560  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ex...         0.00%       0.000us         0.00%       0.000us       0.000us      43.608ms         7.67%      43.608ms      77.871us           560  
+triton_red_fused__to_copy_mean_mm_mul_pow_rsqrt_slic...         0.04%     310.475us         0.06%     527.608us      26.380us      22.694ms         3.99%      22.694ms       1.135ms            20  
+triton_red_fused__to_copy_mean_mm_mul_pow_rsqrt_slic...         0.00%       0.000us         0.00%       0.000us       0.000us      22.694ms         3.99%      22.694ms       1.135ms            20  
+triton_poi_fused__scaled_dot_product_efficient_atten...         1.83%      15.096ms         2.75%      22.711ms      20.277us      14.863ms         2.61%      14.863ms      13.271us          1120  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us      14.863ms         2.61%      14.863ms      13.271us          1120  
+triton_poi_fused__to_copy_add_cat_cos_mul_neg_sin_sl...         0.79%       6.533ms         1.32%      10.896ms      19.458us      13.311ms         2.34%      13.311ms      23.770us           560  
+triton_poi_fused__to_copy_add_cat_cos_mul_neg_sin_sl...         0.00%       0.000us         0.00%       0.000us       0.000us      13.311ms         2.34%      13.311ms      23.770us           560  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ex...         1.63%      13.517ms         2.23%      18.424ms      34.118us      10.779ms         1.90%      10.799ms      19.998us           540  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ex...         0.00%       0.000us         0.00%       0.000us       0.000us      10.779ms         1.90%      10.779ms      19.962us           540  
+triton_per_fused__to_copy_clamp_div_expand_maximum_m...         1.13%       9.367ms         1.66%      13.762ms      24.575us      10.484ms         1.84%      10.484ms      18.721us           560  
+triton_per_fused__to_copy_clamp_div_expand_maximum_m...         0.00%       0.000us         0.00%       0.000us       0.000us      10.484ms         1.84%      10.484ms      18.721us           560  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ex...         1.55%      12.780ms         2.06%      17.056ms      32.800us       9.512ms         1.67%       9.512ms      18.293us           520  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ex...         0.00%       0.000us         0.00%       0.000us       0.000us       9.512ms         1.67%       9.512ms      18.293us           520  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ma...         1.15%       9.474ms         1.74%      14.359ms      25.641us       7.798ms         1.37%       7.798ms      13.926us           560  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ma...         0.00%       0.000us         0.00%       0.000us       0.000us       7.798ms         1.37%       7.798ms      13.926us           560  
+triton_poi_fused__to_copy_add_cat_cos_mul_neg_sin_sl...         0.72%       5.990ms         1.25%      10.328ms      18.444us       7.497ms         1.32%       7.497ms      13.388us           560  
+triton_poi_fused__to_copy_add_cat_cos_mul_neg_sin_sl...         0.00%       0.000us         0.00%       0.000us       0.000us       7.497ms         1.32%       7.497ms      13.388us           560  
+triton_per_fused__to_copy_clamp_div_expand_maximum_m...         1.11%       9.160ms         1.64%      13.524ms      24.150us       5.250ms         0.92%       5.250ms       9.375us           560  
+triton_per_fused__to_copy_clamp_div_expand_maximum_m...         0.00%       0.000us         0.00%       0.000us       0.000us       5.250ms         0.92%       5.250ms       9.375us           560  
+triton_poi_fused__to_copy_clamp_div_expand_maximum_m...         0.90%       7.434ms         1.41%      11.694ms      20.882us       4.125ms         0.73%       4.125ms       7.366us           560  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 827.040ms
+Self CUDA time total: 568.718ms

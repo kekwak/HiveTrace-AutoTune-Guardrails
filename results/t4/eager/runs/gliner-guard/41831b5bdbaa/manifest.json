@@ -1,0 +1,43 @@
+{
+  "spec": {
+    "name": "gliner-guard",
+    "adapter": "gliner",
+    "model_id": "hivetrace/gliner-guard-omni",
+    "revision": "main",
+    "dtype": "float16",
+    "quant": "torchao_fp8_dyn",
+    "batch_size": 32,
+    "max_length": 512,
+    "threshold": 0.5,
+    "task": "safety",
+    "labels": [
+      "safe",
+      "unsafe"
+    ]
+  },
+  "spec_hash": "41831b5bdbaa",
+  "environment": {
+    "python": "3.13.15",
+    "packages": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.20.1",
+      "torchao": "0.10.0",
+      "bitsandbytes": "0.50.2",
+      "gliner2": "2.1.0",
+      "numpy": "2.1.3",
+      "pandas": "2.3.3",
+      "huggingface_hub": "1.33.0"
+    },
+    "cpu_count": 4,
+    "device": "cuda:0",
+    "gpu": "Tesla T4",
+    "capability": "sm_75",
+    "gpu_memory_gb": 14.6,
+    "cuda_runtime": "12.8",
+    "driver": "580.178.04",
+    "device_class": "Tesla T4 (sm_75)"
+  },
+  "status": "unsupported",
+  "updated_at": "2026-11-05T01:28:11+00:00",
+  "error": "FP8 требует sm_89+, у GPU sm_75"
+}

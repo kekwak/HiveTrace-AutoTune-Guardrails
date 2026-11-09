@@ -1,0 +1,124 @@
+=== gliner-guard: эталон без квантования
+[transformers] You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__none__float16] 512/14180  (282.0 текстов/с)
+[gliner-guard__none__float16] 1024/14180  (377.0 текстов/с)
+[gliner-guard__none__float16] 1536/14180  (422.3 текстов/с)
+[gliner-guard__none__float16] 2048/14180  (443.2 текстов/с)
+[gliner-guard__none__float16] 2560/14180  (461.9 текстов/с)
+[gliner-guard__none__float16] 3072/14180  (474.2 текстов/с)
+[gliner-guard__none__float16] 3584/14180  (483.8 текстов/с)
+[gliner-guard__none__float16] 4096/14180  (488.0 текстов/с)
+[gliner-guard__none__float16] 4608/14180  (492.4 текстов/с)
+[gliner-guard__none__float16] 5120/14180  (496.3 текстов/с)
+[gliner-guard__none__float16] 5632/14180  (496.9 текстов/с)
+[gliner-guard__none__float16] 6144/14180  (497.6 текстов/с)
+[gliner-guard__none__float16] 6656/14180  (497.4 текстов/с)
+[gliner-guard__none__float16] 7168/14180  (497.8 текстов/с)
+[gliner-guard__none__float16] 7680/14180  (494.0 текстов/с)
+[gliner-guard__none__float16] 8192/14180  (490.9 текстов/с)
+[gliner-guard__none__float16] 8704/14180  (487.4 текстов/с)
+[gliner-guard__none__float16] 9216/14180  (483.8 текстов/с)
+[gliner-guard__none__float16] 9728/14180  (478.4 текстов/с)
+[gliner-guard__none__float16] 10240/14180  (471.7 текстов/с)
+[gliner-guard__none__float16] 10752/14180  (463.2 текстов/с)
+[gliner-guard__none__float16] 11264/14180  (449.6 текстов/с)
+[gliner-guard__none__float16] 11776/14180  (434.7 текстов/с)
+[gliner-guard__none__float16] 12288/14180  (411.8 текстов/с)
+[gliner-guard__none__float16] 12800/14180  (384.7 текстов/с)
+[gliner-guard__none__float16] 13312/14180  (352.7 текстов/с)
+[gliner-guard__none__float16] 13824/14180  (310.4 текстов/с)
+[gliner-guard__none__float16] 14180/14180  (252.9 текстов/с)
+         aggregate    fnr    fpr  macro_f1
+            pooled 0.1379 0.2748    0.7934
+macro_by_benchmark 0.1251 0.2830    0.7414
+отчёт: /kaggle/working/guard-eval/reports/gliner-guard__none__float16/summary.md
+=== gliner-guard: torchao_int8_dyn
+[transformers] You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__torchao_int8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/gliner-guard/7b30f423d82f
+[gliner-guard__torchao_int8_dyn__float16] 512/14180  (102.3 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 1024/14180  (111.9 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 1536/14180  (115.6 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 2048/14180  (118.4 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 2560/14180  (118.9 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 3072/14180  (119.9 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 3584/14180  (120.6 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 4096/14180  (121.1 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 4608/14180  (121.3 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 5120/14180  (121.4 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 5632/14180  (121.8 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 6144/14180  (122.0 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 6656/14180  (122.2 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 7168/14180  (122.2 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 7680/14180  (122.2 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 8192/14180  (122.1 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 8704/14180  (121.7 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 9216/14180  (121.4 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 9728/14180  (121.0 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 10240/14180  (120.3 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 10752/14180  (119.5 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 11264/14180  (118.2 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 11776/14180  (116.4 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 12288/14180  (113.6 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 12800/14180  (110.1 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 13312/14180  (105.5 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 13824/14180  (98.9 текстов/с)
+[gliner-guard__torchao_int8_dyn__float16] 14180/14180  (89.3 текстов/с)
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0151        0.0130        0.0170     0.0059    -0.0066          0.0004
+macro_by_benchmark     0.0124        0.0101        0.0151     0.0039    -0.0068          0.0025
+отчёт: /kaggle/working/guard-eval/reports/gliner-guard__none__float16__vs__gliner-guard__torchao_int8_dyn__float16/summary.md
+=== gliner-guard: torchao_fp8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__torchao_fp8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/gliner-guard/41831b5bdbaa
+[gliner-guard__torchao_fp8_dyn__float16] метод не поддерживается: FP8 требует sm_89+, у GPU sm_75
+gliner-guard__torchao_fp8_dyn__float16: прогон не выполнен (FP8 требует sm_89+, у GPU sm_75) — сравнение невозможно
+!!! gliner-guard / torchao_fp8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== gliner-guard: bnb_int8
+[transformers] You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__bnb_int8__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/gliner-guard/02b6fa9bb917
+[gliner-guard__bnb_int8__float16] 512/14180  (168.2 текстов/с)
+[gliner-guard__bnb_int8__float16] 1024/14180  (200.7 текстов/с)
+[gliner-guard__bnb_int8__float16] 1536/14180  (213.8 текстов/с)
+[gliner-guard__bnb_int8__float16] 2048/14180  (222.5 текстов/с)
+[gliner-guard__bnb_int8__float16] 2560/14180  (225.3 текстов/с)
+[gliner-guard__bnb_int8__float16] 3072/14180  (228.0 текстов/с)
+[gliner-guard__bnb_int8__float16] 3584/14180  (229.1 текстов/с)
+[gliner-guard__bnb_int8__float16] 4096/14180  (229.6 текстов/с)
+[gliner-guard__bnb_int8__float16] 4608/14180  (229.9 текстов/с)
+[gliner-guard__bnb_int8__float16] 5120/14180  (230.4 текстов/с)
+[gliner-guard__bnb_int8__float16] 5632/14180  (230.2 текстов/с)
+[gliner-guard__bnb_int8__float16] 6144/14180  (229.8 текстов/с)
+[gliner-guard__bnb_int8__float16] 6656/14180  (229.2 текстов/с)
+[gliner-guard__bnb_int8__float16] 7168/14180  (228.0 текстов/с)
+[gliner-guard__bnb_int8__float16] 7680/14180  (227.0 текстов/с)
+[gliner-guard__bnb_int8__float16] 8192/14180  (226.3 текстов/с)
+[gliner-guard__bnb_int8__float16] 8704/14180  (224.8 текстов/с)
+[gliner-guard__bnb_int8__float16] 9216/14180  (223.0 текстов/с)
+[gliner-guard__bnb_int8__float16] 9728/14180  (221.5 текстов/с)
+[gliner-guard__bnb_int8__float16] 10240/14180  (219.7 текстов/с)
+[gliner-guard__bnb_int8__float16] 10752/14180  (216.9 текстов/с)
+[gliner-guard__bnb_int8__float16] 11264/14180  (213.6 текстов/с)
+[gliner-guard__bnb_int8__float16] 11776/14180  (209.2 текстов/с)
+[gliner-guard__bnb_int8__float16] 12288/14180  (201.7 текстов/с)
+[gliner-guard__bnb_int8__float16] 12800/14180  (193.0 текстов/с)
+[gliner-guard__bnb_int8__float16] 13312/14180  (182.0 текстов/с)
+[gliner-guard__bnb_int8__float16] 13824/14180  (166.6 текстов/с)
+[gliner-guard__bnb_int8__float16] 14180/14180  (144.7 текстов/с)
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0105        0.0089        0.0123     0.0070    -0.0064         -0.0002
+macro_by_benchmark     0.0097        0.0077        0.0123     0.0049    -0.0094          0.0043
+отчёт: /kaggle/working/guard-eval/reports/gliner-guard__none__float16__vs__gliner-guard__bnb_int8__float16/summary.md
+сравнений: 3; сводка: /kaggle/working/guard-eval/reports/SUMMARY.md

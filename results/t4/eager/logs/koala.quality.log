@@ -1,0 +1,124 @@
+=== koala: эталон без квантования
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (513 > 512). Running this sequence through the model will result in indexing errors
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__none__float16] 512/14180  (222.7 текстов/с)
+[koala__none__float16] 1024/14180  (350.9 текстов/с)
+[koala__none__float16] 1536/14180  (422.0 текстов/с)
+[koala__none__float16] 2048/14180  (464.9 текстов/с)
+[koala__none__float16] 2560/14180  (489.9 текстов/с)
+[koala__none__float16] 3072/14180  (504.3 текстов/с)
+[koala__none__float16] 3584/14180  (509.9 текстов/с)
+[koala__none__float16] 4096/14180  (512.6 текстов/с)
+[koala__none__float16] 4608/14180  (511.8 текстов/с)
+[koala__none__float16] 5120/14180  (506.9 текстов/с)
+[koala__none__float16] 5632/14180  (501.7 текстов/с)
+[koala__none__float16] 6144/14180  (487.8 текстов/с)
+[koala__none__float16] 6656/14180  (479.5 текстов/с)
+[koala__none__float16] 7168/14180  (466.6 текстов/с)
+[koala__none__float16] 7680/14180  (452.4 текстов/с)
+[koala__none__float16] 8192/14180  (438.5 текстов/с)
+[koala__none__float16] 8704/14180  (423.8 текстов/с)
+[koala__none__float16] 9216/14180  (407.0 текстов/с)
+[koala__none__float16] 9728/14180  (388.8 текстов/с)
+[koala__none__float16] 10240/14180  (369.0 текстов/с)
+[koala__none__float16] 10752/14180  (344.3 текстов/с)
+[koala__none__float16] 11264/14180  (315.3 текстов/с)
+[koala__none__float16] 11776/14180  (284.3 текстов/с)
+[koala__none__float16] 12288/14180  (245.0 текстов/с)
+[koala__none__float16] 12800/14180  (212.4 текстов/с)
+[koala__none__float16] 13312/14180  (187.2 текстов/с)
+[koala__none__float16] 13824/14180  (167.9 текстов/с)
+[koala__none__float16] 14180/14180  (156.4 текстов/с)
+         aggregate    fnr    fpr  macro_f1
+            pooled 0.9877 0.0007    0.3430
+macro_by_benchmark 0.9926 0.0005    0.3981
+отчёт: /kaggle/working/guard-eval/reports/koala__none__float16/summary.md
+=== koala: torchao_int8_dyn
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (513 > 512). Running this sequence through the model will result in indexing errors
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__torchao_int8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/koala/7d2fcf428563
+[koala__torchao_int8_dyn__float16] 512/14180  (134.9 текстов/с)
+[koala__torchao_int8_dyn__float16] 1024/14180  (150.7 текстов/с)
+[koala__torchao_int8_dyn__float16] 1536/14180  (155.5 текстов/с)
+[koala__torchao_int8_dyn__float16] 2048/14180  (157.4 текстов/с)
+[koala__torchao_int8_dyn__float16] 2560/14180  (158.2 текстов/с)
+[koala__torchao_int8_dyn__float16] 3072/14180  (157.9 текстов/с)
+[koala__torchao_int8_dyn__float16] 3584/14180  (157.6 текстов/с)
+[koala__torchao_int8_dyn__float16] 4096/14180  (157.0 текстов/с)
+[koala__torchao_int8_dyn__float16] 4608/14180  (156.1 текстов/с)
+[koala__torchao_int8_dyn__float16] 5120/14180  (154.7 текстов/с)
+[koala__torchao_int8_dyn__float16] 5632/14180  (153.4 текстов/с)
+[koala__torchao_int8_dyn__float16] 6144/14180  (150.8 текстов/с)
+[koala__torchao_int8_dyn__float16] 6656/14180  (149.3 текстов/с)
+[koala__torchao_int8_dyn__float16] 7168/14180  (146.8 текстов/с)
+[koala__torchao_int8_dyn__float16] 7680/14180  (144.2 текстов/с)
+[koala__torchao_int8_dyn__float16] 8192/14180  (141.4 текстов/с)
+[koala__torchao_int8_dyn__float16] 8704/14180  (138.6 текстов/с)
+[koala__torchao_int8_dyn__float16] 9216/14180  (135.4 текстов/с)
+[koala__torchao_int8_dyn__float16] 9728/14180  (131.8 текстов/с)
+[koala__torchao_int8_dyn__float16] 10240/14180  (127.8 текстов/с)
+[koala__torchao_int8_dyn__float16] 10752/14180  (122.5 текстов/с)
+[koala__torchao_int8_dyn__float16] 11264/14180  (116.2 текстов/с)
+[koala__torchao_int8_dyn__float16] 11776/14180  (109.0 текстов/с)
+[koala__torchao_int8_dyn__float16] 12288/14180  (99.2 текстов/с)
+[koala__torchao_int8_dyn__float16] 12800/14180  (90.3 текстов/с)
+[koala__torchao_int8_dyn__float16] 13312/14180  (82.8 текстов/с)
+[koala__torchao_int8_dyn__float16] 13824/14180  (76.8 текстов/с)
+[koala__torchao_int8_dyn__float16] 14180/14180  (73.2 текстов/с)
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0007        0.0004        0.0013     0.0003     0.0006         -0.0004
+macro_by_benchmark     0.0005        0.0002        0.0009     0.0001     0.0004         -0.0001
+отчёт: /kaggle/working/guard-eval/reports/koala__none__float16__vs__koala__torchao_int8_dyn__float16/summary.md
+=== koala: torchao_fp8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__torchao_fp8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/koala/2ec3b5cc01d0
+[koala__torchao_fp8_dyn__float16] метод не поддерживается: FP8 требует sm_89+, у GPU sm_75
+koala__torchao_fp8_dyn__float16: прогон не выполнен (FP8 требует sm_89+, у GPU sm_75) — сравнение невозможно
+!!! koala / torchao_fp8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== koala: bnb_int8
+/kaggle/working/guard-eval/guard_eval/cache.py:41: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  merged = pd.concat([self.predictions(), new], ignore_index=True).drop_duplicates("text_hash", keep="last")
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (513 > 512). Running this sequence through the model will result in indexing errors
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[koala__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/koala/e559e0ea234a
+[koala__bnb_int8__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/koala/8a045250cd4d
+[koala__bnb_int8__float16] 512/14180  (220.0 текстов/с)
+[koala__bnb_int8__float16] 1024/14180  (274.4 текстов/с)
+[koala__bnb_int8__float16] 1536/14180  (293.8 текстов/с)
+[koala__bnb_int8__float16] 2048/14180  (302.6 текстов/с)
+[koala__bnb_int8__float16] 2560/14180  (304.8 текстов/с)
+[koala__bnb_int8__float16] 3072/14180  (305.2 текстов/с)
+[koala__bnb_int8__float16] 3584/14180  (302.8 текстов/с)
+[koala__bnb_int8__float16] 4096/14180  (300.5 текстов/с)
+[koala__bnb_int8__float16] 4608/14180  (297.5 текстов/с)
+[koala__bnb_int8__float16] 5120/14180  (293.0 текстов/с)
+[koala__bnb_int8__float16] 5632/14180  (289.0 текстов/с)
+[koala__bnb_int8__float16] 6144/14180  (280.8 текстов/с)
+[koala__bnb_int8__float16] 6656/14180  (275.9 текстов/с)
+[koala__bnb_int8__float16] 7168/14180  (268.9 текстов/с)
+[koala__bnb_int8__float16] 7680/14180  (261.4 текстов/с)
+[koala__bnb_int8__float16] 8192/14180  (253.9 текстов/с)
+[koala__bnb_int8__float16] 8704/14180  (246.1 текстов/с)
+[koala__bnb_int8__float16] 9216/14180  (237.5 текстов/с)
+[koala__bnb_int8__float16] 9728/14180  (228.2 текстов/с)
+[koala__bnb_int8__float16] 10240/14180  (218.3 текстов/с)
+[koala__bnb_int8__float16] 10752/14180  (205.8 текстов/с)
+[koala__bnb_int8__float16] 11264/14180  (191.4 текстов/с)
+[koala__bnb_int8__float16] 11776/14180  (175.9 текстов/с)
+[koala__bnb_int8__float16] 12288/14180  (155.7 текстов/с)
+[koala__bnb_int8__float16] 12800/14180  (138.8 текстов/с)
+[koala__bnb_int8__float16] 13312/14180  (125.1 текстов/с)
+[koala__bnb_int8__float16] 13824/14180  (114.4 текстов/с)
+[koala__bnb_int8__float16] 14180/14180  (108.0 текстов/с)
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0004        0.0001        0.0008     0.0006     0.0003         -0.0007
+macro_by_benchmark     0.0004        0.0001        0.0006     0.0003     0.0002         -0.0001
+отчёт: /kaggle/working/guard-eval/reports/koala__none__float16__vs__koala__bnb_int8__float16/summary.md
+сравнений: 4; сводка: /kaggle/working/guard-eval/reports/SUMMARY.md

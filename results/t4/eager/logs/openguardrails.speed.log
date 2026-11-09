@@ -1,0 +1,58 @@
+=== openguardrails: эталон без квантования
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__none__float16] замер скорости
+  legacy_short     p50   243.11 мс   p95   255.37 мс
+  varying_short    p50   241.50 мс   p95   249.79 мс
+  legacy_medium    p50   305.18 мс   p95   309.68 мс
+  varying_medium   p50   307.07 мс   p95   312.39 мс
+  legacy_long      p50   575.78 мс   p95   581.97 мс
+  varying_long     p50   575.78 мс   p95   583.84 мс
+  mixed            p50   308.78 мс   p95   577.36 мс
+         aggregate    fnr    fpr  macro_f1
+            pooled 0.2649 0.1633    0.7847
+macro_by_benchmark 0.2285 0.2010    0.7899
+отчёт: /kaggle/working/guard-eval/reports/openguardrails__none__float16/summary.md
+=== openguardrails: torchao_int8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__torchao_int8_dyn__float16] нужно посчитать 1 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/b655dc21ad34
+[openguardrails__torchao_int8_dyn__float16] 1/1  (0.1 текстов/с)
+[openguardrails__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82/speed.json
+[openguardrails__torchao_int8_dyn__float16] замер скорости
+  legacy_short     p50   726.68 мс   p95   732.01 мс
+  varying_short    p50   727.49 мс   p95   733.77 мс
+  legacy_medium    p50   822.97 мс   p95   832.86 мс
+  varying_medium   p50   825.47 мс   p95   835.22 мс
+  legacy_long      p50  1144.64 мс   p95  1152.70 мс
+  varying_long     p50  1146.73 мс   p95  1158.12 мс
+  mixed            p50   828.32 мс   p95  1150.63 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0262        0.0237        0.0286    -0.0181     0.0133          0.0029
+macro_by_benchmark     0.0303        0.0249        0.0354    -0.0156     0.0110         -0.0038
+отчёт: /kaggle/working/guard-eval/reports/openguardrails__none__float16__vs__openguardrails__torchao_int8_dyn__float16/summary.md
+=== openguardrails: torchao_fp8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__torchao_fp8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/openguardrails/27d2bdcbda3e
+[openguardrails__torchao_fp8_dyn__float16] метод не поддерживается: FP8 требует sm_89+, у GPU sm_75
+openguardrails__torchao_fp8_dyn__float16: прогон не выполнен (FP8 требует sm_89+, у GPU sm_75) — сравнение невозможно
+!!! openguardrails / torchao_fp8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== openguardrails: bnb_int8
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[openguardrails__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82
+[openguardrails__bnb_int8__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/openguardrails/1b5ae80d6ea5
+[openguardrails__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/openguardrails/6de64f2ade82/speed.json
+[openguardrails__bnb_int8__float16] замер скорости
+  legacy_short     p50   296.34 мс   p95   304.93 мс
+  varying_short    p50   300.05 мс   p95   312.38 мс
+  legacy_medium    p50   358.16 мс   p95   364.83 мс
+  varying_medium   p50   362.93 мс   p95   372.33 мс
+  legacy_long      p50   578.72 мс   p95   584.31 мс
+  varying_long     p50   584.24 мс   p95   595.16 мс
+  mixed            p50   367.18 мс   p95   591.18 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0195        0.0174        0.0217    -0.0088     0.0037          0.0028
+macro_by_benchmark     0.0221        0.0178        0.0269    -0.0085     0.0030          0.0002
+отчёт: /kaggle/working/guard-eval/reports/openguardrails__none__float16__vs__openguardrails__bnb_int8__float16/summary.md
+сравнений: 8; сводка: /kaggle/working/guard-eval/reports/SUMMARY.md

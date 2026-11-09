@@ -1,0 +1,63 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                               TorchDynamo Cache Lookup        13.48%     156.967ms        14.26%     166.140ms      55.013us       0.000us         0.00%       0.000us       0.000us          3020  
+                            Torch-Compiled Region: 11/0         9.44%     109.913ms        45.84%     533.976ms       2.225ms       0.000us         0.00%      64.330ms     268.042us           240  
+                                         cuLaunchKernel         6.17%      71.810ms         6.22%      72.453ms      11.464us       0.000us         0.00%       0.000us       0.000us          6320  
+## Call CompiledFxGraph fddip743gtuhx5uj7clt3w7gdoqb...         4.23%      49.326ms         8.57%      99.854ms     416.060us       0.000us         0.00%      31.193ms     129.970us           240  
+## Call CompiledFxGraph f2si4gu5rpctii3smafxcptvuddx...         3.83%      44.601ms         7.48%      87.118ms     362.992us       0.000us         0.00%      53.253ms     221.889us           240  
+                                          aten::_int_mm         3.73%      43.479ms         4.99%      58.148ms      40.381us      82.166ms        46.98%      82.166ms      57.060us          1440  
+                            Torch-Compiled Region: 10/0         3.52%      41.038ms        67.06%     781.117ms       3.255ms       0.000us         0.00%     107.821ms     449.256us           240  
+                                              aten::bmm         3.29%      38.299ms         4.27%      49.692ms      51.763us      28.629ms        16.37%      28.629ms      29.822us           960  
+                            Torch-Compiled Region: 16/0         3.26%      37.963ms        11.34%     132.041ms     550.173us       0.000us         0.00%      53.253ms     221.889us           240  
+                            Torch-Compiled Region: 13/0         2.82%      32.867ms         4.34%      50.526ms     105.263us       0.000us         0.00%       0.000us       0.000us           480  
+                            Torch-Compiled Region: 15/0         2.65%      30.842ms         8.44%      98.266ms     409.440us       0.000us         0.00%      12.285ms      51.188us           240  
+## Call CompiledFxGraph f3s2ufpb7apcutrolofgmrhlfxrs...         2.64%      30.734ms         5.20%      60.534ms     252.225us       0.000us         0.00%      12.285ms      51.188us           240  
+                                      Pregraph bytecode         2.63%      30.593ms         2.70%      31.472ms      14.050us       0.000us         0.00%       0.000us       0.000us          2240  
+## Call CompiledFxGraph fvvfjxfyfcytl5qoxwlfx7wvecl5...         2.55%      29.718ms         4.81%      56.049ms     233.539us       0.000us         0.00%      14.327ms      59.694us           240  
+## Call CompiledFxGraph f7dqxjaq45mlczafuvtbwvrs2fzp...         2.53%      29.427ms         4.80%      55.885ms     232.852us       0.000us         0.00%      12.298ms      51.243us           240  
+## Call CompiledFxGraph f5uwi5a7cpxp4zavu4o4xv46was4...         2.52%      29.303ms         4.77%      55.584ms     231.602us       0.000us         0.00%      14.279ms      59.496us           240  
+                            Torch-Compiled Region: 12/1         2.41%      28.126ms         7.69%      89.567ms     373.196us       0.000us         0.00%      14.327ms      59.694us           240  
+                            Torch-Compiled Region: 12/0         2.37%      27.615ms         7.55%      87.928ms     366.367us       0.000us         0.00%      14.279ms      59.496us           240  
+                                       cudaLaunchKernel         2.35%      27.405ms         2.35%      27.405ms      10.705us       0.000us         0.00%       0.000us       0.000us          2560  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ma...         2.16%      25.135ms         4.00%      46.562ms      38.801us      11.988ms         6.85%      11.988ms       9.990us          1200  
+                 AOTDispatcher Runtime Wrapper Prologue         1.67%      19.506ms         1.67%      19.506ms       8.708us       0.000us         0.00%       0.000us       0.000us          2240  
+                            Torch-Compiled Region: 14/0         1.28%      14.913ms         6.58%      76.673ms     319.470us       0.000us         0.00%      12.298ms      51.243us           240  
+                                              aten::add         1.01%      11.807ms         1.55%      18.021ms      18.772us       2.864ms         1.64%       2.864ms       2.983us           960  
+                                           aten::gather         0.88%      10.244ms         1.39%      16.195ms      33.740us       6.929ms         3.96%       6.929ms      14.435us           480  
+triton_poi_fused__to_copy_clamp_div_expand_maximum_m...         0.75%       8.680ms         1.14%      13.247ms      27.599us       4.644ms         2.66%       4.644ms       9.675us           480  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 1.165s
+Self CUDA time total: 174.914ms
+
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                          aten::_int_mm         3.73%      43.479ms         4.99%      58.148ms      40.381us      82.166ms        46.98%      82.166ms      57.060us          1440  
+void cutlass::Kernel2<cutlass_75_tensorop_i8816gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us      82.166ms        46.98%      82.166ms      57.060us          1440  
+                                              aten::bmm         3.29%      38.299ms         4.27%      49.692ms      51.763us      28.629ms        16.37%      28.629ms      29.822us           960  
+void cutlass::Kernel2<cutlass_75_tensorop_f16_s1688g...         0.00%       0.000us         0.00%       0.000us       0.000us      24.746ms        14.15%      24.746ms      34.369us           720  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ma...         0.00%       0.000us         0.00%       0.000us       0.000us      11.995ms         6.86%      11.995ms       9.996us          1200  
+triton_per_fused__to_copy_add_amax_amin_clamp_div_ma...         2.16%      25.135ms         4.00%      46.562ms      38.801us      11.988ms         6.85%      11.988ms       9.990us          1200  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ex...         0.49%       5.710ms         0.69%       8.079ms      33.664us       8.538ms         4.88%       8.538ms      35.574us           240  
+triton_red_fused__to_copy_add_amax_amin_clamp_div_ex...         0.00%       0.000us         0.00%       0.000us       0.000us       8.538ms         4.88%       8.538ms      35.574us           240  
+                                           aten::gather         0.88%      10.244ms         1.39%      16.195ms      33.740us       6.929ms         3.96%       6.929ms      14.435us           480  
+void at::native::_scatter_gather_elementwise_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us       6.929ms         3.96%       6.929ms      14.435us           480  
+triton_red_fused__softmax__to_copy_add_bitwise_not_e...         0.46%       5.316ms         0.79%       9.221ms      38.420us       6.016ms         3.44%       6.016ms      25.066us           240  
+triton_red_fused__softmax__to_copy_add_bitwise_not_e...         0.00%       0.000us         0.00%       0.000us       0.000us       6.016ms         3.44%       6.016ms      25.066us           240  
+triton_poi_fused__to_copy_clamp_div_expand_maximum_m...         0.75%       8.680ms         1.14%      13.247ms      27.599us       4.644ms         2.66%       4.644ms       9.675us           480  
+triton_poi_fused__to_copy_clamp_div_expand_maximum_m...         0.00%       0.000us         0.00%       0.000us       0.000us       4.644ms         2.66%       4.644ms       9.675us           480  
+                                             aten::add_         0.25%       2.867ms         0.44%       5.101ms      21.255us       4.132ms         2.36%       4.132ms      17.218us           240  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       4.132ms         2.36%       4.132ms      17.218us           240  
+void cutlass::Kernel2<cutlass_75_tensorop_f16_s1688g...         0.00%       0.000us         0.00%       0.000us       0.000us       3.883ms         2.22%       3.883ms      16.180us           240  
+                                              aten::add         1.01%      11.807ms         1.55%      18.021ms      18.772us       2.864ms         1.64%       2.864ms       2.983us           960  
+                  triton_poi_fused_clone_permute_view_1         0.32%       3.740ms         0.52%       6.029ms      25.119us       2.399ms         1.37%       2.399ms       9.997us           240  
+                  triton_poi_fused_clone_permute_view_1         0.00%       0.000us         0.00%       0.000us       0.000us       2.399ms         1.37%       2.399ms       9.997us           240  
+                               triton_poi_fused_clone_2         0.23%       2.711ms         0.40%       4.669ms      19.452us       2.384ms         1.36%       2.384ms       9.932us           240  
+                               triton_poi_fused_clone_2         0.00%       0.000us         0.00%       0.000us       0.000us       2.384ms         1.36%       2.384ms       9.932us           240  
+triton_per_fused__to_copy_add_clamp_div_expand_maxim...         0.47%       5.427ms         0.66%       7.657ms      31.905us       2.224ms         1.27%       2.224ms       9.266us           240  
+triton_per_fused__to_copy_add_clamp_div_expand_maxim...         0.00%       0.000us         0.00%       0.000us       0.000us       2.224ms         1.27%       2.224ms       9.266us           240  
+triton_per_fused__to_copy_add_clamp_div_expand_maxim...         0.53%       6.231ms         0.74%       8.584ms      35.767us       2.172ms         1.24%       2.172ms       9.049us           240  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 1.165s
+Self CUDA time total: 174.914ms

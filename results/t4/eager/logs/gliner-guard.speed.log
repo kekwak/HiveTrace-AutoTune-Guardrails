@@ -1,0 +1,60 @@
+=== gliner-guard: эталон без квантования
+[transformers] You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__none__float16] замер скорости
+  legacy_short     p50    22.68 мс   p95    24.58 мс
+  varying_short    p50    23.12 мс   p95    25.53 мс
+  legacy_medium    p50    23.73 мс   p95    25.44 мс
+  varying_medium   p50    23.61 мс   p95    25.55 мс
+  legacy_long      p50    26.18 мс   p95    27.97 мс
+  varying_long     p50    26.31 мс   p95    28.10 мс
+  mixed            p50    24.34 мс   p95    27.56 мс
+         aggregate    fnr    fpr  macro_f1
+            pooled 0.1379 0.2748    0.7934
+macro_by_benchmark 0.1251 0.2830    0.7414
+отчёт: /kaggle/working/guard-eval/reports/gliner-guard__none__float16/summary.md
+=== gliner-guard: torchao_int8_dyn
+[transformers] You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__torchao_int8_dyn__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/7b30f423d82f
+[gliner-guard__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8/speed.json
+[gliner-guard__torchao_int8_dyn__float16] замер скорости
+  legacy_short     p50   206.81 мс   p95   214.53 мс
+  varying_short    p50   207.99 мс   p95   215.67 мс
+  legacy_medium    p50   208.99 мс   p95   217.83 мс
+  varying_medium   p50   208.65 мс   p95   220.40 мс
+  legacy_long      p50   213.78 мс   p95   221.84 мс
+  varying_long     p50   212.86 мс   p95   222.08 мс
+  mixed            p50   209.13 мс   p95   218.27 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0151        0.0130        0.0170     0.0059    -0.0066          0.0004
+macro_by_benchmark     0.0124        0.0101        0.0151     0.0039    -0.0068          0.0025
+отчёт: /kaggle/working/guard-eval/reports/gliner-guard__none__float16__vs__gliner-guard__torchao_int8_dyn__float16/summary.md
+=== gliner-guard: torchao_fp8_dyn
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__torchao_fp8_dyn__float16] нужно посчитать 14180 текстов → /kaggle/working/guard-eval/results/quality/runs/gliner-guard/41831b5bdbaa
+[gliner-guard__torchao_fp8_dyn__float16] метод не поддерживается: FP8 требует sm_89+, у GPU sm_75
+gliner-guard__torchao_fp8_dyn__float16: прогон не выполнен (FP8 требует sm_89+, у GPU sm_75) — сравнение невозможно
+!!! gliner-guard / torchao_fp8_dyn: не выполнен (ошибка или метод не поддерживается) — продолжаю
+=== gliner-guard: bnb_int8
+[transformers] You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+датасет: {'repo': 'AutotuneGuardrails/tails', 'revision': '8600f954140dc3b06e5a794a4f26e728c934838e', 'rows': 14249, 'benchmarks': ['csrt', 'hivetrace_input', 'hivetrace_input_robust', 'multijail', 'rtplx']}
+[gliner-guard__none__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8
+[gliner-guard__bnb_int8__float16] все 14180 текстов уже посчитаны: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/02b6fa9bb917
+[gliner-guard__none__float16] скорость уже измерена: /kaggle/working/guard-eval/results/quality/runs/gliner-guard/629c532e08d8/speed.json
+[gliner-guard__bnb_int8__float16] замер скорости
+  legacy_short     p50    83.00 мс   p95    85.81 мс
+  varying_short    p50    82.83 мс   p95    87.38 мс
+  legacy_medium    p50    85.04 мс   p95    89.52 мс
+  varying_medium   p50    84.12 мс   p95    88.91 мс
+  legacy_long      p50    91.37 мс   p95    94.50 мс
+  varying_long     p50    89.06 мс   p95    93.12 мс
+  mixed            p50    85.32 мс   p95    95.07 мс
+         aggregate  flip_rate  flip_rate_lo  flip_rate_hi  delta_fnr  delta_fpr  delta_macro_f1
+            pooled     0.0105        0.0089        0.0123     0.0070    -0.0064         -0.0002
+macro_by_benchmark     0.0097        0.0077        0.0123     0.0049    -0.0094          0.0043
+отчёт: /kaggle/working/guard-eval/reports/gliner-guard__none__float16__vs__gliner-guard__bnb_int8__float16/summary.md
+сравнений: 7; сводка: /kaggle/working/guard-eval/reports/SUMMARY.md
