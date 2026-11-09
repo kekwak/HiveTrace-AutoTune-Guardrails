@@ -1,0 +1,11 @@
+name: koala
+adapter: seq_cls
+model_id: KoalaAI/Text-Moderation
+revision: main
+dtype: auto            # bf16 на sm_80+, fp16 на T4, fp32 на CPU
+quant: none
+batch_size: 32
+max_length: 512
+threshold: 0.5
+# классы, которые считаются безопасными; P(unsafe) = 1 - сумма их вероятностей
+safe_labels: [OK]

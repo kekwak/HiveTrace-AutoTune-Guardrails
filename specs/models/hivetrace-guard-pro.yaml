@@ -1,0 +1,16 @@
+name: hivetrace-guard-pro
+adapter: causal_verdict
+model_id: hivetrace/HiveTraceGuard-Pro
+revision: main
+dtype: auto            # bf16 на sm_80+, fp16 на T4, fp32 на CPU
+quant: none
+batch_size: 16
+max_length: 4096
+threshold: 0.5
+prompt:
+  kind: chat_template          # шаблон модели уже добавляет политику и пустой <think>
+  add_generation_prompt: false
+verdict:
+  prefix: ""
+  safe: safe
+  unsafe: unsafe

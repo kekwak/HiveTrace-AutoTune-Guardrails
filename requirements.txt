@@ -1,0 +1,14 @@
+# torch ставится образом RunPod; для RTX 5090 (sm_120) нужен torch >= 2.7 с CUDA 12.8+.
+# Фактические версии всех пакетов записываются в manifest.json каждого прогона.
+transformers==5.20.1
+torchao            # версия должна соответствовать установленному torch
+bitsandbytes>=0.46
+gliner2==2.1.0
+sentencepiece      # токенизатор WildGuard (только tokenizer.model)
+protobuf
+huggingface_hub
+pandas
+pyarrow
+pyyaml
+numpy
+pytest

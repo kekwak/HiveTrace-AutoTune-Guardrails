@@ -1,0 +1,19 @@
+name: openguardrails
+adapter: causal_verdict
+model_id: openguardrails/OpenGuardrails-Text-4B-0124
+revision: main
+dtype: auto
+quant: none
+batch_size: 8
+max_length: 4096
+threshold: 0.5
+prompt:
+  kind: chat_template
+  # опубликованный шаблон 0124 не содержит инструкции классификатора, и с ним вердикты неверные;
+  # шаблон версии 2510 заворачивает текст в инструкцию (категории S1–S19) и добавляет пустой <think>
+  chat_template_from: {repo: openguardrails/OpenGuardrails-Text-2510, file: chat_template.jinja}
+  add_generation_prompt: true
+verdict:
+  prefix: ""
+  safe: safe
+  unsafe: unsafe

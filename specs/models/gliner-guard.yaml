@@ -1,0 +1,11 @@
+name: gliner-guard
+adapter: gliner
+model_id: hivetrace/gliner-guard-omni
+revision: main
+dtype: auto            # bf16 на sm_80+, fp16 на T4, fp32 на CPU
+quant: none
+batch_size: 32
+max_length: 512
+threshold: 0.5
+task: safety
+labels: [safe, unsafe]
