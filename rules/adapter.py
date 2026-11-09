@@ -17,11 +17,13 @@ from u1_benchmark.adapters import Builtin, parse_generated
 from u1_benchmark.models import quiet_dispatch
 
 BUCKETS = [64, 128, 256, 512, 1024, 2048, 4096]
-ORDER = ["c13", "c4", "c1", "c12", "c8", "c3", "c2", "u3", "u4", "u1"]
+ORDER = ["c13", "c4", "c7", "c1", "c12", "c8", "c9", "c3", "c2", "u3", "u4", "u1"]
 DEC = ("hive", "halo", "shield")
 GROUPS = [("q_proj", "k_proj", "v_proj"), ("gate_proj", "up_proj"), ("query_proj", "key_proj", "value_proj"),
           ("in_proj_qkv", "in_proj_z", "in_proj_b", "in_proj_a")]
 REL = ("query_proj", "key_proj", "pos_key_proj", "pos_query_proj", "pos_proj", "pos_q_proj")
+SEQ = ("input_ids", "attention_mask")
+LAYA = SEQ + ("marker_pos", "marker_mask", "qtype")
 
 
 class Skip(Exception):
@@ -39,8 +41,9 @@ class Entry(nn.Module):
 
 class Rules(Builtin):
     def __init__(self, model, spec, directory, input_version):
-        super().__init__(model, {"backend": "eager"}, directory, input_version)
         self.rules = spec["options"]["rules"]
+        fla = model == "halo" and "c7" in self.rules
+        super().__init__(model, {"backend": "fla" if fla else "eager"}, directory, input_version)
         self.compiles, self.prefix = 0, None
         self.math, self.fast, self.short_head, self.drop_mask = True, False, False, False
         self.setup()
@@ -77,6 +80,10 @@ class Rules(Builtin):
             self.inner = lambda x: forward(**x).last_hidden_state
             m.encoder.forward = lambda input_ids=None, attention_mask=None, **kw: BaseModelOutput(
                 last_hidden_state=self.entry(input_ids=input_ids, attention_mask=attention_mask))
+        elif self.name == "laya":
+            forward = m.forward
+            self.inner = lambda x: forward(**x)
+            m.forward = lambda *a: self.entry(**dict(zip(LAYA, a)))
         else:
             self.inner = lambda x: m(**x).logits[0]
         self.entry = Entry(self.route)
@@ -91,6 +98,8 @@ class Rules(Builtin):
             return quiet_dispatch(self.legacy.qwen, self.legacy.quiet_implementations)
         if self.name in ("hive", "open") and self.math:
             return sdpa_kernel(SDPBackend.MATH)
+        if self.name == "laya":
+            return th.autocast("cuda", dtype=self.agent.dtype, cache_enabled=False)
         return nullcontext()
 
     def core(self, x):
@@ -118,7 +127,7 @@ class Rules(Builtin):
         return getattr(self.legacy, "compile_count", 0) + self.compiles
 
     def request(self, text):
-        if self.name == "gliner" or self.name in ("hive", "open") and not self.fast:
+        if self.name in ("gliner", "laya") or self.name in ("hive", "open") and not self.fast:
             return super().request(text)
         if self.name == "open":
             return self.request_open(text)
@@ -171,8 +180,9 @@ class Rules(Builtin):
         core, graphs, pool, stream = self.core, {}, th.cuda.graph_pool_handle(), th.cuda.Stream()
 
         def capture(b, x):
-            keys = set(x) if self.name in DEC else {"input_ids", "attention_mask"}
-            static = {k: th.zeros(1, b, dtype=th.long, device="cuda") for k in keys}
+            keys = set(x) if self.name in DEC + ("laya",) else set(SEQ)
+            static = {k: th.zeros(1, b, dtype=th.long, device="cuda") if k in SEQ else th.zeros_like(x[k])
+                      for k in keys}
             if self.name in DEC:
                 static["last"] = th.zeros(1, dtype=th.long, device="cuda")
             th.cuda.empty_cache()
@@ -198,7 +208,11 @@ class Rules(Builtin):
                 static["attention_mask"][:, :n] = 1
             if "last" in static:
                 static["last"].fill_(n - 1)
+            for k in static.keys() - {"input_ids", "attention_mask", "last"}:
+                static[k].copy_(x[k])
             graph.replay()
+            if isinstance(out, tuple):
+                return tuple(o.clone() for o in out)
             return out[:, :n].clone() if out.dim() == 3 else out.clone()
 
         self.core = run
@@ -207,6 +221,13 @@ class Rules(Builtin):
         if self.name == "gliner":
             raise Skip("вход строит GLiNER")
         self.need_core(graph=False)
+        if self.name == "laya":
+            if "u1" in self.rules:
+                raise Skip("под u1 маска нужна для паддинга")
+            enc = self.model.encoder
+            forward = enc.forward
+            enc.forward = lambda input_ids=None, attention_mask=None, **kw: forward(input_ids=input_ids, **kw)
+            return
         self.drop_mask = True
 
     def u4(self):
@@ -281,6 +302,10 @@ class Rules(Builtin):
             raise Skip("только open генерирует категорию")
         self.fast = True
 
+    def c7(self):
+        if self.name != "halo":
+            raise Skip("нет linear attention")
+
     def c8(self):
         encoders = [m for m in self.model.modules() if hasattr(m, "get_rel_embedding")]
         if not encoders:
@@ -293,6 +318,16 @@ class Rules(Builtin):
                 for name in REL:
                     if isinstance(getattr(m, name, None), nn.Module):
                         setattr(m, name, Memo(getattr(m, name), rel))
+
+    def c9(self):
+        if self.name != "laya":
+            raise Skip("нет autocast")
+        dtype = self.agent.dtype
+        for m in self.model.modules():
+            if type(m) is nn.Linear:
+                m.w16 = m.weight.to(dtype)
+                m.b16 = None if m.bias is None else m.bias.to(dtype)
+                m.forward = types.MethodType(linear16, m)
 
     def c12(self):
         groups = 0
@@ -347,6 +382,10 @@ def cache_positions():
 
         cached.memo = True
         mod.build_relative_position = cached
+
+
+def linear16(self, x):
+    return F.linear(x, self.w16, self.b16)
 
 
 def last(h, x):
