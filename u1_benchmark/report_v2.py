@@ -33,6 +33,9 @@ def identity(path):
 def build(directory):
     root = Path(directory)
     cfg, state = read(root / "config.json"), read(root / "status.json")
+    if "batch_sizes_by_bucket" in cfg and cfg["mode"] != "quality":
+        from .batch_report import build as batch_build
+        return batch_build(root)
     result = {"schema_version": cfg["schema_version"], "status": "incomplete", "mode": cfg["mode"], "model": cfg["model"],
               "comparison": cfg["comparison"], "quality_evaluated": False, "quality_preserved": None,
               "independently_confirmed": False, "buckets": {}, "memory": [], "errors": [],
@@ -185,7 +188,7 @@ def build(directory):
                 if quality != value["quality"]:
                     raise ValueError("Quality summary does not match raw predictions")
                 result["quality"][variant] = quality
-            result.update(quality_evaluated=True, quality_status="evaluated")
+            result.update(quality_evaluated=True, quality_status="evaluated", quality_batch_size=1)
         if len(identities) != 1:
             raise ValueError("Workers used different runtime/GPU/package identities")
         result.update(runtime_identity=next(iter(identities)), dataset_identity=read(root / "dataset_identity.json"))
@@ -241,6 +244,13 @@ def table(paths, output):
                 summary = build(root)
             else:
                 summary = read(root / "summary.json")
+            if summary.get("batch_protocol_version") == 1:
+                from .batch_report import table_rows
+                batch_rows = table_rows(root, summary, str(path))
+                rows.extend(batch_rows)
+                if not batch_rows:
+                    omitted.append({"path": str(path), "status": summary["status"]})
+                continue
             if summary["mode"] != "screening" or summary["status"] not in ("baseline_complete", "baseline_unstable", "screening_pass", "rejected", "inconclusive", "quantization_measured"):
                 omitted.append({"path": str(path), "status": summary["status"]})
                 continue

@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "model": "halo",
+  "baseline": {
+    "backend": "eager"
+  },
+  "data": {
+    "path": "data/speed/role-corpus",
+    "manifest_sha256": "760adad3e5946384de9fec98aebd9327229cc02c706af094322f2f37e95fc02c"
+  },
+  "mode": "screening",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1,
+      4,
+      8,
+      16,
+      32
+    ],
+    "B2": [
+      1,
+      4,
+      8
+    ],
+    "B3": [
+      1,
+      4
+    ],
+    "B4": [
+      1
+    ]
+  }
+}

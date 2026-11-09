@@ -15,6 +15,9 @@ ENTRY = ROOT / "tools/benchmark.py"
 
 
 def schedule(cfg, data):
+    if "batch_sizes_by_bucket" in cfg:
+        from .batching import schedule as batch_schedule
+        return batch_schedule(cfg, data)
     if cfg["mode"] in ("smoke", "quality"):
         return []
     jobs = []
@@ -64,6 +67,13 @@ def run(value, output_dir, preflight_only=False):
                "directory": str(directory), "dataset": str(dataset) if dataset else None,
                "quality_dataset": cfg.get("quality_data"), "measurement": measurement,
                "private": private, "inputs_sha256": sha(output / "inputs.json")}
+        if "batch_sizes_by_bucket" in cfg and phase != "quality":
+            from .batch_runner import cell_path
+            job["batch_protocol_version"] = 1
+            job["sources_sha256"] = sha(output / "source_files.json")
+            if phase != "batch_preflight":
+                proof = cell_path(output, measurement["bucket"], measurement["batch_size"]) / "preflight" / variant
+                job["preflight"] = {"path": str(proof), "sha256": sha(proof / "result.json")}
         write(directory / "job.json", job)
         invoke([python, ENTRY, "_worker_v2", "--job", directory / "job.json"],
                directory / "stdout.log", deadline - time.monotonic())
@@ -125,7 +135,10 @@ def run(value, output_dir, preflight_only=False):
             jsonl(output / "corpus.jsonl", rows)
         jobs = schedule(cfg, data)
         write(output / "schedule.json", jobs)
-        if cfg["mode"] != "quality":
+        if cfg["mode"] != "quality" and "batch_sizes_by_bucket" in cfg:
+            from .batch_runner import execute_matrix
+            state["matrix"] = execute_matrix(cfg, data, output, launch, preflight_only)
+        elif cfg["mode"] != "quality":
             for variant in variants:
                 launch("smoke" if cfg["mode"] == "smoke" else "preflight", variant, output / "preflight" / variant)
             if not preflight_only and cfg["mode"] != "smoke":

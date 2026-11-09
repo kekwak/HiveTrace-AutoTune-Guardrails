@@ -95,6 +95,9 @@ def redact_files(directory, texts):
 def execute(job_path):
     from .worker import telemetry
     job = read(job_path)
+    if job.get("batch_protocol_version") is not None:
+        from .batch_worker import execute as batch_execute
+        return batch_execute(job_path)
     directory = Path(job["directory"])
     directory.mkdir(parents=True, exist_ok=True)
     result = {"schema_version": 2, "status": "running", "phase": job["phase"], "variant": job["variant"],
@@ -142,6 +145,7 @@ def execute(job_path):
                 precision = PrecisionGuard(adapter, required=cfg["model"] == "laya")
                 result["metadata"] = adapter.metadata
                 if phase == "quality":
+                    result["quality_batch_size"] = 1
                     values = []
                     quality_indices, quality_errors, shapes = {}, {}, {}
                     for row in rows:

@@ -30,6 +30,8 @@ def build(dataset, output):
         "env/team_environment.lock.json", "env/team_environment.lock.txt", "env/team_rtx.lock.json", "env/team_rtx.lock.txt",
         "docs/u1_handoff.md", "docs/u1_handoff_readiness.md")]
     files += list((ROOT / "configs/benchmark-v3").glob("*.json"))
+    files += list((ROOT / "configs/benchmark-batch").glob("*.json"))
+    files += list((ROOT / "configs/smoke-batch").glob("*.json"))
     files += [ROOT / "configs/data/role_speed_v4.json"]
     output.parent.mkdir(parents=True, exist_ok=True)
     checksums = {}
