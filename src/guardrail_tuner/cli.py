@@ -142,6 +142,7 @@ def main() -> int:
         run_parser.add_argument("--threshold", type=float, default=0.5)
         run_parser.add_argument("--text-column", default="text")
         run_parser.add_argument("--quality-text-column")
+        run_parser.add_argument("--quality-label-column")
         run_parser.add_argument("--performance-text-column")
         run_parser.add_argument("--max-length", type=int, default=512)
         run_parser.add_argument("--warmup", type=int, default=5)
@@ -168,8 +169,14 @@ def main() -> int:
                     raise ValueError("--max-logit-error must be finite and non-negative")
                 if not math.isfinite(args.threshold) or not 0 <= args.threshold <= 1:
                     raise ValueError("--threshold must be finite and between 0 and 1")
+                if args.quality_label_column and args.output_mode == "logits":
+                    raise ValueError(
+                        "--quality-label-column requires multiclass or multilabel output"
+                    )
                 runner = optimize if args.command == "optimize" else run_benchmark
-                options = {"output_dir": args.output_dir} if args.command == "optimize" else {}
+                options = {"label_column": args.quality_label_column}
+                if args.command == "optimize":
+                    options["output_dir"] = args.output_dir
                 result = runner(
                     args.model,
                     args.revision,

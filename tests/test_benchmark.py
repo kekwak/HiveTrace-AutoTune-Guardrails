@@ -43,7 +43,7 @@ def test_cpu_benchmark_with_real_tiny_model(tmp_path):
         )
     ).save_pretrained(model_path)
     quality = tmp_path / "quality.jsonl"
-    quality.write_text('{"text":"hello"}\n{"text":"hello world"}\n')
+    quality.write_text('{"text":"hello","label":0}\n{"text":"hello world","label":1}\n')
     speed = tmp_path / "speed.jsonl"
     speed.write_text('{"text":"world"}\n')
     env = os.environ.copy()
@@ -59,6 +59,8 @@ def test_cpu_benchmark_with_real_tiny_model(tmp_path):
             "cpu",
             "--output-mode",
             "multiclass",
+            "--quality-label-column",
+            "label",
             "--quality-file",
             str(quality),
             "--performance-file",
@@ -73,6 +75,16 @@ def test_cpu_benchmark_with_real_tiny_model(tmp_path):
     assert result.returncode == 0, result.stderr
     report = json.loads(result.stdout)
     assert report["quality"]["passed"]
+    assert report["quality"]["labels"]["samples"] == 2
+    assert (
+        report["quality"]["labels"]["pytorch_correct"]
+        == report["quality"]["labels"]["onnxruntime_correct"]
+    )
+    for counts in report["quality"]["labels"]["per_class"]:
+        assert sum(counts["pytorch"].values()) == 2
+        assert counts["pytorch"]["tp"] + counts["pytorch"]["fn"] == 1
+        assert counts["pytorch"]["tn"] + counts["pytorch"]["fp"] == 1
+        assert counts["pytorch"] == counts["onnxruntime"]
     assert report["quality"]["decision_disagreements"] == 0
     assert report["latency"]["onnxruntime"]["requests"] == 1
     assert report["providers"][0] == "CPUExecutionProvider"
@@ -102,3 +114,29 @@ def test_cuda_fails_if_pytorch_has_no_cuda(monkeypatch):
             "multiclass",
             0.5,
         )
+
+
+def test_cli_rejects_labels_with_logits(tmp_path):
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "guardrail_tuner.cli",
+            "benchmark",
+            str(tmp_path),
+            "--device",
+            "cpu",
+            "--output-mode",
+            "logits",
+            "--quality-label-column",
+            "label",
+            "--quality-file",
+            str(tmp_path / "quality.jsonl"),
+            "--performance-file",
+            str(tmp_path / "speed.jsonl"),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 1
+    assert "--quality-label-column requires" in result.stderr

@@ -23,6 +23,7 @@ def optimize(
     output_mode: str,
     threshold: float,
     output_dir: str,
+    label_column: str | None = None,
 ) -> dict[str, Any]:
     try:
         import yaml
@@ -59,6 +60,7 @@ def optimize(
                 threshold,
                 ort_optimization=level,
                 ort_threads=threads,
+                label_column=label_column,
             )
         except Exception as exc:
             failures.append(
@@ -118,7 +120,8 @@ def optimize(
         "",
         "Measurements: sequential requests, batch size 1; p95 includes tokenization "
         "and output transfer.",
-        "Quality: output agreement with PyTorch on the supplied dataset; labels are not evaluated.",
+        "Quality: output agreement with PyTorch on the supplied dataset."
+        + (" Label-based exact-match counts are included in details." if label_column else ""),
         "",
         "## Candidates",
         "",

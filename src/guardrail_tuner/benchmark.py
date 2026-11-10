@@ -5,6 +5,7 @@ import platform
 import statistics
 import time
 from importlib.metadata import version
+from numbers import Integral
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +44,7 @@ def run_benchmark(
     threshold: float,
     ort_optimization: str = "all",
     ort_threads: int = 0,
+    label_column: str | None = None,
 ) -> dict[str, Any]:
     try:
         import numpy as np
@@ -66,6 +68,13 @@ def run_benchmark(
     performance, performance_meta = load_source(performance_source)
     quality_text = texts(quality, quality_text_column, "quality")
     performance_text = texts(performance, performance_text_column, "performance")
+    labels = None
+    if label_column is not None:
+        if output_mode == "logits":
+            raise ValueError("--quality-label-column requires multiclass or multilabel output")
+        if label_column not in quality.column_names:
+            raise ValueError(f"quality dataset is missing label column {label_column!r}")
+        labels = list(quality[label_column])
 
     local_model = Path(model_id).expanduser()
     if local_model.is_dir():
@@ -109,7 +118,8 @@ def run_benchmark(
     max_error = 0.0
     max_probability_error = 0.0
     disagreements = 0
-    for text in quality_text:
+    label_metrics: dict[str, Any] | None = None
+    for row_index, text in enumerate(quality_text):
         reference = predict(text, "pytorch")
         candidate = predict(text, "onnxruntime")
         if reference.shape != candidate.shape or not (
@@ -127,14 +137,68 @@ def run_benchmark(
             max_probability_error = max(
                 max_probability_error, float(np.max(np.abs(ref_probs - ort_probs)))
             )
-            disagreements += int(np.argmax(reference) != np.argmax(candidate))
+            ref_decisions = [int(np.argmax(reference))]
+            ort_decisions = [int(np.argmax(candidate))]
+            disagreements += int(ref_decisions != ort_decisions)
         elif output_mode == "multilabel":
             ref_probs = 1 / (1 + np.exp(-np.clip(reference, -80, 80)))
             ort_probs = 1 / (1 + np.exp(-np.clip(candidate, -80, 80)))
             max_probability_error = max(
                 max_probability_error, float(np.max(np.abs(ref_probs - ort_probs)))
             )
-            disagreements += int(np.any((ref_probs >= threshold) != (ort_probs >= threshold)))
+            ref_decisions = (ref_probs >= threshold).astype(int).flatten().tolist()
+            ort_decisions = (ort_probs >= threshold).astype(int).flatten().tolist()
+            disagreements += int(ref_decisions != ort_decisions)
+
+        if labels is not None:
+            label = labels[row_index]
+            if output_mode == "multiclass":
+                if isinstance(label, bool) or not isinstance(label, Integral):
+                    raise ValueError("Multiclass labels must be integer class indices")
+                if label < 0 or label >= reference.shape[-1]:
+                    raise ValueError("Multiclass label is outside the model output range")
+                expected = [int(label)]
+            else:
+                if not isinstance(label, (list, tuple)) or len(label) != len(ref_decisions):
+                    raise ValueError("Multilabel labels must have one binary value per output")
+                if any(not isinstance(value, Integral) or value not in (0, 1) for value in label):
+                    raise ValueError("Multilabel labels must contain only 0 or 1")
+                expected = [int(value) for value in label]
+            if label_metrics is None:
+                label_metrics = {
+                    "samples": 0,
+                    "pytorch_correct": 0,
+                    "onnxruntime_correct": 0,
+                    "per_class": [
+                        {
+                            "class_index": i,
+                            "pytorch": {"tp": 0, "fp": 0, "tn": 0, "fn": 0},
+                            "onnxruntime": {"tp": 0, "fp": 0, "tn": 0, "fn": 0},
+                        }
+                        for i in range(reference.shape[-1])
+                    ],
+                }
+            label_metrics["samples"] += 1
+            label_metrics["pytorch_correct"] += int(ref_decisions == expected)
+            label_metrics["onnxruntime_correct"] += int(ort_decisions == expected)
+            for index, counts in enumerate(label_metrics["per_class"]):
+                actual = (
+                    expected[0] == index if output_mode == "multiclass" else bool(expected[index])
+                )
+                for backend, decisions in (
+                    ("pytorch", ref_decisions),
+                    ("onnxruntime", ort_decisions),
+                ):
+                    predicted = (
+                        decisions[0] == index
+                        if output_mode == "multiclass"
+                        else bool(decisions[index])
+                    )
+                    if actual:
+                        key = "tp" if predicted else "fn"
+                    else:
+                        key = "fp" if predicted else "tn"
+                    counts[backend][key] += 1
 
     def measure(backend: str) -> dict[str, Any]:
         for i in range(warmup):
@@ -171,6 +235,7 @@ def run_benchmark(
         "datasets": {"quality": quality_meta, "performance": performance_meta},
         "settings": {
             "quality_text_column": quality_text_column,
+            "quality_label_column": label_column,
             "performance_text_column": performance_text_column,
             "max_length": max_length,
             "warmup": warmup,
@@ -188,6 +253,7 @@ def run_benchmark(
             "max_abs_probability_error": max_probability_error if output_mode != "logits" else None,
             "decision_disagreements": disagreements if output_mode != "logits" else None,
             "passed": parity_passed,
+            "labels": label_metrics,
         },
         "latency": {"pytorch": pytorch_latency, "onnxruntime": onnx_latency},
     }
