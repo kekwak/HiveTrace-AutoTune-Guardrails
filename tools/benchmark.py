@@ -9,7 +9,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 def public_result(command, result, args):
     fields = {"status", "error_type", "phase", "archive_error_type", "archive_status",
-              "batch_protocol_version", "completeness", "all_cells_faster", "all_cells_meet_threshold", "quality_batch_size"}
+              "batch_protocol_version", "completeness", "all_cells_faster", "all_cells_meet_threshold", "quality_batch_size",
+              "quality_protocol_version", "quality_batch_sizes", "quality_status", "quality_complete"}
     if command == "auth-check":
         fields |= {"model", "revision", "credential_available", "access", "weights_downloaded", "gpu_checked"}
     elif command in ("fetch-data", "prepare-data"):

@@ -15,6 +15,8 @@ ENTRY = ROOT / "tools/benchmark.py"
 
 
 def schedule(cfg, data):
+    if cfg["mode"] == "quality":
+        return []
     if "batch_sizes_by_bucket" in cfg:
         from .batching import schedule as batch_schedule
         return batch_schedule(cfg, data)
@@ -67,6 +69,9 @@ def run(value, output_dir, preflight_only=False):
                "directory": str(directory), "dataset": str(dataset) if dataset else None,
                "quality_dataset": cfg.get("quality_data"), "measurement": measurement,
                "private": private, "inputs_sha256": sha(output / "inputs.json")}
+        if phase == "quality":
+            job.update(quality_protocol_version=1,
+                       quality_inputs_sha256=digest(read(output / "quality_inputs.json")))
         if "batch_sizes_by_bucket" in cfg and phase != "quality":
             from .batch_runner import cell_path
             job["batch_protocol_version"] = 1
@@ -77,7 +82,9 @@ def run(value, output_dir, preflight_only=False):
         write(directory / "job.json", job)
         invoke([python, ENTRY, "_worker_v2", "--job", directory / "job.json"],
                directory / "stdout.log", deadline - time.monotonic())
-        precision.add(variant, read(directory / "result.json"))
+        worker_result = read(directory / "result.json")
+        if worker_result.get("status") == "passed":
+            precision.add(variant, worker_result)
     try:
         from .environment import expected_lock
         if read(env / "setup/status.json")["status"] != "passed" or read(env / "setup/lock.json") != expected_lock(env):
@@ -151,8 +158,10 @@ def run(value, output_dir, preflight_only=False):
                         launch("profile", variant, output / "profiles" / variant)
         if cfg.get("quality_data") and not preflight_only:
             private = not qmanifest.get("include_texts", False)
-            for variant in variants:
-                launch("quality", variant, output / "quality" / variant)
+            from .quality_batches import execute_matrix as execute_quality
+            state["quality_protocol_version"] = 1
+            write(output / "status.json", state)
+            state["quality_matrix"] = execute_quality(cfg, output, launch)
         state.update(status="completed", preflight_only=preflight_only)
     except BaseException as error:
         state.update(status="timeout" if isinstance(error, TimeoutError) else "failed", error_type=type(error).__name__)

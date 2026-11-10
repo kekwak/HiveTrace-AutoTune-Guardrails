@@ -106,10 +106,13 @@ def adapter_spec(value, model, kind, candidate=False):
 def parse_config(value):
     value = read(value) if isinstance(value, (str, Path)) else dict(value)
     allowed = {"schema_version", "model", "baseline", "candidate", "data", "quality_data", "label_mapping",
-               "comparison", "environment", "seed", "mode", "timeout_seconds", "batch_sizes_by_bucket"}
+               "comparison", "environment", "seed", "mode", "timeout_seconds", "batch_sizes_by_bucket", "quality_batch_sizes"}
     if set(value) - allowed or value.get("schema_version") not in (2, 3) or value.get("model") not in MODEL_SPECS:
         raise ValueError("Invalid v2 configuration")
     cfg = {"comparison": "engineering", "mode": "screening", "seed": 17, "timeout_seconds": 36000, **value}
+    if "quality_batch_sizes" in cfg:
+        from .quality_batches import batch_sizes
+        batch_sizes(cfg)
     if "batch_sizes_by_bucket" in cfg:
         from .batching import validate_grid
         cfg["batch_sizes_by_bucket"] = validate_grid(cfg["model"], cfg["batch_sizes_by_bucket"])

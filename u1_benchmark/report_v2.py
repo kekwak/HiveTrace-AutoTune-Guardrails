@@ -179,7 +179,7 @@ def build(directory):
                         result["status"] = "rejected" if unstable or flips or speed == "below_target" else speed
         else:
             result["status"] = "quality_complete"
-        if cfg.get("quality_data") and not state.get("preflight_only"):
+        if cfg.get("quality_data") and not state.get("preflight_only") and state.get("quality_protocol_version") != 1:
             result["quality"] = {}
             for variant in variants:
                 value = checked(root / "quality" / variant, variant)
@@ -189,19 +189,33 @@ def build(directory):
                     raise ValueError("Quality summary does not match raw predictions")
                 result["quality"][variant] = quality
             result.update(quality_evaluated=True, quality_status="evaluated", quality_batch_size=1)
+        if state.get("quality_protocol_version") == 1:
+            from .quality_report import collect
+            result.update(collect(root, cfg, checked))
+            if cfg["mode"] == "quality" and not result["quality_complete"]:
+                result["status"] = "incomplete"
         if len(identities) != 1:
             raise ValueError("Workers used different runtime/GPU/package identities")
         result.update(runtime_identity=next(iter(identities)), dataset_identity=read(root / "dataset_identity.json"))
         if cfg["model"] == "laya" or any(v is not None for v in precision.variants.values()):
             result.update(precision.summary())
         if fixtures:
-            result.update(status="fixture_complete", gpu_acceptance=False, acceptance="interface_test_only")
+            result.update(status="fixture_complete" if result["status"] != "incomplete" else "incomplete",
+                          gpu_acceptance=False, acceptance="interface_test_only")
     except (OSError, ValueError, KeyError, TypeError, ZeroDivisionError, EOFError) as error:
         result.update(status="incomplete")
         result["errors"].append(str(error))
         baseline = root / "preflight/baseline/result.json"
         if state["status"] == "failed" and state.get("variant") == "candidate" and baseline.exists() and read(baseline).get("status") == "passed":
             result["status"] = "rejected_candidate_execution"
+    if state.get("quality_protocol_version") == 1 and "quality_by_batch_size" not in result:
+        from .quality_report import collect
+        try:
+            result.update(collect(root, cfg))
+        except (OSError, ValueError, KeyError, TypeError):
+            result.update(quality_status="incomplete", quality_complete=False)
+    if result.get("quality_fixture"):
+        result.update(gpu_acceptance=False, acceptance="interface_test_only")
     write(root / "summary.json", result)
     text = ["# Измерения У1", "", f"{cfg['model']}: {result['status']} ({cfg['mode']}).",
             "Качество и численное согласие разделены; независимое подтверждение не заявляется.", "",
@@ -213,7 +227,8 @@ def build(directory):
             text.append(f"\n{bucket}: A/A envelope={item['aa_envelope_p95']:.2%}; drift={item['baseline_drift_p95']:.2%}; "
                         f"series p95={item['baseline_series_p95_ms']}; p95 CI={p['baseline_interval_95_ms']}. "
                         "Диагностика, не заключение о стабильности.\n")
-    text += ["", *result["errors"]]
+    from .quality_report import markdown as quality_markdown
+    text += quality_markdown(result) + ["", *result["errors"]]
     (root / "REPORT.md").write_text("\n".join(text) + "\n")
     return result
 

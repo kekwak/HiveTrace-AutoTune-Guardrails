@@ -259,13 +259,16 @@ def build(directory):
               "model": cfg["model"], "mode": cfg["mode"], "comparison": cfg["comparison"],
               "status": "incomplete", "speed_status": "not_measured", "verdict_status": "not_measured",
               "memory_status": "not_measured", "quality_evaluated": False, "quality_preserved": None,
-              "quality_status": "not_evaluated", "quality_batch_size": 1,
+              "quality_status": "not_evaluated",
               "independently_confirmed": False, "all_cells_faster": False,
               "all_cells_meet_threshold": False, "cells": {}, "matrix": {}, "errors": []}
     evidence = None
+    state = {}
     measured = {}
     try:
         state = read(safe_path(root, "status.json"))
+        if state.get("quality_protocol_version") != 1:
+            result["quality_batch_size"] = 1
         grid = cells(cfg)
         sizes = sorted({s for _, s in grid})
         result["matrix"] = {b: {str(s): "not_scheduled" for s in sizes} for b, _ in grid}
@@ -332,7 +335,7 @@ def build(directory):
                             completeness="incomplete", faster=False)
                 item["errors"].append(str(error) if isinstance(error, InvalidArtifact) else "invalid_or_missing_cell_artifact")
             result["matrix"][bucket][str(size)] = item["status"]
-        if cfg.get("quality_data") and not state.get("preflight_only"):
+        if cfg.get("quality_data") and not state.get("preflight_only") and state.get("quality_protocol_version") != 1:
             from .quality import metrics
             result["quality"] = {}
             for variant in variants:
@@ -344,6 +347,9 @@ def build(directory):
                 require(calculated == value["quality"], "quality_summary_mismatch")
                 result["quality"][variant] = calculated
             result.update(quality_evaluated=True, quality_status="evaluated_batch_1_only")
+        if state.get("quality_protocol_version") == 1:
+            from .quality_report import collect
+            result.update(collect(root, cfg, lambda path, variant: evidence.checked(path, variant, "quality")))
         evidence.validate()
         result.update(runtime_identity=next(iter(evidence.identities)),
                       dataset_identity=read(safe_path(root, "dataset_identity.json")), **evidence.precision.summary())
@@ -399,9 +405,17 @@ def build(directory):
         if result["quality_evaluated"]:
             result.update(quality_evaluated=False, quality_status="invalid_evidence")
         result["errors"].append(str(error) if isinstance(error, InvalidArtifact) else "invalid_global_evidence")
+    if state.get("quality_protocol_version") == 1 and "quality_by_batch_size" not in result:
+        from .quality_report import collect
+        try:
+            result.update(collect(root, cfg))
+        except (OSError, ValueError, KeyError, TypeError):
+            result.update(quality_status="incomplete", quality_complete=False)
+    if result.get("quality_fixture"):
+        result.update(gpu_acceptance=False, acceptance="interface_test_only")
     write(root / "summary.json", result)
     report = ["# Батчевые измерения У1", "", f"Статус: {result['status']}. Время относится к целому батчу.",
-              "Качество оценивается только при batch 1; согласие вердиктов не доказывает safety.", ""]
+              "Качество оценивается отдельно для запрошенных размеров; согласие вердиктов не доказывает safety.", ""]
     columns = sorted({size for row in result["matrix"].values() for size in row}, key=int)
     report += ["Бакет | " + " | ".join("Batch " + size for size in columns),
                "--- | " + " | ".join("---" for _ in columns)]
@@ -420,6 +434,8 @@ def build(directory):
                           f"{v.get('changed_count', '-')} / {v.get('n', '-')} | {item['memory_status']}")
     report += ["", f"Ускорение во всей сетке: {result['all_cells_faster']}.",
                f"Порог достигнут во всей сетке: {result['all_cells_meet_threshold']}.", *result["errors"]]
+    from .quality_report import markdown as quality_markdown
+    report += quality_markdown(result)
     (root / "REPORT.md").write_text("\n".join(report) + "\n")
     return result
 
@@ -455,5 +471,9 @@ def table_rows(root, summary, source):
                        "size": pf["size"], "contract": pf["contract"], "precision": precision,
                        "throughput": item.get("throughput", {}).get("baseline"),
                        "baseline_drift_p95": item.get("baseline_drift_p95"),
-                       "aa_envelope_p95": item.get("aa_envelope_p95"), "quality_batch_size": 1})
+                       "aa_envelope_p95": item.get("aa_envelope_p95")})
+        if summary.get("quality_protocol_version") == 1:
+            output[-1].update(quality_batch_sizes=summary["quality_batch_sizes"], quality_status=summary["quality_status"])
+        else:
+            output[-1]["quality_batch_size"] = 1
     return output

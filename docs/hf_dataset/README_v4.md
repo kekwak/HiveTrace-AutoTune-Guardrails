@@ -41,6 +41,12 @@ and CPU parity checks are pinned in `manifest.json`. Llama uses the explicitly
 selected hipocap mirror; equivalence to the original Meta checkpoint is not claimed.
 Technical acceptance by a template does not establish classification quality.
 
+This table describes the **published v4 snapshot**, not a new approval of its
+OpenGuardrails preparation. The current U1 script uses the separately agreed
+0124 weights + 2510 task-prompt contract. Its Open index must be rebuilt locally;
+the published native-v4 index is not silently reused or overwritten. See the
+[U1 instructions](https://github.com/kekwak/HiveTrace-AutoTune-Guardrails/blob/results/haloguard-gliner-u1/docs/u1_handoff.md#2-получение-данных-и-open-индекс).
+
 ## Model-Specific Buckets
 
 - B1: 1–512 full prepared-input tokens.
@@ -77,13 +83,40 @@ from huggingface_hub import snapshot_download
 root = snapshot_download(
     "vXofi/guardrails-speed-en-ru",
     repo_type="dataset",
-    revision="v4",  # For a benchmark, resolve and pin the immutable commit SHA.
+    revision="7324b8823ded971c05076e0c7f4ace5d9b867863",
 )
 ```
 
 The exact corpus manifest SHA256 is
 `760adad3e5946384de9fec98aebd9327229cc02c706af094322f2f37e95fc02c`.
 The U1 repository pins the immutable HF commit in `configs/data/role_speed_v4.json`.
+
+## Using the U1 Measurement Script
+
+The console entry point is `tools/benchmark.py` in the
+[U1 Git branch](https://github.com/kekwak/HiveTrace-AutoTune-Guardrails/tree/results/haloguard-gliner-u1).
+Use the [operational guide](https://github.com/kekwak/HiveTrace-AutoTune-Guardrails/blob/results/haloguard-gliner-u1/docs/u1_handoff.md)
+for environment setup, HF authorization, verified corpus loading, Open reindexing,
+preflight/pilot, baseline or candidate runs, and offline reports. A notebook or
+separate source bundle is not required. Record the Git commit used for a run.
+
+- **Speed:** `batch_sizes_by_bucket` selects sizes for each model-specific bucket.
+  Baseline and candidate receive the same IDs and batches. Padding extends each
+  batch only to its longest native input; it does not change bucket membership.
+  The current speed grids are provisional, not established maximum-safe sizes.
+- **Quality:** use a separate labeled dataset via `quality_data` and explicit label
+  mapping. `quality_batch_sizes` selects sizes independently, defaults to `[1]`, and
+  has no artificial upper bound. Each size processes the same labeled set, including
+  its partial final batch. No speed buckets or 400-example quotas are imposed.
+- `quality` does not need this speed corpus. `report` rebuilds a run's summary;
+  `table` aggregates speed baselines, not labeled quality metrics. OOM never silently
+  reduces a batch size or changes precision. Native batch capability and GPU support
+  still require validation for the selected model and configuration.
+
+Quality-batching has CPU interface tests but no GPU-quality validation at this stage.
+There are no safety labels in this corpus; do not use it as `quality_data` or infer
+quality preservation from unchanged verdicts. Updating these usage notes does not
+change the pinned snapshot, messages, indices, or historical approvals.
 
 ## Provenance and Limits
 

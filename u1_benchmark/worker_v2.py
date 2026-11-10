@@ -61,6 +61,18 @@ def redact_files(directory, texts):
         if not path.is_file() or ".private" in path.parts or path.suffix not in (".json", ".jsonl", ".txt", ".log"):
             continue
         def clean(value, key=None):
+            if (key and key.endswith("_sha256") and isinstance(value, str) and len(value) == 64
+                    and all(c in "0123456789abcdef" for c in value)):
+                return value
+            if key == "target_role" and value in ("user", "assistant"):
+                return value
+            if key == "source_mode" and value in ("user-only", "assistant-only", "user+assistant"):
+                return value
+            if key in ("ids", "ordered_ids") and isinstance(value, list) and all(isinstance(v, str) for v in value):
+                return value
+            if key == "excluded" and isinstance(value, dict) and all(
+                    v in ("target_mismatch", "over_limit", "not_applicable", "error") for v in value.values()):
+                return value
             # These are validated protocol fields, not arbitrary diagnostic prose.
             # A private input equal to "safe" must not rewrite a native verdict.
             if key in {"id", "label", "scores", "score_type", "category", "generated_tokens",
@@ -136,6 +148,14 @@ def execute(job_path):
                 t = time.monotonic()
                 adapter = (load(cfg["model"], cfg[job["variant"]], diag, input_version=3) if cfg["schema_version"] == 3
                            else load(cfg["model"], cfg[job["variant"]], diag))
+                if phase == "quality" and job.get("quality_protocol_version") == 1:
+                    size = job["measurement"]["quality_batch_size"]
+                    from .quality_batches import batch_sizes
+                    if size not in batch_sizes(cfg):
+                        raise ValueError("Unscheduled quality batch size")
+                    if size > 1:
+                        from .batch_adapters import wrap
+                        adapter = wrap(adapter)
                 torch.cuda.synchronize()
                 result["load_seconds"] = time.monotonic() - t
                 if adapter.contract != model_contract(cfg["model"], cfg["schema_version"]):
@@ -144,7 +164,14 @@ def execute(job_path):
                 result["adapter_spec"] = cfg[job["variant"]]
                 precision = PrecisionGuard(adapter, required=cfg["model"] == "laya")
                 result["metadata"] = adapter.metadata
-                if phase == "quality":
+                if phase == "quality" and job.get("quality_protocol_version") == 1:
+                    from .quality_batches import evaluate
+                    from .runner_v2 import public_rows
+                    if digest(public_rows(rows)) != job["quality_inputs_sha256"]:
+                        raise ValueError("Quality input snapshot mismatch")
+                    result["quality_inputs_sha256"] = job["quality_inputs_sha256"]
+                    evaluate(adapter, rows, cfg, size, directory, result, precision, private=job["private"])
+                elif phase == "quality":
                     result["quality_batch_size"] = 1
                     values = []
                     quality_indices, quality_errors, shapes = {}, {}, {}
@@ -290,6 +317,13 @@ def execute(job_path):
                 result["status"] = "passed"
         except BaseException as error:
             result.update(status="failed", error_type=type(error).__name__)
+            if job.get("quality_protocol_version") == 1:
+                kind = type(error).__name__
+                result.update(quality_protocol_version=1,
+                              quality_batch_size=job["measurement"]["quality_batch_size"],
+                              quality_inputs_sha256=job["quality_inputs_sha256"],
+                              status="oom" if kind in ("OutOfMemoryError", "CUDAOutOfMemoryError") else
+                              "unsupported" if kind in ("UnsupportedBatch", "UnsupportedExperiment") else "failed")
             if not job["private"]:
                 import traceback
                 (directory / "error.txt").write_text(traceback.format_exc())
@@ -302,7 +336,11 @@ def execute(job_path):
                 except Exception as error:
                     result.update(status="failed", cleanup_error_type=type(error).__name__)
             result["seconds"] = time.monotonic() - start
-            write(directory / "result.json", result)
+            if job.get("quality_protocol_version") == 1:
+                from .quality_batches import public_checkpoint
+                write(directory / "result.json", public_checkpoint(result, rows, job["private"]))
+            else:
+                write(directory / "result.json", result)
             try:
                 write(directory / "telemetry_after.json", telemetry())
             except Exception:

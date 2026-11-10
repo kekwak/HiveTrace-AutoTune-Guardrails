@@ -117,7 +117,7 @@ def archive(directory, *, target=None):
                         or p.name in ("result.json", "runtime.json", "job.json", "scores.jsonl",
                                       "latencies.jsonl", "memory.json", "metadata_dataflow.json",
                                       "onnx_graph.json", "telemetry_before.json", "telemetry_after.json",
-                                      "error.txt")
+                                      "error.txt", "quality_plan.json", "predictions.jsonl", "packages.json")
                         or p.name.endswith((".process.json", ".trace.json.gz", ".operators.txt", ".input.json")))
             if (any(part.startswith(".") or part in ("venv", "__pycache__") for part in rel.parts)
                 or any((directory / Path(*rel.parts[:i])).is_symlink() for i in range(1, len(rel.parts) + 1))

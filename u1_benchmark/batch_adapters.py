@@ -109,6 +109,13 @@ class BatchAdapter:
     def __getattr__(self, name):
         return getattr(self.adapter, name)
 
+    def require_native_batch(self):
+        """A requested batch >1 must not become scalar when its tail has one row."""
+        methods = ("request_batch", "verify_batch", "prepare_batch_backend", "prove_batch_backend")
+        if not self._builtin and (not self._external_policy or
+                any(not callable(getattr(self.adapter, method, None)) for method in methods)):
+            raise UnsupportedBatch("Requested batching requires explicit native batch methods and policy")
+
     def _external(self, method, payloads, *args):
         fn = getattr(self.adapter, method, None)
         if callable(fn):

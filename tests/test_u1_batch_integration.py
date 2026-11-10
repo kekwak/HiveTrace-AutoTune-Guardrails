@@ -81,14 +81,22 @@ def simulated_batch_worker(job_path, hang=False):
         raise AssertionError("Timeout test failed to terminate its child")
     try:
         if phase == "quality":
-            assert measurement is None and "batch_protocol_version" not in job
+            assert "batch_protocol_version" not in job
             q = cfg["quality_data"]
             rows, _ = datasets.verified(q["path"], q["manifest_sha256"])
-            predictions = [{"id": row["id"], "status": "passed", "score": adapter.request(row["text"])}
-                           for row in rows]
-            datasets.jsonl(directory / "predictions.jsonl", predictions)
-            result.update(quality_batch_size=1, quality_evaluated=True,
-                          quality=quality.metrics(rows, predictions, cfg["label_mapping"]))
+            from u1_benchmark.quality_batches import evaluate
+            from u1_benchmark.precision import PrecisionGuard
+            adapter.prove_backend = lambda text: {"test_fixture": True}
+            # CPU simulation only: real native batch paths have separate adapter tests.
+            adapter.prepare_batch_backend = lambda groups: None
+            adapter.prove_batch_backend = lambda texts: {"test_fixture": True}
+            adapter.verify_batch = lambda texts, expected: [adapter.verify(t, e) for t, e in zip(texts, expected, strict=True)]
+            if cfg[variant].get("options", {}).get("quality_oom_size") == measurement["quality_batch_size"]:
+                def fail(groups):
+                    raise type("OutOfMemoryError", (RuntimeError,), {})("simulated CPU OOM")
+                adapter.prepare_batch_backend = fail
+            result["quality_inputs_sha256"] = job["quality_inputs_sha256"]
+            evaluate(adapter, rows, cfg, measurement["quality_batch_size"], directory, result, PrecisionGuard(adapter))
         else:
             assert job["batch_protocol_version"] == 1
             data, _ = datasets.load_speed(job["dataset"], cfg["model"], cfg["mode"],
@@ -137,6 +145,11 @@ def simulated_batch_worker(job_path, hang=False):
                 raise AssertionError("Unexpected phase: " + phase)
         result["status"] = "passed"
         write(directory / "result.json", result)
+    except Exception as error:
+        result.update(status="oom" if type(error).__name__ == "OutOfMemoryError" else "failed",
+                      error_type=type(error).__name__)
+        write(directory / "result.json", result)
+        raise
     finally:
         adapter.close()
 
@@ -227,10 +240,10 @@ class BatchIntegrationTests(unittest.TestCase):
             result = self.run_children(cfg, output)
             self.check_artifacts(output, result)
             self.assertTrue(result["quality_evaluated"])
-            self.assertEqual(result["quality_batch_size"], 1)
-            self.assertEqual(result["quality_status"], "evaluated_batch_1_only")
+            self.assertEqual(result["quality_batch_sizes"], [1])
+            self.assertEqual(result["quality_status"], "evaluated")
             self.assertIsNone(result["quality_preserved"])
-            self.assertEqual(len(list((output / "quality").glob("*/result.json"))), 2)
+            self.assertEqual(len(list((output / "quality").glob("*/*/result.json"))), 2)
             jobs = read(output / "schedule.json")
             self.assertEqual(len(jobs), 4)
             self.assertEqual({job["phase"] for job in jobs}, {"ab"})
@@ -264,6 +277,52 @@ class BatchIntegrationTests(unittest.TestCase):
             self.assertEqual(item["memory_status"], "partially_unavailable")
             self.assertEqual(Counter(job["phase"] for job in read(output / "schedule.json")), {"aa": 4, "baseline": 3})
             self.assertEqual(table([Path(str(output) + ".zip")], root / "table.json")["rows"], 0)
+
+    def test_quality_only_multiple_sizes_quantized_candidate_and_oom_continuation(self):
+        from u1_benchmark.report_v2 import build
+        for fail in (False, True):
+            with self.subTest(fail=fail), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                cfg = self.setup_run(root, mode="quality", comparison="quantization", flip=True)
+                cfg["quality_batch_sizes"] = [1, 3, 128]
+                # A stale speed corpus must never be read by standalone quality.
+                cfg["data"] = {"path": "missing-speed-corpus", "manifest_sha256": "invalid"}
+                if fail:
+                    cfg["candidate"]["options"]["quality_oom_size"] = 3
+                source = root / "quality-source.jsonl"
+                datasets.jsonl(source, [{"id": f"q{i}", "text": ("change" if i % 2 else "keep") + f" private content {i}",
+                                        "target": "good"} for i in range(5)])
+                q = datasets.prepare({"source": str(source), "kind": "quality", "version": "cpu-q",
+                    "provenance": "unit-test", "fields": {k: k for k in ("id", "text", "target")}}, root / "q")
+                cfg["quality_data"] = {k: q[k] for k in ("path", "manifest_sha256")}
+                cfg["label_mapping"] = {"labels": ["0", "1"], "targets": {"good": "0"},
+                                        "verdicts": {"safe": "0", "unsafe": "1"}}
+                output = root / "quality.v1"
+                result = self.run_children(cfg, output)
+                self.assertEqual(build(output), result)
+                self.assertEqual(result["status"], "incomplete" if fail else "fixture_complete", result)
+                self.assertIsNone(result["quality_preserved"])
+                self.assertEqual(result["speed_status"], "not_measured")
+                self.assertEqual(read(output / "schedule.json"), [])
+                cells = result["quality_by_batch_size"]
+                self.assertEqual(cells["3"]["variants"]["baseline"]["actual_batch_sizes"], [3, 2])
+                self.assertEqual(cells["128"]["variants"]["candidate"]["actual_batch_sizes"], [5])
+                self.assertEqual(cells["128"]["baseline_to_candidate"]["changed_count"], 2)
+                self.assertEqual(cells["128"]["baseline_to_candidate"]["n"], 5)
+                self.assertEqual(cells["128"]["baseline_to_candidate"]["status"], "complete")
+                self.assertEqual(result["quality_single_to_batch"]["128"]["candidate"]["changed_count"], 0)
+                if fail:
+                    self.assertEqual(cells["3"]["variants"]["candidate"]["status"], "oom")
+                    self.assertFalse(result["quality_complete"])
+                outcomes = [read(p) for p in output.glob("quality/*/*/result.json")]
+                self.assertEqual(len(outcomes), 6)
+                self.assertEqual(len({o["pid"] for o in outcomes}), 6)
+                self.assertFalse((output / "preflight").exists())
+                with zipfile.ZipFile(str(output) + ".zip") as archive:
+                    self.assertIsNone(archive.testzip())
+                    self.assertEqual(sum(n.endswith("quality_plan.json") for n in archive.namelist()), 6)
+                    self.assertFalse(any(b"private content" in archive.read(n) for n in archive.namelist()
+                                         if n.endswith((".json", ".jsonl", ".log"))))
 
     def test_engineering_screening_rejects_four_unique_flips(self):
         with tempfile.TemporaryDirectory() as tmp:
