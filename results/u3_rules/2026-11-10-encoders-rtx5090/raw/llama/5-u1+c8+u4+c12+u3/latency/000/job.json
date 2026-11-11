@@ -1,0 +1,79 @@
+{
+  "schema_version": 3,
+  "config": {
+    "comparison": "engineering",
+    "mode": "screening",
+    "seed": 17,
+    "timeout_seconds": 36000,
+    "schema_version": 3,
+    "model": "llama",
+    "baseline": {
+      "backend": "eager"
+    },
+    "data": {
+      "path": "/workspace/guardrails/data/speed/role-corpus",
+      "manifest_sha256": "760adad3e5946384de9fec98aebd9327229cc02c706af094322f2f37e95fc02c"
+    },
+    "candidate": {
+      "module": "/workspace/guardrails/rules/adapter.py",
+      "source_sha256": "585d96e004087ddc4357a36b0eed49eed805d2670db270e8582cfa63170f3b4c",
+      "dependencies": {},
+      "options": {
+        "rules": [
+          "u1",
+          "c8",
+          "u4",
+          "c12",
+          "u3"
+        ]
+      }
+    },
+    "environment": "/workspace/guardrails/u1-rtx-env"
+  },
+  "phase": "latency",
+  "variant": "baseline",
+  "directory": "/workspace/guardrails/runs/tune/llama/5-u1+c8+u4+c12+u3/latency/000",
+  "dataset": "/workspace/guardrails/data/speed/role-corpus",
+  "quality_dataset": null,
+  "measurement": {
+    "phase": "aa",
+    "block": 0,
+    "bucket": "B1",
+    "side": "a",
+    "variant": "baseline",
+    "ids": [
+      "d9d8597a5b50b45f04da5f74014de7c98afcef7b0d199b713ffb90ddea852b4a",
+      "39a0ec2a7409d558bf6acb1f1db072eb2a7fa975558e058126a928bcd6003063",
+      "85b02cf5fa097d1a430f86fd94001f6eaad89c93d348cb368a75ae684aacaf4c",
+      "f5b8ecdc557c0b2a45ae54a833abffa29fa7e3936ee9b27189dcc88af4205e57",
+      "c539b2e9576b9fdd2ddf09db232d848cf066345125c2113747681348545d2c04",
+      "43391343c562dbc4ae82b38573be061d16c3570aced5a8a346d16222ad40fa06",
+      "df2c93b26cace28169be5105bec11b1e0f51baf25163cda91301e7c6dd866094",
+      "540c00dce97560de08ee784d53701d2e67b69f91811d42b4998601d66ce11f21",
+      "ae720cee65b6e9b656d34a70d4c88871e66c862eff52962b464115981f6e7919",
+      "5c229fe50d99aca2bcdccb4cb7cca015ba5a94702c75b5df0890774ee4faf407",
+      "0d00461e3d9ef73207b6e11edc13c312eaf28ce71c2ea7bc8998113ebb3adc0c",
+      "863f97677fe625614e68368ad5d9fc771ac548e04a6881b73e9e4b7191ec34b0",
+      "38ad1915e1cc17ed0a32208db250e6f25b1f86f0ff5245785a5bc98937f2ed33",
+      "aaa53e5d0df5ef0d8d0c0c90969dcdc2bbfa93718c93bb25f03f1390f48a1a85",
+      "af4190a831d915a768ff0ea67ce7f5cf5e462e0bcc57552053664b7c4ead7760",
+      "6f9917d9a244df3c5739a7e758c9292ed1df31fbf2e9dc00077652dc0ec11826",
+      "9aa7c4ffab222953177c4990d980aa05ca122afe95e9e4272b13b55844c88897",
+      "ada4b13cfd1ba9fef04f37ea71950facb343dbc325806422df35064ca404ca64",
+      "367e8a308f87e7b2a5c45b9823438412d16ae6565e2938860f312dba7b83d54f",
+      "cf126eed69f0e6cf164775a62cb5c21dde2d9c6cd7ec71ce8d111f970bc12465",
+      "001943a2c557de6ede5022beaa2c38e2278e35ec25daa59bbaa06d2f1106ec6e",
+      "17faf64e848e59e0ada9127d21f37a6ce565b74ec06c779ebcf916dd1228295a",
+      "174e631a7d34f480bdd56b2bd752ba90e2281af59a553488e2457b84b1553081",
+      "ffe8d7508a0b9fa3bf8d72d36bffa2fe078b4b5307c1aca8bdbced745381f9b5",
+      "d68df71346e8941576d4488a3aa3c234836cf05231a974e83f65c02fecead5ea",
+      "46995812d2ad6bd90b4ad641abc7d5c88ba27cf3269550d3ba14f166066016da",
+      "e65053601ecc4839ef7a97df7b9ac9af7a12ce6b254a4b3ec6f145e45779a66c",
+      "816da76241c53f93a15cc2c4e5d616e3701ab6117f897847c518371fdc250191",
+      "a790880263cf409f56e9a0d65cc4f4fd103a99b442fde584ed807468e3e35d40",
+      "df87fe739fed91c54fa10d8adb84929c05d242a25d8f8644139d6500fb3dbedc"
+    ]
+  },
+  "private": false,
+  "inputs_sha256": "54a130f2d0311eeb8af33d8decadd2b74f23ab77dd7a8beb275da5f1ac59e4a0"
+}

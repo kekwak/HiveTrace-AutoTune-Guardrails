@@ -1,0 +1,18 @@
+model,step,rules_applied,rules_skipped,bucket,p95_base_ms,p95_cand_ms,p95_reduction_pct,p50_base_ms,p50_cand_ms,aa_envelope_pct,verdicts_changed,verdicts_n,bucket_status,run_verdict,prep_s,run_s,gpu,output
+llama,1,u1,,B1,12.251,5.202,57.54,11.002,4.245,3.08,0,400,pass,screening_pass,2.7,192,NVIDIA GeForce RTX 5090,runs/tune/llama/1-u1
+llama,2,"c8,u1",,B1,13.45,4.695,65.09,11.025,3.894,21.12,0,400,pass,screening_pass,2.4,189,NVIDIA GeForce RTX 5090,runs/tune/llama/2-u1+c8
+llama,3,"c8,u4,u1",,B1,12.879,3.806,70.45,11.09,3.09,4.33,0,400,pass,screening_pass,17.8,248,NVIDIA GeForce RTX 5090,runs/tune/llama/3-u1+c8+u4
+llama,4,"c12,c8,u4,u1",,B1,12.917,3.719,71.21,10.984,3.022,9.64,0,400,pass,screening_pass,7.8,224,NVIDIA GeForce RTX 5090,runs/tune/llama/4-u1+c8+u4+c12
+llama,5,"c12,c8,u3,u4,u1",,B1,12.731,3.642,71.39,11.025,2.903,13.45,0,400,pass,screening_pass,5.9,221,NVIDIA GeForce RTX 5090,runs/tune/llama/5-u1+c8+u4+c12+u3
+laya,1,u1,,B1,15.531,8.992,42.11,13.314,8.276,4.86,2,400,pass,rejected,4.4,231,NVIDIA GeForce RTX 5090,runs/tune/laya/1-u1
+laya,2,"c9,u1",,B1,15.441,7.974,48.36,13.289,7.237,10.34,2,400,pass,rejected,3.6,221,NVIDIA GeForce RTX 5090,runs/tune/laya/2-u1+c9
+laya,3,"c9,u4,u1",,B1,15.435,5.472,64.55,13.224,4.71,25.25,1,400,pass,rejected,32.2,290,NVIDIA GeForce RTX 5090,runs/tune/laya/3-u1+c9+u4
+koala,1,u1,,B1,10.56,8.042,23.85,9.193,6.608,24.57,0,400,inconclusive,inconclusive,3.8,187,NVIDIA GeForce RTX 5090,runs/tune/koala/1-u1
+koala,2,"c8,u1",,B1,11.059,6.941,37.23,9.26,5.69,8.18,0,400,pass,screening_pass,3.3,181,NVIDIA GeForce RTX 5090,runs/tune/koala/2-u1+c8
+koala,3,"c8,u4,u1",,B1,10.687,7.032,34.2,9.142,5.871,27.12,0,400,pass,screening_pass,24.2,277,NVIDIA GeForce RTX 5090,runs/tune/koala/3-u1+c8+u4
+koala,4,"c8,u4,u1",c12: проекции уже слиты,B1,10.322,7.039,31.81,9.117,5.592,11.21,0,400,pass,screening_pass,13.2,266,NVIDIA GeForce RTX 5090,runs/tune/koala/4-u1+c8+u4+c12
+koala,5,"c8,u3,u4,u1",c12: проекции уже слиты,B1,11.062,6.996,36.76,9.172,5.463,7.27,0,400,pass,screening_pass,13.2,266,NVIDIA GeForce RTX 5090,runs/tune/koala/5-u1+c8+u4+c12+u3
+gliner,1,u1,,B1,14.161,9.012,36.36,11.908,6.501,12.48,0,400,pass,screening_pass,4.0,288,NVIDIA GeForce RTX 5090,runs/tune/gliner/1-u1
+gliner,2,"c8,u1",,B1,12.38,8.254,33.33,11.595,5.7,25.44,0,400,pass,screening_pass,3.6,282,NVIDIA GeForce RTX 5090,runs/tune/gliner/2-u1+c8
+gliner,3,"c8,u4,u1",,B1,13.819,7.467,45.97,11.877,5.177,27.67,0,400,pass,screening_pass,15.9,331,NVIDIA GeForce RTX 5090,runs/tune/gliner/3-u1+c8+u4
+gliner,4,"c12,c8,u4,u1",,B1,14.503,6.693,53.85,12.009,4.618,12.11,0,400,pass,screening_pass,7.9,307,NVIDIA GeForce RTX 5090,runs/tune/gliner/4-u1+c8+u4+c12

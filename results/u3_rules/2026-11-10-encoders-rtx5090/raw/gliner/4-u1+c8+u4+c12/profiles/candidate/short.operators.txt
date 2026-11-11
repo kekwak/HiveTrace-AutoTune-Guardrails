@@ -1,0 +1,46 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_...         0.00%       0.000us         0.00%       0.000us       0.000us     645.568us        34.01%     645.568us      53.797us            12  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x64_8...         0.00%       0.000us         0.00%       0.000us       0.000us     426.813us        22.49%     426.813us      17.784us            24  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x...         0.00%       0.000us         0.00%       0.000us       0.000us     331.165us        17.45%     331.165us      13.799us            24  
+void magma_sgemmEx_kernel<float, float, float, true,...         0.00%       0.000us         0.00%       0.000us       0.000us     141.442us         7.45%     141.442us       3.929us            36  
+void cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us      71.583us         3.77%      71.583us       1.988us            36  
+void magma_sgemmEx_kernel<float, float, float, false...         0.00%       0.000us         0.00%       0.000us       0.000us      67.264us         3.54%      67.264us       5.605us            12  
+                  triton_poi_fused_clone_permute_view_0         0.00%       0.000us         0.00%       0.000us       0.000us      46.912us         2.47%      46.912us       0.977us            48  
+triton_poi_fused_add_clamp_div_expand_gather_neg_sqr...         0.00%       0.000us         0.00%       0.000us       0.000us      18.176us         0.96%      18.176us       1.515us            12  
+    triton_per_fused_add_addmm_native_layer_norm_view_1         0.00%       0.000us         0.00%       0.000us       0.000us      16.832us         0.89%      16.832us       1.403us            12  
+    triton_per_fused_add_addmm_native_layer_norm_view_0         0.00%       0.000us         0.00%       0.000us       0.000us      16.226us         0.85%      16.226us       1.352us            12  
+                     triton_poi_fused_addmm_gelu_view_0         0.00%       0.000us         0.00%       0.000us       0.000us      15.007us         0.79%      15.007us       1.251us            12  
+                               triton_poi_fused_clone_2         0.00%       0.000us         0.00%       0.000us       0.000us      14.015us         0.74%      14.015us       1.168us            12  
+                                       Memset (Unknown)         0.00%       0.000us         0.00%       0.000us       0.000us      13.794us         0.73%      13.794us       0.575us            24  
+triton_per_fused__softmax__to_copy_add_bitwise_not_e...         0.00%       0.000us         0.00%       0.000us       0.000us      13.026us         0.69%      13.026us       1.085us            12  
+                                            aten::addmm         5.83%     200.736us         6.46%     222.297us     111.149us      11.360us         0.60%      11.360us       5.680us             2  
+triton_poi_fused_clone_div_permute_sqrt_transpose_vi...         0.00%       0.000us         0.00%       0.000us       0.000us       9.505us         0.50%       9.505us       0.792us            12  
+                  triton_poi_fused_clone_permute_view_1         0.00%       0.000us         0.00%       0.000us       0.000us       9.056us         0.48%       9.056us       0.755us            12  
+                                            aten::fill_         2.43%      83.715us        29.11%       1.002ms      25.050us       8.864us         0.47%       9.696us       0.242us            40  
+void gemmSN_TN_kernel<float, 128, 16, 2, 4, 2, 2, tr...         0.00%       0.000us         0.00%       0.000us       0.000us       7.328us         0.39%       7.328us       7.328us             1  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us       5.184us         0.27%       5.184us       0.741us             7  
+                                            aten::copy_         1.80%      62.086us        36.23%       1.247ms      56.686us       4.511us         0.24%       4.511us       0.205us            22  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       2.623us         0.14%       2.623us       0.874us             3  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.208us         0.12%       2.208us       0.736us             3  
+                                         aten::_softmax         0.38%      13.005us         0.60%      20.609us      10.305us       2.080us         0.11%       2.080us       1.040us             2  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us       2.080us         0.11%       2.080us       1.040us             2  
+triton_red_fused__to_copy_embedding_mul_native_layer...         0.00%       0.000us         0.00%       0.000us       0.000us       2.048us         0.11%       2.048us       2.048us             1  
+                                              aten::cat         0.65%      22.421us         1.13%      38.852us      19.426us       1.920us         0.10%       1.920us       0.960us             2  
+                       Memcpy HtoD (Pageable -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       1.856us         0.10%       1.856us       0.265us             7  
+                                              aten::all         0.35%      12.183us         0.51%      17.523us      17.523us       1.696us         0.09%       1.696us       1.696us             1  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us       1.696us         0.09%       1.696us       1.696us             1  
+void dot_kernel<float, 128, 0, cublasDotParams<cubla...         0.00%       0.000us         0.00%       0.000us       0.000us       1.536us         0.08%       1.536us       1.536us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.472us         0.08%       1.472us       0.736us             2  
+void reduce_1Block_kernel<float, 128, 7, cublasGemvT...         0.00%       0.000us         0.00%       0.000us       0.000us       1.440us         0.08%       1.440us       1.440us             1  
+                                              aten::mul         0.20%       7.043us         0.33%      11.311us      11.311us       1.184us         0.06%       1.184us       1.184us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.184us         0.06%       1.184us       1.184us             1  
+                                               aten::ne         0.34%      11.821us         0.48%      16.420us      16.420us       1.152us         0.06%       1.152us       1.152us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.152us         0.06%       1.152us       1.152us             1  
+                                            aten::index         0.74%      25.538us         1.03%      35.507us      35.507us       1.120us         0.06%       1.120us       1.120us             1  
+void at::native::vectorized_gather_kernel<16, long>(...         0.00%       0.000us         0.00%       0.000us       0.000us       1.120us         0.06%       1.120us       1.120us             1  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       1.056us         0.06%       1.056us       1.056us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.442ms
+Self CUDA time total: 1.898ms

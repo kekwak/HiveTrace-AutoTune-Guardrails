@@ -1,0 +1,46 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x128_...         0.00%       0.000us         0.00%       0.000us       0.000us       3.237ms        51.66%       3.237ms      53.954us            60  
+void magma_sgemmEx_kernel<float, float, float, true,...         0.00%       0.000us         0.00%       0.000us       0.000us     829.855us        13.24%     829.855us      23.052us            36  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_...         0.00%       0.000us         0.00%       0.000us       0.000us     728.126us        11.62%     728.126us      60.677us            12  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     372.062us         5.94%     372.062us      31.005us            12  
+void at::native::_scatter_gather_elementwise_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us     220.833us         3.52%     220.833us       9.201us            24  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x...         0.00%       0.000us         0.00%       0.000us       0.000us     203.135us         3.24%     203.135us      16.928us            12  
+triton_per_fused__softmax__to_copy_add_bitwise_not_e...         0.00%       0.000us         0.00%       0.000us       0.000us     135.519us         2.16%     135.519us      11.293us            12  
+void cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us      95.009us         1.52%      95.009us       3.959us            24  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      62.848us         1.00%      62.848us       5.237us            12  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      53.183us         0.85%      53.183us       2.216us            24  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      38.625us         0.62%      38.625us       1.609us            24  
+                     triton_poi_fused_addmm_gelu_view_0         0.00%       0.000us         0.00%       0.000us       0.000us      38.592us         0.62%      38.592us       3.216us            12  
+triton_per_fused_add_addmm_div_mean_mul_pow_sqrt_sub...         0.00%       0.000us         0.00%       0.000us       0.000us      35.711us         0.57%      35.711us       2.976us            12  
+                                       Memset (Unknown)         0.00%       0.000us         0.00%       0.000us       0.000us      34.049us         0.54%      34.049us       0.709us            48  
+                               triton_poi_fused_clone_0         0.00%       0.000us         0.00%       0.000us       0.000us      32.543us         0.52%      32.543us       2.712us            12  
+triton_per_fused_add_addmm_div_mean_mul_pow_sqrt_sub...         0.00%       0.000us         0.00%       0.000us       0.000us      28.319us         0.45%      28.319us       2.360us            12  
+triton_poi_fused__unsafe_view_add_div_permute_split_...         0.00%       0.000us         0.00%       0.000us       0.000us      21.122us         0.34%      21.122us       1.760us            12  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      20.544us         0.33%      20.544us       1.712us            12  
+triton_poi_fused__unsafe_view_add_permute_split_unsq...         0.00%       0.000us         0.00%       0.000us       0.000us      18.464us         0.29%      18.464us       1.539us            12  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      17.279us         0.28%      17.279us       1.440us            12  
+                  triton_poi_fused_clone_permute_view_1         0.00%       0.000us         0.00%       0.000us       0.000us      14.496us         0.23%      14.496us       1.208us            12  
+                                            aten::fill_         0.50%      36.758us         9.89%     726.489us      66.044us       5.376us         0.09%       6.272us       0.570us            11  
+void gemv2T_kernel_val<int, int, float, float, float...         0.00%       0.000us         0.00%       0.000us       0.000us       4.448us         0.07%       4.448us       4.448us             1  
+std::enable_if<!(false), void>::type internal::gemvx...         0.00%       0.000us         0.00%       0.000us       0.000us       3.552us         0.06%       3.552us       3.552us             1  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us       3.168us         0.05%       3.168us       0.792us             4  
+                                            aten::copy_         0.25%      18.181us         0.90%      66.194us      13.239us       2.911us         0.05%       2.911us       0.582us             5  
+triton_red_fused__to_copy_add_div_embedding_mean_mul...         0.00%       0.000us         0.00%       0.000us       0.000us       2.528us         0.04%       2.528us       2.528us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.208us         0.04%       2.208us       0.736us             3  
+                                              aten::all         0.16%      11.512us         0.23%      16.551us      16.551us       1.792us         0.03%       1.792us       1.792us             1  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us       1.792us         0.03%       1.792us       1.792us             1  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       1.791us         0.03%       1.791us       0.896us             2  
+               triton_poi_fused_mul_squeeze_unsqueeze_0         0.00%       0.000us         0.00%       0.000us       0.000us       1.600us         0.03%       1.600us       1.600us             1  
+                                              aten::mul         0.08%       5.650us         0.12%       9.097us       9.097us       1.184us         0.02%       1.184us       1.184us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.184us         0.02%       1.184us       1.184us             1  
+                                              aten::abs         0.16%      11.482us         0.91%      66.575us      33.288us       1.120us         0.02%       5.184us       2.592us             2  
+                                               aten::ne         0.18%      12.945us         0.22%      16.211us      16.211us       1.120us         0.02%       1.120us       1.120us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.120us         0.02%       1.120us       1.120us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.120us         0.02%       1.120us       1.120us             1  
+                          triton_poi_fused_addmm_gelu_0         0.00%       0.000us         0.00%       0.000us       0.000us       0.992us         0.02%       0.992us       0.992us             1  
+                                         aten::_softmax         0.08%       6.083us         0.20%      14.468us      14.468us       0.992us         0.02%       0.992us       0.992us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.344ms
+Self CUDA time total: 6.266ms

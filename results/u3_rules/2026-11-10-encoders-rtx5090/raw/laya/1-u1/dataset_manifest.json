@@ -1,0 +1,1280 @@
+{
+  "schema_version": 3,
+  "kind": "speed",
+  "version": "u1-role-speed-v4-12000",
+  "seed": 42,
+  "count": 12000,
+  "source_sha256": "5a73b7abe5d6e4125ab9c50af2887bd5fe04212f4d701efc29ea5b8af9cecc21",
+  "provenance": {
+    "base_corpus_sha256": "fad1376e670375b4f7aacd5a9eab86ce31574c2c1cd1c4048d53ed7bf1006606",
+    "parent_pool_sha256": "a6aea6cf49ca7efc5ead049c78e62086b6eca74b78fad164639fc598b562c43e",
+    "source_shards": {
+      "en": {
+        "path": "20231101.en/train-00000-of-00041.parquet",
+        "sha256": "382e7f6f09e488b24793a7f7cfc659879d5a22da2cf2efec6491665f0c019677"
+      },
+      "ru": {
+        "path": "20231101.ru/train-00000-of-00021.parquet",
+        "sha256": "9f8eaf92accb29a4641010655a50d1c8a5880d22020a5c98ea2666a28c7be66a"
+      }
+    },
+    "builder_sha256": "f2e6315d149a1b9f4141aae2dd788519bebeff881fc8318c469fbaaf1e6dd444",
+    "note": "No model-specific source texts; no safety ground truth"
+  },
+  "include_texts": true,
+  "quality_evaluated": false,
+  "indices": {
+    "halo": {
+      "contract": {
+        "model": "astroware/HaloGuard1-Gen-0.8B",
+        "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c",
+        "tokenizer": {
+          "repo": "astroware/HaloGuard1-Gen-0.8B",
+          "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c",
+          "subfolder": ""
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "astroware/HaloGuard1-Gen-0.8B",
+          "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c",
+          "limit": 4096
+        },
+        "rules": "author_prompt; thinking_off; safe/unsafe softmax; unsafe>=0.65; reference linear/conv/norm; eager full attention",
+        "limit": 4096,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "tokenizer_config.json": "66e427c470fe580fe8c7b5725d857af23d8417e37fae62667ec698306a19987b",
+        "config.json": "c9d95548b54f6cb91608f7575e24caf0734ceb5a9f6a71b5d529a4768086d0cf",
+        "tokenizer.json": "9fee140e1e6ed13c7070c891349ce980eb030618221dde35dd00e44f8cfbdacf",
+        "README.md": "87dce9f4e93d2c252c7954a1222d6ef597857c5c4bf1563fad4dccaa0efc63a3",
+        "chat_template.jinja": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+        "effective_tokenizer": "9862a9f20c6c412f93634b7cae49422eb25f3b2fbab05247d39e4f481ca42a7c",
+        "effective_chat_template": "e9cb98e65623809a8a297af444986a3b417ecae1a19d519c0952eb1192abc5c1",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "b449e078c48b3f0471b14813e88061f7a5bac0a77a585cbbb0f030a13ac7c52d"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "not_applicable"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "passed",
+            "input_sha256": "b449e078c48b3f0471b14813e88061f7a5bac0a77a585cbbb0f030a13ac7c52d"
+          }
+        ]
+      },
+      "rejections": {
+        "assistant-only is not applicable to HaloGuard input guard": 3454,
+        "outside_input_limit": 5
+      }
+    },
+    "gliner": {
+      "contract": {
+        "model": "hivetrace/gliner-guard-omni",
+        "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+        "tokenizer": {
+          "repo": "hivetrace/gliner-guard-omni",
+          "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+          "subfolder": ""
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "hivetrace/gliner-guard-omni",
+          "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+          "limit": 512,
+          "dependencies": {
+            "gliner2": "2.1.0"
+          }
+        },
+        "rules": "extract safety [safe,unsafe]; argmax; tie=safe",
+        "limit": 512,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "tokenizer_config.json": "cf297d3554fb563cbb43741bc61ec152c1e307a91bf1a1a8bd29ca91e6d61064",
+        "config.json": "8732e445974587d871b81760f30b225506d449bceaaf8185f6d226609c0157fe",
+        "tokenizer.json": "f6df10ec83bea993035b2dd7c39345a3d4fcf23421c2adb6cb4ffc1e6d1bc4b5",
+        "README.md": "225a6ab2bcf7ed09bdb7bc9d4cce8e62581fc52a31d5a933d468269521161b06",
+        "installed/SchemaTransformer": "c26b080198f1f360aa5044a56e5f6f8bcf6bb5b38d9a6750abd609258d2393c9",
+        "effective_tokenizer": "099e1808b45deb45b59ed46210be8925a0a7d9b113f6cf37b7dd7d2191c2965d",
+        "effective_chat_template": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0",
+        "gliner2": "2.1.0"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "0ad33ca270deef6f8ff303c480985806846a24e0ed87540f47405fddc4c8aa0b"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "passed",
+            "input_sha256": "0711a0aa0f248204a31629a0ef9e4c5464e84f882cdbeaec0be8dd5bf219e85b"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "passed",
+            "input_sha256": "0711a0aa0f248204a31629a0ef9e4c5464e84f882cdbeaec0be8dd5bf219e85b"
+          }
+        ]
+      },
+      "rejections": {
+        "processor_changed_text": 10650,
+        "outside_input_limit": 467
+      }
+    },
+    "koala": {
+      "contract": {
+        "model": "KoalaAI/Text-Moderation",
+        "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c",
+        "tokenizer": {
+          "repo": "KoalaAI/Text-Moderation",
+          "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c",
+          "subfolder": ""
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "KoalaAI/Text-Moderation",
+          "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c",
+          "limit": 512
+        },
+        "rules": "native nine-class argmax; tie=lowest class index",
+        "limit": 512,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "tokenizer_config.json": "81ff32a7fe4f3272cbf94b819af5e1fca897367cb8e678883c145165d74368dd",
+        "special_tokens_map.json": "dea11db03530c61ee1a7d7702c0cbbcaaf8635dca038b31e4ad87451c88887b9",
+        "config.json": "328fe3f8aaba5952476c5a2f125a56f7494eab420238b6cc79555f64dea61224",
+        "tokenizer.json": "02eccb4743ef6eeb5bf1fa77bca58cf5a42094ec91852a767e3825b1617f550b",
+        "README.md": "ec01a6c63940f508cc186125c0599d70f108ad595ffaaa1ae4dce4eaa0860a17",
+        "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+        "vocab.json": "652576caa7d91e6d4f1b2cfde8eff81ed736ea3e74588121f2a111c697704d8f",
+        "effective_tokenizer": "88c20c05ff448251c69fbf30ff08f0f0ce78bb046521e9a282fc8054bd8c8d31",
+        "effective_chat_template": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "d92c1dd379799728862c6a1dcb32629167c9fca7eed056c53d4534cf5ce88b34"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "passed",
+            "input_sha256": "eae90729e32f10a5bf58eb67a8ad69933591ca8f45b97f08c9d96118e2ad76df"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "passed",
+            "input_sha256": "eae90729e32f10a5bf58eb67a8ad69933591ca8f45b97f08c9d96118e2ad76df"
+          }
+        ]
+      },
+      "rejections": {
+        "outside_input_limit": 5766
+      }
+    },
+    "llama": {
+      "contract": {
+        "model": "hipocap/Llama-Prompt-Guard-2-22M",
+        "revision": "05f1919555db0e711b73cbb7ec2424702b918c20",
+        "tokenizer": {
+          "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+          "revision": "05f1919555db0e711b73cbb7ec2424702b918c20",
+          "subfolder": ""
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+          "revision": "05f1919555db0e711b73cbb7ec2424702b918c20",
+          "limit": 512,
+          "provenance": {
+            "source": "public_mirror_explicitly_selected",
+            "original_repo": "meta-llama/Llama-Prompt-Guard-2-22M",
+            "original_equivalence_verified": false,
+            "teammate_commit": "2f65d6fe30f29f2d36f8ee397db6380b81e1a2d7"
+          }
+        },
+        "rules": "native benign/malicious argmax; tie=lowest class index; selected hipocap mirror",
+        "limit": 512,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "tokenizer_config.json": "557b3d33d3f41b81ad769244e506549e98a1857d41dd58160aacd4d98d710b5a",
+        "special_tokens_map.json": "9463f61e1b109a8eb4688b829260d7c6b1e6dff04c98ff7269bb89e2b92369b9",
+        "config.json": "1dc4742d04507072cafffb7235dc5dba5af9ba126f7a9830b95ed7ec00fd9104",
+        "tokenizer.json": "6eb983352e73f1697b883a8c3f6b66bdfa336ab3d29dd3687f8316d0ff2789c1",
+        "README.md": "5d2a3e0c46397609a784a5034dc823da408aa8b5a414828609f32dc18ee16933",
+        "effective_tokenizer": "c3d63e50374b0b125fdc419012332d1182b998bd87c5a2b6b516d257bb8110a3",
+        "effective_chat_template": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "c7434e6e334028029ac2348db52ae10eba3bfc1f41fb017d4e56876c618e3045"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "passed",
+            "input_sha256": "efe91bf300d26a55dc8f801117c516ae0f4195a480e80046f4011b6c4ac5052b"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "passed",
+            "input_sha256": "efe91bf300d26a55dc8f801117c516ae0f4195a480e80046f4011b6c4ac5052b"
+          }
+        ]
+      },
+      "rejections": {
+        "outside_input_limit": 4670
+      }
+    },
+    "laya": {
+      "contract": {
+        "model": "convaiinnovations/laya",
+        "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+        "tokenizer": {
+          "repo": "convaiinnovations/laya",
+          "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+          "subfolder": "tokenizer"
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "convaiinnovations/laya",
+          "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+          "subfolder": "tokenizer",
+          "limit": 512,
+          "dependencies": {
+            "laya": "0.3.20"
+          }
+        },
+        "rules": "SDK predict; danger choice A/B; FP32 weights; per-request FP16 autocast; efficient SDPA",
+        "limit": 512,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "config.json": "7add7c041b53f7091e65908553af79ab3f077946e5f2312d510ae13b17c7c134",
+        "README.md": "00355613796b3f5860b0d5b20392381d26580ec242e04a1fd150c7f116858602",
+        "rl_agent_config.json": "ae287b56bbcf5f8c4f4541ae9dfd00c914c4c48b940b8398c3058af37ba92bbd",
+        "tokenizer/tokenizer_config.json": "50044de60daaa73df97d262e15a40d4faf0160e7d742df64b377877a1320dd12",
+        "tokenizer/tokenizer.json": "6c8aaa9a542084f2457eab775d4eeb51f92a70c0fd9de28d5edb0ddec3c08d30",
+        "installed/Agent._encode_state": "0cac8083de8e51cee07cc265ad5166403b1008cb00c5ab3cb53758b65b5419b4",
+        "installed/build_sequence": "7a76660bbb1378a127e8cd5e3bad96be3e39fffbfef5d5821688a80a9220fb4a",
+        "effective_tokenizer": "78bf6d94e08c698050153b870ac71eb211c9a0d25c238782547f2f057ea81e7a",
+        "effective_chat_template": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0",
+        "laya": "0.3.20"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "6fecf3091b2e8a7eeeb85d03c7dff3991e219d763da6df2d7db47b3fa1578494"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "passed",
+            "input_sha256": "7dfebb58dc7ac12cae6787c13ac0bbc445888bb579e0a9bfe997407aa6646e84"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "passed",
+            "input_sha256": "7dfebb58dc7ac12cae6787c13ac0bbc445888bb579e0a9bfe997407aa6646e84"
+          }
+        ]
+      },
+      "rejections": {
+        "outside_input_limit": 5231
+      }
+    },
+    "hive": {
+      "contract": {
+        "model": "hivetrace/HiveTraceGuard-Pro",
+        "revision": "ed008276c96253e14885e6ade3b7b6d58daa2480",
+        "tokenizer": {
+          "repo": "hivetrace/HiveTraceGuard-Pro",
+          "revision": "ed008276c96253e14885e6ade3b7b6d58daa2480",
+          "subfolder": ""
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "hivetrace/HiveTraceGuard-Pro",
+          "revision": "ed008276c96253e14885e6ade3b7b6d58daa2480",
+          "limit": 4096
+        },
+        "rules": "native template; greedy generate max_new_tokens=1; native EOS; SDPA math; parse safe/unsafe",
+        "limit": 4096,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "tokenizer_config.json": "b8a8f5400f37984bac860781287a81f98ee56a488b092f6ab531626a1941e4df",
+        "config.json": "36f13d96260e7613f5c67f222cf7b3a765f223a659bed4a3e80e2b9c32ad45ae",
+        "tokenizer.json": "d7430e9138b76e93fb6f93462394d236b411111aef53cb421ba97d2691040cca",
+        "README.md": "859fc4e30f5b33c4680686703341db8594dbf7cbd63586f04b83f353478d6e6a",
+        "chat_template.jinja": "781cf6ae029c1a83f1231262aa64f1fb83f1c8ab4849d2723ba2be5beb9fd5a4",
+        "effective_tokenizer": "152e090fbb27cddcdefa5690317d00c1a7e016fc8faee3d7a8b7070ed8c9e230",
+        "effective_chat_template": "33e1fe0ad29fc8bdfbbebca01c55d22759d96e8d7098edfc8841a723f9b83ba5",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "2d17d09b62b52916b5f2a89eba3ec6222cbdf6be30745a2a999b28dfae7f0a18"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "passed",
+            "input_sha256": "ce3657ad28d82a9c7ff3c3e020ba9a92b9841aa1743fc11181388d9b2f4bdadd"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "passed",
+            "input_sha256": "1eab2243dc5aec49627889dfbf3c9420f3fd9d8d289dd7bbcd930c60d1ba1ff7"
+          }
+        ]
+      },
+      "rejections": {
+        "outside_input_limit": 24
+      }
+    },
+    "open": {
+      "contract": {
+        "model": "openguardrails/OpenGuardrails-Text-4B-0124",
+        "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b",
+        "tokenizer": {
+          "repo": "openguardrails/OpenGuardrails-Text-4B-0124",
+          "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b",
+          "subfolder": ""
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "openguardrails/OpenGuardrails-Text-4B-0124",
+          "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b",
+          "limit": 4096
+        },
+        "rules": "native 0124 template; user-only; greedy generate max_new_tokens=10; native EOS; SDPA math; safe/unsafe and category",
+        "limit": 4096,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "tokenizer_config.json": "8f960059b84df8a646d13d99fa6977e13a65f8d7425cb482ea9a589be88291e6",
+        "special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+        "chat_template.jinja": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326",
+        "config.json": "73bd6f5953b6480abadbd7f7daaa6e5b014de99999e4201f0b06a6c7dd9f8b17",
+        "README.md": "e3abb5bf8ae974563d949412c3b3c54763b6e447677056dfe995cc74396a29dd",
+        "effective_chat_template": "c87c39da4214fe8fee1f49f4b54bdb5ae1e1cd5aed22a356f3ffedb59964a715",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "354ba8ea1830856f27551717698510cc57c65d6dd42a5ad1afeb78e9fa8f7c8d"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "not_applicable"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "not_applicable"
+          }
+        ]
+      },
+      "rejections": {
+        "OpenGuardrails 0124 response mode is not confirmed": 6936,
+        "outside_input_limit": 4
+      }
+    },
+    "shield": {
+      "contract": {
+        "model": "google/shieldgemma-2b",
+        "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8",
+        "tokenizer": {
+          "repo": "google/shieldgemma-2b",
+          "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8",
+          "subfolder": ""
+        },
+        "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+        "preparation_spec": {
+          "repo": "google/shieldgemma-2b",
+          "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8",
+          "limit": 4096
+        },
+        "rules": "Dangerous Content; eager softcap; Yes/No softmax; tie=No; native prompt/response Dangerous Content wording",
+        "limit": 4096,
+        "input_version": 3,
+        "role_policy": {
+          "formats": [
+            "user-only",
+            "assistant-only",
+            "user+assistant"
+          ],
+          "unsupported": "explicit; never relabel or synthesize context"
+        }
+      },
+      "assets": {
+        "tokenizer_config.json": "20dc327cc0ddb4bad2ebc5042f561f89fc980855a87db593ed80ac07ca5efcba",
+        "special_tokens_map.json": "db82f8bd9b25d14f9c788e6bde64de84d42f1c2538f1c245ba6cb3e872d14b18",
+        "config.json": "a6ed3351158dadd870db10fa19ec69b897001f37c1339881165bfbd267875b42",
+        "tokenizer.json": "3f289bc05132635a8bc7aca7aa21255efd5e18f3710f43e3cdb96bcd41be4922",
+        "tokenizer.model": "61a7b147390c64585d6c3543dd6fc636906c9af3865a5548f27f31aee1d4c8e2",
+        "README.md": "9184d3f33bb542841cb14436a938d9f53fae194f555c20e9c8e6ae60219b5893",
+        "effective_tokenizer": "8db7bdd5a483928ab388a37971c378d9b5e557d8b8c9a74578f67b94ffcdc78b",
+        "effective_chat_template": "405c108b658fcf17db245c29a1413177f18594cb66f6a13425e19ebbbee7fef6",
+        "native_role_preparation": "be870b47a709d559e53790bdd9c27718f2f33ed955d359f1af49893022ea90b4"
+      },
+      "versions": {
+        "transformers": "5.20.1",
+        "tokenizers": "0.23.3",
+        "huggingface-hub": "1.33.0"
+      },
+      "parity": {
+        "status": "passed",
+        "scope": "CPU native preparation; not quality or GPU acceptance",
+        "checks": [
+          {
+            "source_sha256": "66d98d7148d381e12744d45427dcf8839b3a5843ac9cbf4397faebab0b34744f",
+            "status": "passed",
+            "input_sha256": "da4555a1eb2c1e1fff5b6a45f8042d893e6afccb346bf95a2e0cc7efac64449d"
+          },
+          {
+            "source_sha256": "4c5ec9315f5def7e69a25186d9cde26098547393acf7c71e122daf68bd984637",
+            "status": "not_applicable"
+          },
+          {
+            "source_sha256": "1fd30a8fb263beb7d1b308711b2928f6af78b3c902045cea454badf4326d932a",
+            "status": "passed",
+            "input_sha256": "b5b8ca71a32836e30cc591a9fdebd0592fdbdfd2ecdc4291e2574d484f26f9ad"
+          }
+        ]
+      },
+      "rejections": {
+        "ShieldGemma response mode requires a preceding user": 3454,
+        "outside_input_limit": 3
+      }
+    }
+  },
+  "model_buckets": {
+    "halo": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 5167,
+        "ids_file": "buckets/halo/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          200,
+          200
+        ],
+        "lengths": {
+          "min": 398,
+          "median": 448.5,
+          "p95": 505.0,
+          "max": 512
+        },
+        "languages": {
+          "en": 200,
+          "ru": 200
+        },
+        "formats": {
+          "user+assistant": 100,
+          "user-only": 300
+        }
+      },
+      "B2": {
+        "min": 513,
+        "max": 1024,
+        "selected": 400,
+        "eligible_unique_inputs": 1659,
+        "ids_file": "buckets/halo/B2.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 513,
+          "median": 768.5,
+          "p95": 987.05,
+          "max": 1022
+        },
+        "languages": {
+          "en": 200,
+          "ru": 200
+        },
+        "formats": {
+          "user-only": 400
+        }
+      },
+      "B3": {
+        "min": 1025,
+        "max": 2048,
+        "selected": 400,
+        "eligible_unique_inputs": 1015,
+        "ids_file": "buckets/halo/B3.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 1025,
+          "median": 1535.0,
+          "p95": 1993.0,
+          "max": 2047
+        },
+        "languages": {
+          "en": 205,
+          "ru": 195
+        },
+        "formats": {
+          "user-only": 400
+        }
+      },
+      "B4": {
+        "min": 2049,
+        "max": 4096,
+        "selected": 400,
+        "eligible_unique_inputs": 700,
+        "ids_file": "buckets/halo/B4.json",
+        "status": "ready",
+        "histogram_8": [
+          62,
+          62,
+          61,
+          61,
+          61,
+          56,
+          27,
+          10
+        ],
+        "lengths": {
+          "min": 2064,
+          "median": 2870.5,
+          "p95": 3703.1,
+          "max": 4075
+        },
+        "languages": {
+          "en": 229,
+          "ru": 171
+        },
+        "formats": {
+          "user-only": 400
+        }
+      }
+    },
+    "gliner": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 883,
+        "ids_file": "buckets/gliner/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          83,
+          82,
+          40,
+          39,
+          36,
+          44,
+          33,
+          43
+        ],
+        "lengths": {
+          "min": 20,
+          "median": 184.0,
+          "p95": 484.0999999999999,
+          "max": 512
+        },
+        "languages": {
+          "en": 174,
+          "ru": 226
+        },
+        "formats": {
+          "assistant-only": 110,
+          "user+assistant": 136,
+          "user-only": 154
+        }
+      }
+    },
+    "koala": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 6168,
+        "ids_file": "buckets/koala/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 3,
+          "median": 260.0,
+          "p95": 485.04999999999995,
+          "max": 512
+        },
+        "languages": {
+          "en": 208,
+          "ru": 192
+        },
+        "formats": {
+          "assistant-only": 136,
+          "user+assistant": 136,
+          "user-only": 128
+        }
+      }
+    },
+    "llama": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 7264,
+        "ids_file": "buckets/llama/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 5,
+          "median": 256.5,
+          "p95": 483.0,
+          "max": 512
+        },
+        "languages": {
+          "en": 208,
+          "ru": 192
+        },
+        "formats": {
+          "assistant-only": 136,
+          "user+assistant": 136,
+          "user-only": 128
+        }
+      }
+    },
+    "laya": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 6703,
+        "ids_file": "buckets/laya/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 36,
+          "median": 256.5,
+          "p95": 486.0,
+          "max": 512
+        },
+        "languages": {
+          "en": 208,
+          "ru": 192
+        },
+        "formats": {
+          "assistant-only": 136,
+          "user+assistant": 136,
+          "user-only": 128
+        }
+      }
+    },
+    "hive": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 3747,
+        "ids_file": "buckets/hive/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          200,
+          200
+        ],
+        "lengths": {
+          "min": 423,
+          "median": 448.5,
+          "p95": 497.04999999999995,
+          "max": 512
+        },
+        "languages": {
+          "en": 202,
+          "ru": 198
+        },
+        "formats": {
+          "assistant-only": 134,
+          "user+assistant": 134,
+          "user-only": 132
+        }
+      },
+      "B2": {
+        "min": 513,
+        "max": 1024,
+        "selected": 400,
+        "eligible_unique_inputs": 4341,
+        "ids_file": "buckets/hive/B2.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 514,
+          "median": 768.5,
+          "p95": 1005.0999999999999,
+          "max": 1023
+        },
+        "languages": {
+          "en": 208,
+          "ru": 192
+        },
+        "formats": {
+          "assistant-only": 136,
+          "user+assistant": 136,
+          "user-only": 128
+        }
+      },
+      "B3": {
+        "min": 1025,
+        "max": 2048,
+        "selected": 400,
+        "eligible_unique_inputs": 2408,
+        "ids_file": "buckets/hive/B3.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 1025,
+          "median": 1537.5,
+          "p95": 2000.05,
+          "max": 2048
+        },
+        "languages": {
+          "en": 208,
+          "ru": 192
+        },
+        "formats": {
+          "assistant-only": 136,
+          "user+assistant": 136,
+          "user-only": 128
+        }
+      },
+      "B4": {
+        "min": 2049,
+        "max": 4096,
+        "selected": 400,
+        "eligible_unique_inputs": 1480,
+        "ids_file": "buckets/hive/B4.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 2055,
+          "median": 3067.0,
+          "p95": 3947.1,
+          "max": 4090
+        },
+        "languages": {
+          "en": 187,
+          "ru": 213
+        },
+        "formats": {
+          "assistant-only": 124,
+          "user+assistant": 120,
+          "user-only": 156
+        }
+      }
+    },
+    "open": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 2825,
+        "ids_file": "buckets/open/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 11,
+          "median": 256.0,
+          "p95": 482.1999999999998,
+          "max": 511
+        },
+        "languages": {
+          "en": 200,
+          "ru": 200
+        },
+        "formats": {
+          "user-only": 400
+        }
+      },
+      "B2": {
+        "min": 513,
+        "max": 1024,
+        "selected": 400,
+        "eligible_unique_inputs": 886,
+        "ids_file": "buckets/open/B2.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 513,
+          "median": 768.5,
+          "p95": 1004.05,
+          "max": 1024
+        },
+        "languages": {
+          "en": 210,
+          "ru": 190
+        },
+        "formats": {
+          "user-only": 400
+        }
+      },
+      "B3": {
+        "min": 1025,
+        "max": 2048,
+        "selected": 400,
+        "eligible_unique_inputs": 724,
+        "ids_file": "buckets/open/B3.json",
+        "status": "ready",
+        "histogram_8": [
+          60,
+          60,
+          59,
+          59,
+          39,
+          35,
+          43,
+          45
+        ],
+        "lengths": {
+          "min": 1025,
+          "median": 1452.5,
+          "p95": 1993.05,
+          "max": 2046
+        },
+        "languages": {
+          "en": 216,
+          "ru": 184
+        },
+        "formats": {
+          "user-only": 400
+        }
+      },
+      "B4": {
+        "min": 2049,
+        "max": 4096,
+        "selected": 400,
+        "eligible_unique_inputs": 625,
+        "ids_file": "buckets/open/B4.json",
+        "status": "ready",
+        "histogram_8": [
+          66,
+          65,
+          65,
+          65,
+          65,
+          60,
+          12,
+          2
+        ],
+        "lengths": {
+          "min": 2056,
+          "median": 2833.0,
+          "p95": 3536.1499999999996,
+          "max": 4025
+        },
+        "languages": {
+          "en": 181,
+          "ru": 219
+        },
+        "formats": {
+          "user-only": 400
+        }
+      }
+    },
+    "shield": {
+      "B1": {
+        "min": 1,
+        "max": 512,
+        "selected": 400,
+        "eligible_unique_inputs": 4622,
+        "ids_file": "buckets/shield/B1.json",
+        "status": "ready",
+        "histogram_8": [
+          0,
+          58,
+          57,
+          57,
+          57,
+          57,
+          57,
+          57
+        ],
+        "lengths": {
+          "min": 126,
+          "median": 290.0,
+          "p95": 485.0,
+          "max": 512
+        },
+        "languages": {
+          "en": 207,
+          "ru": 193
+        },
+        "formats": {
+          "user-only": 226,
+          "user+assistant": 174
+        }
+      },
+      "B2": {
+        "min": 513,
+        "max": 1024,
+        "selected": 400,
+        "eligible_unique_inputs": 1838,
+        "ids_file": "buckets/shield/B2.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 517,
+          "median": 765.0,
+          "p95": 994.05,
+          "max": 1024
+        },
+        "languages": {
+          "en": 208,
+          "ru": 192
+        },
+        "formats": {
+          "user+assistant": 200,
+          "user-only": 200
+        }
+      },
+      "B3": {
+        "min": 1025,
+        "max": 2048,
+        "selected": 400,
+        "eligible_unique_inputs": 1251,
+        "ids_file": "buckets/shield/B3.json",
+        "status": "ready",
+        "histogram_8": [
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50,
+          50
+        ],
+        "lengths": {
+          "min": 1026,
+          "median": 1534.5,
+          "p95": 1994.1,
+          "max": 2048
+        },
+        "languages": {
+          "en": 208,
+          "ru": 192
+        },
+        "formats": {
+          "user+assistant": 200,
+          "user-only": 200
+        }
+      },
+      "B4": {
+        "min": 2049,
+        "max": 4096,
+        "selected": 400,
+        "eligible_unique_inputs": 832,
+        "ids_file": "buckets/shield/B4.json",
+        "status": "ready",
+        "histogram_8": [
+          78,
+          78,
+          77,
+          77,
+          55,
+          22,
+          10,
+          3
+        ],
+        "lengths": {
+          "min": 2049,
+          "median": 2692.0,
+          "p95": 3416.749999999999,
+          "max": 3963
+        },
+        "languages": {
+          "en": 231,
+          "ru": 169
+        },
+        "formats": {
+          "user+assistant": 152,
+          "user-only": 248
+        }
+      }
+    }
+  },
+  "status": "ready",
+  "blockers": {},
+  "files": {
+    "REPORT.md": "0b2f1acb9fb6c897aada8366399d48b68aeb30dfae7d3b825d84652f28d3b250",
+    "buckets/gliner/B1.json": "97d55907627723587e7f230e5c805b1347ce25c207109b7fc49f8a51909f6464",
+    "buckets/halo/B1.json": "f869ef2729e758ff99078f608bfc889183a52e12fc8e793ab6c47c0bcc767883",
+    "buckets/halo/B2.json": "a9113d16c87b88f8d89fa3a266d248e802e26d9905bc6a60155d1b8f024fdbf7",
+    "buckets/halo/B3.json": "d6195ab73ef6731e396ee08a60b3f986f1d108dd80fe5299bef3e5896f5d089b",
+    "buckets/halo/B4.json": "05738318e3dc186c304d6380f280ebd49c7bac6e349dba6cea7bd5b64093c777",
+    "buckets/hive/B1.json": "349ecced0f4eab29d581bda52c0cb981dfd0a192e8234d8926733a5808ca3dcc",
+    "buckets/hive/B2.json": "051acb148b35e334cfc61c4b96ce801cc6231380e02f50c4a72a869d05865cdf",
+    "buckets/hive/B3.json": "bb975dc1729153acc1c87c44d5a3c2d1598dfe90e6d953c26ef61ab4383a1df5",
+    "buckets/hive/B4.json": "ce82c1bf66e26d22eacb5abb1bf83ffffd60cb5bd9c15d47f209d36aa14a7299",
+    "buckets/koala/B1.json": "1677fab0924d2f0c79d23ee15186cf4b41db91193bbca2e892d746189481a01d",
+    "buckets/laya/B1.json": "3a2771403616f29cd4f37ab7686f8ec96d8abef5a357bd951b1e8e4e902d6ac2",
+    "buckets/llama/B1.json": "2269773142812420a3121e7bd79ef2e584c33a4e574b0d0bf9bad984638a22b1",
+    "buckets/open/B1.json": "623fc4419e064b21c18729a4dd9b1522140a8f8558bb6441b7ba1a6fe5826a67",
+    "buckets/open/B2.json": "f9007fde578e8488fb00934ed658df572fc19ce3d87d2707d132f1eba799e0ca",
+    "buckets/open/B3.json": "54976cd00a6e22ad92e7eed792b0875d33c245d322d79731b30b37ea7bad3ed5",
+    "buckets/open/B4.json": "e89fbd55e2f2146decf24e930e2eb7c8935fc1c422ab85aff0e4307b93fe3c84",
+    "buckets/shield/B1.json": "d8c230ee41efb0721b90874cea008c1fd7b63e5b5218a9fd33ff6fbe2ca9954c",
+    "buckets/shield/B2.json": "ad24febe44efe9408ff07ab9e4c6b2ece1e4c9ad710ee98f66f7e37ba88ea7ac",
+    "buckets/shield/B3.json": "05818d39d58caf37d69f6be89641acb80308a11a9820f668c6ef4d30f06aee71",
+    "buckets/shield/B4.json": "5e02a3f45d9fe704eea254144d7ee15ee288b7be221c2a67efebb2c01c14597c",
+    "corpus.jsonl": "4f64ed678c40f758ee96ebdb4c1d10fe154bada937d924ba27580ad3bebafbca",
+    "indices/gliner.jsonl": "c0a2fd3ee56bc73edfc5d008c2f061eb8204a0d5987df10677ac4869b555a622",
+    "indices/halo.jsonl": "d24119935c7e70ef32f6c0e917fe3b57fa87921ddc7bd2c2cbf7a3291938472a",
+    "indices/hive.jsonl": "d198530a499231b649102fd5ff8e8b3c5959fbb98a6d9511f626048df55f9a94",
+    "indices/koala.jsonl": "34a01738e57f810b0abbfab7dac0d1247bcb2e7cd81aaadd818ccf3dea026b49",
+    "indices/laya.jsonl": "c10e9bb175619d290df89033be1b471b7dffef8145e8b6d3f28cfc81ca2a4bac",
+    "indices/llama.jsonl": "5b8f5fe97451dfc515eb673b7a647347c8c96cc21e50561f7f96819e36fdf7d4",
+    "indices/open.jsonl": "56d3ca555cb8cef3844377df0a375766c4378b34af1fe925dd5f5a2ad03c0c68",
+    "indices/shield.jsonl": "6556ec5a9cf80785cede38c2ba28237b27c0e91ef2172e2d062417da730f795e"
+  }
+}

@@ -1,0 +1,46 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x...         0.00%       0.000us         0.00%       0.000us       0.000us       1.011ms        42.39%       1.011ms      16.852us            60  
+void sgemm_largek_lds64<true, false, 5, 5, 4, 4, 4, ...         0.00%       0.000us         0.00%       0.000us       0.000us     250.654us        10.51%     250.654us      20.888us            12  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     164.638us         6.90%     164.638us       0.766us           215  
+void magma_sgemmEx_kernel<float, float, float, true,...         0.00%       0.000us         0.00%       0.000us       0.000us     140.637us         5.90%     140.637us       3.907us            36  
+void at::native::_scatter_gather_elementwise_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us      96.895us         4.06%      96.895us       4.037us            24  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      93.725us         3.93%      93.725us       1.284us            73  
+void cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us      86.655us         3.63%      86.655us       1.444us            60  
+                                              memcpy128         0.00%       0.000us         0.00%       0.000us       0.000us      73.278us         3.07%      73.278us       1.527us            48  
+void at::native::(anonymous namespace)::vectorized_l...         0.00%       0.000us         0.00%       0.000us       0.000us      72.256us         3.03%      72.256us       2.890us            25  
+void magma_sgemmEx_kernel<float, float, float, false...         0.00%       0.000us         0.00%       0.000us       0.000us      66.752us         2.80%      66.752us       5.563us            12  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      33.439us         1.40%      33.439us       0.929us            36  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      33.022us         1.38%      33.022us       0.892us            37  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      24.065us         1.01%      24.065us       1.003us            24  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      23.424us         0.98%      23.424us       0.976us            24  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      22.496us         0.94%      22.496us       1.875us            12  
+void cublasLt::epilogue::impl::globalKernel<8, 32, f...         0.00%       0.000us         0.00%       0.000us       0.000us      17.728us         0.74%      17.728us       1.477us            12  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us      16.480us         0.69%      16.480us       1.373us            12  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      15.552us         0.65%      15.552us       1.296us            12  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      14.912us         0.63%      14.912us       1.243us            12  
+                                       Memset (Unknown)         0.00%       0.000us         0.00%       0.000us       0.000us      14.912us         0.63%      14.912us       1.243us            12  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      14.144us         0.59%      14.144us       1.179us            12  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      12.097us         0.51%      12.097us       1.008us            12  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      10.624us         0.45%      10.624us       0.885us            12  
+void scal_kernel<float, float, 1, true, 6, 5, 5, 3>(...         0.00%       0.000us         0.00%       0.000us       0.000us      10.368us         0.43%      10.368us       0.864us            12  
+                                            aten::addmm         4.14%     150.563us         4.67%     169.567us      84.784us      10.176us         0.43%      10.176us       5.088us             2  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       9.634us         0.40%       9.634us       0.803us            12  
+                                          memcpy32_post         0.00%       0.000us         0.00%       0.000us       0.000us       9.216us         0.39%       9.216us       0.768us            12  
+                                            aten::fill_         1.65%      60.073us        20.85%     757.530us      18.938us       8.864us         0.37%       9.728us       0.243us            40  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       8.544us         0.36%       8.544us       0.610us            14  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us       6.528us         0.27%       6.528us       0.725us             9  
+void gemmSN_TN_kernel<float, 128, 16, 2, 4, 2, 2, tr...         0.00%       0.000us         0.00%       0.000us       0.000us       6.240us         0.26%       6.240us       6.240us             1  
+                                            aten::copy_         1.12%      40.843us        43.66%       1.586ms      72.106us       4.576us         0.19%       4.576us       0.208us            22  
+void at::native::vectorized_gather_kernel<16, long>(...         0.00%       0.000us         0.00%       0.000us       0.000us       2.688us         0.11%       2.688us       1.344us             2  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       2.592us         0.11%       2.592us       0.864us             3  
+                                         aten::_softmax         0.32%      11.471us         0.47%      16.951us       8.476us       2.016us         0.08%       2.016us       1.008us             2  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us       2.016us         0.08%       2.016us       1.008us             2  
+                       Memcpy HtoD (Pageable -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       1.920us         0.08%       1.920us       0.274us             7  
+                                              aten::cat         0.54%      19.698us         0.93%      33.954us      16.977us       1.856us         0.08%       1.856us       0.928us             2  
+                                              aten::all         0.25%       8.968us         0.38%      13.846us      13.846us       1.728us         0.07%       1.728us       1.728us             1  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us       1.728us         0.07%       1.728us       1.728us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.633ms
+Self CUDA time total: 2.385ms

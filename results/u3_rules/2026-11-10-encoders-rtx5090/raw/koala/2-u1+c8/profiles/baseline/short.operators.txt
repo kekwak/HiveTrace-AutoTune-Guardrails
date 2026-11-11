@@ -1,0 +1,46 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void gemmSN_TN_kernel<float, 128, 16, 2, 4, 4, 4, fa...         0.00%       0.000us         0.00%       0.000us       0.000us     623.740us        43.82%     623.740us       7.425us            84  
+                                            aten::addmm        24.06%       2.401ms        25.28%       2.523ms      50.454us     557.053us        39.14%     557.053us      11.141us            50  
+                                              aten::add         4.04%     403.122us         7.25%     723.489us       4.550us     161.186us        11.32%     161.186us       1.014us           159  
+                                               aten::mm         5.29%     528.250us         5.93%     592.068us      24.669us     157.598us        11.07%     157.598us       6.567us            24  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     139.134us         9.78%     139.134us       1.253us           111  
+void gemmSN_TN_kernel<float, 128, 16, 2, 4, 6, 7, fa...         0.00%       0.000us         0.00%       0.000us       0.000us     134.368us         9.44%     134.368us       5.599us            24  
+                                             aten::mean         1.87%     186.328us         2.95%     294.553us       5.891us      74.685us         5.25%      74.685us       1.494us            50  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us      74.685us         5.25%      74.685us       1.494us            50  
+                                              aten::bmm         9.56%     953.850us        10.75%       1.073ms      22.351us      66.753us         4.69%      66.753us       1.391us            48  
+                                              aten::sub         1.62%     161.428us         2.68%     267.778us       3.114us      54.622us         3.84%      54.622us       0.635us            86  
+                                              aten::mul         1.61%     161.131us         2.80%     279.023us       3.671us      41.536us         2.92%      41.536us       0.547us            76  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      39.584us         2.78%      39.584us       1.522us            26  
+                                            aten::copy_         1.37%     136.580us         3.15%     314.314us       3.532us      39.392us         2.77%      39.392us       0.443us            89  
+                                              aten::div         1.15%     114.857us         2.02%     201.550us       5.447us      39.263us         2.76%      39.263us       1.061us            37  
+                                            aten::fill_         1.32%     131.891us         6.79%     677.290us       6.102us      37.983us         2.67%      38.847us       0.350us           111  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      33.568us         2.36%      33.568us       0.907us            37  
+                                           aten::gather         1.16%     115.743us         1.84%     183.665us       7.653us      32.032us         2.25%      32.032us       1.335us            24  
+void at::native::_scatter_gather_elementwise_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us      32.032us         2.25%      32.032us       1.335us            24  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      31.328us         2.20%      31.328us       0.870us            36  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      29.118us         2.05%      29.118us       1.165us            25  
+                                             aten::sqrt         0.95%      94.909us         1.51%     150.490us       3.071us      26.430us         1.86%      26.430us       0.539us            49  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      26.430us         1.86%      26.430us       1.057us            25  
+                                            aten::clamp         0.83%      83.108us         1.39%     138.818us       5.784us      22.910us         1.61%      22.910us       0.955us            24  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      22.910us         1.61%      22.910us       0.955us            24  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      22.498us         1.58%      22.498us       0.937us            24  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      21.728us         1.53%      21.728us       0.701us            31  
+                                              aten::pow         1.38%     137.252us         2.05%     204.092us       8.164us      21.377us         1.50%      21.377us       0.855us            25  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      21.377us         1.50%      21.377us       0.855us            25  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      21.345us         1.50%      21.345us       0.889us            24  
+void gemmSN_NN_kernel<float, 256, 4, 2, 8, 3, 4, fal...         0.00%       0.000us         0.00%       0.000us       0.000us      15.233us         1.07%      15.233us       1.269us            12  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      14.207us         1.00%      14.207us       1.184us            12  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      12.544us         0.88%      12.544us       1.045us            12  
+                                             aten::gelu         0.44%      43.413us         0.74%      74.220us       5.709us      12.386us         0.87%      12.386us       0.953us            13  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      12.386us         0.87%      12.386us       0.953us            13  
+                                         aten::_softmax         0.44%      44.042us         0.75%      75.061us       5.774us      12.225us         0.86%      12.225us       0.940us            13  
+                                      aten::bitwise_not         0.34%      34.296us         0.61%      60.524us       5.044us      11.839us         0.83%      11.839us       0.987us            12  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      11.839us         0.83%      11.839us       0.987us            12  
+                                              aten::neg         0.41%      40.566us         0.68%      67.617us       5.635us      11.328us         0.80%      11.328us       0.944us            12  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      11.328us         0.80%      11.328us       0.944us            12  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us      11.265us         0.79%      11.265us       0.939us            12  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 9.979ms
+Self CUDA time total: 1.423ms

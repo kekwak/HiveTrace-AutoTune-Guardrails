@@ -1,0 +1,46 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us       1.479ms        39.68%       1.479ms      26.417us            56  
+fmha_cutlassF_bf16_aligned_64x64_rf_sm80(PyTorchMemE...         0.00%       0.000us         0.00%       0.000us       0.000us     913.212us        24.49%     913.212us      30.440us            30  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     522.623us        14.02%     522.623us      17.421us            30  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     237.600us         6.37%     237.600us       8.486us            28  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     160.096us         4.29%     160.096us      26.683us             6  
+         triton_poi_fused__unsafe_view_gelu_mul_split_4         0.00%       0.000us         0.00%       0.000us       0.000us      64.290us         1.72%      64.290us       2.296us            28  
+triton_poi_fused__to_copy__unsafe_view_add_arange_ca...         0.00%       0.000us         0.00%       0.000us       0.000us      55.392us         1.49%      55.392us       1.978us            28  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      41.185us         1.10%      41.185us       0.624us            66  
+triton_per_fused__to_copy__unsafe_view_add_native_la...         0.00%       0.000us         0.00%       0.000us       0.000us      35.009us         0.94%      35.009us       2.693us            13  
+triton_per_fused__to_copy__unsafe_view_add_native_la...         0.00%       0.000us         0.00%       0.000us       0.000us      30.305us         0.81%      30.305us       2.165us            14  
+triton_per_fused__to_copy__unsafe_view_add_native_la...         0.00%       0.000us         0.00%       0.000us       0.000us      27.936us         0.75%      27.936us       1.995us            14  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      26.812us         0.72%      26.812us       0.865us            31  
+triton_per_fused__to_copy__unsafe_view_add_native_la...         0.00%       0.000us         0.00%       0.000us       0.000us      25.440us         0.68%      25.440us       1.817us            14  
+                           triton_poi_fused__to_copy_11         0.00%       0.000us         0.00%       0.000us       0.000us      16.480us         0.44%      16.480us       8.240us             2  
+                                            aten::copy_         0.71%      35.286us        75.69%       3.765ms     209.154us       9.215us         0.25%       9.215us       0.512us            18  
+                                            aten::fill_         0.98%      48.832us        14.34%     713.285us      29.720us       7.518us         0.20%       8.414us       0.351us            24  
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_bf16_...         0.00%       0.000us         0.00%       0.000us       0.000us       6.976us         0.19%       6.976us       6.976us             1  
+std::enable_if<!(false), void>::type internal::gemvx...         0.00%       0.000us         0.00%       0.000us       0.000us       6.752us         0.18%       6.752us       2.251us             3  
+                           triton_poi_fused__to_copy_17         0.00%       0.000us         0.00%       0.000us       0.000us       6.720us         0.18%       6.720us       3.360us             2  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us       5.632us         0.15%       5.632us       5.632us             1  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       5.344us         0.14%       5.344us       0.891us             6  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us       4.544us         0.12%       4.544us       1.515us             3  
+                          triton_poi_fused_relu_view_20         0.00%       0.000us         0.00%       0.000us       0.000us       4.128us         0.11%       4.128us       2.064us             2  
+triton_per_fused__to_copy__unsafe_view_add_embedding...         0.00%       0.000us         0.00%       0.000us       0.000us       3.840us         0.10%       3.840us       3.840us             1  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us       3.008us         0.08%       3.008us       1.504us             2  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us       2.977us         0.08%       2.977us       1.489us             2  
+triton_red_fused__to_copy_embedding_native_layer_nor...         0.00%       0.000us         0.00%       0.000us       0.000us       2.880us         0.08%       2.880us       2.880us             1  
+void at::native::bitonicSortKVInPlace<-2, -1, 16, 16...         0.00%       0.000us         0.00%       0.000us       0.000us       2.848us         0.08%       2.848us       2.848us             1  
+void at::native::sbtopk::gatherTopK<float, unsigned ...         0.00%       0.000us         0.00%       0.000us       0.000us       2.592us         0.07%       2.592us       2.592us             1  
+                                       Memset (Unknown)         0.00%       0.000us         0.00%       0.000us       0.000us       2.496us         0.07%       2.496us       0.416us             6  
+triton_per_fused__to_copy_add_native_layer_norm_tran...         0.00%       0.000us         0.00%       0.000us       0.000us       2.272us         0.06%       2.272us       2.272us             1  
+triton_per_fused__to_copy_add_native_layer_norm_tran...         0.00%       0.000us         0.00%       0.000us       0.000us       2.080us         0.06%       2.080us       2.080us             1  
+                           triton_poi_fused__to_copy_12         0.00%       0.000us         0.00%       0.000us       0.000us       2.048us         0.05%       2.048us       1.024us             2  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us       1.984us         0.05%       1.984us       0.992us             2  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us       1.952us         0.05%       1.952us       0.976us             2  
+triton_per_fused__to_copy_add_native_layer_norm_tran...         0.00%       0.000us         0.00%       0.000us       0.000us       1.952us         0.05%       1.952us       1.952us             1  
+triton_poi_fused__scaled_dot_product_efficient_atten...         0.00%       0.000us         0.00%       0.000us       0.000us       1.920us         0.05%       1.920us       0.960us             2  
+                 triton_poi_fused_add_transpose_view_23         0.00%       0.000us         0.00%       0.000us       0.000us       1.824us         0.05%       1.824us       1.824us             1  
+                           triton_poi_fused__to_copy_18         0.00%       0.000us         0.00%       0.000us       0.000us       1.760us         0.05%       1.760us       0.880us             2  
+triton_red_fused__to_copy_clamp_expand_gather_native...         0.00%       0.000us         0.00%       0.000us       0.000us       1.568us         0.04%       1.568us       1.568us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 4.974ms
+Self CUDA time total: 3.728ms

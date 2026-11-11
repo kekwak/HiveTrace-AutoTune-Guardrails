@@ -1,0 +1,2349 @@
+{
+  "schema_version": 2,
+  "status": "passed",
+  "phase": "memory",
+  "variant": "candidate",
+  "job": null,
+  "pid": 61333,
+  "quality_evaluated": false,
+  "config_sha256": "cf7790a607b92a0a0b0e270cb3bc2deedcf5b3df9fbcdd7629ffe4898b686589",
+  "inputs_sha256": "00646601e983f5f4dbf0efc2a544a526d11a43722ad288194297a8116148a256",
+  "load_seconds": 5.0490814539953135,
+  "contract": {
+    "model": "hivetrace/gliner-guard-omni",
+    "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+    "tokenizer": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+      "subfolder": ""
+    },
+    "preparation_sha256": "197cb853b3fc33913092ef6b8a28b85c5714e30992742b1aa4604fe201f6846b",
+    "preparation_spec": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+      "limit": 512,
+      "dependencies": {
+        "gliner2": "2.1.0"
+      }
+    },
+    "rules": "extract safety [safe,unsafe]; argmax; tie=safe",
+    "limit": 512,
+    "input_version": 3,
+    "role_policy": {
+      "formats": [
+        "user-only",
+        "assistant-only",
+        "user+assistant"
+      ],
+      "unsupported": "explicit; never relabel or synthesize context"
+    }
+  },
+  "adapter_spec": {
+    "module": "/workspace/guardrails/rules/adapter.py",
+    "source_sha256": "585d96e004087ddc4357a36b0eed49eed805d2670db270e8582cfa63170f3b4c",
+    "dependencies": {},
+    "options": {
+      "rules": [
+        "u1",
+        "c8",
+        "u4",
+        "c12"
+      ]
+    }
+  },
+  "metadata": {
+    "model": "gliner",
+    "backend_requested": "eager",
+    "dtype": "float32",
+    "input_version": 3,
+    "rules_applied": [
+      "c12",
+      "c8",
+      "u4",
+      "u1"
+    ],
+    "rules_skipped": {},
+    "contract_hash": "17c3369209b56c2727eb9d0eb2902f22aeeaa42d330347b03f3621a2eb83b899",
+    "encoder": "DebertaV2Model",
+    "attention": "eager",
+    "measurement_adapter": "u1-v1",
+    "limit": 512,
+    "preparation_times": {
+      "shape_warmup_including_compile_seconds": 5.067446949004079
+    },
+    "prepared_compile_count": 0,
+    "backend_proof": [
+      "Activity Buffer Request",
+      "Memcpy DtoD (Device -> Device)",
+      "Memcpy DtoH (Device -> Pageable)",
+      "Memcpy DtoH (Device -> Pinned)",
+      "Memcpy HtoD (Pageable -> Device)",
+      "Memset (Unknown)",
+      "aten::_local_scalar_dense",
+      "aten::_softmax",
+      "aten::_to_copy",
+      "aten::abs",
+      "aten::addmm",
+      "aten::all",
+      "aten::argmax",
+      "aten::as_strided",
+      "aten::cat",
+      "aten::clamp_min",
+      "aten::clone",
+      "aten::copy_",
+      "aten::detach",
+      "aten::detach_",
+      "aten::div",
+      "aten::empty",
+      "aten::empty_strided",
+      "aten::eq",
+      "aten::expand",
+      "aten::fill_",
+      "aten::index",
+      "aten::is_nonzero",
+      "aten::isfinite",
+      "aten::item",
+      "aten::lift_fresh",
+      "aten::linear",
+      "aten::mul",
+      "aten::narrow",
+      "aten::ne",
+      "aten::relu",
+      "aten::reshape",
+      "aten::resize_",
+      "aten::resolve_conj",
+      "aten::resolve_neg",
+      "aten::select",
+      "aten::set_",
+      "aten::slice",
+      "aten::softmax",
+      "aten::squeeze",
+      "aten::stack",
+      "aten::sub",
+      "aten::sum",
+      "aten::t",
+      "aten::to",
+      "aten::transpose",
+      "aten::view",
+      "aten::zero_",
+      "aten::zeros",
+      "cudaDeviceSynchronize",
+      "cudaGraphLaunch",
+      "cudaLaunchKernel",
+      "cudaMemcpyAsync",
+      "cudaStreamIsCapturing",
+      "cudaStreamSynchronize",
+      "triton_per_fused__softmax__to_copy_add_bitwise_not_exp_masked_fill_prepare_softmax_online_sub_view_0",
+      "triton_per_fused_add_addmm_native_layer_norm_view_0",
+      "triton_per_fused_add_addmm_native_layer_norm_view_1",
+      "triton_poi_fused_add_clamp_div_expand_gather_neg_sqrt_squeeze_transpose_1",
+      "triton_poi_fused_addmm_gelu_view_0",
+      "triton_poi_fused_clone_2",
+      "triton_poi_fused_clone_div_permute_sqrt_transpose_view_1",
+      "triton_poi_fused_clone_permute_view_0",
+      "triton_poi_fused_clone_permute_view_1",
+      "triton_poi_fused_mul_squeeze_unsqueeze_0",
+      "triton_red_fused__to_copy_embedding_mul_native_layer_norm_unsqueeze_0",
+      "void (anonymous namespace)::softmax_warp_forward<float, float, float, 1, false, false>(float*, float const*, int, int, int, bool const*, int, bool)",
+      "void at::native::(anonymous namespace)::CatArrayBatchedCopy_vectorized<at::native::(anonymous namespace)::OpaqueType<4u>, unsigned int, 1, 128, 1, 16, 4>(char*, at::native::(anonymous namespace)::CatArrInputTensorMetadata<at::native::(anonymous namespace)::OpaqueType<4u>, unsigned int, 128, 1>, at::native::(anonymous namespace)::TensorSizeStride<unsigned int, 4u>, int, unsigned int)",
+      "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+      "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4> >(at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4>)",
+      "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctor_add<float>, std::array<char*, 3ul>, 4, TrivialOffsetCalculator<2, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast>(int, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul>, TrivialOffsetCalculator<2, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast)",
+      "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul> >(int, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::AbsFunctor<float>, std::array<char*, 2ul> >(int, at::native::AbsFunctor<float>, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul> >(int, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<bool>, std::array<char*, 1ul> >(int, at::native::FillFunctor<bool>, std::array<char*, 1ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+      "void at::native::vectorized_gather_kernel<16, long>(char*, char*, long*, int, long, long, long, long, bool)",
+      "void cublasLt::splitKreduce_kernel<32, 16, int, float, float, float, float, false, float, float, float, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, float const*, float*, float*, float const*, float const*, float const*, float const*, float*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_8x4_tn_align1>(cutlass_80_simt_sgemm_128x256_8x4_tn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x64_8x5_tn_align1>(cutlass_80_simt_sgemm_128x64_8x5_tn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x5_tn_align1>(cutlass_80_simt_sgemm_64x64_8x5_tn_align1::Params)",
+      "void dot_kernel<float, 128, 0, cublasDotParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> > >(cublasDotParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >)",
+      "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 2, 2, true, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+      "void magma_sgemmEx_kernel<float, float, float, false, false, 6, 3, 5, 3, 3>(int, int, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, int, int, float const*, float const*, float, float, int, cublasLtEpilogue_t, int, void const*, long)",
+      "void magma_sgemmEx_kernel<float, float, float, true, false, 6, 4, 6, 3, 4>(int, int, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, int, int, float const*, float const*, float, float, int, cublasLtEpilogue_t, int, void const*, long)",
+      "void reduce_1Block_kernel<float, 128, 7, cublasGemvTensorStridedBatched<float>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(float const*, float, cublasGemvTensorStridedBatched<float>, int, float const*, float, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, cublasPointerMode_t, cublasLtEpilogue_t, cublasGemvTensorStridedBatched<biasType<cublasGemvTensorStridedBatched<float>::value_type, float>::type const>)"
+    ]
+  },
+  "backend_preparation_seconds": 6.336643873990397,
+  "prepared_shapes": [
+    20,
+    21,
+    22,
+    23,
+    24,
+    26,
+    27,
+    28,
+    29,
+    30,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    42,
+    43,
+    44,
+    45,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    81,
+    82,
+    84,
+    86,
+    87,
+    89,
+    90,
+    93,
+    94,
+    96,
+    98,
+    99,
+    103,
+    106,
+    108,
+    109,
+    112,
+    115,
+    118,
+    121,
+    122,
+    123,
+    130,
+    135,
+    136,
+    137,
+    138,
+    143,
+    144,
+    146,
+    148,
+    149,
+    150,
+    152,
+    153,
+    154,
+    156,
+    160,
+    162,
+    165,
+    167,
+    168,
+    169,
+    172,
+    173,
+    175,
+    177,
+    179,
+    180,
+    184,
+    187,
+    188,
+    197,
+    198,
+    201,
+    202,
+    203,
+    206,
+    207,
+    208,
+    209,
+    212,
+    216,
+    218,
+    221,
+    222,
+    225,
+    227,
+    229,
+    230,
+    232,
+    233,
+    235,
+    238,
+    240,
+    241,
+    243,
+    249,
+    250,
+    251,
+    253,
+    254,
+    256,
+    261,
+    262,
+    266,
+    269,
+    272,
+    274,
+    276,
+    277,
+    278,
+    279,
+    280,
+    288,
+    290,
+    293,
+    294,
+    295,
+    297,
+    298,
+    299,
+    301,
+    302,
+    303,
+    304,
+    305,
+    307,
+    308,
+    309,
+    314,
+    316,
+    321,
+    323,
+    324,
+    326,
+    329,
+    330,
+    331,
+    335,
+    340,
+    341,
+    344,
+    345,
+    347,
+    348,
+    349,
+    352,
+    355,
+    357,
+    358,
+    360,
+    361,
+    362,
+    366,
+    369,
+    374,
+    375,
+    376,
+    378,
+    379,
+    381,
+    382,
+    383,
+    386,
+    388,
+    389,
+    391,
+    392,
+    393,
+    396,
+    400,
+    402,
+    404,
+    405,
+    406,
+    409,
+    413,
+    415,
+    423,
+    424,
+    427,
+    429,
+    432,
+    437,
+    439,
+    441,
+    442,
+    444,
+    448,
+    450,
+    451,
+    452,
+    455,
+    458,
+    459,
+    462,
+    464,
+    465,
+    467,
+    468,
+    470,
+    475,
+    480,
+    481,
+    482,
+    483,
+    484,
+    486,
+    489,
+    491,
+    492,
+    494,
+    495,
+    496,
+    497,
+    498,
+    499,
+    502,
+    508,
+    509,
+    512
+  ],
+  "setup_seconds": 13.836693966004532,
+  "size": {
+    "unique_parameter_buffer_storage_bytes": 1228398676,
+    "dtypes": [
+      "torch.float32",
+      "torch.int64"
+    ],
+    "checkpoint_files_bytes": {
+      "model.safetensors": 1228421964
+    },
+    "export_files_bytes": {},
+    "original_encoder_retained": false,
+    "note": "Tensor storage bytes, on-disk artifact bytes and VRAM are distinct"
+  },
+  "prepared_compile_count": 45,
+  "torch_setup": {
+    "allocated": 1499450880,
+    "reserved": 1837105152
+  },
+  "torch_inference": {
+    "allocated": 1420059648,
+    "reserved": 1837105152
+  },
+  "memory": {
+    "pid": 61333,
+    "gpu_uuid": "GPU-d70193d1-98e5-e267-8594-19287ece3ae5",
+    "requested_interval_seconds": 0.05,
+    "windows": {
+      "setup": {
+        "sampled_gpu_peak_mib": 2480.0,
+        "host_rss_peak_bytes": 3684814848,
+        "samples": 196,
+        "valid_gpu_samples": 196,
+        "actual_intervals_seconds": [
+          0.1391628400015179,
+          0.05011527099122759,
+          0.051311931005329825,
+          0.05006905400659889,
+          0.050171555994893424,
+          0.05006428599881474,
+          0.050109939998947084,
+          0.05018635399756022,
+          0.0503084820084041,
+          0.0500751059880713,
+          0.05006716100615449,
+          0.05007644799479749,
+          0.051138155002263375,
+          0.05022736100363545,
+          0.05006543699710164,
+          0.07082525400619488,
+          0.05059809399244841,
+          0.05077639799856115,
+          0.05394575001264457,
+          0.17644749699684326,
+          0.050110843003494665,
+          0.05022684899449814,
+          0.05513289199734572,
+          0.05339801500667818,
+          0.05069789198751096,
+          0.13497688600909896,
+          0.844791865994921,
+          0.0500254729995504,
+          0.05010542200761847,
+          0.05009698698995635,
+          0.05009198701009154,
+          0.050074454993591644,
+          0.05007588599983137,
+          0.05007741000736132,
+          0.050079063992598094,
+          0.05006403400329873,
+          0.05006279300141614,
+          0.05006058799335733,
+          0.050074124010279775,
+          0.050092277000658214,
+          0.05007936399488244,
+          0.05008166799962055,
+          0.050087648996850476,
+          0.05006951499672141,
+          0.050066099007381126,
+          0.05007963399111759,
+          0.05006302300898824,
+          0.05006730099557899,
+          0.05007501500949729,
+          0.05007375299464911,
+          0.050061439993442036,
+          0.05007286100590136,
+          0.05014841299271211,
+          0.05869063100544736,
+          0.050142842999775894,
+          0.05008984300366137,
+          0.05793625899241306,
+          0.9041484040062642,
+          0.0500647669978207,
+          0.05010880800546147,
+          0.050068183001712896,
+          0.05007554599433206,
+          0.05007061800279189,
+          0.05023798999900464,
+          0.05007614700298291,
+          0.05059531998995226,
+          0.050077009000233375,
+          0.050392479010042734,
+          0.050514577989815734,
+          0.05008039600215852,
+          0.05013772200618405,
+          0.050427055000909604,
+          0.05007201999251265,
+          0.050486314998124726,
+          0.05007425400253851,
+          0.05018784600542858,
+          0.050072992002242245,
+          0.051548542993259616,
+          0.05006170099659357,
+          0.05092561700439546,
+          0.05074007100483868,
+          0.0500722899887478,
+          0.05007084700628184,
+          0.051784155002678744,
+          0.055141828997875564,
+          0.05046556600427721,
+          0.05531652599165682,
+          0.05007847200613469,
+          0.05006151999987196,
+          0.05008140699646901,
+          0.050067171003320254,
+          0.056503637999412604,
+          0.05227833900426049,
+          0.05393499099591281,
+          0.05359033399145119,
+          0.05032493401085958,
+          0.05068604899861384,
+          0.05028170200239401,
+          0.05613412598904688,
+          0.05661707000399474,
+          0.05452237999998033,
+          0.05008177799754776,
+          0.050195269999676384,
+          0.058415306004462764,
+          0.053955067996867,
+          0.05006696000054944,
+          0.050066940995748155,
+          0.05029446601110976,
+          0.05060005799168721,
+          0.052122107008472085,
+          0.05480579999857582,
+          0.058768175993463956,
+          0.05670630700478796,
+          0.05924520900589414,
+          0.057899289997294545,
+          0.059827479999512434,
+          0.05049789599434007,
+          0.057602775006671436,
+          0.05467067800054792,
+          0.05007235999801196,
+          0.05006642900116276,
+          0.05006767199665774,
+          0.05060092000348959,
+          0.05222797500027809,
+          0.05758043300011195,
+          0.05882217700127512,
+          0.050214636998134665,
+          0.0507302920013899,
+          0.05406049499288201,
+          0.3164548290078528,
+          0.05758500099182129,
+          0.05079796900099609,
+          0.05398355099896435,
+          0.050120781001169235,
+          0.05827177700120956,
+          0.050073171994881704,
+          0.05007071699947119,
+          0.05007936400943436,
+          0.05006289300217759,
+          0.05005985699244775,
+          0.0503613610053435,
+          0.051019582999288104,
+          0.052600712995626964,
+          0.050210820001666434,
+          0.05151562100218143,
+          0.0517118389980169,
+          0.05152136299875565,
+          0.05105186399305239,
+          0.051828347000991926,
+          0.0502540500019677,
+          0.050883058007457294,
+          0.05429436299891677,
+          0.05009425099706277,
+          0.05441522899491247,
+          0.050061460002325475,
+          0.05006826300814282,
+          0.05006497699650936,
+          0.050061839996487834,
+          0.05007189999741968,
+          0.0500784120085882,
+          0.050067149990354665,
+          0.050077420004527085,
+          0.05006453600071836,
+          0.050063033006154,
+          0.05008355098834727,
+          0.050075928011210635,
+          0.050065477000316605,
+          0.05006108900124673,
+          0.050063824994140305,
+          0.05006885400507599,
+          0.05006691000016872,
+          0.05006917398713995,
+          0.05043374700471759,
+          0.050081617999239825,
+          0.05007215999648906,
+          0.050558530012494884,
+          0.05059424698993098,
+          0.050647718002437614,
+          0.05069335299776867,
+          0.05007266100437846,
+          0.050069074000930414,
+          0.050077109000994824,
+          0.05006458600109909,
+          0.050865684999735095,
+          0.050065447998349555,
+          0.05007477500475943,
+          0.05006411499925889,
+          0.05006359399703797,
+          0.050063884002156556,
+          0.050065647999872454,
+          0.050640203000511974,
+          0.05006945499917492,
+          0.05006770200270694,
+          0.050066279000020586,
+          0.05513351298577618
+        ],
+        "status": "measured"
+      },
+      "inference": {
+        "sampled_gpu_peak_mib": 2480.0,
+        "host_rss_peak_bytes": 2253885440,
+        "samples": 37,
+        "valid_gpu_samples": 37,
+        "actual_intervals_seconds": [
+          0.05006018800486345,
+          0.05007144900446292,
+          0.05003801599377766,
+          0.05057611300435383,
+          0.05006517699803226,
+          0.05006862399750389,
+          0.050081127003068104,
+          0.05006260199297685,
+          0.050067411008058116,
+          0.05006467599014286,
+          0.050183077008114196,
+          0.050066038995282724,
+          0.050054838007781655,
+          0.050059625995345414,
+          0.05005923600401729,
+          0.05006337400118355,
+          0.05006136999872979,
+          0.05006518599111587,
+          0.05006484700425062,
+          0.050064395007211715,
+          0.050070647994289175,
+          0.05007969400321599,
+          0.050062741996953264,
+          0.05006615900492761,
+          0.050064725990523584,
+          0.05007352300162893,
+          0.05066890700254589,
+          0.05006228099227883,
+          0.05006705100822728,
+          0.0500674710056046,
+          0.05006284298724495,
+          0.050061941001331434,
+          0.05027047100884374,
+          0.05006499600131065,
+          0.05006969599344302,
+          0.05006663899985142
+        ],
+        "status": "measured"
+      }
+    },
+    "boundaries": {
+      "setup_start": 110221.986659715,
+      "inference_start": 110234.283249378,
+      "inference_end": 110236.133009213
+    },
+    "samples": [
+      {
+        "phase": "setup",
+        "started": 110221.9869131,
+        "finished": 110222.006226198,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1298202624
+      },
+      {
+        "phase": "setup",
+        "started": 110222.12607594,
+        "finished": 110222.145949017,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1298214912
+      },
+      {
+        "phase": "setup",
+        "started": 110222.176191211,
+        "finished": 110222.189813218,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1298214912
+      },
+      {
+        "phase": "setup",
+        "started": 110222.227503142,
+        "finished": 110222.241447652,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1299845120
+      },
+      {
+        "phase": "setup",
+        "started": 110222.277572196,
+        "finished": 110222.292681877,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1300066304
+      },
+      {
+        "phase": "setup",
+        "started": 110222.327743752,
+        "finished": 110222.34170828,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1300221952
+      },
+      {
+        "phase": "setup",
+        "started": 110222.377808038,
+        "finished": 110222.392196889,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1300221952
+      },
+      {
+        "phase": "setup",
+        "started": 110222.427917978,
+        "finished": 110222.441320544,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1300221952
+      },
+      {
+        "phase": "setup",
+        "started": 110222.478104332,
+        "finished": 110222.490990852,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1304104960
+      },
+      {
+        "phase": "setup",
+        "started": 110222.528412814,
+        "finished": 110222.542451401,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1304104960
+      },
+      {
+        "phase": "setup",
+        "started": 110222.57848792,
+        "finished": 110222.591645737,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1304104960
+      },
+      {
+        "phase": "setup",
+        "started": 110222.628555081,
+        "finished": 110222.646530806,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1304104960
+      },
+      {
+        "phase": "setup",
+        "started": 110222.678631529,
+        "finished": 110222.691448749,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1307975680
+      },
+      {
+        "phase": "setup",
+        "started": 110222.729769684,
+        "finished": 110222.745518491,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1313406976
+      },
+      {
+        "phase": "setup",
+        "started": 110222.779997045,
+        "finished": 110222.794627629,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1319825408
+      },
+      {
+        "phase": "setup",
+        "started": 110222.830062482,
+        "finished": 110222.844297656,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1327890432
+      },
+      {
+        "phase": "setup",
+        "started": 110222.900887736,
+        "finished": 110222.914639515,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1328029696
+      },
+      {
+        "phase": "setup",
+        "started": 110222.95148583,
+        "finished": 110222.967203679,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1328517120
+      },
+      {
+        "phase": "setup",
+        "started": 110223.002262228,
+        "finished": 110223.038114403,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1330352128
+      },
+      {
+        "phase": "setup",
+        "started": 110223.056207978,
+        "finished": 110223.073164185,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1331904512
+      },
+      {
+        "phase": "setup",
+        "started": 110223.232655475,
+        "finished": 110223.256785179,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1333489664
+      },
+      {
+        "phase": "setup",
+        "started": 110223.282766318,
+        "finished": 110223.297546281,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1341730816
+      },
+      {
+        "phase": "setup",
+        "started": 110223.332993167,
+        "finished": 110223.346766697,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1346416640
+      },
+      {
+        "phase": "setup",
+        "started": 110223.388126059,
+        "finished": 110223.441513384,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1352024064
+      },
+      {
+        "phase": "setup",
+        "started": 110223.441524074,
+        "finished": 110223.45902979,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1354297344
+      },
+      {
+        "phase": "setup",
+        "started": 110223.492221966,
+        "finished": 110223.627189965,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1408405504
+      },
+      {
+        "phase": "setup",
+        "started": 110223.627198852,
+        "finished": 110224.471978576,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1707286528
+      },
+      {
+        "phase": "setup",
+        "started": 110224.471990718,
+        "finished": 110224.493787676,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1663832064
+      },
+      {
+        "phase": "setup",
+        "started": 110224.522016191,
+        "finished": 110224.536685738,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 1699876864
+      },
+      {
+        "phase": "setup",
+        "started": 110224.572121613,
+        "finished": 110224.589405524,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2298060800
+      },
+      {
+        "phase": "setup",
+        "started": 110224.6222186,
+        "finished": 110224.636157429,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2435076096
+      },
+      {
+        "phase": "setup",
+        "started": 110224.672310587,
+        "finished": 110224.686132768,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2435076096
+      },
+      {
+        "phase": "setup",
+        "started": 110224.722385042,
+        "finished": 110224.736394092,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2435076096
+      },
+      {
+        "phase": "setup",
+        "started": 110224.772460928,
+        "finished": 110224.786906065,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2435076096
+      },
+      {
+        "phase": "setup",
+        "started": 110224.822538338,
+        "finished": 110224.836041763,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2435076096
+      },
+      {
+        "phase": "setup",
+        "started": 110224.872617402,
+        "finished": 110224.886599181,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2435076096
+      },
+      {
+        "phase": "setup",
+        "started": 110224.922681436,
+        "finished": 110224.936263648,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2435076096
+      },
+      {
+        "phase": "setup",
+        "started": 110224.972744229,
+        "finished": 110224.98712789,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2436333568
+      },
+      {
+        "phase": "setup",
+        "started": 110225.022804817,
+        "finished": 110225.036289517,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2521128960
+      },
+      {
+        "phase": "setup",
+        "started": 110225.072878941,
+        "finished": 110225.087448771,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2623549440
+      },
+      {
+        "phase": "setup",
+        "started": 110225.122971218,
+        "finished": 110225.136158351,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2727608320
+      },
+      {
+        "phase": "setup",
+        "started": 110225.173050582,
+        "finished": 110225.187607949,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730323968
+      },
+      {
+        "phase": "setup",
+        "started": 110225.22313225,
+        "finished": 110225.237056231,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730323968
+      },
+      {
+        "phase": "setup",
+        "started": 110225.273219899,
+        "finished": 110225.286651158,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730323968
+      },
+      {
+        "phase": "setup",
+        "started": 110225.323289414,
+        "finished": 110225.33637167,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730323968
+      },
+      {
+        "phase": "setup",
+        "started": 110225.373355513,
+        "finished": 110225.38621414,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730323968
+      },
+      {
+        "phase": "setup",
+        "started": 110225.423435147,
+        "finished": 110225.437471929,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730323968
+      },
+      {
+        "phase": "setup",
+        "started": 110225.47349817,
+        "finished": 110225.487074971,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730323968
+      },
+      {
+        "phase": "setup",
+        "started": 110225.523565471,
+        "finished": 110225.537653139,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730569728
+      },
+      {
+        "phase": "setup",
+        "started": 110225.573640486,
+        "finished": 110225.587193974,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730569728
+      },
+      {
+        "phase": "setup",
+        "started": 110225.623714239,
+        "finished": 110225.636550625,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2730569728
+      },
+      {
+        "phase": "setup",
+        "started": 110225.673775679,
+        "finished": 110225.687743693,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 2787328000
+      },
+      {
+        "phase": "setup",
+        "started": 110225.72384854,
+        "finished": 110225.741792035,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 3111112704
+      },
+      {
+        "phase": "setup",
+        "started": 110225.773996953,
+        "finished": 110225.789738457,
+        "gpu_process_mib": 678.0,
+        "host_rss_bytes": 3684814848
+      },
+      {
+        "phase": "setup",
+        "started": 110225.832687584,
+        "finished": 110225.855467381,
+        "gpu_process_mib": 1412.0,
+        "host_rss_bytes": 2849214464
+      },
+      {
+        "phase": "setup",
+        "started": 110225.882830427,
+        "finished": 110225.915142535,
+        "gpu_process_mib": 1412.0,
+        "host_rss_bytes": 2081062912
+      },
+      {
+        "phase": "setup",
+        "started": 110225.93292027,
+        "finished": 110225.9515935,
+        "gpu_process_mib": 1772.0,
+        "host_rss_bytes": 2081062912
+      },
+      {
+        "phase": "setup",
+        "started": 110225.990856529,
+        "finished": 110226.894986369,
+        "gpu_process_mib": 1908.0,
+        "host_rss_bytes": 2171678720
+      },
+      {
+        "phase": "setup",
+        "started": 110226.895004933,
+        "finished": 110226.926527945,
+        "gpu_process_mib": 1908.0,
+        "host_rss_bytes": 2149892096
+      },
+      {
+        "phase": "setup",
+        "started": 110226.9450697,
+        "finished": 110226.969004328,
+        "gpu_process_mib": 2028.0,
+        "host_rss_bytes": 2152554496
+      },
+      {
+        "phase": "setup",
+        "started": 110226.995178508,
+        "finished": 110227.008257418,
+        "gpu_process_mib": 2028.0,
+        "host_rss_bytes": 2154029056
+      },
+      {
+        "phase": "setup",
+        "started": 110227.045246691,
+        "finished": 110227.05898794,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1955471360
+      },
+      {
+        "phase": "setup",
+        "started": 110227.095322237,
+        "finished": 110227.109527776,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1955737600
+      },
+      {
+        "phase": "setup",
+        "started": 110227.145392855,
+        "finished": 110227.158855552,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1956081664
+      },
+      {
+        "phase": "setup",
+        "started": 110227.195630845,
+        "finished": 110227.209645556,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1956458496
+      },
+      {
+        "phase": "setup",
+        "started": 110227.245706992,
+        "finished": 110227.260119088,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1956888576
+      },
+      {
+        "phase": "setup",
+        "started": 110227.296302312,
+        "finished": 110227.310996715,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1957249024
+      },
+      {
+        "phase": "setup",
+        "started": 110227.346379321,
+        "finished": 110227.359264378,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1957593088
+      },
+      {
+        "phase": "setup",
+        "started": 110227.3967718,
+        "finished": 110227.411899194,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1958023168
+      },
+      {
+        "phase": "setup",
+        "started": 110227.447286378,
+        "finished": 110227.460667935,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1958297600
+      },
+      {
+        "phase": "setup",
+        "started": 110227.497366774,
+        "finished": 110227.512102625,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1958584320
+      },
+      {
+        "phase": "setup",
+        "started": 110227.547504496,
+        "finished": 110227.560985299,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1958809600
+      },
+      {
+        "phase": "setup",
+        "started": 110227.597931551,
+        "finished": 110227.612103496,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1959129088
+      },
+      {
+        "phase": "setup",
+        "started": 110227.648003571,
+        "finished": 110227.663333844,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1959575552
+      },
+      {
+        "phase": "setup",
+        "started": 110227.698489886,
+        "finished": 110227.713220006,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1959821312
+      },
+      {
+        "phase": "setup",
+        "started": 110227.74856414,
+        "finished": 110227.761972206,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1960120320
+      },
+      {
+        "phase": "setup",
+        "started": 110227.798751986,
+        "finished": 110227.812147609,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1960468480
+      },
+      {
+        "phase": "setup",
+        "started": 110227.848824978,
+        "finished": 110227.862622843,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1961525248
+      },
+      {
+        "phase": "setup",
+        "started": 110227.900373521,
+        "finished": 110227.91339307,
+        "gpu_process_mib": 2096.0,
+        "host_rss_bytes": 1964068864
+      },
+      {
+        "phase": "setup",
+        "started": 110227.950435222,
+        "finished": 110227.973816655,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1967169536
+      },
+      {
+        "phase": "setup",
+        "started": 110228.001360839,
+        "finished": 110228.023887673,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1971830784
+      },
+      {
+        "phase": "setup",
+        "started": 110228.05210091,
+        "finished": 110228.07826462,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1972736000
+      },
+      {
+        "phase": "setup",
+        "started": 110228.1021732,
+        "finished": 110228.115233856,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1973063680
+      },
+      {
+        "phase": "setup",
+        "started": 110228.152244047,
+        "finished": 110228.166655802,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1974255616
+      },
+      {
+        "phase": "setup",
+        "started": 110228.204028202,
+        "finished": 110228.219356201,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1978499072
+      },
+      {
+        "phase": "setup",
+        "started": 110228.259170031,
+        "finished": 110228.304046005,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1986465792
+      },
+      {
+        "phase": "setup",
+        "started": 110228.309635597,
+        "finished": 110228.327563262,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1987768320
+      },
+      {
+        "phase": "setup",
+        "started": 110228.364952123,
+        "finished": 110228.380344303,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1991090176
+      },
+      {
+        "phase": "setup",
+        "started": 110228.415030595,
+        "finished": 110228.428913219,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1994305536
+      },
+      {
+        "phase": "setup",
+        "started": 110228.465092115,
+        "finished": 110228.483007838,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1994305536
+      },
+      {
+        "phase": "setup",
+        "started": 110228.515173522,
+        "finished": 110228.528712153,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1994305536
+      },
+      {
+        "phase": "setup",
+        "started": 110228.565240693,
+        "finished": 110228.587834462,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1995292672
+      },
+      {
+        "phase": "setup",
+        "started": 110228.621744331,
+        "finished": 110228.653519675,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1996414976
+      },
+      {
+        "phase": "setup",
+        "started": 110228.67402267,
+        "finished": 110228.696698392,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1997287424
+      },
+      {
+        "phase": "setup",
+        "started": 110228.727957661,
+        "finished": 110228.756549496,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1998245888
+      },
+      {
+        "phase": "setup",
+        "started": 110228.781547995,
+        "finished": 110228.813904737,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1998532608
+      },
+      {
+        "phase": "setup",
+        "started": 110228.831872929,
+        "finished": 110228.851281425,
+        "gpu_process_mib": 2098.0,
+        "host_rss_bytes": 1999568896
+      },
+      {
+        "phase": "setup",
+        "started": 110228.882558978,
+        "finished": 110228.908909518,
+        "gpu_process_mib": 2130.0,
+        "host_rss_bytes": 2002083840
+      },
+      {
+        "phase": "setup",
+        "started": 110228.93284068,
+        "finished": 110228.958481452,
+        "gpu_process_mib": 2132.0,
+        "host_rss_bytes": 2003378176
+      },
+      {
+        "phase": "setup",
+        "started": 110228.988974806,
+        "finished": 110229.010605883,
+        "gpu_process_mib": 2152.0,
+        "host_rss_bytes": 2007715840
+      },
+      {
+        "phase": "setup",
+        "started": 110229.045591876,
+        "finished": 110229.062962038,
+        "gpu_process_mib": 2152.0,
+        "host_rss_bytes": 2008580096
+      },
+      {
+        "phase": "setup",
+        "started": 110229.100114256,
+        "finished": 110229.12204854,
+        "gpu_process_mib": 2152.0,
+        "host_rss_bytes": 2010165248
+      },
+      {
+        "phase": "setup",
+        "started": 110229.150196034,
+        "finished": 110229.179364288,
+        "gpu_process_mib": 2152.0,
+        "host_rss_bytes": 2012610560
+      },
+      {
+        "phase": "setup",
+        "started": 110229.200391304,
+        "finished": 110229.216190806,
+        "gpu_process_mib": 2152.0,
+        "host_rss_bytes": 2020413440
+      },
+      {
+        "phase": "setup",
+        "started": 110229.25880661,
+        "finished": 110229.280889102,
+        "gpu_process_mib": 2214.0,
+        "host_rss_bytes": 2039500800
+      },
+      {
+        "phase": "setup",
+        "started": 110229.312761678,
+        "finished": 110229.336240373,
+        "gpu_process_mib": 2214.0,
+        "host_rss_bytes": 2040197120
+      },
+      {
+        "phase": "setup",
+        "started": 110229.362828638,
+        "finished": 110229.377065175,
+        "gpu_process_mib": 2332.0,
+        "host_rss_bytes": 2100088832
+      },
+      {
+        "phase": "setup",
+        "started": 110229.412895579,
+        "finished": 110229.428482122,
+        "gpu_process_mib": 2332.0,
+        "host_rss_bytes": 2185097216
+      },
+      {
+        "phase": "setup",
+        "started": 110229.463190045,
+        "finished": 110229.491816515,
+        "gpu_process_mib": 2252.0,
+        "host_rss_bytes": 2185293824
+      },
+      {
+        "phase": "setup",
+        "started": 110229.513790103,
+        "finished": 110229.532662747,
+        "gpu_process_mib": 2252.0,
+        "host_rss_bytes": 2186129408
+      },
+      {
+        "phase": "setup",
+        "started": 110229.56591221,
+        "finished": 110229.588911177,
+        "gpu_process_mib": 2252.0,
+        "host_rss_bytes": 2186264576
+      },
+      {
+        "phase": "setup",
+        "started": 110229.62071801,
+        "finished": 110229.657472874,
+        "gpu_process_mib": 2252.0,
+        "host_rss_bytes": 2188042240
+      },
+      {
+        "phase": "setup",
+        "started": 110229.679486186,
+        "finished": 110229.705820757,
+        "gpu_process_mib": 2252.0,
+        "host_rss_bytes": 2188869632
+      },
+      {
+        "phase": "setup",
+        "started": 110229.736192493,
+        "finished": 110229.754219184,
+        "gpu_process_mib": 2252.0,
+        "host_rss_bytes": 2188996608
+      },
+      {
+        "phase": "setup",
+        "started": 110229.795437702,
+        "finished": 110229.81758754,
+        "gpu_process_mib": 2274.0,
+        "host_rss_bytes": 2198593536
+      },
+      {
+        "phase": "setup",
+        "started": 110229.853336992,
+        "finished": 110229.872461688,
+        "gpu_process_mib": 2276.0,
+        "host_rss_bytes": 2199879680
+      },
+      {
+        "phase": "setup",
+        "started": 110229.913164472,
+        "finished": 110229.936332285,
+        "gpu_process_mib": 2276.0,
+        "host_rss_bytes": 2200821760
+      },
+      {
+        "phase": "setup",
+        "started": 110229.963662368,
+        "finished": 110229.977058642,
+        "gpu_process_mib": 2276.0,
+        "host_rss_bytes": 2201972736
+      },
+      {
+        "phase": "setup",
+        "started": 110230.021265143,
+        "finished": 110230.038980672,
+        "gpu_process_mib": 2276.0,
+        "host_rss_bytes": 2204119040
+      },
+      {
+        "phase": "setup",
+        "started": 110230.075935821,
+        "finished": 110230.104620289,
+        "gpu_process_mib": 2360.0,
+        "host_rss_bytes": 2205601792
+      },
+      {
+        "phase": "setup",
+        "started": 110230.126008181,
+        "finished": 110230.139057305,
+        "gpu_process_mib": 2356.0,
+        "host_rss_bytes": 2205990912
+      },
+      {
+        "phase": "setup",
+        "started": 110230.17607461,
+        "finished": 110230.191501966,
+        "gpu_process_mib": 2356.0,
+        "host_rss_bytes": 2208088064
+      },
+      {
+        "phase": "setup",
+        "started": 110230.226142282,
+        "finished": 110230.239762004,
+        "gpu_process_mib": 2356.0,
+        "host_rss_bytes": 2208088064
+      },
+      {
+        "phase": "setup",
+        "started": 110230.276743202,
+        "finished": 110230.304845942,
+        "gpu_process_mib": 2276.0,
+        "host_rss_bytes": 2208731136
+      },
+      {
+        "phase": "setup",
+        "started": 110230.328971177,
+        "finished": 110230.357937884,
+        "gpu_process_mib": 2276.0,
+        "host_rss_bytes": 2208923648
+      },
+      {
+        "phase": "setup",
+        "started": 110230.38655161,
+        "finished": 110230.415150138,
+        "gpu_process_mib": 2278.0,
+        "host_rss_bytes": 2210557952
+      },
+      {
+        "phase": "setup",
+        "started": 110230.445373787,
+        "finished": 110230.47513936,
+        "gpu_process_mib": 2278.0,
+        "host_rss_bytes": 2211504128
+      },
+      {
+        "phase": "setup",
+        "started": 110230.495588424,
+        "finished": 110230.527812177,
+        "gpu_process_mib": 2278.0,
+        "host_rss_bytes": 2211655680
+      },
+      {
+        "phase": "setup",
+        "started": 110230.546318716,
+        "finished": 110230.560480042,
+        "gpu_process_mib": 2298.0,
+        "host_rss_bytes": 2212560896
+      },
+      {
+        "phase": "setup",
+        "started": 110230.600379211,
+        "finished": 110230.615850248,
+        "gpu_process_mib": 2300.0,
+        "host_rss_bytes": 2213470208
+      },
+      {
+        "phase": "setup",
+        "started": 110230.91683404,
+        "finished": 110230.945024764,
+        "gpu_process_mib": 2302.0,
+        "host_rss_bytes": 2214088704
+      },
+      {
+        "phase": "setup",
+        "started": 110230.974419041,
+        "finished": 110230.999574244,
+        "gpu_process_mib": 2302.0,
+        "host_rss_bytes": 2214424576
+      },
+      {
+        "phase": "setup",
+        "started": 110231.02521701,
+        "finished": 110231.054864641,
+        "gpu_process_mib": 2322.0,
+        "host_rss_bytes": 2216620032
+      },
+      {
+        "phase": "setup",
+        "started": 110231.079200561,
+        "finished": 110231.109774987,
+        "gpu_process_mib": 2322.0,
+        "host_rss_bytes": 2217402368
+      },
+      {
+        "phase": "setup",
+        "started": 110231.129321342,
+        "finished": 110231.147777025,
+        "gpu_process_mib": 2394.0,
+        "host_rss_bytes": 2218397696
+      },
+      {
+        "phase": "setup",
+        "started": 110231.187593119,
+        "finished": 110231.205736448,
+        "gpu_process_mib": 2394.0,
+        "host_rss_bytes": 2216415232
+      },
+      {
+        "phase": "setup",
+        "started": 110231.237666291,
+        "finished": 110231.253895507,
+        "gpu_process_mib": 2368.0,
+        "host_rss_bytes": 2220498944
+      },
+      {
+        "phase": "setup",
+        "started": 110231.287737008,
+        "finished": 110231.302220647,
+        "gpu_process_mib": 2368.0,
+        "host_rss_bytes": 2220498944
+      },
+      {
+        "phase": "setup",
+        "started": 110231.337816372,
+        "finished": 110231.351888431,
+        "gpu_process_mib": 2368.0,
+        "host_rss_bytes": 2220498944
+      },
+      {
+        "phase": "setup",
+        "started": 110231.387879265,
+        "finished": 110231.401533782,
+        "gpu_process_mib": 2368.0,
+        "host_rss_bytes": 2220498944
+      },
+      {
+        "phase": "setup",
+        "started": 110231.437939122,
+        "finished": 110231.452060793,
+        "gpu_process_mib": 2368.0,
+        "host_rss_bytes": 2220498944
+      },
+      {
+        "phase": "setup",
+        "started": 110231.488300483,
+        "finished": 110231.509963239,
+        "gpu_process_mib": 2288.0,
+        "host_rss_bytes": 2220564480
+      },
+      {
+        "phase": "setup",
+        "started": 110231.539320066,
+        "finished": 110231.579213886,
+        "gpu_process_mib": 2288.0,
+        "host_rss_bytes": 2220830720
+      },
+      {
+        "phase": "setup",
+        "started": 110231.591920779,
+        "finished": 110231.607927719,
+        "gpu_process_mib": 2288.0,
+        "host_rss_bytes": 2220912640
+      },
+      {
+        "phase": "setup",
+        "started": 110231.642131599,
+        "finished": 110231.681791811,
+        "gpu_process_mib": 2308.0,
+        "host_rss_bytes": 2222505984
+      },
+      {
+        "phase": "setup",
+        "started": 110231.69364722,
+        "finished": 110231.713862527,
+        "gpu_process_mib": 2308.0,
+        "host_rss_bytes": 2223484928
+      },
+      {
+        "phase": "setup",
+        "started": 110231.745359059,
+        "finished": 110231.765761006,
+        "gpu_process_mib": 2308.0,
+        "host_rss_bytes": 2223501312
+      },
+      {
+        "phase": "setup",
+        "started": 110231.796880422,
+        "finished": 110231.820923083,
+        "gpu_process_mib": 2308.0,
+        "host_rss_bytes": 2224287744
+      },
+      {
+        "phase": "setup",
+        "started": 110231.847932286,
+        "finished": 110231.861295668,
+        "gpu_process_mib": 2308.0,
+        "host_rss_bytes": 2224926720
+      },
+      {
+        "phase": "setup",
+        "started": 110231.899760633,
+        "finished": 110231.926593596,
+        "gpu_process_mib": 2340.0,
+        "host_rss_bytes": 2225713152
+      },
+      {
+        "phase": "setup",
+        "started": 110231.950014683,
+        "finished": 110231.968180154,
+        "gpu_process_mib": 2340.0,
+        "host_rss_bytes": 2226319360
+      },
+      {
+        "phase": "setup",
+        "started": 110232.000897741,
+        "finished": 110232.029500788,
+        "gpu_process_mib": 2364.0,
+        "host_rss_bytes": 2228715520
+      },
+      {
+        "phase": "setup",
+        "started": 110232.055192104,
+        "finished": 110232.082326802,
+        "gpu_process_mib": 2364.0,
+        "host_rss_bytes": 2229645312
+      },
+      {
+        "phase": "setup",
+        "started": 110232.105286355,
+        "finished": 110232.131969438,
+        "gpu_process_mib": 2448.0,
+        "host_rss_bytes": 2230808576
+      },
+      {
+        "phase": "setup",
+        "started": 110232.159701584,
+        "finished": 110232.177091633,
+        "gpu_process_mib": 2460.0,
+        "host_rss_bytes": 2228899840
+      },
+      {
+        "phase": "setup",
+        "started": 110232.209763044,
+        "finished": 110232.224917158,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2232999936
+      },
+      {
+        "phase": "setup",
+        "started": 110232.259831307,
+        "finished": 110232.274144437,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2232999936
+      },
+      {
+        "phase": "setup",
+        "started": 110232.309896284,
+        "finished": 110232.32481101,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2232999936
+      },
+      {
+        "phase": "setup",
+        "started": 110232.359958124,
+        "finished": 110232.374073123,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233004032
+      },
+      {
+        "phase": "setup",
+        "started": 110232.410030024,
+        "finished": 110232.425080694,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233004032
+      },
+      {
+        "phase": "setup",
+        "started": 110232.460108436,
+        "finished": 110232.474869053,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233004032
+      },
+      {
+        "phase": "setup",
+        "started": 110232.510175586,
+        "finished": 110232.524627937,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233004032
+      },
+      {
+        "phase": "setup",
+        "started": 110232.560253006,
+        "finished": 110232.574648831,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233004032
+      },
+      {
+        "phase": "setup",
+        "started": 110232.610317542,
+        "finished": 110232.624642274,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233004032
+      },
+      {
+        "phase": "setup",
+        "started": 110232.660380575,
+        "finished": 110232.675435533,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233004032
+      },
+      {
+        "phase": "setup",
+        "started": 110232.710464126,
+        "finished": 110232.725133493,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233012224
+      },
+      {
+        "phase": "setup",
+        "started": 110232.760540054,
+        "finished": 110232.775931211,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233012224
+      },
+      {
+        "phase": "setup",
+        "started": 110232.810605531,
+        "finished": 110232.824353703,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233012224
+      },
+      {
+        "phase": "setup",
+        "started": 110232.86066662,
+        "finished": 110232.874160206,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233012224
+      },
+      {
+        "phase": "setup",
+        "started": 110232.910730445,
+        "finished": 110232.925182074,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233012224
+      },
+      {
+        "phase": "setup",
+        "started": 110232.960799299,
+        "finished": 110232.97493703,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233012224
+      },
+      {
+        "phase": "setup",
+        "started": 110233.010866209,
+        "finished": 110233.025647896,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233012224
+      },
+      {
+        "phase": "setup",
+        "started": 110233.060935383,
+        "finished": 110233.075432638,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.11136913,
+        "finished": 110233.125737844,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.161450748,
+        "finished": 110233.176125955,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.211522908,
+        "finished": 110233.22676688,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.262081438,
+        "finished": 110233.276471152,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.312675685,
+        "finished": 110233.327156349,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.363323403,
+        "finished": 110233.378921618,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.414016756,
+        "finished": 110233.428173362,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.464089417,
+        "finished": 110233.479716446,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.514158491,
+        "finished": 110233.529996044,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.5642356,
+        "finished": 110233.577611987,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.614300186,
+        "finished": 110233.629081632,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.665165871,
+        "finished": 110233.679498648,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.715231319,
+        "finished": 110233.728652569,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.765306094,
+        "finished": 110233.779648048,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.815370209,
+        "finished": 110233.830193273,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.865433803,
+        "finished": 110233.879620947,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.915497687,
+        "finished": 110233.930600275,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233016320
+      },
+      {
+        "phase": "setup",
+        "started": 110233.965563335,
+        "finished": 110233.98006617,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233020416
+      },
+      {
+        "phase": "setup",
+        "started": 110234.016203538,
+        "finished": 110234.030571631,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233024512
+      },
+      {
+        "phase": "setup",
+        "started": 110234.066272993,
+        "finished": 110234.080959402,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233024512
+      },
+      {
+        "phase": "setup",
+        "started": 110234.116340695,
+        "finished": 110234.130408215,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233024512
+      },
+      {
+        "phase": "setup",
+        "started": 110234.166406974,
+        "finished": 110234.18158359,
+        "gpu_process_mib": 2466.0,
+        "host_rss_bytes": 2233024512
+      },
+      {
+        "phase": "setup",
+        "started": 110234.221540487,
+        "finished": 110234.241560108,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253864960
+      },
+      {
+        "phase": "inference",
+        "started": 110234.32184665,
+        "finished": 110234.3360794,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253869056
+      },
+      {
+        "phase": "inference",
+        "started": 110234.371906838,
+        "finished": 110234.387029814,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253873152
+      },
+      {
+        "phase": "inference",
+        "started": 110234.421978287,
+        "finished": 110234.436771535,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253873152
+      },
+      {
+        "phase": "inference",
+        "started": 110234.472016303,
+        "finished": 110234.486393453,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253877248
+      },
+      {
+        "phase": "inference",
+        "started": 110234.522592416,
+        "finished": 110234.536919031,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253877248
+      },
+      {
+        "phase": "inference",
+        "started": 110234.572657593,
+        "finished": 110234.588084598,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.622726217,
+        "finished": 110234.636679814,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.672807344,
+        "finished": 110234.687622493,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.722869946,
+        "finished": 110234.736829524,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.772937357,
+        "finished": 110234.786795465,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.823002033,
+        "finished": 110234.837768221,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.87318511,
+        "finished": 110234.887776762,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.923251149,
+        "finished": 110234.938969159,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110234.973305987,
+        "finished": 110234.988015608,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.023365613,
+        "finished": 110235.038124077,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.073424849,
+        "finished": 110235.087288999,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.123488223,
+        "finished": 110235.137166204,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.173549593,
+        "finished": 110235.189251311,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.223614779,
+        "finished": 110235.239052545,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.273679626,
+        "finished": 110235.2876905,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.323744021,
+        "finished": 110235.33914637,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.373814669,
+        "finished": 110235.389803665,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.423894363,
+        "finished": 110235.437727745,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.473957105,
+        "finished": 110235.488695802,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.524023264,
+        "finished": 110235.539938022,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.57408799,
+        "finished": 110235.587249475,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.624161513,
+        "finished": 110235.638421153,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.67483042,
+        "finished": 110235.689653544,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.724892701,
+        "finished": 110235.740108821,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.774959752,
+        "finished": 110235.789483566,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.825027223,
+        "finished": 110235.838713139,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.875090066,
+        "finished": 110235.890287691,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.925152007,
+        "finished": 110235.939405645,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110235.975422478,
+        "finished": 110235.99046375,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253881344
+      },
+      {
+        "phase": "inference",
+        "started": 110236.025487474,
+        "finished": 110236.040150439,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253885440
+      },
+      {
+        "phase": "inference",
+        "started": 110236.07555717,
+        "finished": 110236.090348104,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253885440
+      },
+      {
+        "phase": "inference",
+        "started": 110236.125623809,
+        "finished": 110236.13905001,
+        "gpu_process_mib": 2480.0,
+        "host_rss_bytes": 2253885440
+      }
+    ],
+    "errors": [],
+    "sampling_may_miss_short_peaks": true
+  },
+  "seconds": 16.020229058005498
+}

@@ -1,0 +1,46 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                               aten::mm        16.31%       2.450ms        17.78%       2.671ms      23.847us       2.212ms        32.40%       2.212ms      19.752us           112  
+                                            aten::copy_         4.15%     623.773us         9.90%       1.488ms       3.795us       1.471ms        21.54%       1.471ms       3.752us           392  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us       1.470ms        21.53%       1.470ms      26.257us            56  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.178ms        17.25%       1.178ms       4.636us           254  
+                                            aten::fill_         6.75%       1.014ms        18.06%       2.713ms       3.034us     869.782us        12.74%     870.679us       0.974us           894  
+                     aten::_efficient_attention_forward         0.62%      93.043us         2.15%     323.254us      16.163us     597.691us         8.75%     614.044us      30.702us            20  
+fmha_cutlassF_bf16_aligned_64x64_rf_sm80(PyTorchMemE...         0.00%       0.000us         0.00%       0.000us       0.000us     597.691us         8.75%     597.691us      29.885us            20  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     521.628us         7.64%     521.628us      17.388us            30  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     499.384us         7.31%     499.384us       1.261us           396  
+                                              aten::mul         2.48%     372.723us         4.62%     693.554us       4.718us     341.120us         5.00%     341.120us       2.321us           147  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     335.804us         4.92%     335.804us       0.982us           342  
+                                              aten::add         2.01%     302.226us         3.79%     569.785us       4.788us     290.880us         4.26%     290.880us       2.444us           119  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     265.057us         3.88%     265.057us       2.367us           112  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     251.391us         3.68%     251.391us       2.205us           114  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     237.375us         3.48%     237.375us       8.478us            28  
+                                aten::native_layer_norm         1.88%     282.919us         8.93%       1.342ms      21.642us     216.830us         3.18%     381.980us       6.161us            62  
+void at::native::(anonymous namespace)::vectorized_l...         0.00%       0.000us         0.00%       0.000us       0.000us     216.830us         3.18%     216.830us       3.497us            62  
+                                              aten::cat         1.24%     186.997us         2.17%     325.950us       5.433us     198.304us         2.90%     198.304us       3.305us            60  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us     194.623us         2.85%     194.623us       3.475us            56  
+                                            aten::addmm         4.17%     626.953us         4.51%     678.239us      56.520us     190.497us         2.79%     190.497us      15.875us            12  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     163.967us         2.40%     163.967us       2.733us            60  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     159.488us         2.34%     159.488us      26.581us             6  
+                         aten::_flash_attention_forward         0.58%      87.120us         3.17%     476.322us      47.632us     155.871us         2.28%     211.008us      21.101us            10  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     124.993us         1.83%     124.993us       2.193us            57  
+void pytorch_flash::flash_fwd_splitkv_kernel<Flash_f...         0.00%       0.000us         0.00%       0.000us       0.000us     123.391us         1.81%     123.391us      12.339us            10  
+                                             aten::gelu         0.69%     103.231us         1.16%     173.601us       5.787us      97.823us         1.43%      97.823us       3.261us            30  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      95.808us         1.40%      95.808us       3.422us            28  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      85.441us         1.25%      85.441us       3.051us            28  
+                                              aten::neg         0.94%     140.842us         1.74%     260.948us       4.578us      85.120us         1.25%      85.120us       1.493us            57  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      84.224us         1.23%      84.224us       1.504us            56  
+                                            aten::where         0.73%     110.332us         5.97%     897.270us      24.924us      37.665us         0.55%     154.113us       4.281us            36  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      37.665us         0.55%      37.665us       2.092us            18  
+void pytorch_flash::flash_fwd_splitkv_combine_kernel...         0.00%       0.000us         0.00%       0.000us       0.000us      32.480us         0.48%      32.480us       3.248us            10  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      14.689us         0.22%      14.689us       0.734us            20  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      13.953us         0.20%      13.953us       0.775us            18  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       7.680us         0.11%       7.680us       2.560us             3  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       6.783us         0.10%       6.783us       1.357us             5  
+                                      aten::bitwise_and         0.11%      15.928us         0.20%      29.774us       7.443us       6.336us         0.09%       6.336us       1.584us             4  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       6.336us         0.09%       6.336us       1.584us             4  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       6.304us         0.09%       6.304us       2.101us             3  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 15.022ms
+Self CUDA time total: 6.828ms

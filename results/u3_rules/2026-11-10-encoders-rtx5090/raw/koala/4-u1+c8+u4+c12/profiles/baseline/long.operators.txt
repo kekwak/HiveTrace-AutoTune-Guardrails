@@ -1,0 +1,46 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                            aten::addmm        13.53%       2.544ms        14.95%       2.811ms      56.218us       3.150ms        43.31%       3.150ms      62.994us            50  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x128_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.790ms        24.61%       1.790ms      49.724us            36  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.372ms        18.87%       1.372ms     114.357us            12  
+                                               aten::mm         3.19%     599.997us         3.91%     734.557us      30.607us       1.218ms        16.75%       1.218ms      50.744us            24  
+                                              aten::bmm         5.45%       1.025ms         6.12%       1.152ms      23.991us       1.037ms        14.26%       1.037ms      21.607us            48  
+void magma_sgemmEx_kernel<float, float, float, true,...         0.00%       0.000us         0.00%       0.000us       0.000us     832.992us        11.45%     832.992us      23.139us            36  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_...         0.00%       0.000us         0.00%       0.000us       0.000us     744.445us        10.24%     744.445us      62.037us            12  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     574.268us         7.90%     574.268us       5.174us           111  
+void sgemm_largek_lds64<true, false, 5, 5, 4, 4, 4, ...         0.00%       0.000us         0.00%       0.000us       0.000us     383.968us         5.28%     383.968us      31.997us            12  
+                                             aten::add_         0.17%      31.231us         0.30%      57.148us       4.762us     380.609us         5.23%     380.609us      31.717us            12  
+                                              aten::add         2.37%     444.884us         4.01%     754.729us       4.747us     370.459us         5.09%     370.459us       2.330us           159  
+                                           aten::gather         0.76%     142.594us         1.15%     215.505us       8.620us     228.320us         3.14%     228.320us       9.133us            25  
+void at::native::_scatter_gather_elementwise_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us     226.656us         3.12%     226.656us       9.444us            24  
+void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x...         0.00%       0.000us         0.00%       0.000us       0.000us     204.126us         2.81%     204.126us      17.011us            12  
+                                            aten::copy_         0.80%     150.248us         1.84%     345.573us       3.883us     129.406us         1.78%     129.406us       1.454us            89  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     124.064us         1.71%     124.064us       3.446us            36  
+                                             aten::mean         1.07%     200.934us         1.68%     315.389us       6.308us     116.542us         1.60%     116.542us       2.331us            50  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us     116.542us         1.60%     116.542us       2.331us            50  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      88.382us         1.22%      88.382us       2.389us            37  
+                                              aten::sub         0.90%     169.546us         1.46%     273.851us       3.184us      87.262us         1.20%      87.262us       1.015us            86  
+                                            aten::fill_         0.83%     155.667us         2.16%     405.696us       3.655us      87.198us         1.20%      88.094us       0.794us           111  
+                                     aten::masked_fill_         0.25%      46.535us         0.46%      86.530us       7.211us      85.217us         1.17%      85.217us       7.101us            12  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      85.217us         1.17%      85.217us       7.101us            12  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      70.431us         0.97%      70.431us       2.272us            31  
+                                         aten::_softmax         0.23%      42.500us         0.44%      83.106us       6.393us      67.680us         0.93%      67.680us       5.206us            13  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us      66.656us         0.92%      66.656us       5.555us            12  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us      64.832us         0.89%      64.832us       5.403us            12  
+                                              aten::div         0.64%     121.042us         1.10%     207.636us       5.612us      62.142us         0.85%      62.142us       1.680us            37  
+                                              aten::mul         0.90%     168.448us         1.53%     288.493us       3.796us      59.457us         0.82%      59.457us       0.782us            76  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      56.865us         0.78%      56.865us       2.187us            26  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      51.616us         0.71%      51.616us       2.151us            24  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      46.783us         0.64%      46.783us       1.871us            25  
+                                             aten::gelu         0.24%      45.003us         0.40%      75.582us       5.814us      39.041us         0.54%      39.041us       3.003us            13  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      39.041us         0.54%      39.041us       3.003us            13  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      37.982us         0.52%      37.982us       1.583us            24  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      37.854us         0.52%      37.854us       3.154us            12  
+                                            aten::clamp         0.46%      85.862us         0.76%     143.308us       5.971us      36.672us         0.50%      36.672us       1.528us            24  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us      36.672us         0.50%      36.672us       1.528us            24  
+                                              aten::pow         0.63%     118.361us         1.00%     187.749us       7.510us      31.039us         0.43%      31.039us       1.242us            25  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      31.039us         0.43%      31.039us       1.242us            25  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 18.803ms
+Self CUDA time total: 7.273ms

@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "config": {
+    "comparison": "engineering",
+    "mode": "screening",
+    "seed": 17,
+    "timeout_seconds": 36000,
+    "schema_version": 3,
+    "model": "koala",
+    "baseline": {
+      "backend": "eager"
+    },
+    "data": {
+      "path": "/workspace/guardrails/data/speed/role-corpus",
+      "manifest_sha256": "760adad3e5946384de9fec98aebd9327229cc02c706af094322f2f37e95fc02c"
+    },
+    "candidate": {
+      "module": "/workspace/guardrails/rules/adapter.py",
+      "source_sha256": "585d96e004087ddc4357a36b0eed49eed805d2670db270e8582cfa63170f3b4c",
+      "dependencies": {},
+      "options": {
+        "rules": [
+          "u1",
+          "c8",
+          "u4"
+        ]
+      }
+    },
+    "environment": "/workspace/guardrails/u1-rtx-env"
+  },
+  "phase": "memory",
+  "variant": "candidate",
+  "directory": "/workspace/guardrails/runs/tune/koala/3-u1+c8+u4/memory/candidate_0",
+  "dataset": "/workspace/guardrails/data/speed/role-corpus",
+  "quality_dataset": null,
+  "measurement": null,
+  "private": false,
+  "inputs_sha256": "743560dbd4862a6c5b534a337a6428b3cda8e2645711adf27cbf0dfe67b2f879"
+}
