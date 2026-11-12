@@ -1,0 +1,77 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": "gliner",
+    "weights": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "tokenizer": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "eager",
+      "dtype": "float32",
+      "attention": "eager",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    },
+    "sdk_assets": {
+      "config": {
+        "repo": "hivetrace/gliner-guard-omni",
+        "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+        "file": "config.json"
+      }
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1,
+      16,
+      64,
+      256
+    ]
+  },
+  "mode": "quality",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u1-env",
+  "quality_batch_sizes": [
+    1,
+    16,
+    64,
+    128
+  ],
+  "quality_data": {
+    "path": "data/team-quality",
+    "manifest_sha256": "REPLACE_WITH_PREPARE_DATA_MANIFEST_SHA256"
+  },
+  "label_mapping": {
+    "labels": [
+      "safe",
+      "unsafe"
+    ],
+    "targets": {
+      "safe": "safe",
+      "unsafe": "unsafe"
+    },
+    "verdicts": {
+      "safe": "safe",
+      "unsafe": "unsafe"
+    },
+    "positive_label": "unsafe"
+  }
+}

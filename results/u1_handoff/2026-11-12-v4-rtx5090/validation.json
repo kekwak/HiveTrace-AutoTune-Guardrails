@@ -1,0 +1,674 @@
+{
+  "schema_version": 4,
+  "protocol_version": "u1-static-batch-v4",
+  "status": "partial_gpu_acceptance",
+  "pod_id": "8yq5u40pu8xh7f",
+  "pod_final_status": "EXITED",
+  "pod_stop_confirmed_by": "runpod_get_pod",
+  "pod_deleted": false,
+  "network_volume_retained": true,
+  "network_volume_id": "dng6q8yq2c",
+  "source_inventory_sha256": "9e57773605fd94153e4e5f20b57f537cbf7eb1619c553795b90242530343b3d1",
+  "quality_evaluated": false,
+  "full_benchmarks_run": false,
+  "optimization_variants_tested": false,
+  "push_performed": false,
+  "cpu_tests_rerun": false,
+  "cells": {
+    "gliner_B1_256": {
+      "archive": "gliner_B1_256.zip",
+      "archive_sha256": "78c818e1f3a2475a454b8be5aeaadb505152612371f7e5c82b39f541a55aaf1d",
+      "status": "passed",
+      "report_status": "preflight_passed",
+      "bucket": "B1",
+      "batch_size": 256,
+      "error_type": null,
+      "seconds": 84.38901043403894,
+      "setup_seconds": 47.30510888202116,
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float32"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "execution": {
+        "attention": "eager",
+        "dtype": "float32",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": null
+      },
+      "weights": {
+        "repo": "hivetrace/gliner-guard-omni",
+        "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+      },
+      "boundary_checked": 512,
+      "aba_passed": true,
+      "over_limit_rejected": true,
+      "sampled_setup_peak_mib": 1842.0,
+      "sampled_inference_peak_mib": 26734.0,
+      "memory_status": "measured",
+      "torch_inference": {
+        "allocated_bytes": 24764315136,
+        "reserved_bytes": 27342667776
+      },
+      "backend_proof_present": true,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    },
+    "koala_B1_256": {
+      "archive": "koala_B1_256.zip",
+      "archive_sha256": "f941f3d0657e9abf88244a62213578be35bee054247a307c0751011816d61c07",
+      "status": "passed",
+      "report_status": "preflight_passed",
+      "bucket": "B1",
+      "batch_size": 256,
+      "error_type": null,
+      "seconds": 73.12318214192055,
+      "setup_seconds": 42.38757411018014,
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float32"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "execution": {
+        "attention": "eager",
+        "dtype": "float32",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": null
+      },
+      "weights": {
+        "repo": "KoalaAI/Text-Moderation",
+        "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c"
+      },
+      "boundary_checked": 512,
+      "aba_passed": true,
+      "over_limit_rejected": true,
+      "sampled_setup_peak_mib": 1200.0,
+      "sampled_inference_peak_mib": 30566.0,
+      "memory_status": "measured",
+      "torch_inference": {
+        "allocated_bytes": 27317236224,
+        "reserved_bytes": 31360811008
+      },
+      "backend_proof_present": true,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    },
+    "llama_B1_256": {
+      "archive": "llama_B1_256.zip",
+      "archive_sha256": "f7502d1b7738d9ed358de4e35d7c261ffb00dec547d88c78f1e3cb71dd4163d3",
+      "status": "passed",
+      "report_status": "preflight_passed",
+      "bucket": "B1",
+      "batch_size": 256,
+      "error_type": null,
+      "seconds": 58.256033453159034,
+      "setup_seconds": 32.94493795000017,
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float32"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "execution": {
+        "attention": "eager",
+        "dtype": "float32",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": null
+      },
+      "weights": {
+        "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+        "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+      },
+      "boundary_checked": 512,
+      "aba_passed": true,
+      "over_limit_rejected": true,
+      "sampled_setup_peak_mib": 498.0,
+      "sampled_inference_peak_mib": 13556.0,
+      "memory_status": "measured",
+      "torch_inference": {
+        "allocated_bytes": 12341011456,
+        "reserved_bytes": 13524533248
+      },
+      "backend_proof_present": true,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    },
+    "laya_B1_256": {
+      "archive": "laya_B1_256.zip",
+      "archive_sha256": "bbadd58fe9516e09920a00b9d044e975d6f85bae3cacc5b38a6635265af68a9f",
+      "status": "passed",
+      "report_status": "preflight_passed",
+      "bucket": "B1",
+      "batch_size": 256,
+      "error_type": null,
+      "seconds": 72.68325654114597,
+      "setup_seconds": 42.564149254933,
+      "precision": {
+        "policy": "native_sdk",
+        "parameter_dtypes": [
+          "float32"
+        ],
+        "autocast_enabled": true,
+        "autocast_dtype": "bfloat16"
+      },
+      "execution": {
+        "attention": "sdpa",
+        "dtype": "native_sdk",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": "efficient"
+      },
+      "weights": {
+        "repo": "convaiinnovations/laya",
+        "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148"
+      },
+      "boundary_checked": 512,
+      "aba_passed": true,
+      "over_limit_rejected": true,
+      "sampled_setup_peak_mib": 2326.0,
+      "sampled_inference_peak_mib": 9212.0,
+      "memory_status": "measured",
+      "torch_inference": {
+        "allocated_bytes": 7024272384,
+        "reserved_bytes": 8969519104
+      },
+      "backend_proof_present": true,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    },
+    "open_B1_64": {
+      "archive": "open_B1_64.zip",
+      "archive_sha256": "fb62907e90d69ce5ffe12cf840cb793e52ac99632a07a1f99ef4fb115d6d784d",
+      "status": "passed",
+      "report_status": "preflight_passed",
+      "bucket": "B1",
+      "batch_size": 64,
+      "error_type": null,
+      "seconds": 120.12034466909245,
+      "setup_seconds": 65.66496728290804,
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float16"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "execution": {
+        "attention": "sdpa",
+        "dtype": "float16",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": "math"
+      },
+      "weights": {
+        "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+        "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+      },
+      "boundary_checked": 512,
+      "aba_passed": true,
+      "over_limit_rejected": true,
+      "sampled_setup_peak_mib": 8290.0,
+      "sampled_inference_peak_mib": 26690.0,
+      "memory_status": "measured",
+      "torch_inference": {
+        "allocated_bytes": 21324255744,
+        "reserved_bytes": 27296530432
+      },
+      "backend_proof_present": true,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    },
+    "open_B2_32": {
+      "archive": "open_B2_32.zip",
+      "archive_sha256": "ebaab7b51c9685f8985a273f5e87c2d5d3fd2a7a04247a54ad4b2019e472cff2",
+      "status": "passed",
+      "report_status": "preflight_passed",
+      "bucket": "B2",
+      "batch_size": 32,
+      "error_type": null,
+      "seconds": 116.96072610188276,
+      "setup_seconds": 55.75241357390769,
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float16"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "execution": {
+        "attention": "sdpa",
+        "dtype": "float16",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": "math"
+      },
+      "weights": {
+        "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+        "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+      },
+      "boundary_checked": 1024,
+      "aba_passed": true,
+      "over_limit_rejected": true,
+      "sampled_setup_peak_mib": 8338.0,
+      "sampled_inference_peak_mib": 27738.0,
+      "memory_status": "measured",
+      "torch_inference": {
+        "allocated_bytes": 26206425600,
+        "reserved_bytes": 28395438080
+      },
+      "backend_proof_present": true,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    },
+    "open_B3_16": {
+      "archive": "open_B3_16.zip",
+      "archive_sha256": "56ba7bdd1c676075bfe646e63cab01cb5f952ce9568eb1d77f61a6d4d15bed64",
+      "status": "oom",
+      "report_status": "incomplete",
+      "bucket": "B3",
+      "batch_size": 16,
+      "error_type": "OutOfMemoryError",
+      "seconds": 63.66411189897917,
+      "setup_seconds": 41.70207166695036,
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float16"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "execution": {
+        "attention": "sdpa",
+        "dtype": "float16",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": "math"
+      },
+      "weights": {
+        "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+        "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+      },
+      "boundary_checked": null,
+      "aba_passed": null,
+      "over_limit_rejected": null,
+      "sampled_setup_peak_mib": 8058.0,
+      "sampled_inference_peak_mib": 31854.0,
+      "memory_status": "measured",
+      "torch_inference": null,
+      "backend_proof_present": false,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    },
+    "open_B4_8": {
+      "archive": "open_B4_8.zip",
+      "archive_sha256": "226067d193288f94ebb3c49d5bfeb9d497eed8c0d6215354c8573d0e82c29051",
+      "status": "oom",
+      "report_status": "incomplete",
+      "bucket": "B4",
+      "batch_size": 8,
+      "error_type": "OutOfMemoryError",
+      "seconds": 65.22422922309488,
+      "setup_seconds": 41.90846549603157,
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float16"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "execution": {
+        "attention": "sdpa",
+        "dtype": "float16",
+        "linear_attention": "reference",
+        "runtime": "eager",
+        "sdpa_backend": "math"
+      },
+      "weights": {
+        "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+        "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+      },
+      "boundary_checked": null,
+      "aba_passed": null,
+      "over_limit_rejected": null,
+      "sampled_setup_peak_mib": 8290.0,
+      "sampled_inference_peak_mib": 29354.0,
+      "memory_status": "measured",
+      "torch_inference": null,
+      "backend_proof_present": false,
+      "source_hashes_verified": true,
+      "archive_crc_verified": true,
+      "offline_report_identical": true
+    }
+  },
+  "monitoring_status": "passed",
+  "environment": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "vram_bytes": 33670758400,
+    "driver": "595.91.07",
+    "cuda": "13.0",
+    "cudnn": 91900,
+    "python": "3.13.15",
+    "packages": {
+      "accelerate": "1.15.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "certifi": "2026.10.23",
+      "charset-normalizer": "3.5.2",
+      "click": "8.5.0",
+      "cloudpickle": "3.1.2",
+      "coloredlogs": "15.0.1",
+      "cuda-bindings": "13.4.4",
+      "cuda-pathfinder": "1.8.4",
+      "einops": "0.8.2",
+      "filelock": "4.2.4",
+      "fla-core": "0.4.2",
+      "flash-linear-attention": "0.4.2",
+      "fsspec": "2026.9.0",
+      "gliner2": "2.1.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.7.1",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "huggingface-hub": "1.33.0",
+      "humanfriendly": "10.0",
+      "idna": "3.20",
+      "jinja2": "3.1.6",
+      "joblib": "1.6.0",
+      "laya": "0.3.20",
+      "markdown-it-py": "4.2.0",
+      "markupsafe": "3.0.4",
+      "mdurl": "0.1.2",
+      "ml-dtypes": "0.6.0",
+      "narwhals": "2.28.0",
+      "networkx": "3.7",
+      "numpy": "2.1.3",
+      "nvidia-cublas": "13.1.0.3",
+      "nvidia-cublas-cu12": "12.8.4.1",
+      "nvidia-cuda-cupti": "13.0.85",
+      "nvidia-cuda-nvrtc": "13.0.88",
+      "nvidia-cuda-runtime": "13.0.96",
+      "nvidia-cuda-runtime-cu12": "12.8.90",
+      "nvidia-cudnn-cu12": "9.19.0.56",
+      "nvidia-cudnn-cu13": "9.19.0.56",
+      "nvidia-cufft": "12.0.0.61",
+      "nvidia-cufft-cu12": "11.3.3.83",
+      "nvidia-cufile": "1.15.1.6",
+      "nvidia-curand": "10.4.0.35",
+      "nvidia-curand-cu12": "10.3.9.90",
+      "nvidia-cusolver": "12.0.4.66",
+      "nvidia-cusparse": "12.6.3.3",
+      "nvidia-nccl-cu13": "2.28.9",
+      "nvidia-nvjitlink": "13.0.88",
+      "nvidia-nvjitlink-cu12": "12.9.86",
+      "nvidia-nvshmem-cu13": "3.4.5",
+      "nvidia-nvtx": "13.0.85",
+      "onnx": "1.20.1",
+      "onnxruntime-gpu": "1.23.2",
+      "packaging": "26.3",
+      "pandas": "2.2.3",
+      "peft": "0.21.2",
+      "pillow": "13.0.0",
+      "protobuf": "7.36.2",
+      "psutil": "7.2.2",
+      "pydantic": "2.14.1",
+      "pydantic-core": "2.50.1",
+      "pygments": "2.21.0",
+      "python-dateutil": "3.0.0",
+      "pyyaml": "6.0.3",
+      "regex": "2026.9.29",
+      "requests": "2.34.2",
+      "rich": "15.0.0",
+      "safetensors": "0.8.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "sentence-transformers": "5.7.0",
+      "sentencepiece": "0.2.2",
+      "setuptools": "81.0.0",
+      "shellingham": "1.5.4",
+      "six": "1.17.0",
+      "sympy": "1.14.0",
+      "threadpoolctl": "3.7.0",
+      "tokenizers": "0.23.3",
+      "torch": "2.11.0+cu130",
+      "torchvision": "0.26.0+cu130",
+      "tqdm": "4.70.1",
+      "transformers": "5.20.1",
+      "triton": "3.6.0",
+      "typer": "0.27.3",
+      "typing-extensions": "4.16.0",
+      "typing-inspection": "0.4.4",
+      "tzdata": "2026.6",
+      "urllib3": "2.8.0",
+      "cuda-toolkit": "13.0.2",
+      "flatbuffers": "25.12.19",
+      "mpmath": "1.3.0",
+      "nvidia-cusparselt-cu13": "0.8.0",
+      "pytz": "2026.5",
+      "torchaudio": "2.11.0+cu130"
+    },
+    "cpu_threads": 2,
+    "interop_threads": 1,
+    "tf32": false,
+    "cudnn_tf32": false,
+    "deterministic": true,
+    "deterministic_warn_only": true,
+    "monitor_method": "nvidia-smi-stream-100ms-v2",
+    "visible_device": 0
+  },
+  "passed_cells": 6,
+  "total_cells": 8,
+  "data_manifest_sha256": "d1321102ebe3d3e30d583b8b5326e3aade6271eca1c9c29a349ab56c1ac7753a",
+  "data_manifest_file_sha256": "23785e17e3ef29b302da253189fadb7c5ed17691155e7205faa5ac508641a74b",
+  "monitoring": {
+    "status": "passed",
+    "monitor_method": "nvidia-smi-stream-100ms-v2",
+    "environment": {
+      "gpu": "NVIDIA GeForce RTX 5090",
+      "vram_bytes": 33670758400,
+      "driver": "595.91.07",
+      "cuda": "13.0",
+      "cudnn": 91900,
+      "python": "3.13.15",
+      "packages": {
+        "accelerate": "1.15.0",
+        "annotated-doc": "0.0.5",
+        "annotated-types": "0.8.0",
+        "anyio": "4.15.1",
+        "certifi": "2026.10.23",
+        "charset-normalizer": "3.5.2",
+        "click": "8.5.0",
+        "cloudpickle": "3.1.2",
+        "coloredlogs": "15.0.1",
+        "cuda-bindings": "13.4.4",
+        "cuda-pathfinder": "1.8.4",
+        "einops": "0.8.2",
+        "filelock": "4.2.4",
+        "fla-core": "0.4.2",
+        "flash-linear-attention": "0.4.2",
+        "fsspec": "2026.9.0",
+        "gliner2": "2.1.0",
+        "h11": "0.16.0",
+        "hf-xet": "1.7.1",
+        "httpcore": "1.0.9",
+        "httpx": "0.28.1",
+        "huggingface-hub": "1.33.0",
+        "humanfriendly": "10.0",
+        "idna": "3.20",
+        "jinja2": "3.1.6",
+        "joblib": "1.6.0",
+        "laya": "0.3.20",
+        "markdown-it-py": "4.2.0",
+        "markupsafe": "3.0.4",
+        "mdurl": "0.1.2",
+        "ml-dtypes": "0.6.0",
+        "narwhals": "2.28.0",
+        "networkx": "3.7",
+        "numpy": "2.1.3",
+        "nvidia-cublas": "13.1.0.3",
+        "nvidia-cublas-cu12": "12.8.4.1",
+        "nvidia-cuda-cupti": "13.0.85",
+        "nvidia-cuda-nvrtc": "13.0.88",
+        "nvidia-cuda-runtime": "13.0.96",
+        "nvidia-cuda-runtime-cu12": "12.8.90",
+        "nvidia-cudnn-cu12": "9.19.0.56",
+        "nvidia-cudnn-cu13": "9.19.0.56",
+        "nvidia-cufft": "12.0.0.61",
+        "nvidia-cufft-cu12": "11.3.3.83",
+        "nvidia-cufile": "1.15.1.6",
+        "nvidia-curand": "10.4.0.35",
+        "nvidia-curand-cu12": "10.3.9.90",
+        "nvidia-cusolver": "12.0.4.66",
+        "nvidia-cusparse": "12.6.3.3",
+        "nvidia-nccl-cu13": "2.28.9",
+        "nvidia-nvjitlink": "13.0.88",
+        "nvidia-nvjitlink-cu12": "12.9.86",
+        "nvidia-nvshmem-cu13": "3.4.5",
+        "nvidia-nvtx": "13.0.85",
+        "onnx": "1.20.1",
+        "onnxruntime-gpu": "1.23.2",
+        "packaging": "26.3",
+        "pandas": "2.2.3",
+        "peft": "0.21.2",
+        "pillow": "13.0.0",
+        "protobuf": "7.36.2",
+        "psutil": "7.2.2",
+        "pydantic": "2.14.1",
+        "pydantic-core": "2.50.1",
+        "pygments": "2.21.0",
+        "python-dateutil": "3.0.0",
+        "pyyaml": "6.0.3",
+        "regex": "2026.9.29",
+        "requests": "2.34.2",
+        "rich": "15.0.0",
+        "safetensors": "0.8.0",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "sentence-transformers": "5.7.0",
+        "sentencepiece": "0.2.2",
+        "setuptools": "81.0.0",
+        "shellingham": "1.5.4",
+        "six": "1.17.0",
+        "sympy": "1.14.0",
+        "threadpoolctl": "3.7.0",
+        "tokenizers": "0.23.3",
+        "torch": "2.11.0+cu130",
+        "torchvision": "0.26.0+cu130",
+        "tqdm": "4.70.1",
+        "transformers": "5.20.1",
+        "triton": "3.6.0",
+        "typer": "0.27.3",
+        "typing-extensions": "4.16.0",
+        "typing-inspection": "0.4.4",
+        "tzdata": "2026.6",
+        "urllib3": "2.8.0",
+        "cuda-toolkit": "13.0.2",
+        "flatbuffers": "25.12.19",
+        "mpmath": "1.3.0",
+        "nvidia-cusparselt-cu13": "0.8.0",
+        "pytz": "2026.5",
+        "torchaudio": "2.11.0+cu130"
+      },
+      "cpu_threads": 2,
+      "interop_threads": 1,
+      "tf32": false,
+      "cudnn_tf32": false,
+      "deterministic": true,
+      "deterministic_warn_only": true,
+      "monitor_method": "nvidia-smi-stream-100ms-v2",
+      "visible_device": 0
+    },
+    "source_inventory_sha256": "9e57773605fd94153e4e5f20b57f537cbf7eb1619c553795b90242530343b3d1",
+    "checks": {
+      "gliner": {
+        "status": "passed",
+        "monitor_method": "nvidia-smi-stream-100ms-v2",
+        "p50": {
+          "baseline_ms": 38.193679,
+          "candidate_ms": 36.899857,
+          "ratio": 0.9661247087508903,
+          "ratio_interval_95": [
+            0.938077088332579,
+            1.0084870320517947
+          ],
+          "block_ratios": [
+            0.938077088332579,
+            0.9733847690776897,
+            0.9861608376944268
+          ]
+        },
+        "p95": {
+          "baseline_ms": 51.679874049999995,
+          "candidate_ms": 42.523326499999996,
+          "ratio": 0.8228217905264031,
+          "ratio_interval_95": [
+            0.7986540488235381,
+            0.9605091682380825
+          ],
+          "block_ratios": [
+            0.9297451902212714,
+            0.937433793359451,
+            0.7990747805530454
+          ]
+        },
+        "memory_available": true
+      },
+      "open": {
+        "status": "passed",
+        "monitor_method": "nvidia-smi-stream-100ms-v2",
+        "p50": {
+          "baseline_ms": 164.5260435,
+          "candidate_ms": 161.9577405,
+          "ratio": 0.9843896872169057,
+          "ratio_interval_95": [
+            0.971832369290318,
+            0.9929664335194098
+          ],
+          "block_ratios": [
+            0.9896638706322038,
+            0.973982781535707,
+            0.9929664335194098
+          ]
+        },
+        "p95": {
+          "baseline_ms": 396.8846369,
+          "candidate_ms": 393.05883275,
+          "ratio": 0.9903604125876913,
+          "ratio_interval_95": [
+            0.9741575714974107,
+            0.991554906249613
+          ],
+          "block_ratios": [
+            0.9859007272774173,
+            0.9911990577729516,
+            0.9757695864063616
+          ]
+        },
+        "memory_available": true
+      }
+    },
+    "archive_sha256": "e3a71fd67eece15d14a6076b81a89763b678abae70acff670359db235d6566c6"
+  }
+}

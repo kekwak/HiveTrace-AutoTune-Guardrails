@@ -1,0 +1,89 @@
+{
+  "status": "cpu_validated",
+  "schema_version": 4,
+  "cpu": {
+    "tests": 490,
+    "seconds": 70.544,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "clean copy of tracked files and explicit publish additions",
+    "command": "python -B -m unittest discover -s tests -v",
+    "HF_HUB_OFFLINE": true,
+    "TRANSFORMERS_OFFLINE": true,
+    "USE_HUB_KERNELS": "NO",
+    "raw_test_log_sha256": "39dc19a61445301f7cf06a4b6f122fd49b5476c802cf1cce60c9bce5f3c51ae5",
+    "test_log_sha256": "b6c8063037701e5b5218a9a55995c57c20b25ed970cae97e2ee6c69a65e8d0ad",
+    "test_log_normalization": "trailing line whitespace removed; raw log retained locally"
+  },
+  "docs": {
+    "json_files": 31,
+    "python_syntax_files": 24,
+    "local_links": 48,
+    "cli_examples_parsed": 30,
+    "cli_help_commands": 10,
+    "errors": [],
+    "scope": "current documentation sections; no setup, download, models or GPU executed"
+  },
+  "grid": {
+    "encoder": {
+      "B1": [
+        1,
+        256
+      ]
+    },
+    "decoder": {
+      "B1": [
+        1,
+        64
+      ],
+      "B2": [
+        1,
+        32
+      ],
+      "B3": [
+        1,
+        16
+      ],
+      "B4": [
+        1,
+        8
+      ]
+    }
+  },
+  "workload": {
+    "scope": "full baseline, timed jobs including AA, N=400 per bucket, no warmup/preflight",
+    "encoder": {
+      "cells": [
+        4,
+        2
+      ],
+      "timed_workers": [
+        28,
+        14
+      ],
+      "timed_batches": [
+        2580,
+        1740
+      ]
+    },
+    "decoder": {
+      "cells": [
+        15,
+        8
+      ],
+      "timed_workers": [
+        105,
+        56
+      ],
+      "timed_batches": [
+        9900,
+        6960
+      ]
+    }
+  },
+  "gpu_runs_in_this_stage": 0,
+  "quality_evaluated": false,
+  "wall_clock_speedup_evaluated": false,
+  "native_open_smoke_evidence": "../2026-11-12-v4-native-open/validation.json"
+}

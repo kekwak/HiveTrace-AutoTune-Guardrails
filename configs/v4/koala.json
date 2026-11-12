@@ -1,0 +1,50 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": "koala",
+    "weights": {
+      "repo": "KoalaAI/Text-Moderation",
+      "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c"
+    },
+    "tokenizer": {
+      "repo": "KoalaAI/Text-Moderation",
+      "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "eager",
+      "dtype": "float32",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1,
+      256
+    ]
+  },
+  "mode": "baseline",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u1-env",
+  "data": {
+    "path": "data/speed/role-corpus-v4-20261112",
+    "manifest_sha256": "23785e17e3ef29b302da253189fadb7c5ed17691155e7205faa5ac508641a74b"
+  },
+  "quality_batch_sizes": [
+    1
+  ]
+}

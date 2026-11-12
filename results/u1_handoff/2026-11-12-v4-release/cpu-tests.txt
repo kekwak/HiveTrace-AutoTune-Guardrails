@@ -1,0 +1,656 @@
+test_boundaries (test_speed_dataset.SpeedCorpusTests.test_boundaries) ... ok
+test_changed_input_rejected (test_speed_dataset.SpeedCorpusTests.test_changed_input_rejected) ... ok
+test_four_bucket_model_membership (test_speed_dataset.SpeedCorpusTests.test_four_bucket_model_membership) ... ok
+test_full_release_then_missing_model_does_not_leave_stale_b1 (test_speed_dataset.SpeedCorpusTests.test_full_release_then_missing_model_does_not_leave_stale_b1) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpl1j3mnir/releases/608e462b1b47e8eb",
+  "selected": 1600,
+  "blockers": {}
+}
+{
+  "status": "not_ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpl1j3mnir/releases/d3a78f36b08a5a01",
+  "selected": 1200,
+  "blockers": {
+    "llama": "[Errno 2] No such file or directory: '/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpl1j3mnir/indices/llama.meta.json'"
+  }
+}
+ok
+test_handoff_notebook (test_speed_dataset.SpeedCorpusTests.test_handoff_notebook) ... ok
+test_import_validates_before_replacing (test_speed_dataset.SpeedCorpusTests.test_import_validates_before_replacing) ... ok
+test_incomplete_finalize_and_histogram (test_speed_dataset.SpeedCorpusTests.test_incomplete_finalize_and_histogram) ... /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpu4nqdb4f/handoff
+Validated and imported: llama
+{
+  "status": "not_ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpn9h7doli/releases/a87228f2a7dee168",
+  "selected": 0,
+  "blockers": {}
+}
+ok
+test_literal_prompt_not_executed (test_speed_dataset.SpeedCorpusTests.test_literal_prompt_not_executed) ... ok
+test_long_synthetic_is_deterministic_not_repeated_filler (test_speed_dataset.SpeedCorpusTests.test_long_synthetic_is_deterministic_not_repeated_filler) ... ok
+test_mirror_is_explicit_and_original_index_is_stale (test_speed_dataset.SpeedCorpusTests.test_mirror_is_explicit_and_original_index_is_stale) ... ok
+test_pool_corruption (test_speed_dataset.SpeedCorpusTests.test_pool_corruption) ... ok
+test_reuse_requires_same_assets (test_speed_dataset.SpeedCorpusTests.test_reuse_requires_same_assets) ... ok
+test_selection_intersection_and_quotas (test_speed_dataset.SpeedCorpusTests.test_selection_intersection_and_quotas) ... ok
+test_source_offsets_and_determinism (test_speed_dataset.SpeedCorpusTests.test_source_offsets_and_determinism) ... ok
+test_stale_missing_and_duplicate_index (test_speed_dataset.SpeedCorpusTests.test_stale_missing_and_duplicate_index) ... ok
+test_unicode_and_no_padding (test_speed_dataset.SpeedCorpusTests.test_unicode_and_no_padding) ... ok
+test_allowlisted_compact_reproducible_package (test_speed_export.SpeedExportTests.test_allowlisted_compact_reproducible_package) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpmdpwon5y/source/releases/46b0c05f628480f1",
+  "selected": 1600,
+  "blockers": {}
+}
+ok
+test_incomplete_release_rejected (test_speed_export.SpeedExportTests.test_incomplete_release_rejected) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp98jt2ooa/source/releases/46b0c05f628480f1",
+  "selected": 1600,
+  "blockers": {}
+}
+{
+  "status": "not_ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp98jt2ooa/source/releases/4487c22582da69d7",
+  "selected": 1200,
+  "blockers": {
+    "llama": "[Errno 2] No such file or directory: '/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp98jt2ooa/source/indices/llama.meta.json'"
+  }
+}
+ok
+test_tampered_release_rejected_before_export (test_speed_export.SpeedExportTests.test_tampered_release_rejected_before_export) ... {
+  "status": "ready",
+  "release": "/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpmfg7a4sx/source/releases/46b0c05f628480f1",
+  "selected": 1600,
+  "blockers": {}
+}
+ok
+test_fla_only_and_error_restoration (test_team_halo.TeamHaloDispatchTests.test_fla_only_and_error_restoration) ... ok
+test_real_5201_adapter_with_tiny_local_checkpoint (test_team_halo.TeamHaloDispatchTests.test_real_5201_adapter_with_tiny_local_checkpoint) ... W1112 19:27:04.267000 14521 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00, 200.76it/s]
+
+Loading weights:   0%|          | 0/49 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 49/49 [00:00<00:00, 13516.67it/s]
+ok
+test_unknown_dispatch_cannot_pass (test_team_halo.TeamHaloDispatchTests.test_unknown_dispatch_cannot_pass) ... ok
+test_unwrap_and_call_reference_then_restore (test_team_halo.TeamHaloDispatchTests.test_unwrap_and_call_reference_then_restore) ... ok
+test_checked_in_lock_exact_and_scoped (test_team_lock.TeamLockTests.test_checked_in_lock_exact_and_scoped) ... ok
+test_failed_smoke_cannot_be_source (test_team_lock.TeamLockTests.test_failed_smoke_cannot_be_source) ... ok
+test_generation_verifies_every_worker_and_is_deterministic (test_team_lock.TeamLockTests.test_generation_verifies_every_worker_and_is_deterministic) ... ok
+test_inventory_rejects_missing_extra_version_and_duplicates (test_team_lock.TeamLockTests.test_inventory_rejects_missing_extra_version_and_duplicates) ... ok
+test_missing_hash_bad_platform_or_source_rejected (test_team_lock.TeamLockTests.test_missing_hash_bad_platform_or_source_rejected) ... ok
+test_archive_excludes_inputs_weights_secrets_and_large_files (test_team_skeleton.SkeletonTests.test_archive_excludes_inputs_weights_secrets_and_large_files) ... ok
+test_child_env_does_not_leak_host_python_configuration (test_team_skeleton.SkeletonTests.test_child_env_does_not_leak_host_python_configuration) ... ok
+test_each_experiment_snapshots_source_and_preserves_error (test_team_skeleton.SkeletonTests.test_each_experiment_snapshots_source_and_preserves_error) ... ok
+test_incomplete_existing_venv_is_not_reinstalled (test_team_skeleton.SkeletonTests.test_incomplete_existing_venv_is_not_reinstalled) ... ok
+test_install_failure_and_tampered_lock_stop_setup (test_team_skeleton.SkeletonTests.test_install_failure_and_tampered_lock_stop_setup) ... ok
+test_notebook_self_contained_fresh_and_syntax (test_team_skeleton.SkeletonTests.test_notebook_self_contained_fresh_and_syntax) ... ok
+test_precheck_failure_does_not_install_and_archives (test_team_skeleton.SkeletonTests.test_precheck_failure_does_not_install_and_archives) ... ok
+test_precheck_rejects_wrong_python_before_inspecting_gpu (test_team_skeleton.SkeletonTests.test_precheck_rejects_wrong_python_before_inspecting_gpu) ... ok
+test_real_process_logs_failure_and_timeout (test_team_skeleton.SkeletonTests.test_real_process_logs_failure_and_timeout) ... {
+  "stage": "setup",
+  "status": "passed",
+  "model_tested": false,
+  "lock_inventory_verified": true,
+  "cuda_primitive_passed": true
+}
+fixture log
+{
+  "stage": "experiment",
+  "status": "passed",
+  "run": "run_6e46cdbf",
+  "source_sha256": "b80792336156c7b0f7fe02eeef24610d2d52a10d1810397744471d1dc5738180"
+}
+Результаты: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpodufteay/work/runs/run_6e46cdbf/results
+fixture log
+{
+  "stage": "experiment",
+  "status": "failed",
+  "run": "run_3c9da68e",
+  "source_sha256": "b3c52fecfffc5d3d229b07d7139d5d09be7a3e4aa6d1f87276a187f3ce469014",
+  "error": "fixture failure"
+}
+Результаты: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpodufteay/work/runs/run_3c9da68e/results
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "GPU gone"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpodufteay/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "Неполная или другая среда: повторите ячейку подготовки нового рабочего каталога."
+}
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "fixture failure"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp42f6ijh5/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "fixture failure"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpxat3_zy1/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "fixture failure"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpfvlnx4db/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "Embedded lock text and manifest disagree"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpkhzx0c60/work.zip
+{
+  "stage": "setup",
+  "status": "failed",
+  "model_tested": false,
+  "error": "Wrong Python"
+}
+Эксперимент не запущен: сначала исправьте setup. Архив: /private/var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmpat5u9m0y/work.zip
+Запуск: ok.log | лог: /var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp8_4h6cu2/ok.log
+Запуск: failure.log | лог: /var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp8_4h6cu2/failure.log
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    raise ValueError("fixture")
+ValueError: fixture
+
+Запуск: timeout.log | лог: /var/folders/2x/9wmgzgz56p9b0s13rlc7hz1w0000gn/T/tmp8_4h6cu2/timeout.log
+ok
+test_setup_targets_only_venv_and_reuses_after_verification (test_team_skeleton.SkeletonTests.test_setup_targets_only_venv_and_reuses_after_verification) ... ok
+test_archive_keeps_failures_but_excludes_weights (test_team_smoke.TeamEnvironmentSmokeTests.test_archive_keeps_failures_but_excludes_weights) ... ok
+test_child_python_environment_is_clean_and_restored_on_failure (test_team_smoke.TeamEnvironmentSmokeTests.test_child_python_environment_is_clean_and_restored_on_failure) ... ok
+test_cuda_failure_skips_models (test_team_smoke.TeamEnvironmentSmokeTests.test_cuda_failure_skips_models) ...
+{
+  "stage": "setup",
+  "status": "passed",
+  "model_tested": false,
+  "lock_inventory_verified": true,
+  "cuda_primitive_passed": true
+}
+{
+  "stage": "setup",
+  "status": "passed",
+  "model_tested": false,
+  "lock_inventory_verified": true,
+  "cuda_primitive_passed": true
+}
+Smoke: cuda
+ok
+test_install_timeout_preserves_partial_archive_without_workers (test_team_smoke.TeamEnvironmentSmokeTests.test_install_timeout_preserves_partial_archive_without_workers) ... ok
+test_notebook_is_fresh_valid_and_self_contained (test_team_smoke.TeamEnvironmentSmokeTests.test_notebook_is_fresh_valid_and_self_contained) ... ok
+test_ort_failure_does_not_cancel_gliner_or_halo (test_team_smoke.TeamEnvironmentSmokeTests.test_ort_failure_does_not_cancel_gliner_or_halo) ... Smoke: cuda
+Smoke: ort_cuda
+Smoke: gliner
+Smoke: halo
+ok
+test_ort_needs_real_cuda_nodes_and_no_cpu_fallback (test_team_smoke.TeamEnvironmentSmokeTests.test_ort_needs_real_cuda_nodes_and_no_cpu_fallback) ... ok
+test_partial_scores_survive_next_input_failure (test_team_smoke.TeamEnvironmentSmokeTests.test_partial_scores_survive_next_input_failure) ... ok
+test_pins_retain_measured_extensions_and_reject_drift (test_team_smoke.TeamEnvironmentSmokeTests.test_pins_retain_measured_extensions_and_reject_drift) ... ok
+test_real_pip_targets_pipless_venv_offline (test_team_smoke.TeamEnvironmentSmokeTests.test_real_pip_targets_pipless_venv_offline) ... ok
+test_scores_reject_drift_flips_and_nonfinite (test_team_smoke.TeamEnvironmentSmokeTests.test_scores_reject_drift_flips_and_nonfinite) ... ok
+test_smoke_texts_survive_real_gliner_normalization (test_team_smoke.TeamEnvironmentSmokeTests.test_smoke_texts_survive_real_gliner_normalization) ... ok
+test_success_uses_isolated_venv_and_does_not_benchmark (test_team_smoke.TeamEnvironmentSmokeTests.test_success_uses_isolated_venv_and_does_not_benchmark) ... Smoke: cuda
+Smoke: ort_cuda
+Smoke: gliner
+Smoke: halo
+ok
+test_worker_pin_failure_prevents_models_and_is_saved (test_team_smoke.TeamEnvironmentSmokeTests.test_worker_pin_failure_prevents_models_and_is_saved) ... ok
+test_explicit_external_contract_and_cardinality (test_u1_batch_adapters.ExternalBatch.test_explicit_external_contract_and_cardinality) ... ok
+test_external_pad_id_must_be_explicit_integer (test_u1_batch_adapters.ExternalBatch.test_external_pad_id_must_be_explicit_integer) ... ok
+test_external_proof_normalized_from_return_or_metadata (test_u1_batch_adapters.ExternalBatch.test_external_proof_normalized_from_return_or_metadata) ... ok
+test_single_fallback_only_and_delegation (test_u1_batch_adapters.ExternalBatch.test_single_fallback_only_and_delegation) ... ok
+test_single_legacy_proof_and_kernel_requirement (test_u1_batch_adapters.ExternalBatch.test_single_legacy_proof_and_kernel_requirement) ... ok
+test_synthetic_single_policy_does_not_authorize_external_batch (test_u1_batch_adapters.ExternalBatch.test_synthetic_single_policy_does_not_authorize_external_batch) ... ok
+test_actual_masks_padding_and_cardinality (test_u1_batch_adapters.HFBatches.test_actual_masks_padding_and_cardinality) ... ok
+test_bad_index_and_no_forward_hook_during_request (test_u1_batch_adapters.HFBatches.test_bad_index_and_no_forward_hook_during_request) ... ok
+test_classifier_native_labels_order_and_forward (test_u1_batch_adapters.HFBatches.test_classifier_native_labels_order_and_forward) ... ok
+test_eos_and_no_eos_counts (test_u1_batch_adapters.HFBatches.test_eos_and_no_eos_counts) ... ok
+test_generated_rows_exclude_padding_and_preserve_order (test_u1_batch_adapters.HFBatches.test_generated_rows_exclude_padding_and_preserve_order) ... ok
+test_limits_before_any_forward_and_oom_propagation (test_u1_batch_adapters.HFBatches.test_limits_before_any_forward_and_oom_propagation) ... ok
+test_pad_identity_is_fixed_and_decoder_eos_fallback_is_recorded (test_u1_batch_adapters.HFBatches.test_pad_identity_is_fixed_and_decoder_eos_fallback_is_recorded) ... ok
+test_shield_left_padding_and_tie_no (test_u1_batch_adapters.HFBatches.test_shield_left_padding_and_tie_no) ... ok
+test_gliner_compile_real_score_route_and_restore (test_u1_batch_adapters.NativeSDKBatch.test_gliner_compile_real_score_route_and_restore) ... [transformers] The new embeddings will be initialized from a multivariate normal distribution that has old embeddings' mean and covariance. As described in this article: https://nlp.stanford.edu/~johnhew/vocab-expansion.html. To disable this, use `mean_resizing=False`
+ok
+test_gliner_native_batch_encoder_and_head (test_u1_batch_adapters.NativeSDKBatch.test_gliner_native_batch_encoder_and_head) ... ok
+test_halo_reuses_native_batched_scores (test_u1_batch_adapters.NativeSDKBatch.test_halo_reuses_native_batched_scores) ... ok
+test_laya_one_encoding_and_native_batch (test_u1_batch_adapters.NativeSDKBatch.test_laya_one_encoding_and_native_batch) ... ok
+test_binding_rejects_cpu_and_unexpected_arguments (test_u1_batch_adapters.ORTBatch.test_binding_rejects_cpu_and_unexpected_arguments) ... ok
+test_ort_cpu_policy_failure_restores_and_does_not_fallback (test_u1_batch_adapters.ORTBatch.test_ort_cpu_policy_failure_restores_and_does_not_fallback) ... ok
+test_ort_score_routing_profile_separation_shape_extension_restore (test_u1_batch_adapters.ORTBatch.test_ort_score_routing_profile_separation_shape_extension_restore) ... ok
+test_actual_worker_uses_batch_and_reuses_preflight_without_replaying_diagnostics (test_u1_batch_execution.BatchExecution.test_actual_worker_uses_batch_and_reuses_preflight_without_replaying_diagnostics) ... ok
+test_decoder_boundary_uses_bucket_not_global_limit (test_u1_batch_execution.BatchExecution.test_decoder_boundary_uses_bucket_not_global_limit) ... ok
+test_existing_configs_remain_singleton_and_new_presets_match_grid (test_u1_batch_execution.BatchExecution.test_existing_configs_remain_singleton_and_new_presets_match_grid) ... ok
+test_failed_cell_keeps_other_sizes_and_timeout_stops (test_u1_batch_execution.BatchExecution.test_failed_cell_keeps_other_sizes_and_timeout_stops) ... ok
+test_matrix_diagnostics_once_and_pilot_has_no_memory_profiles (test_u1_batch_execution.BatchExecution.test_matrix_diagnostics_once_and_pilot_has_no_memory_profiles) ... ok
+test_baseline_screening_all_stages_and_table_excludes_fixture (test_u1_batch_integration.BatchIntegrationTests.test_baseline_screening_all_stages_and_table_excludes_fixture) ... ok
+test_engineering_screening_rejects_four_unique_flips (test_u1_batch_integration.BatchIntegrationTests.test_engineering_screening_rejects_four_unique_flips) ... ok
+test_quality_only_multiple_sizes_quantized_candidate_and_oom_continuation (test_u1_batch_integration.BatchIntegrationTests.test_quality_only_multiple_sizes_quantized_candidate_and_oom_continuation) ... ok
+test_quantization_screening_unique_denominator_and_tamper_detection (test_u1_batch_integration.BatchIntegrationTests.test_quantization_screening_unique_denominator_and_tamper_detection) ... ok
+test_timeout_kills_child_and_preserves_completed_preflights (test_u1_batch_integration.BatchIntegrationTests.test_timeout_kills_child_and_preserves_completed_preflights) ... ok
+test_two_cell_pilot_quality_is_single_and_preflight_is_not_instability (test_u1_batch_integration.BatchIntegrationTests.test_two_cell_pilot_quality_is_single_and_preflight_is_not_instability) ... ok
+test_baseline_only_and_fixture_never_screening_pass (test_u1_batch_report.BatchReportTests.test_baseline_only_and_fixture_never_screening_pass) ... ok
+test_instability_rejects_cell_but_not_speed_flag (test_u1_batch_report.BatchReportTests.test_instability_rejects_cell_but_not_speed_flag) ... ok
+test_missing_memory_does_not_erase_healthy_cell (test_u1_batch_report.BatchReportTests.test_missing_memory_does_not_erase_healthy_cell) ... ok
+test_missing_unique_inputs_and_missing_raw_side (test_u1_batch_report.BatchReportTests.test_missing_unique_inputs_and_missing_raw_side) ... ok
+test_oom_and_private_exception_are_sanitized (test_u1_batch_report.BatchReportTests.test_oom_and_private_exception_are_sanitized) ... ok
+test_pair_padding_semantics_not_backend_description (test_u1_batch_report.BatchReportTests.test_pair_padding_semantics_not_backend_description) ... ok
+test_parameter_ten_percent_and_noisy_comparison (test_u1_batch_report.BatchReportTests.test_parameter_ten_percent_and_noisy_comparison) ... ok
+test_parameter_threshold_and_quantization_flips (test_u1_batch_report.BatchReportTests.test_parameter_threshold_and_quantization_flips) ... ok
+test_pilot_and_smoke_do_not_get_acceptance (test_u1_batch_report.BatchReportTests.test_pilot_and_smoke_do_not_get_acceptance) ... ok
+test_positive_matrix_is_not_twenty_percent_acceptance (test_u1_batch_report.BatchReportTests.test_positive_matrix_is_not_twenty_percent_acceptance) ... ok
+test_precision_mismatch_is_global_not_only_cell_local (test_u1_batch_report.BatchReportTests.test_precision_mismatch_is_global_not_only_cell_local) ... ok
+test_profile_requires_real_kernel_event (test_u1_batch_report.BatchReportTests.test_profile_requires_real_kernel_event) ... ok
+test_quality_is_single_only_and_recomputed_from_predictions (test_u1_batch_report.BatchReportTests.test_quality_is_single_only_and_recomputed_from_predictions) ... ok
+test_raw_row_mismatch_and_compile_drift (test_u1_batch_report.BatchReportTests.test_raw_row_mismatch_and_compile_drift) ... ok
+test_runtime_and_contract_changes_fail_closed (test_u1_batch_report.BatchReportTests.test_runtime_and_contract_changes_fail_closed) ... ok
+test_screening_does_not_mix_preflight_and_batch_answers (test_u1_batch_report.BatchReportTests.test_screening_does_not_mix_preflight_and_batch_answers) ... ok
+test_single_to_batch_differences_are_not_within_cell_instability (test_u1_batch_report.BatchReportTests.test_single_to_batch_differences_are_not_within_cell_instability) ... ok
+test_source_path_and_worker_hash_fail_closed (test_u1_batch_report.BatchReportTests.test_source_path_and_worker_hash_fail_closed) ... ok
+test_stable_slowdown_not_inconclusive (test_u1_batch_report.BatchReportTests.test_stable_slowdown_not_inconclusive) ... ok
+test_staircase_not_scheduled (test_u1_batch_report.BatchReportTests.test_staircase_not_scheduled) ... ok
+test_worker_source_hash_and_contract_are_strict (test_u1_batch_report.BatchReportTests.test_worker_source_hash_and_contract_are_strict) ... ok
+test_memory_minimal_replays_and_occurrences (test_u1_batching.AuxiliaryPlanTests.test_memory_minimal_replays_and_occurrences) ... ok
+test_metadata_accounting_and_materialize (test_u1_batching.AuxiliaryPlanTests.test_metadata_accounting_and_materialize) ... ok
+test_smoke_profile_full_unique_short_long_mixed (test_u1_batching.AuxiliaryPlanTests.test_smoke_profile_full_unique_short_long_mixed) ... ok
+test_structural_failures (test_u1_batching.AuxiliaryPlanTests.test_structural_failures) ... ok
+test_all_model_defaults_and_freshness (test_u1_batching.GridTests.test_all_model_defaults_and_freshness) ... ok
+test_custom_subset_canonicalization_and_legacy (test_u1_batching.GridTests.test_custom_subset_canonicalization_and_legacy) ... ok
+test_reject_malformed_grids (test_u1_batching.GridTests.test_reject_malformed_grids) ... ok
+test_all_decoder_cells_and_dataset_errors (test_u1_batching.ScheduleTests.test_all_decoder_cells_and_dataset_errors) ... ok
+test_baseline_and_non_latency_modes (test_u1_batching.ScheduleTests.test_baseline_and_non_latency_modes) ... ok
+test_cell_first_pair_order_and_copy_isolation (test_u1_batching.ScheduleTests.test_cell_first_pair_order_and_copy_isolation) ... ok
+test_exact_counts_ratios_and_no_tail (test_u1_batching.ScheduleTests.test_exact_counts_ratios_and_no_tail) ... ok
+test_pilot_without_aa_and_small_dataset (test_u1_batching.ScheduleTests.test_pilot_without_aa_and_small_dataset) ... ok
+test_reproducible_json_safe_private_input_independent (test_u1_batching.ScheduleTests.test_reproducible_json_safe_private_input_independent) ... ok
+test_compile_scores_routing_and_restore (test_u1_benchmark.AdapterRouting.test_compile_scores_routing_and_restore) ... ok
+test_ort_route_wrapper_restores_shared_validation_texts (test_u1_benchmark.AdapterRouting.test_ort_route_wrapper_restores_shared_validation_texts) ... ok
+test_size_does_not_require_unloaded_model_card_files (test_u1_benchmark.AdapterRouting.test_size_does_not_require_unloaded_model_card_files) ... ok
+test_config_limits (test_u1_benchmark.CorpusAndStatistics.test_config_limits) ... ok
+test_halo_preparation_covers_only_worker_shapes (test_u1_benchmark.CorpusAndStatistics.test_halo_preparation_covers_only_worker_shapes) ... ok
+test_noise_and_strict_threshold (test_u1_benchmark.CorpusAndStatistics.test_noise_and_strict_threshold) ... ok
+test_pair_order_and_hashes (test_u1_benchmark.CorpusAndStatistics.test_pair_order_and_hashes) ... ok
+test_pinned_data_and_tamper (test_u1_benchmark.CorpusAndStatistics.test_pinned_data_and_tamper) ... ok
+test_pooled_quantile_not_mean_of_quantiles (test_u1_benchmark.CorpusAndStatistics.test_pooled_quantile_not_mean_of_quantiles) ... ok
+test_schedule_exact_pairs_and_pilot (test_u1_benchmark.CorpusAndStatistics.test_schedule_exact_pairs_and_pilot) ... ok
+test_verdicts_unique_ids_and_instability (test_u1_benchmark.CorpusAndStatistics.test_verdicts_unique_ids_and_instability) ... ok
+test_complete_report_and_missing_side (test_u1_benchmark.OfflineReport.test_complete_report_and_missing_side) ... ok
+test_fast_candidate_with_unstable_verdict_cannot_pass (test_u1_benchmark.OfflineReport.test_fast_candidate_with_unstable_verdict_cannot_pass) ... ok
+test_pilot_never_passes_and_environment_mismatch (test_u1_benchmark.OfflineReport.test_pilot_never_passes_and_environment_mismatch) ... ok
+test_preflight_failure_stops_before_latency_and_archives (test_u1_benchmark.OfflineReport.test_preflight_failure_stops_before_latency_and_archives) ... gliner_compile: preflight baseline baseline
+ok
+test_actual_process_timeout_partial_artifact (test_u1_benchmark.ProcessesAndMemory.test_actual_process_timeout_partial_artifact) ... ok
+test_archive_keeps_required_results_beyond_optional_budget (test_u1_benchmark.ProcessesAndMemory.test_archive_keeps_required_results_beyond_optional_budget) ... ok
+test_archive_no_weights_secrets_or_symlinks (test_u1_benchmark.ProcessesAndMemory.test_archive_no_weights_secrets_or_symlinks) ... ok
+test_boundary_two_token_unit_does_not_skip_even_length (test_u1_benchmark.ProcessesAndMemory.test_boundary_two_token_unit_does_not_skip_even_length) ... ok
+test_boundary_with_long_prompt_and_restore (test_u1_benchmark.ProcessesAndMemory.test_boundary_with_long_prompt_and_restore) ... ok
+test_memory_pid_uuid_and_separate_windows (test_u1_benchmark.ProcessesAndMemory.test_memory_pid_uuid_and_separate_windows) ... ok
+test_quiet_dispatch_restores_after_error (test_u1_benchmark.ProcessesAndMemory.test_quiet_dispatch_restores_after_error) ... ok
+test_recompilation_not_silent (test_u1_benchmark.ProcessesAndMemory.test_recompilation_not_silent) ... ok
+test_eight_models_and_limits (test_u1_handoff.Contracts.test_eight_models_and_limits) ... ok
+test_external_source_and_contract_swap (test_u1_handoff.Contracts.test_external_source_and_contract_swap) ... ok
+test_generate_elided_mask_still_checks_actual_tokens (test_u1_handoff.Contracts.test_generate_elided_mask_still_checks_actual_tokens) ... ok
+test_responses_are_native (test_u1_handoff.Contracts.test_responses_are_native) ... ok
+test_size_uses_loaded_files_not_unrelated_exports (test_u1_handoff.Contracts.test_size_uses_loaded_files_not_unrelated_exports) ... ok
+test_boundaries_empty_unicode_special_tokens (test_u1_handoff.Data.test_boundaries_empty_unicode_special_tokens) ... ok
+test_quality_import_rejects_duplicate_ids_and_partial_slices (test_u1_handoff.Data.test_quality_import_rejects_duplicate_ids_and_partial_slices) ... ok
+test_repeatability_private_archive_and_not_ready (test_u1_handoff.Data.test_repeatability_private_archive_and_not_ready) ... ok
+test_baseline_only_complete_and_table_rejects_fixture (test_u1_handoff.EndToEnd.test_baseline_only_complete_and_table_rejects_fixture) ... ok
+test_baseline_schedule_and_current_shapes (test_u1_handoff.EndToEnd.test_baseline_schedule_and_current_shapes) ... ok
+test_quantized_fixture_fresh_processes_and_report (test_u1_handoff.EndToEnd.test_quantized_fixture_fresh_processes_and_report) ... ok
+test_real_quality_worker_with_cpu_fixture_and_private_texts (test_u1_handoff.EndToEnd.test_real_quality_worker_with_cpu_fixture_and_private_texts) ... ok
+test_redaction_preserves_json_with_quotes (test_u1_handoff.EndToEnd.test_redaction_preserves_json_with_quotes) ... ok
+test_timeout_and_partial_archive (test_u1_handoff.EndToEnd.test_timeout_and_partial_archive) ... ok
+test_metrics_coverage_and_undefined_denominators (test_u1_handoff.Quality.test_metrics_coverage_and_undefined_denominators) ... ok
+test_unique_ids_and_instability (test_u1_handoff.Quality.test_unique_ids_and_instability) ... ok
+test_assistant_projection_and_aba (test_u1_laya.LayaInputGuard.test_assistant_projection_and_aba) ... ok
+test_check_device_rejects_precision_drift_after_loading (test_u1_laya.LayaInputGuard.test_check_device_rejects_precision_drift_after_loading) ... ok
+test_constructor_installs_guard_and_close_restores (test_u1_laya.LayaInputGuard.test_constructor_installs_guard_and_close_restores) ... ok
+test_constructor_rejects_fallback_disabled_amp_and_unexpected_dtype (test_u1_laya.LayaInputGuard.test_constructor_rejects_fallback_disabled_amp_and_unexpected_dtype) ... ok
+test_device_and_parameter_drift_are_rejected (test_u1_laya.LayaInputGuard.test_device_and_parameter_drift_are_rejected) ... ok
+test_failed_sdk_request_still_checks_fallback (test_u1_laya.LayaInputGuard.test_failed_sdk_request_still_checks_fallback) ... ok
+test_legacy_text_path_still_uses_one_encoding (test_u1_laya.LayaInputGuard.test_legacy_text_path_still_uses_one_encoding) ... ok
+test_limit_and_rejection_before_forward_without_truncation (test_u1_laya.LayaInputGuard.test_limit_and_rejection_before_forward_without_truncation) ... ok
+test_one_sdk_encoding_and_native_scores_inputs (test_u1_laya.LayaInputGuard.test_one_sdk_encoding_and_native_scores_inputs) ... ok
+test_restore_on_forward_error_and_idempotent_close (test_u1_laya.LayaInputGuard.test_restore_on_forward_error_and_idempotent_close) ... ok
+test_restore_original_override_on_encoding_error (test_u1_laya.LayaInputGuard.test_restore_original_override_on_encoding_error) ... ok
+test_unexpected_budget_rejected_and_config_unchanged (test_u1_laya.LayaInputGuard.test_unexpected_budget_rejected_and_config_unchanged) ... ok
+test_factory_only_overrides_open (test_u1_open_task.OpenTask.test_factory_only_overrides_open) ... ok
+test_other_seven_preparation_contracts_are_unchanged (test_u1_open_task.OpenTask.test_other_seven_preparation_contracts_are_unchanged) ... ok
+test_reindex_keeps_corpus_and_other_indices_and_repeats (test_u1_open_task.OpenTask.test_reindex_keeps_corpus_and_other_indices_and_repeats) ... ok
+test_task_uses_selected_user_with_no_context_or_parser_change (test_u1_open_task.OpenTask.test_task_uses_selected_user_with_no_context_or_parser_change) ... ok
+test_fetch_compares_preparation_not_runtime_rules (test_u1_precision.InputCompatibility.test_fetch_compares_preparation_not_runtime_rules) ... ok
+test_old_laya_indices_survive_execution_rule_changes_only (test_u1_precision.InputCompatibility.test_old_laya_indices_survive_execution_rule_changes_only) ... ok
+test_reindex_does_not_rebuild_other_models_for_precision_only (test_u1_precision.InputCompatibility.test_reindex_does_not_rebuild_other_models_for_precision_only) ... ok
+test_engineering_pair_checks_mode_not_policy_description (test_u1_precision.PrecisionPolicy.test_engineering_pair_checks_mode_not_policy_description) ... ok
+test_guard_requires_metadata_and_catches_in_place_drift_on_error (test_u1_precision.PrecisionPolicy.test_guard_requires_metadata_and_catches_in_place_drift_on_error) ... ok
+test_legacy_passports_are_not_invented_or_mixed_with_new (test_u1_precision.PrecisionPolicy.test_legacy_passports_are_not_invented_or_mixed_with_new) ... ok
+test_parameter_and_quantization_record_explicit_differences (test_u1_precision.PrecisionPolicy.test_parameter_and_quantization_record_explicit_differences) ... ok
+test_validated_precision_is_not_redacted_as_private_prose (test_u1_precision.PrecisionPolicy.test_validated_precision_is_not_redacted_as_private_prose) ... ok
+test_validation_and_snapshot_are_independent (test_u1_precision.PrecisionPolicy.test_validation_and_snapshot_are_independent) ... ok
+test_workers_of_variant_must_keep_precision_for_all_phases (test_u1_precision.PrecisionPolicy.test_workers_of_variant_must_keep_precision_for_all_phases) ... ok
+test_new_external_laya_requires_passport_and_quality_drift_is_fatal (test_u1_precision.WorkerAndReport.test_new_external_laya_requires_passport_and_quality_drift_is_fatal) ... ok
+test_runner_stops_on_memory_drift_and_offline_report_rejects_it (test_u1_precision.WorkerAndReport.test_runner_stops_on_memory_drift_and_offline_report_rejects_it) ... ok
+test_table_separates_precision_and_historical_report_keeps_numbers (test_u1_precision.WorkerAndReport.test_table_separates_precision_and_historical_report_keeps_numbers) ... ok
+test_worker_inference_contract_remains_strict (test_u1_precision.WorkerAndReport.test_worker_inference_contract_remains_strict) ... ok
+test_default_and_arbitrary_positive_sizes_preserve_order (test_u1_quality_batches.QualityBatchConfigTests.test_default_and_arbitrary_positive_sizes_preserve_order) ... ok
+test_invalid_sizes_rejected_by_helper_and_config_parser (test_u1_quality_batches.QualityBatchConfigTests.test_invalid_sizes_rejected_by_helper_and_config_parser) ... ok
+test_parse_quality_config_accepts_non_speed_grid_sizes (test_u1_quality_batches.QualityBatchConfigTests.test_parse_quality_config_accepts_non_speed_grid_sizes) ... ok
+test_all_excluded_skips_backend_and_inference (test_u1_quality_batches.QualityEvaluationTests.test_all_excluded_skips_backend_and_inference) ... ok
+test_batch_path_uses_no_single_calls_even_for_tail (test_u1_quality_batches.QualityEvaluationTests.test_batch_path_uses_no_single_calls_even_for_tail) ... ok
+test_invalid_batch_response_is_not_recorded_as_success (test_u1_quality_batches.QualityEvaluationTests.test_invalid_batch_response_is_not_recorded_as_success) ... ok
+test_oom_saves_completed_failed_and_unrun_rows_before_reraising (test_u1_quality_batches.QualityEvaluationTests.test_oom_saves_completed_failed_and_unrun_rows_before_reraising) ... ok
+test_private_text_and_tokenized_payloads_are_not_saved (test_u1_quality_batches.QualityEvaluationTests.test_private_text_and_tokenized_payloads_are_not_saved) ... ok
+test_quantization_style_candidate_outputs_change_by_actual_size (test_u1_quality_batches.QualityEvaluationTests.test_quantization_style_candidate_outputs_change_by_actual_size) ... ok
+test_size_one_uses_single_prepare_proof_and_verify (test_u1_quality_batches.QualityEvaluationTests.test_size_one_uses_single_prepare_proof_and_verify) ... ok
+test_unsupported_backend_does_not_fall_back_to_single_inference (test_u1_quality_batches.QualityEvaluationTests.test_unsupported_backend_does_not_fall_back_to_single_inference) ... ok
+test_failed_cell_does_not_skip_other_variants_or_sizes (test_u1_quality_batches.QualityMatrixTests.test_failed_cell_does_not_skip_other_variants_or_sizes) ... ok
+test_missing_sizes_defaults_to_single_baseline_launch (test_u1_quality_batches.QualityMatrixTests.test_missing_sizes_defaults_to_single_baseline_launch) ... ok
+test_separate_launch_for_every_size_variant_and_measurement (test_u1_quality_batches.QualityMatrixTests.test_separate_launch_for_every_size_variant_and_measurement) ... ok
+test_timeout_saves_partial_matrix_and_stops_launching (test_u1_quality_batches.QualityMatrixTests.test_timeout_saves_partial_matrix_and_stops_launching) ... ok
+test_truncated_failed_result_does_not_abort_later_matrix_cells (test_u1_quality_batches.QualityMatrixTests.test_truncated_failed_result_does_not_abort_later_matrix_cells) ... ok
+test_deterministic_plan_keeps_tail_and_evidence_hashes (test_u1_quality_batches.QualityPlanTests.test_deterministic_plan_keeps_tail_and_evidence_hashes) ... ok
+test_duplicate_ids_rejected (test_u1_quality_batches.QualityPlanTests.test_duplicate_ids_rejected) ... ok
+test_exclusions_remove_only_ineligible_rows_and_keep_order (test_u1_quality_batches.QualityPlanTests.test_exclusions_remove_only_ineligible_rows_and_keep_order) ... ok
+test_order_is_seeded_without_mutating_rows_or_global_random (test_u1_quality_batches.QualityPlanTests.test_order_is_seeded_without_mutating_rows_or_global_random) ... ok
+test_precision_error_is_not_downgraded_to_row_exclusion (test_u1_quality_batches.QualityPlanTests.test_precision_error_is_not_downgraded_to_row_exclusion) ... ok
+test_consistently_rehashed_candidate_indices_block_comparisons (test_u1_quality_worker_report.QualityReportTests.test_consistently_rehashed_candidate_indices_block_comparisons) ... ok
+test_failed_worker_partial_metrics_use_only_common_predictions (test_u1_quality_worker_report.QualityReportTests.test_failed_worker_partial_metrics_use_only_common_predictions) ... ok
+test_missing_execution_ledger_or_cell_is_incomplete (test_u1_quality_worker_report.QualityReportTests.test_missing_execution_ledger_or_cell_is_incomplete) ... ok
+test_missing_predictions_are_incomplete_and_source_tampering_rejected (test_u1_quality_worker_report.QualityReportTests.test_missing_predictions_are_incomplete_and_source_tampering_rejected) ... ok
+test_nonfixture_padding_mismatch_blocks_same_size_comparison (test_u1_quality_worker_report.QualityReportTests.test_nonfixture_padding_mismatch_blocks_same_size_comparison) ... ok
+test_nonfixture_requires_backend_padding_and_prepared_shapes (test_u1_quality_worker_report.QualityReportTests.test_nonfixture_requires_backend_padding_and_prepared_shapes) ... ok
+test_nonfixture_single_and_partial_workers_require_backend_proof (test_u1_quality_worker_report.QualityReportTests.test_nonfixture_single_and_partial_workers_require_backend_proof) ... ok
+test_partial_worker_contract_spec_and_precision_are_validated (test_u1_quality_worker_report.QualityReportTests.test_partial_worker_contract_spec_and_precision_are_validated) ... ok
+test_partial_worker_runtime_mismatch_blocks_comparison (test_u1_quality_worker_report.QualityReportTests.test_partial_worker_runtime_mismatch_blocks_comparison) ... ok
+test_prediction_content_identity_cannot_be_changed_or_removed (test_u1_quality_worker_report.QualityReportTests.test_prediction_content_identity_cannot_be_changed_or_removed) ... ok
+test_same_size_and_single_to_batch_changed_quant_labels_never_approve (test_u1_quality_worker_report.QualityReportTests.test_same_size_and_single_to_batch_changed_quant_labels_never_approve) ... ok
+test_tampered_plan_and_indices_are_incomplete (test_u1_quality_worker_report.QualityReportTests.test_tampered_plan_and_indices_are_incomplete) ... ok
+test_unsupported_worker_has_no_successful_comparison (test_u1_quality_worker_report.QualityReportTests.test_unsupported_worker_has_no_successful_comparison) ... ok
+test_checkpoint_sanitizes_copy_without_changing_adapter_precision (test_u1_quality_worker_report.QualityWorkerTests.test_checkpoint_sanitizes_copy_without_changing_adapter_precision) ... ok
+test_hard_timeout_checkpoint_and_archive_never_contain_private_metadata (test_u1_quality_worker_report.QualityWorkerTests.test_hard_timeout_checkpoint_and_archive_never_contain_private_metadata) ... ok
+test_indexing_oom_is_terminal_without_plan_and_report_keeps_status (test_u1_quality_worker_report.QualityWorkerTests.test_indexing_oom_is_terminal_without_plan_and_report_keeps_status) ... ok
+test_input_snapshot_mismatch_rejected_before_inference (test_u1_quality_worker_report.QualityWorkerTests.test_input_snapshot_mismatch_rejected_before_inference) ... ok
+test_invalid_batch_policy_reports_unsupported_without_single_fallback (test_u1_quality_worker_report.QualityWorkerTests.test_invalid_batch_policy_reports_unsupported_without_single_fallback) ... ok
+test_oom_preserves_partial_predictions_and_closes (test_u1_quality_worker_report.QualityWorkerTests.test_oom_preserves_partial_predictions_and_closes) ... ok
+test_private_user_string_does_not_corrupt_role_evidence_or_plan_hash (test_u1_quality_worker_report.QualityWorkerTests.test_private_user_string_does_not_corrupt_role_evidence_or_plan_hash) ... ok
+test_real_batch_wrapper_tail_close_precision_and_private_output (test_u1_quality_worker_report.QualityWorkerTests.test_real_batch_wrapper_tail_close_precision_and_private_output) ... ok
+test_real_precision_guard_rejects_mutation_and_still_closes (test_u1_quality_worker_report.QualityWorkerTests.test_real_precision_guard_rejects_mutation_and_still_closes) ... ok
+test_scalar_only_external_rejects_requested_batch_with_one_row (test_u1_quality_worker_report.QualityWorkerTests.test_scalar_only_external_rejects_requested_batch_with_one_row) ... ok
+test_size_one_retains_single_adapter_path (test_u1_quality_worker_report.QualityWorkerTests.test_size_one_retains_single_adapter_path) ... ok
+test_unmapped_verdict_keeps_earlier_batches_valid_for_report (test_u1_quality_worker_report.QualityWorkerTests.test_unmapped_verdict_keeps_earlier_batches_valid_for_report) ... ok
+test_unsupported_during_inference_keeps_partial_rows_private (test_u1_quality_worker_report.QualityWorkerTests.test_unsupported_during_inference_keeps_partial_rows_private) ... ok
+test_eleven_real_configs_not_generated_by_zip (test_u1_repo_handoff.RepositoryHandoff.test_eleven_real_configs_not_generated_by_zip) ... ok
+test_hf_snapshot_symlinks_materialize_before_validation (test_u1_repo_handoff.RepositoryHandoff.test_hf_snapshot_symlinks_materialize_before_validation) ... ok
+test_historical_source_fetch_is_not_current_runtime_approval (test_u1_repo_handoff.RepositoryHandoff.test_historical_source_fetch_is_not_current_runtime_approval) ... ok
+test_local_install_verified_and_no_overwrite (test_u1_repo_handoff.RepositoryHandoff.test_local_install_verified_and_no_overwrite) ... ok
+test_missing_cpu_helper_is_an_error_not_a_skip (test_u1_repo_handoff.RepositoryHandoff.test_missing_cpu_helper_is_an_error_not_a_skip) ... ok
+test_only_explicit_runtime_locks_escape_env_ignore (test_u1_repo_handoff.RepositoryHandoff.test_only_explicit_runtime_locks_escape_env_ignore) ... ok
+test_unpublished_or_moving_revision_never_downloads (test_u1_repo_handoff.RepositoryHandoff.test_unpublished_or_moving_revision_never_downloads) ... ok
+test_wrong_corpus_cannot_be_installed (test_u1_repo_handoff.RepositoryHandoff.test_wrong_corpus_cannot_be_installed) ... ok
+test_conflict_stops_before_setup_or_workers (test_u1_review_fixes.Archives.test_conflict_stops_before_setup_or_workers) ... ok
+test_exclusive_creation_handles_check_create_race (test_u1_review_fixes.Archives.test_exclusive_creation_handles_check_create_race) ... ok
+test_full_basename_and_no_overwrite (test_u1_review_fixes.Archives.test_full_basename_and_no_overwrite) ... ok
+test_packaging_failure_keeps_original_error_and_no_pass (test_u1_review_fixes.Archives.test_packaging_failure_keeps_original_error_and_no_pass) ... ok
+test_partial_zip_is_not_mistaken_for_a_complete_archive (test_u1_review_fixes.Archives.test_partial_zip_is_not_mistaken_for_a_complete_archive) ... ok
+test_auth_reason_is_visible_but_token_and_exception_are_not (test_u1_review_fixes.Console.test_auth_reason_is_visible_but_token_and_exception_are_not) ... ok
+test_fetch_and_prepare_show_identity_and_compatibility (test_u1_review_fixes.Console.test_fetch_and_prepare_show_identity_and_compatibility) ... ok
+test_run_failure_points_to_results_without_exception_text (test_u1_review_fixes.Console.test_run_failure_points_to_results_without_exception_text) ... ok
+test_failed_import_cleans_only_its_registration (test_u1_review_fixes.ExternalImports.test_failed_import_cleans_only_its_registration) ... ok
+test_postponed_dataclass_annotations_and_reuse (test_u1_review_fixes.ExternalImports.test_postponed_dataclass_annotations_and_reuse) ... ok
+test_cases_use_full_verified_corpus_not_bucket_subset (test_u1_review_fixes.OpenDiagnostic.test_cases_use_full_verified_corpus_not_bucket_subset) ... ok
+test_explicit_profiles_and_legacy_aliases (test_u1_review_fixes.OpenDiagnostic.test_explicit_profiles_and_legacy_aliases) ... ok
+test_unpinned_corpus_is_rejected_before_loading_records (test_u1_review_fixes.OpenDiagnostic.test_unpinned_corpus_is_rejected_before_loading_records) ... ok
+test_only_quality_data_is_required_in_quality_mode (test_u1_review_fixes.QualityConfig.test_only_quality_data_is_required_in_quality_mode) ... ok
+test_launcher_without_open_and_diagnostic_need_no_overlay (test_u1_review_fixes.SmokeLauncher.test_launcher_without_open_and_diagnostic_need_no_overlay) ... ok
+test_missing_and_stale_overlay_fail_before_creating_output (test_u1_review_fixes.SmokeLauncher.test_missing_and_stale_overlay_fail_before_creating_output) ... ok
+test_valid_overlay_is_checked_and_embedded (test_u1_review_fixes.SmokeLauncher.test_valid_overlay_is_checked_and_embedded) ... ok
+test_actual_tensor_index_does_not_copy_wrong_role_from_expected (test_u1_roles.BuiltinRoleIndex.test_actual_tensor_index_does_not_copy_wrong_role_from_expected) ... ok
+test_actual_tensor_index_keeps_role_metadata_for_eight_models (test_u1_roles.BuiltinRoleIndex.test_actual_tensor_index_keeps_role_metadata_for_eight_models) ... ok
+test_auth_check_only_fetches_metadata (test_u1_roles.EnvironmentAndNoise.test_auth_check_only_fetches_metadata) ... ok
+test_auth_failure_never_exposes_token_or_exception_text (test_u1_roles.EnvironmentAndNoise.test_auth_failure_never_exposes_token_or_exception_text) ... ok
+test_baseline_noise_is_diagnostic_not_acceptance (test_u1_roles.EnvironmentAndNoise.test_baseline_noise_is_diagnostic_not_acceptance) ... ok
+test_extended_t4_setup_routes_explicit_profile (test_u1_roles.EnvironmentAndNoise.test_extended_t4_setup_routes_explicit_profile) ... ok
+test_extended_t4_uses_existing_lock_without_rtx_fallback (test_u1_roles.EnvironmentAndNoise.test_extended_t4_uses_existing_lock_without_rtx_fallback) ... ok
+test_gpu_names_no_fallback (test_u1_roles.EnvironmentAndNoise.test_gpu_names_no_fallback) ... ok
+test_old_profile_default_and_new_lock (test_u1_roles.EnvironmentAndNoise.test_old_profile_default_and_new_lock) ... ok
+test_rtx_lock_only_adds_laya (test_u1_roles.EnvironmentAndNoise.test_rtx_lock_only_adds_laya) ... ok
+test_boundaries_and_unicode (test_u1_roles.Roles.test_boundaries_and_unicode) ... ok
+test_canonical_validation_and_hash (test_u1_roles.Roles.test_canonical_validation_and_hash) ... ok
+test_depletion_is_not_ready (test_u1_roles.Roles.test_depletion_is_not_ready) ... ok
+test_effective_input_deduplication_and_length_strata (test_u1_roles.Roles.test_effective_input_deduplication_and_length_strata) ... ok
+test_eight_role_contracts (test_u1_roles.Roles.test_eight_role_contracts) ... ok
+test_model_buckets_reproducible_and_stale_contract_rejected (test_u1_roles.Roles.test_model_buckets_reproducible_and_stale_contract_rejected) ... ok
+test_native_templates_local_cache (test_u1_roles.Roles.test_native_templates_local_cache) ... ok
+test_new_contract_does_not_replace_old_open (test_u1_roles.Roles.test_new_contract_does_not_replace_old_open) ... ok
+test_quality_target_coverage_and_mapping (test_u1_roles.Roles.test_quality_target_coverage_and_mapping) ... ok
+test_quantized_fixture_unique_flips (test_u1_roles.Roles.test_quantized_fixture_unique_flips) ... ok
+test_real_role_quality_worker_target_mismatch_and_privacy (test_u1_roles.Roles.test_real_role_quality_worker_target_mismatch_and_privacy) ... ok
+test_role_quantization_full_fresh_process_path (test_u1_roles.Roles.test_role_quantization_full_fresh_process_path) ... ok
+test_target_change_cannot_pass_index_check (test_u1_roles.Roles.test_target_change_cannot_pass_index_check) ... ok
+test_all_native_batches_observe_indexed_rows_in_order (test_u1_v4_adapters.NativeCPU.test_all_native_batches_observe_indexed_rows_in_order) ... ok
+test_bad_indices_padding_and_limit_rejected (test_u1_v4_adapters.NativeCPU.test_bad_indices_padding_and_limit_rejected) ... ok
+test_boundary_is_bucket_edge_and_above_model_limit (test_u1_v4_adapters.NativeCPU.test_boundary_is_bucket_edge_and_above_model_limit) ... ok
+test_compile_native_gliner_route_and_restore (test_u1_v4_adapters.NativeCPU.test_compile_native_gliner_route_and_restore) ... ok
+test_cpu_constructor_no_weights_and_explicit_templates (test_u1_v4_adapters.NativeCPU.test_cpu_constructor_no_weights_and_explicit_templates) ... ok
+test_eager_preparation_has_no_forward_prepass_or_timed_parameter_scan (test_u1_v4_adapters.NativeCPU.test_eager_preparation_has_no_forward_prepass_or_timed_parameter_scan) ... ok
+test_laya_lightweight_runtime_guard (test_u1_v4_adapters.NativeCPU.test_laya_lightweight_runtime_guard) ... ok
+test_laya_single_encoding_and_no_preflight_encoding (test_u1_v4_adapters.NativeCPU.test_laya_single_encoding_and_no_preflight_encoding) ... ok
+test_native_labels_matching_private_inputs_survive_sanitizer (test_u1_v4_adapters.NativeCPU.test_native_labels_matching_private_inputs_survive_sanitizer) ... ok
+test_native_verdict_vocabularies_are_explicit (test_u1_v4_adapters.NativeCPU.test_native_verdict_vocabularies_are_explicit) ... ok
+test_ort_profile_separation_shape_extension_and_rollback (test_u1_v4_adapters.NativeCPU.test_ort_profile_separation_shape_extension_and_rollback) ... ok
+test_parity_checks_native_paths_and_detects_mismatch (test_u1_v4_adapters.NativeCPU.test_parity_checks_native_paths_and_detects_mismatch) ... ok
+test_precision_passport_exact_and_detects_drift (test_u1_v4_adapters.NativeCPU.test_precision_passport_exact_and_detects_drift) ... ok
+test_roles_and_source_hashes (test_u1_v4_adapters.NativeCPU.test_roles_and_source_hashes) ... ok
+test_weight_inventory_is_hashed_once_during_load (test_u1_v4_adapters.NativeCPU.test_weight_inventory_is_hashed_once_during_load) ... ok
+test_canonical_presets_and_smoke_share_author_baseline (test_u1_v4_adapters.Settings.test_canonical_presets_and_smoke_share_author_baseline) ... ok
+test_defaults_independent_and_registry_unchanged (test_u1_v4_adapters.Settings.test_defaults_independent_and_registry_unchanged) ... ok
+test_exact_hub_file_uses_pinned_cache_without_tree_lookup (test_u1_v4_adapters.Settings.test_exact_hub_file_uses_pinned_cache_without_tree_lookup) ... ok
+test_external_registration_hash_deps_and_explicit_factories (test_u1_v4_adapters.Settings.test_external_registration_hash_deps_and_explicit_factories) ... ok
+test_laya_observes_sdk_encoder_attention (test_u1_v4_adapters.Settings.test_laya_observes_sdk_encoder_attention) ... ok
+test_loaded_attention_is_observed_and_must_not_drift (test_u1_v4_adapters.Settings.test_loaded_attention_is_observed_and_must_not_drift) ... ok
+test_local_inventory_and_hash (test_u1_v4_adapters.Settings.test_local_inventory_and_hash) ... ok
+test_multifile_and_glob_sources_keep_snapshot_resolution (test_u1_v4_adapters.Settings.test_multifile_and_glob_sources_keep_snapshot_resolution) ... ok
+test_native_halo_does_not_patch_upstream_dispatch (test_u1_v4_adapters.Settings.test_native_halo_does_not_patch_upstream_dispatch) ... ok
+test_native_loading_does_not_force_attention_or_kernel (test_u1_v4_adapters.Settings.test_native_loading_does_not_force_attention_or_kernel) ... ok
+test_sdk_assets_required_and_no_ignored_assets (test_u1_v4_adapters.Settings.test_sdk_assets_required_and_no_ignored_assets) ... ok
+test_supported_parameter_and_backend_settings (test_u1_v4_adapters.Settings.test_supported_parameter_and_backend_settings) ... ok
+test_unsupported_overrides_fail (test_u1_v4_adapters.Settings.test_unsupported_overrides_fail) ... ok
+test_all_indices_checked_even_if_not_selected (test_u1_v4_data.DataTests.test_all_indices_checked_even_if_not_selected) ... ok
+test_changed_preparation_is_not_reused (test_u1_v4_data.DataTests.test_changed_preparation_is_not_reused) ... ok
+test_config_reference_uses_config_bounds (test_u1_v4_data.DataTests.test_config_reference_uses_config_bounds) ... ok
+test_configured_bucket_subset_allowed (test_u1_v4_data.DataTests.test_configured_bucket_subset_allowed) ... ok
+test_configured_bucket_widened_bounds_rejected (test_u1_v4_data.DataTests.test_configured_bucket_widened_bounds_rejected) ... ok
+test_content_hash_is_checked_after_rechecksum (test_u1_v4_data.DataTests.test_content_hash_is_checked_after_rechecksum) ... ok
+test_duplicate_json_keys_and_nonfinite_values (test_u1_v4_data.DataTests.test_duplicate_json_keys_and_nonfinite_values) ... ok
+test_duplicate_selected_inputs_rejected (test_u1_v4_data.DataTests.test_duplicate_selected_inputs_rejected) ... ok
+test_effective_input_deduplication (test_u1_v4_data.DataTests.test_effective_input_deduplication) ... ok
+test_existing_output_and_old_subdirectory_are_never_written (test_u1_v4_data.DataTests.test_existing_output_and_old_subdirectory_are_never_written) ... ok
+test_explicit_blockers_do_not_leak_exceptions (test_u1_v4_data.DataTests.test_explicit_blockers_do_not_leak_exceptions) ... ok
+test_failed_native_parity_blocks (test_u1_v4_data.DataTests.test_failed_native_parity_blocks) ... ok
+test_full_modes_require_400_smoke_and_pilot_allow_small (test_u1_v4_data.DataTests.test_full_modes_require_400_smoke_and_pilot_allow_small) ... ok
+test_full_round_trip_and_identity_not_weights (test_u1_v4_data.DataTests.test_full_round_trip_and_identity_not_weights) ... ok
+test_invalid_dispatch_never_creates_output (test_u1_v4_data.DataTests.test_invalid_dispatch_never_creates_output) ... ok
+test_lazy_default_factory (test_u1_v4_data.DataTests.test_lazy_default_factory) ... ok
+test_manifest_and_file_tampering (test_u1_v4_data.DataTests.test_manifest_and_file_tampering) ... ok
+test_missing_parity_interface_is_explicit (test_u1_v4_data.DataTests.test_missing_parity_interface_is_explicit) ... ok
+test_open_requires_task_overlay_not_native (test_u1_v4_data.DataTests.test_open_requires_task_overlay_not_native) ... ok
+test_overlay_output_guard_runs_before_any_write (test_u1_v4_data.DataTests.test_overlay_output_guard_runs_before_any_write) ... ok
+test_prepare_data_dispatches_reindex_with_full_config_reference (test_u1_v4_data.DataTests.test_prepare_data_dispatches_reindex_with_full_config_reference) ... ok
+test_private_unsupported_reason_is_redacted_and_preparer_closed (test_u1_v4_data.DataTests.test_private_unsupported_reason_is_redacted_and_preparer_closed) ... ok
+test_quality_no_quota_preserves_role_slice_coverage (test_u1_v4_data.DataTests.test_quality_no_quota_preserves_role_slice_coverage) ... ok
+test_reindex_compares_every_row_and_blocks_mismatch (test_u1_v4_data.DataTests.test_reindex_compares_every_row_and_blocks_mismatch) ... ok
+test_reindex_preserves_corpus_bytes_and_bucket_ids (test_u1_v4_data.DataTests.test_reindex_preserves_corpus_bytes_and_bucket_ids) ... ok
+test_same_preparation_names_coalesce_but_conflicts_fail (test_u1_v4_data.DataTests.test_same_preparation_names_coalesce_but_conflicts_fail) ... ok
+test_symlink_rejected (test_u1_v4_data.DataTests.test_symlink_rejected) ... ok
+test_unknown_configured_bucket_rejected (test_u1_v4_data.DataTests.test_unknown_configured_bucket_rejected) ... ok
+test_unlisted_index_cannot_be_used (test_u1_v4_data.DataTests.test_unlisted_index_cannot_be_used) ... ok
+test_unsafe_and_hidden_paths (test_u1_v4_data.DataTests.test_unsafe_and_hidden_paths) ... ok
+test_builtin_baseline_external_candidate_accepts_same_declared_inputs (test_u1_v4_execution.ConfigurationTests.test_builtin_baseline_external_candidate_accepts_same_declared_inputs) ... ok
+test_builtin_external_pair_rejects_changed_tokenizer (test_u1_v4_execution.ConfigurationTests.test_builtin_external_pair_rejects_changed_tokenizer) ... ok
+test_comparison_preserves_preparation_and_engineering_precision (test_u1_v4_execution.ConfigurationTests.test_comparison_preserves_preparation_and_engineering_precision) ... ok
+test_halo_cue_is_hashed_in_public_config_and_remains_private (test_u1_v4_execution.ConfigurationTests.test_halo_cue_is_hashed_in_public_config_and_remains_private) ... ok
+test_old_formats_and_incomplete_candidates_rejected (test_u1_v4_execution.ConfigurationTests.test_old_formats_and_incomplete_candidates_rejected) ... ok
+test_pilot_rejected_for_nonspeed_modes (test_u1_v4_execution.ConfigurationTests.test_pilot_rejected_for_nonspeed_modes) ... ok
+test_search_requires_reference_and_no_inheritance (test_u1_v4_execution.ConfigurationTests.test_search_requires_reference_and_no_inheritance) ... ok
+test_archive_reference_rejects_traversal_and_symlinks (test_u1_v4_execution.EvidenceTests.test_archive_reference_rejects_traversal_and_symlinks) ... ok
+test_immutable_snapshot_cannot_be_overwritten (test_u1_v4_execution.EvidenceTests.test_immutable_snapshot_cannot_be_overwritten) ... ok
+test_reference_checksum_and_old_formats_rejected_before_report (test_u1_v4_execution.EvidenceTests.test_reference_checksum_and_old_formats_rejected_before_report) ... ok
+test_reference_copy_is_exclusive_and_checksum_indexed (test_u1_v4_execution.EvidenceTests.test_reference_copy_is_exclusive_and_checksum_indexed) ... ok
+test_reference_identity_covers_sources_inputs_seed_and_environment (test_u1_v4_execution.EvidenceTests.test_reference_identity_covers_sources_inputs_seed_and_environment) ... ok
+test_on_off_paired_callbacks_and_identical_requests (test_u1_v4_execution.MonitoringTests.test_on_off_paired_callbacks_and_identical_requests) ... ok
+test_sampling_stops_when_monitored_request_fails (test_u1_v4_execution.MonitoringTests.test_sampling_stops_when_monitored_request_fails) ... ok
+test_unavailable_monitor_cannot_validate_overhead (test_u1_v4_execution.MonitoringTests.test_unavailable_monitor_cannot_validate_overhead) ... ok
+test_directory_reference_real_search_and_copied_evidence_tampering (test_u1_v4_execution.RealReportRunnerTests.test_directory_reference_real_search_and_copied_evidence_tampering) ... ok
+test_failed_quality_archive_preserves_partial_predictions_privately (test_u1_v4_execution.RealReportRunnerTests.test_failed_quality_archive_preserves_partial_predictions_privately) ... ok
+test_full_baseline_zip_reference_search_and_tamper_detection (test_u1_v4_execution.RealReportRunnerTests.test_full_baseline_zip_reference_search_and_tamper_detection) ... ok
+test_full_confirm_real_report_and_fresh_workers (test_u1_v4_execution.RealReportRunnerTests.test_full_confirm_real_report_and_fresh_workers) ... ok
+test_inline_prompt_stays_private_but_adapter_receives_full_config (test_u1_v4_execution.RealReportRunnerTests.test_inline_prompt_stays_private_but_adapter_receives_full_config) ... ok
+test_paired_quality_real_report_public_rows_and_partial_tails (test_u1_v4_execution.RealReportRunnerTests.test_paired_quality_real_report_public_rows_and_partial_tails) ... ok
+test_pilot_search_full_baseline_zip_prefix_and_offline_report (test_u1_v4_execution.RealReportRunnerTests.test_pilot_search_full_baseline_zip_prefix_and_offline_report) ... ok
+test_real_report_accepts_builtin_external_declared_input_pair (test_u1_v4_execution.RealReportRunnerTests.test_real_report_accepts_builtin_external_declared_input_pair) ... ok
+test_confirm_launches_fresh_workers_with_alternating_pairs (test_u1_v4_execution.RunnerTests.test_confirm_launches_fresh_workers_with_alternating_pairs) ... ok
+test_plan_counts_warmup_and_does_not_launch (test_u1_v4_execution.RunnerTests.test_plan_counts_warmup_and_does_not_launch) ... ok
+test_plan_missing_data_is_not_ready_but_invalid_config_raises (test_u1_v4_execution.RunnerTests.test_plan_missing_data_is_not_ready_but_invalid_config_raises) ... ok
+test_plan_missing_or_stale_reference_is_not_ready (test_u1_v4_execution.RunnerTests.test_plan_missing_or_stale_reference_is_not_ready) ... ok
+test_quality_launches_only_quality_workers_without_speed_inputs (test_u1_v4_execution.RunnerTests.test_quality_launches_only_quality_workers_without_speed_inputs) ... ok
+test_reference_mismatch_rejected_before_any_launcher_call (test_u1_v4_execution.RunnerTests.test_reference_mismatch_rejected_before_any_launcher_call) ... ok
+test_search_never_loads_or_requests_baseline_and_copies_reference (test_u1_v4_execution.RunnerTests.test_search_never_loads_or_requests_baseline_and_copies_reference) ... ok
+test_timeout_still_archives_and_excludes_private_logs_inputs (test_u1_v4_execution.RunnerTests.test_timeout_still_archives_and_excludes_private_logs_inputs) ... ok
+test_environment_mismatch_rejected_before_load (test_u1_v4_execution.WorkerTests.test_environment_mismatch_rejected_before_load) ... ok
+test_external_metadata_cannot_exempt_secret_without_adapter_spec (test_u1_v4_execution.WorkerTests.test_external_metadata_cannot_exempt_secret_without_adapter_spec) ... ok
+test_latency_score_echoes_fail_without_public_checkpoint_leaks (test_u1_v4_execution.WorkerTests.test_latency_score_echoes_fail_without_public_checkpoint_leaks) ... ok
+test_latency_warmup_exact_batches_and_monitor_callbacks (test_u1_v4_execution.WorkerTests.test_latency_warmup_exact_batches_and_monitor_callbacks) ... ok
+test_native_execution_cannot_change_after_preflight (test_u1_v4_execution.WorkerTests.test_native_execution_cannot_change_after_preflight) ... ok
+test_nested_metadata_cannot_leak_input_on_failure (test_u1_v4_execution.WorkerTests.test_nested_metadata_cannot_leak_input_on_failure) ... ok
+test_old_snapshot_version_rejected_even_with_valid_checksum (test_u1_v4_execution.WorkerTests.test_old_snapshot_version_rejected_even_with_valid_checksum) ... ok
+test_oom_unsupported_and_timeout_keep_status_and_cleanup (test_u1_v4_execution.WorkerTests.test_oom_unsupported_and_timeout_keep_status_and_cleanup) ... ok
+test_partial_latency_failure_checkpoint_and_private_errors (test_u1_v4_execution.WorkerTests.test_partial_latency_failure_checkpoint_and_private_errors) ... ok
+test_preflight_checksum_tampering_rejected_without_requests (test_u1_v4_execution.WorkerTests.test_preflight_checksum_tampering_rejected_without_requests) ... ok
+test_preflight_prepares_boundary_shape_before_ort_request (test_u1_v4_execution.WorkerTests.test_preflight_prepares_boundary_shape_before_ort_request) ... ok
+test_preflight_proof_cannot_be_borrowed_from_other_variant (test_u1_v4_execution.WorkerTests.test_preflight_proof_cannot_be_borrowed_from_other_variant) ... ok
+test_preflight_real_checks_and_monitor_callbacks (test_u1_v4_execution.WorkerTests.test_preflight_real_checks_and_monitor_callbacks) ... ok
+test_private_config_checksum_digest_projection_and_variant_binding (test_u1_v4_execution.WorkerTests.test_private_config_checksum_digest_projection_and_variant_binding) ... ok
+test_quality_echoes_are_excluded_from_public_predictions (test_u1_v4_execution.WorkerTests.test_quality_echoes_are_excluded_from_public_predictions) ... ok
+test_quality_failure_retains_each_row_and_completed_tail_state (test_u1_v4_execution.WorkerTests.test_quality_failure_retains_each_row_and_completed_tail_state) ... ok
+test_quality_is_nonspeed_and_keeps_partial_tail (test_u1_v4_execution.WorkerTests.test_quality_is_nonspeed_and_keeps_partial_tail) ... ok
+test_quality_monitor_has_inference_boundary (test_u1_v4_execution.WorkerTests.test_quality_monitor_has_inference_boundary) ... ok
+test_snapshot_and_private_input_tampering_rejected_before_load (test_u1_v4_execution.WorkerTests.test_snapshot_and_private_input_tampering_rejected_before_load) ... ok
+test_source_change_rejected_before_runtime_or_adapter (test_u1_v4_execution.WorkerTests.test_source_change_rejected_before_runtime_or_adapter) ... ok
+test_top_level_backend_proof_redacts_row_and_inline_prompt_echoes (test_u1_v4_execution.WorkerTests.test_top_level_backend_proof_redacts_row_and_inline_prompt_echoes) ... ok
+test_import_manifest_to_plan (test_u1_v4_handoff.HandoffTests.test_import_manifest_to_plan) ... ok
+test_nonpreset_sizes_remain_supported (test_u1_v4_handoff.HandoffTests.test_nonpreset_sizes_remain_supported) ... ok
+test_sparse_presets_and_comparisons (test_u1_v4_handoff.HandoffTests.test_sparse_presets_and_comparisons) ... ok
+test_sparse_workload_and_reference_grid (test_u1_v4_handoff.HandoffTests.test_sparse_workload_and_reference_grid) ... ok
+test_exact_pid_uuid_and_positive_finite_values (test_u1_v4_memory.ParserTests.test_exact_pid_uuid_and_positive_finite_values) ... ok
+test_checkpoint_atomic_file_survives_failed_replace_before_stop (test_u1_v4_memory.SamplerTests.test_checkpoint_atomic_file_survives_failed_replace_before_stop) ... ok
+test_checkpoint_io_does_not_hold_sample_lock_or_run_on_reader (test_u1_v4_memory.SamplerTests.test_checkpoint_io_does_not_hold_sample_lock_or_run_on_reader) ... ok
+test_checkpoint_retains_raw_windows_without_stopping_and_stop_is_final (test_u1_v4_memory.SamplerTests.test_checkpoint_retains_raw_windows_without_stopping_and_stop_is_final) ... ok
+test_checkpoint_with_no_valid_values_keeps_windows_unavailable (test_u1_v4_memory.SamplerTests.test_checkpoint_with_no_valid_values_keeps_windows_unavailable) ... ok
+test_lifecycle_and_fixed_interval (test_u1_v4_memory.SamplerTests.test_lifecycle_and_fixed_interval) ... ok
+test_no_samples_or_foreign_processes_are_unavailable (test_u1_v4_memory.SamplerTests.test_no_samples_or_foreign_processes_are_unavailable) ... ok
+test_partial_on_invalid_values_and_safe_diagnostics (test_u1_v4_memory.SamplerTests.test_partial_on_invalid_values_and_safe_diagnostics) ... ok
+test_pid_uuid_filter_and_unavailable_values_never_measured (test_u1_v4_memory.SamplerTests.test_pid_uuid_filter_and_unavailable_values_never_measured) ... ok
+test_poll_failure_still_terminates_child (test_u1_v4_memory.SamplerTests.test_poll_failure_still_terminates_child) ... ok
+test_reader_failure (test_u1_v4_memory.SamplerTests.test_reader_failure) ... ok
+test_receipt_timestamp_resolves_boundary_race (test_u1_v4_memory.SamplerTests.test_receipt_timestamp_resolves_boundary_race) ... ok
+test_single_popen_inherited_process_group_and_old_windows (test_u1_v4_memory.SamplerTests.test_single_popen_inherited_process_group_and_old_windows) ... ok
+test_spawn_failure_and_exception_text_not_archived (test_u1_v4_memory.SamplerTests.test_spawn_failure_and_exception_text_not_archived) ... ok
+test_terminate_failure_still_kills_child (test_u1_v4_memory.SamplerTests.test_terminate_failure_still_kills_child) ... ok
+test_terminate_timeout_kills_and_joins (test_u1_v4_memory.SamplerTests.test_terminate_timeout_kills_and_joins) ... ok
+test_unexpected_eof_and_failed_process_are_not_measured (test_u1_v4_memory.SamplerTests.test_unexpected_eof_and_failed_process_are_not_measured) ... ok
+test_unreapable_process_and_reader_have_bounded_shutdown (test_u1_v4_memory.SamplerTests.test_unreapable_process_and_reader_have_bounded_shutdown) ... ok
+test_materialize_original_objects_and_authenticated_fields (test_u1_v4_planning.BatchTests.test_materialize_original_objects_and_authenticated_fields) ... ok
+test_row_and_size_failures (test_u1_v4_planning.BatchTests.test_row_and_size_failures) ... ok
+test_smoke_profile_and_legacy_shape_hash (test_u1_v4_planning.BatchTests.test_smoke_profile_and_legacy_shape_hash) ... ok
+test_bad_grids_and_no_coercion (test_u1_v4_planning.CellTests.test_bad_grids_and_no_coercion) ... ok
+test_custom_bucket_arbitrary_size_canonical_and_fresh (test_u1_v4_planning.CellTests.test_custom_bucket_arbitrary_size_canonical_and_fresh) ... ok
+test_arbitrary_sizes_full_unique_batches_and_occurrences (test_u1_v4_planning.ScheduleTests.test_arbitrary_sizes_full_unique_batches_and_occurrences) ... ok
+test_bad_inputs (test_u1_v4_planning.ScheduleTests.test_bad_inputs) ... ok
+test_ceiling_and_original_seed_string (test_u1_v4_planning.ScheduleTests.test_ceiling_and_original_seed_string) ... ok
+test_confirm_pairs_and_copy_isolation (test_u1_v4_planning.ScheduleTests.test_confirm_pairs_and_copy_isolation) ... ok
+test_pilot_and_non_latency (test_u1_v4_planning.ScheduleTests.test_pilot_and_non_latency) ... ok
+test_pilot_search_replays_full_reference_block_zero_prefix_per_cell (test_u1_v4_planning.ScheduleTests.test_pilot_search_replays_full_reference_block_zero_prefix_per_cell) ... ok
+test_pilot_search_still_requires_full_reference_cells_and_blocks (test_u1_v4_planning.ScheduleTests.test_pilot_search_still_requires_full_reference_cells_and_blocks) ... ok
+test_pilot_search_validates_prefix_and_full_reference_hashes (test_u1_v4_planning.ScheduleTests.test_pilot_search_validates_prefix_and_full_reference_hashes) ... ok
+test_reference_failures (test_u1_v4_planning.ScheduleTests.test_reference_failures) ... ok
+test_reproducible_private_free_and_no_mutation (test_u1_v4_planning.ScheduleTests.test_reproducible_private_free_and_no_mutation) ... ok
+test_search_only_candidate_and_exact_baseline_main_replay (test_u1_v4_planning.ScheduleTests.test_search_only_candidate_and_exact_baseline_main_replay) ... ok
+test_workload_counts_rows_not_batches (test_u1_v4_planning.ScheduleTests.test_workload_counts_rows_not_batches) ... ok
+test_all_cells_faster_requires_every_cell (test_u1_v4_report.V4ReportTests.test_all_cells_faster_requires_every_cell) ... ok
+test_bad_rows_and_scores_never_pass (test_u1_v4_report.V4ReportTests.test_bad_rows_and_scores_never_pass) ... ok
+test_baseline_complete_without_profiles_or_memory (test_u1_v4_report.V4ReportTests.test_baseline_complete_without_profiles_or_memory) ... ok
+test_confirm_pass_and_threshold_is_separate_from_faster (test_u1_v4_report.V4ReportTests.test_confirm_pass_and_threshold_is_separate_from_faster) ... ok
+test_confirm_requires_monitoring_validation (test_u1_v4_report.V4ReportTests.test_confirm_requires_monitoring_validation) ... ok
+test_external_candidate_can_share_builtin_input_contract (test_u1_v4_report.V4ReportTests.test_external_candidate_can_share_builtin_input_contract) ... ok
+test_external_variant_can_omit_observed_metadata (test_u1_v4_report.V4ReportTests.test_external_variant_can_omit_observed_metadata) ... ok
+test_failed_preflight_and_skipped_latency_preserve_other_cells (test_u1_v4_report.V4ReportTests.test_failed_preflight_and_skipped_latency_preserve_other_cells) ... ok
+test_failed_run_and_missing_preflight_cannot_pass (test_u1_v4_report.V4ReportTests.test_failed_run_and_missing_preflight_cannot_pass) ... ok
+test_frozen_hash_and_nonfinite_json (test_u1_v4_report.V4ReportTests.test_frozen_hash_and_nonfinite_json) ... ok
+test_full_speed_requires_400_per_bucket (test_u1_v4_report.V4ReportTests.test_full_speed_requires_400_per_bucket) ... ok
+test_import_does_not_load_model_catalog_or_runtime (test_u1_v4_report.V4ReportTests.test_import_does_not_load_model_catalog_or_runtime) ... ok
+test_invalid_profile_precision_does_not_poison_other_cells (test_u1_v4_report.V4ReportTests.test_invalid_profile_precision_does_not_poison_other_cells) ... ok
+test_missing_requested_profiles_do_not_veto_speed (test_u1_v4_report.V4ReportTests.test_missing_requested_profiles_do_not_veto_speed) ... ok
+test_monitoring_requires_both_actual_bounds_and_matching_sources (test_u1_v4_report.V4ReportTests.test_monitoring_requires_both_actual_bounds_and_matching_sources) ... ok
+test_native_multiclass_flip_and_repeat_instability (test_u1_v4_report.V4ReportTests.test_native_multiclass_flip_and_repeat_instability) ... ok
+test_noise_prevents_confirmation (test_u1_v4_report.V4ReportTests.test_noise_prevents_confirmation) ... ok
+test_nonidentity_runtime_fields_may_differ (test_u1_v4_report.V4ReportTests.test_nonidentity_runtime_fields_may_differ) ... ok
+test_observed_metadata_checked_across_cells (test_u1_v4_report.V4ReportTests.test_observed_metadata_checked_across_cells) ... ok
+test_observed_metadata_consistent_workers_pass (test_u1_v4_report.V4ReportTests.test_observed_metadata_consistent_workers_pass) ... ok
+test_observed_metadata_is_per_variant (test_u1_v4_report.V4ReportTests.test_observed_metadata_is_per_variant) ... ok
+test_observed_metadata_mutation_or_disappearance_cannot_pass (test_u1_v4_report.V4ReportTests.test_observed_metadata_mutation_or_disappearance_cannot_pass) ... ok
+test_old_format_explicitly_unsupported (test_u1_v4_report.V4ReportTests.test_old_format_explicitly_unsupported) ... ok
+test_optional_missing_memory_does_not_veto_latency (test_u1_v4_report.V4ReportTests.test_optional_missing_memory_does_not_veto_latency) ... ok
+test_optional_resource_failures_have_separate_statuses (test_u1_v4_report.V4ReportTests.test_optional_resource_failures_have_separate_statuses) ... ok
+test_per_series_preparation_memory_and_size_evidence (test_u1_v4_report.V4ReportTests.test_per_series_preparation_memory_and_size_evidence) ... ok
+test_pilot_single_to_batch_reports_common_coverage (test_u1_v4_report.V4ReportTests.test_pilot_single_to_batch_reports_common_coverage) ... ok
+test_profile_failure_is_reported_without_vetoing_speed (test_u1_v4_report.V4ReportTests.test_profile_failure_is_reported_without_vetoing_speed) ... ok
+test_quality_hashed_public_ids_without_source_texts (test_u1_v4_report.V4ReportTests.test_quality_hashed_public_ids_without_source_texts) ... ok
+test_quality_only_metrics_and_partial_batch (test_u1_v4_report.V4ReportTests.test_quality_only_metrics_and_partial_batch) ... ok
+test_quality_partial_common_id_denominator (test_u1_v4_report.V4ReportTests.test_quality_partial_common_id_denominator) ... ok
+test_quality_precision_failure_invalidates_partial_predictions (test_u1_v4_report.V4ReportTests.test_quality_precision_failure_invalidates_partial_predictions) ... ok
+test_quality_repeats_report_instability (test_u1_v4_report.V4ReportTests.test_quality_repeats_report_instability) ... ok
+test_quality_tampering_fails_closed (test_u1_v4_report.V4ReportTests.test_quality_tampering_fails_closed) ... ok
+test_quality_workers_check_observed_preparation_across_batch_sizes (test_u1_v4_report.V4ReportTests.test_quality_workers_check_observed_preparation_across_batch_sizes) ... ok
+test_quantization_macro_changes_are_per_batch_without_quality_approval (test_u1_v4_report.V4ReportTests.test_quantization_macro_changes_are_per_batch_without_quality_approval) ... ok
+test_quantization_macro_is_not_pooled_and_does_not_hide_missing_buckets (test_u1_v4_report.V4ReportTests.test_quantization_macro_is_not_pooled_and_does_not_hide_missing_buckets) ... ok
+test_read_only_build_has_no_writes (test_u1_v4_report.V4ReportTests.test_read_only_build_has_no_writes) ... ok
+test_real_reference_copy_and_pilot_reuse (test_u1_v4_report.V4ReportTests.test_real_reference_copy_and_pilot_reuse) ... ok
+test_redacted_quantization_replays_full_identities_without_private_config (test_u1_v4_report.V4ReportTests.test_redacted_quantization_replays_full_identities_without_private_config) ... ok
+test_runtime_and_engineering_precision_drift (test_u1_v4_report.V4ReportTests.test_runtime_and_engineering_precision_drift) ... ok
+test_saved_schedule_cannot_omit_expected_main_block (test_u1_v4_report.V4ReportTests.test_saved_schedule_cannot_omit_expected_main_block) ... ok
+test_saved_variant_identity_shape_is_checked_without_normalization (test_u1_v4_report.V4ReportTests.test_saved_variant_identity_shape_is_checked_without_normalization) ... ok
+test_score_delta_extrema_preserve_cartesian_metric_with_linear_access (test_u1_v4_report.V4ReportTests.test_score_delta_extrema_preserve_cartesian_metric_with_linear_access) ... ok
+test_search_reuses_embedded_reference_without_paired_interval (test_u1_v4_report.V4ReportTests.test_search_reuses_embedded_reference_without_paired_interval) ... ok
+test_single_to_batch_changes_use_unique_ids_per_variant (test_u1_v4_report.V4ReportTests.test_single_to_batch_changes_use_unique_ids_per_variant) ... ok
+test_smoke_and_pilot_never_pass_final (test_u1_v4_report.V4ReportTests.test_smoke_and_pilot_never_pass_final) ... ok
+test_table_keeps_distinct_environments_and_corpora (test_u1_v4_report.V4ReportTests.test_table_keeps_distinct_environments_and_corpora) ... ok
+test_table_partial_status_counts_rejected_archives (test_u1_v4_report.V4ReportTests.test_table_partial_status_counts_rejected_archives) ... ok
+test_thresholds_are_strict (test_u1_v4_report.V4ReportTests.test_thresholds_are_strict) ... ok
+test_unknown_protocol_is_explicitly_rejected (test_u1_v4_report.V4ReportTests.test_unknown_protocol_is_explicitly_rejected) ... ok
+test_unstable_full_baseline_still_complete_and_reusable (test_u1_v4_report.V4ReportTests.test_unstable_full_baseline_still_complete_and_reusable) ... ok
+test_zip_build_saves_sibling_reports_without_overwriting_zip (test_u1_v4_report.V4ReportTests.test_zip_build_saves_sibling_reports_without_overwriting_zip) ... ok
+test_zip_build_without_saving_leaves_archive_and_siblings_unchanged (test_u1_v4_report.V4ReportTests.test_zip_build_without_saving_leaves_archive_and_siblings_unchanged) ... ok
+test_zip_quality_replays_jsonl_after_source_deletion (test_u1_v4_report.V4ReportTests.test_zip_quality_replays_jsonl_after_source_deletion) ... ok
+test_zip_report_cli_succeeds_after_source_deletion (test_u1_v4_report.V4ReportTests.test_zip_report_cli_succeeds_after_source_deletion) ... ok
+test_zip_report_refuses_output_symlink_to_archive (test_u1_v4_report.V4ReportTests.test_zip_report_refuses_output_symlink_to_archive) ... ok
+test_zip_search_replays_embedded_reference_after_source_deletion (test_u1_v4_report.V4ReportTests.test_zip_search_replays_embedded_reference_after_source_deletion) ... ok
+test_zip_table_cli_has_completed_status_and_counts (test_u1_v4_report.V4ReportTests.test_zip_table_cli_has_completed_status_and_counts) ... ok
+
+----------------------------------------------------------------------
+Ran 490 tests in 70.544s
+
+OK

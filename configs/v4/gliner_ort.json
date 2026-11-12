@@ -1,0 +1,87 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": "gliner",
+    "weights": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "tokenizer": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "eager",
+      "dtype": "float32",
+      "attention": "eager",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    },
+    "sdk_assets": {
+      "config": {
+        "repo": "hivetrace/gliner-guard-omni",
+        "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+        "file": "config.json"
+      }
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1,
+      256
+    ]
+  },
+  "mode": "search",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u1-env",
+  "data": {
+    "path": "data/speed/role-corpus-v4-20261112",
+    "manifest_sha256": "23785e17e3ef29b302da253189fadb7c5ed17691155e7205faa5ac508641a74b"
+  },
+  "quality_batch_sizes": [
+    1
+  ],
+  "candidate": {
+    "adapter": "gliner",
+    "weights": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "tokenizer": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "ort",
+      "dtype": "float32",
+      "attention": "eager",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    },
+    "sdk_assets": {
+      "config": {
+        "repo": "hivetrace/gliner-guard-omni",
+        "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+        "file": "config.json"
+      }
+    }
+  }
+}

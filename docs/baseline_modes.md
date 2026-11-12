@@ -1,5 +1,57 @@
 # Baseline: закреплённые режимы
 
+## Schema 4: исполнение авторов HF/SDK, 12 ноября
+
+Источники истины для запуска: [полные пресеты](../configs/v4) и закреплённый
+[RTX-lock](../env/team_rtx.lock.json). Baseline следует авторскому HF/SDK-пути
+в этой среде, а не настройкам командного профилирования. Это не побитовое
+воспроизведение другой версии Transformers из примера в карточке.
+
+| Модель | Precision baseline | Attention и реализация |
+| --- | --- | --- |
+| [HaloGuard](https://huggingface.co/astroware/HaloGuard1-Gen-0.8B/blob/85ff68dd063a7e58487a4251824fd36a20977d5c/README.md) | BF16, значение `auto` для закреплённого BF16 checkpoint | Нативный выбор full attention в Transformers; linear attention без подмены функций измерителем |
+| [GLiNER](https://huggingface.co/hivetrace/gliner-guard-omni/blob/763f8aa9a7714dd2c3264f3751acdd5d854c5ac4/README.md) | FP32 | Штатный SDK, standard encoder; без compile/ORT/quantize |
+| [Koala](https://huggingface.co/KoalaAI/Text-Moderation/blob/838ade0edb66dcffc5532d08ff6ed5c899abfb5c/README.md) | FP32 | Штатный HF-loader, без override attention |
+| [Llama Prompt Guard](https://huggingface.co/meta-llama/Llama-Prompt-Guard-2-22M/blob/11614a155199674a0a95e6602d6ab0417b790ed0/README.md) | FP32 | Штатный HF-loader; ранее согласованное зеркало 22M сохранено |
+| [Laya](https://huggingface.co/convaiinnovations/laya/blob/7b928d828b7b0e022f929d9bd2e44165aa270148/README.md) | FP32-веса и native SDK autocast | SDK SDPA; измеритель больше не принуждает efficient kernel; `fast=False` как в SDK по умолчанию |
+| [HiveTraceGuard-Pro](https://huggingface.co/hivetrace/HiveTraceGuard-Pro/blob/ed008276c96253e14885e6ade3b7b6d58daa2480/README.md) | BF16 | Штатный HF-loader, без принудительного SDPA math |
+| [OpenGuardrails 0124](https://huggingface.co/openguardrails/OpenGuardrails-Text-4B-0124/blob/9bdd1fb549e01b5f6aae4e9c395998492a08830b/README.md) | BF16, значение `auto` для закреплённого checkpoint | Штатный HF-loader, без принудительного SDPA math; зеркало 0124 и task2510 сохранены |
+| [ShieldGemma](https://huggingface.co/google/shieldgemma-2b/blob/d1dffc9c8c9237a90aab09c61383791e718ef9e8/README.md) | BF16 | Eager сохраняет авторский attention soft-capping; исключение для закреплённого Transformers описано ниже |
+
+`attention="native"` означает отсутствие `attn_implementation` в HF-loader,
+а `sdpa_backend=null` не ограничивает штатный выбор kernel. Это **не** обещание
+одного kernel для всех форм или GPU. Фактический attention сохраняется после
+загрузки, операторы и kernels проверяются отдельным preflight trace. Явные
+`eager`, `sdpa` и ограничения math/efficient остаются для отдельных экспериментов;
+ошибка исполнения не вызывает повторный запуск с другой реализацией.
+
+**Shield:** в Transformers 5.20.1 SDPA принимает, но не применяет `softcap`.
+Поэтому выбран eager, чтобы сохранить вычисления модели, а не воспроизводить
+[известный дефект HF-default](https://github.com/huggingface/transformers/issues/49810).
+Это явное ограничение текущего стека, не универсальное требование ко всем моделям.
+
+**Halo:** штатный Transformers может уже использовать установленный FLA.
+`halo_fla.json` теперь сравнивает этот же авторский baseline с явным linear-only
+FLA/reference-conv вариантом в BF16; он не является прежним FP16 reference→FLA
+экспериментом и не обещает ускорения. Внешние незакреплённые Hub kernels по-прежнему
+отключены (`USE_HUB_KERNELS=NO`); доступные в lock пакеты выбираются самим Transformers.
+
+Сохраняются GPU 0 без offload, полный согласованный scores-путь, роли, шаблоны,
+пороги, tie/stop rules и лимиты. В частности, Open не возвращается к непригодному
+native0124-промпту. Обновление precision/backend не меняет preparation identity
+или опубликованный корпус. Оно меняет конфигурацию исполнения: прежние reference,
+approvals и smoke не подтверждают новые пресеты.
+[Новый Open-smoke](../results/u1_handoff/2026-11-12-v4-native-open/README.md)
+прошёл на RTX 5090: BF16, SDPA efficient, B1x64/B2x32/B3x16/B4x8.
+Остальные новые режимы этим не проверены; проверка качества и новых скоростных
+серий не выполнялась.
+
+## История: schema 3
+
+> Исторический снимок schema 3. Для schema 4 источником истины являются полные
+> [восемь конфигов](../configs/v4), а не каталог по имени checkpoint.
+> [Новый порядок baseline/search/confirm](u1_handoff.md#4-baseline--поиск--подтверждение).
+
 Актуально на **8 ноября 2026**, формат конфигураций 3.
 [Запуск](u1_handoff.md) · [полный протокол](measurement_protocol_v1.md) ·
 [готовность](u1_handoff_readiness.md).
