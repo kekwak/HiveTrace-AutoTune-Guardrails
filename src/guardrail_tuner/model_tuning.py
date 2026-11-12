@@ -9,6 +9,7 @@ from typing import Any
 
 from .benchmark import texts
 from .datasets import DatasetSource, load_source
+from .manifest import record_model, record_token_inputs, record_workload
 from .measurement import MIN_IMPROVEMENT, aa_selection, measure_aa_ab
 from .workload import Workload, batches, recommend_batches
 
@@ -70,6 +71,8 @@ def tune_model(
     tolerance: float,
     output_dir: str,
     workload: Workload | None = None,
+    quality_column: str | None = None,
+    performance_column: str | None = None,
 ) -> dict[str, Any]:
     import torch
     import transformers
@@ -86,8 +89,8 @@ def tune_model(
         raise ValueError("Output directory must be empty or not exist")
     qdata, qmeta = load_source(quality)
     pdata, pmeta = load_source(performance)
-    qtexts = texts(qdata, text_column, "quality")
-    ptexts = texts(pdata, text_column, "performance")
+    qtexts = texts(qdata, quality_column or text_column, "quality")
+    ptexts = texts(pdata, performance_column or text_column, "performance")
     local = Path(model_id).expanduser()
     if local.is_dir():
         if revision:
@@ -108,9 +111,14 @@ def tune_model(
     ):
         raise ValueError("Declared architecture is not available in installed Transformers")
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, trust_remote_code=False)
+    record_token_inputs("quality", tokenizer, qtexts, max_length)
+    record_token_inputs("performance", tokenizer, ptexts, max_length)
     performance_buckets, truncated = workload.partition(ptexts, tokenizer, max_length)
     quality_buckets, quality_truncated = workload.partition(qtexts, tokenizer, max_length)
+    record_workload("quality", quality_buckets, workload.batch_sizes)
+    record_workload("performance", performance_buckets, workload.batch_sizes)
     model = cls.from_pretrained(model_path, trust_remote_code=False).to(device).eval()
+    record_model(model_id, resolved, model, tokenizer)
     second_model = cls.from_pretrained(model_path, trust_remote_code=False).to(device).eval()
 
     # Fail early for unsupported model interfaces rather than silently optimizing a base model.
@@ -322,6 +330,8 @@ def tune_model(
         "datasets": {"quality": qmeta, "performance": pmeta},
         "settings": {
             "text_column": text_column,
+            "quality_text_column": quality_column or text_column,
+            "performance_text_column": performance_column or text_column,
             "max_length": max_length,
             "warmup": warmup,
             "max_abs_logit_error": tolerance,

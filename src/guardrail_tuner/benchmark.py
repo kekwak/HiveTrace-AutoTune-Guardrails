@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from .datasets import DatasetSource, load_source
+from .manifest import record_model, record_token_inputs
 from .workload import Workload
 
 
@@ -101,7 +102,10 @@ def run_benchmark(
         resolved_revision = Path(model_path).name
 
     tokenizer = AutoTokenizer.from_pretrained(model_path)
+    record_token_inputs("quality", tokenizer, quality_text, max_length)
+    record_token_inputs("performance", tokenizer, performance_text, max_length)
     model = AutoModelForSequenceClassification.from_pretrained(model_path).to(device).eval()
+    record_model(model_id, resolved_revision, model, tokenizer)
     second_model = (
         AutoModelForSequenceClassification.from_pretrained(model_path).to(device).eval()
         if rigorous or workload is not None

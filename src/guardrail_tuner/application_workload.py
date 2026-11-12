@@ -2,6 +2,7 @@
 
 from typing import Any, Callable
 
+from .manifest import record_workload
 from .measurement import MIN_IMPROVEMENT, aa_selection, measure_aa_ab
 from .workload import Workload, recommend_batches
 
@@ -50,6 +51,8 @@ def profile_application(
 
     a, b, c = BatchRunner(reference_a), BatchRunner(reference_b), BatchRunner(candidate)
     qgroups, pgroups = group(quality), group(performance)
+    record_workload("quality", qgroups, workload.batch_sizes)
+    record_workload("performance", pgroups, workload.batch_sizes)
     results = []
     for bucket, records in pgroups.items():
         for size in workload.batch_sizes:

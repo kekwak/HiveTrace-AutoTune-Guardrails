@@ -7,6 +7,7 @@ from typing import Any
 
 from .benchmark import texts
 from .datasets import DatasetSource, load_source
+from .manifest import record_model, record_token_inputs
 
 
 def check_generation(
@@ -53,7 +54,9 @@ def check_generation(
     ):
         raise ValueError("Declared architecture is not available in installed Transformers")
     tokenizer = transformers.AutoTokenizer.from_pretrained(path, trust_remote_code=False)
+    record_token_inputs("quality", tokenizer, inputs, max_length)
     model = cls.from_pretrained(path, trust_remote_code=False).float().to(device).eval()
+    record_model(model_id, resolved, model, tokenizer)
     if not callable(getattr(model, "generate", None)):
         raise ValueError("Model does not expose a generation interface")
 

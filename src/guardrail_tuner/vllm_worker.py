@@ -14,7 +14,11 @@ def run(payload):
     import transformers
     from huggingface_hub import snapshot_download
 
+    from .manifest import set_seed
+
     vllm = importlib.import_module("vllm")
+    seed = int(os.environ.get("GUARDRAIL_TUNER_SEED", "42"))
+    set_seed(seed)
 
     model_id = payload["model"]
     local = Path(model_id).expanduser()
@@ -71,6 +75,7 @@ def run(payload):
         tokenizer=path,
         dtype="float32",
         trust_remote_code=False,
+        seed=seed,
         max_model_len=payload["max_length"] + payload["max_new_tokens"],
         **({"runner": "pooling"} if payload["task"] == "classification" else {}),
     )
@@ -130,6 +135,7 @@ def run(payload):
         },
         "settings": {
             "dtype": "float32",
+            "seed": seed,
             "max_length": payload["max_length"],
             "max_new_tokens": payload["max_new_tokens"],
             "greedy": True,

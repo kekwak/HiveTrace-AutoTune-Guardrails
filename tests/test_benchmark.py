@@ -90,6 +90,12 @@ def test_cpu_benchmark_with_real_tiny_model(tmp_path):
     assert report["providers"][0] == "CPUExecutionProvider"
     assert report["workload"]["results"][0]["batch_size"] == 1
     assert report["workload"]["results"][0]["quality"]["passed"]
+    manifest = report["run_manifest"]
+    assert manifest["capture_status"] == "complete"
+    assert manifest["local_model_tree"]["unchanged"]
+    assert manifest["datasets"]["quality"]["identity"]["ordered_rows"]["rows"] == 2
+    assert manifest["prepared_token_inputs"]["quality"][0]["rows"] == 2
+    assert manifest["model"]["parameter_dtypes"] == ["torch.float32"]
 
 
 def test_cuda_fails_if_pytorch_has_no_cuda(monkeypatch):

@@ -104,3 +104,117 @@ def test_local_file_glob_characters_select_exact_file(tmp_path, monkeypatch):
     assert len(dataset) == 1
     assert dataset[0]["text"] == "target"
     assert metadata["sha256"] == hashlib.sha256(target.read_bytes()).hexdigest()
+
+
+def test_performance_preset_is_default_and_can_be_overridden(monkeypatch):
+    from guardrail_tuner.datasets import SPEED_PRESET
+
+    dataset = types.SimpleNamespace()
+    metadata = {"rows": 1, "columns": ["text"]}
+    captured = io.StringIO()
+    with (
+        patch.object(sys, "argv", ["guardrail-tuner", "datasets", "--quality-file", "q.jsonl"]),
+        patch("guardrail_tuner.cli.load_source", return_value=(dataset, metadata)) as loader,
+        contextlib.redirect_stdout(captured),
+    ):
+        assert main() == 0
+    assert loader.call_args_list[1].args[0] == DatasetSource("preset", SPEED_PRESET)
+
+    with (
+        patch.object(
+            sys,
+            "argv",
+            [
+                "guardrail-tuner",
+                "datasets",
+                "--quality-file",
+                "q.jsonl",
+                "--performance-hf",
+                "custom/data",
+            ],
+        ),
+        patch("guardrail_tuner.cli.load_source", return_value=(dataset, metadata)) as loader,
+        contextlib.redirect_stdout(io.StringIO()),
+    ):
+        assert main() == 0
+    assert loader.call_args_list[1].args[0] == DatasetSource("hub", "custom/data")
+
+    with (
+        patch.object(
+            sys,
+            "argv",
+            [
+                "guardrail-tuner",
+                "datasets",
+                "--quality-file",
+                "q.jsonl",
+                "--performance-file",
+                "p.jsonl",
+            ],
+        ),
+        patch("guardrail_tuner.cli.load_source", return_value=(dataset, metadata)) as loader,
+        contextlib.redirect_stdout(io.StringIO()),
+    ):
+        assert main() == 0
+    assert loader.call_args_list[1].args[0] == DatasetSource("file", "p.jsonl")
+
+
+def test_preset_verifies_manifest_corpus_and_preserves_messages(tmp_path, monkeypatch):
+    import guardrail_tuner.datasets as module
+
+    corpus = tmp_path / "corpus.jsonl"
+    corpus.write_text("fixture")
+    digest = hashlib.sha256(corpus.read_bytes()).hexdigest()
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "schema_version": 3,
+                "status": "ready",
+                "count": 12000,
+                "files": {"corpus.jsonl": digest},
+            }
+        )
+    )
+    monkeypatch.setattr(
+        module, "SPEED_MANIFEST_SHA256", hashlib.sha256(manifest.read_bytes()).hexdigest()
+    )
+    calls = []
+
+    class FakeDataset:
+        column_names = ["id", "messages"]
+
+        def __len__(self):
+            return 12000
+
+        def __getitem__(self, key):
+            assert key == "messages"
+            return [
+                [{"role": "user", "content": "private"}, {"role": "assistant", "content": "answer"}]
+            ] * 12000
+
+        def add_column(self, key, values):
+            assert key == "text" and len(values) == 12000 and values[0] == "answer"
+            self.column_names = ["id", "messages", "text"]
+            return self
+
+    datasets = types.ModuleType("datasets")
+    datasets.load_dataset = lambda *args, **kwargs: FakeDataset()
+    hub = types.ModuleType("huggingface_hub")
+    hub.HfApi = object
+
+    def download(repo, filename, **kwargs):
+        calls.append((repo, filename, kwargs))
+        return str(tmp_path / filename)
+
+    hub.hf_hub_download = download
+    with patch.dict(sys.modules, {"datasets": datasets, "huggingface_hub": hub}):
+        dataset, meta = load_source(DatasetSource("preset", module.SPEED_PRESET))
+        assert len(dataset) == 12000
+        assert meta["corpus_sha256"] == digest
+        assert meta["model_specific_u1_buckets_applied"] is False
+        assert "private" not in json.dumps(meta)
+        assert all(call[2]["revision"] == module.SPEED_REVISION for call in calls)
+        corpus.write_text("tampered")
+        with pytest.raises(ValueError, match="checksum mismatch"):
+            load_source(DatasetSource("preset", module.SPEED_PRESET))

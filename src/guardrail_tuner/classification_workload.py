@@ -2,6 +2,7 @@
 
 from typing import Any, Callable
 
+from .manifest import record_workload
 from .measurement import MIN_IMPROVEMENT, aa_selection, measure_aa_ab
 from .workload import Workload, batches, recommend_batches
 
@@ -24,6 +25,8 @@ def profile_classification(
     performance_buckets, performance_truncated = workload.partition(
         performance, tokenizer, max_length
     )
+    record_workload("quality", quality_buckets, workload.batch_sizes)
+    record_workload("performance", performance_buckets, workload.batch_sizes)
     results = []
 
     class Runner:
