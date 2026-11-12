@@ -45,3 +45,14 @@ def test_plan_classification_candidates_are_unverified(tmp_path):
         "torch_compile",
         "tensorrt",
     }
+
+
+def test_plan_conditional_generation_is_unverified(tmp_path):
+    (tmp_path / "config.json").write_text(
+        json.dumps({"architectures": ["Qwen3_5ForConditionalGeneration"]})
+    )
+    result = run_cli("plan", tmp_path)
+    assert result.returncode == 0
+    plan = json.loads(result.stdout)
+    assert plan["status"] == "unverified"
+    assert all(candidate["mode"] == "generation" for candidate in plan["candidates"])

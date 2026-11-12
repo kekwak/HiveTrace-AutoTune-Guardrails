@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from .datasets import DatasetSource, load_source
+from .workload import Workload
 
 
 def percentile(values: list[float], fraction: float) -> float:
@@ -45,6 +46,9 @@ def run_benchmark(
     ort_optimization: str = "all",
     ort_threads: int = 0,
     label_column: str | None = None,
+    rigorous: bool = False,
+    ort_provider: str = "auto",
+    workload: Workload | None = None,
 ) -> dict[str, Any]:
     try:
         import numpy as np
@@ -60,7 +64,17 @@ def run_benchmark(
 
     if device == "cuda" and not torch.cuda.is_available():
         raise ValueError("CUDA is unavailable to PyTorch")
-    provider = "CUDAExecutionProvider" if device == "cuda" else "CPUExecutionProvider"
+    if ort_provider not in ("auto", "tensorrt"):
+        raise ValueError("Unknown ONNX Runtime provider")
+    if ort_provider == "tensorrt" and device != "cuda":
+        raise ValueError("TensorRT execution provider requires CUDA")
+    provider = (
+        "TensorrtExecutionProvider"
+        if ort_provider == "tensorrt"
+        else "CUDAExecutionProvider"
+        if device == "cuda"
+        else "CPUExecutionProvider"
+    )
     if provider not in ort.get_available_providers():
         raise ValueError(f"ONNX Runtime provider {provider} is unavailable")
 
@@ -88,6 +102,11 @@ def run_benchmark(
 
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForSequenceClassification.from_pretrained(model_path).to(device).eval()
+    second_model = (
+        AutoModelForSequenceClassification.from_pretrained(model_path).to(device).eval()
+        if rigorous or workload is not None
+        else None
+    )
     session_options = ort.SessionOptions()
     levels = {
         "all": ort.GraphOptimizationLevel.ORT_ENABLE_ALL,
@@ -102,12 +121,21 @@ def run_benchmark(
     if actual_providers[0] != provider:
         raise ValueError(f"ONNX Runtime did not activate {provider}: {actual_providers}")
 
-    def predict(text: str, backend: str) -> Any:
-        inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=max_length)
-        if backend == "pytorch":
+    def predict(text: Any, backend: str) -> Any:
+        inputs = tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            max_length=max_length,
+            padding=isinstance(text, list) and len(text) > 1,
+        )
+        if backend in ("pytorch", "pytorch2"):
             inputs = {key: value.to(device) for key, value in inputs.items()}
             with torch.inference_mode():
-                logits = model(**inputs).logits
+                active_model = second_model if backend == "pytorch2" else model
+                if active_model is None:
+                    raise ValueError("Second reference was not initialized")
+                logits = active_model(**inputs).logits
         else:
             with torch.inference_mode():
                 logits = ort_model(**inputs).logits
@@ -117,10 +145,30 @@ def run_benchmark(
 
     max_error = 0.0
     max_probability_error = 0.0
+    aa_error = 0.0
+    aa_passed = True
     disagreements = 0
     label_metrics: dict[str, Any] | None = None
     for row_index, text in enumerate(quality_text):
         reference = predict(text, "pytorch")
+        if rigorous:
+            aa_reference = predict(text, "pytorch2")
+            if reference.shape != aa_reference.shape or not np.isfinite(aa_reference).all():
+                aa_passed = False
+            else:
+                aa_error = max(aa_error, float(np.max(np.abs(reference - aa_reference))))
+                if output_mode == "multiclass":
+                    aa_passed = aa_passed and bool(
+                        np.array_equal(
+                            np.argmax(reference, axis=-1), np.argmax(aa_reference, axis=-1)
+                        )
+                    )
+                elif output_mode == "multilabel":
+                    ref_probs = 1 / (1 + np.exp(-np.clip(reference, -80, 80)))
+                    aa_probs = 1 / (1 + np.exp(-np.clip(aa_reference, -80, 80)))
+                    aa_passed = aa_passed and bool(
+                        np.array_equal(ref_probs >= threshold, aa_probs >= threshold)
+                    )
         candidate = predict(text, "onnxruntime")
         if reference.shape != candidate.shape or not (
             np.isfinite(reference).all() and np.isfinite(candidate).all()
@@ -218,12 +266,56 @@ def run_benchmark(
     pytorch_latency = measure("pytorch")
     onnx_latency = measure("onnxruntime")
     parity_passed = max_error <= tolerance and disagreements == 0
+    aa_passed = aa_passed and aa_error <= tolerance
+    rigorous_result = None
+    if rigorous and parity_passed and aa_passed:
+        from .measurement import aa_selection, measure_aa_ab
+
+        class PredictionRunner:
+            def __init__(self, backend: str) -> None:
+                self.backend = backend
+
+            def run(self, text: str) -> Any:
+                return predict(text, self.backend)
+
+        latency_rounds = measure_aa_ab(
+            PredictionRunner("pytorch"),
+            PredictionRunner("pytorch2"),
+            PredictionRunner("onnxruntime"),
+            performance_text,
+            warmup,
+        )
+        rigorous_result = {
+            "latency": latency_rounds,
+            "selection": aa_selection(latency_rounds, aa_passed, parity_passed),
+        }
+    workload_result = None
+    if workload is not None and parity_passed and aa_passed:
+        from .classification_workload import profile_classification
+
+        workload_result = profile_classification(
+            predict,
+            tokenizer,
+            quality_text,
+            performance_text,
+            workload,
+            max_length,
+            warmup,
+            tolerance,
+            output_mode,
+            threshold,
+        )
     return {
         "model": model_id,
         "model_revision": resolved_revision,
         "device": device,
         "gpu": torch.cuda.get_device_name(0) if device == "cuda" else None,
         "providers": actual_providers,
+        "provider_note": (
+            "TensorRT EP is enabled; node-level TensorRT coverage is not verified"
+            if ort_provider == "tensorrt"
+            else None
+        ),
         "versions": {
             "python": platform.python_version(),
             "torch": torch.__version__,
@@ -253,7 +345,11 @@ def run_benchmark(
             "max_abs_probability_error": max_probability_error if output_mode != "logits" else None,
             "decision_disagreements": disagreements if output_mode != "logits" else None,
             "passed": parity_passed,
+            "aa_passed": aa_passed if rigorous else None,
+            "aa_max_abs_logit_error": aa_error if rigorous else None,
             "labels": label_metrics,
         },
         "latency": {"pytorch": pytorch_latency, "onnxruntime": onnx_latency},
+        "rigorous": rigorous_result,
+        "workload": workload_result,
     }

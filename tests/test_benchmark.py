@@ -88,6 +88,8 @@ def test_cpu_benchmark_with_real_tiny_model(tmp_path):
     assert report["quality"]["decision_disagreements"] == 0
     assert report["latency"]["onnxruntime"]["requests"] == 1
     assert report["providers"][0] == "CPUExecutionProvider"
+    assert report["workload"]["results"][0]["batch_size"] == 1
+    assert report["workload"]["results"][0]["quality"]["passed"]
 
 
 def test_cuda_fails_if_pytorch_has_no_cuda(monkeypatch):
@@ -140,3 +142,29 @@ def test_cli_rejects_labels_with_logits(tmp_path):
     )
     assert result.returncode == 1
     assert "--quality-label-column requires" in result.stderr
+
+
+def test_cli_rejects_tensorrt_on_cpu(tmp_path):
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "guardrail_tuner.cli",
+            "benchmark",
+            str(tmp_path),
+            "--device",
+            "cpu",
+            "--ort-provider",
+            "tensorrt",
+            "--output-mode",
+            "logits",
+            "--quality-file",
+            str(tmp_path / "q.jsonl"),
+            "--performance-file",
+            str(tmp_path / "p.jsonl"),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 1
+    assert "TensorRT execution provider requires CUDA" in result.stderr

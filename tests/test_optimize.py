@@ -21,6 +21,12 @@ def run_result(level, threads, latency, passed=True):
         "settings": {"ort_optimization": level, "ort_intra_op_threads": threads},
         "quality": {"passed": passed},
         "latency": {"pytorch": {"p95_ms": 10.0}, "onnxruntime": {"p95_ms": latency}},
+        "rigorous": {
+            "selection": {"status": "selected", "selected": "candidate"},
+            "latency": {"candidate": [{"p99_ms": latency}] * 3},
+        }
+        if passed
+        else None,
     }
 
 
@@ -70,6 +76,15 @@ def test_baseline_wins_if_candidates_fail_quality(tmp_path):
     result = run_result("all", 0, 2.0, False)
     with patch("guardrail_tuner.optimize.run_benchmark", return_value=result):
         selection = invoke(tmp_path / "out")
+    assert selection["selected"]["runtime"] == "pytorch"
+
+
+def test_preliminary_results_never_select_onnx(tmp_path):
+    result = run_result("all", 0, 1.0)
+    result["rigorous"]["selection"] = {"status": "preliminary", "selected": "reference"}
+    with patch("guardrail_tuner.optimize.run_benchmark", return_value=result):
+        selection = invoke(tmp_path / "out")
+    assert selection["status"] == "preliminary"
     assert selection["selected"]["runtime"] == "pytorch"
 
 
