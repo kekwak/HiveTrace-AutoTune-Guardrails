@@ -1,20 +1,21 @@
-import gc
-import sys
 import types
 from contextlib import nullcontext
+from copy import deepcopy
 
 import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
 from torch._dynamo.backends.registry import lookup_backend
-from torch.nn.attention import SDPBackend, sdpa_kernel
 from transformers import AttentionInterface, StaticCache
 from transformers.masking_utils import AttentionMaskInterface, sdpa_mask
 from transformers.modeling_outputs import BaseModelOutput
 
 from experiments.adapters import score_from_logits
-from u1_benchmark.adapters import Builtin, parse_generated
-from u1_benchmark.models import quiet_dispatch
+from u1_benchmark.adapters import parse_generated
+from u1_benchmark.core import digest
+from u1_benchmark.v4_adapters import NativeAdapter
+from u1_benchmark.v4_models import halo_context
+from u1_benchmark.v4_preparation import create_preparer as native_preparer
 
 BUCKETS = [64, 128, 256, 512, 1024, 2048, 4096]
 ORDER = ["c13", "c4", "c7", "c1", "c12", "c8", "c9", "c3", "c2", "u3", "u4", "u1"]
@@ -39,41 +40,39 @@ class Entry(nn.Module):
         return self.fn(**x)
 
 
-class Rules(Builtin):
-    def __init__(self, model, spec, directory, input_version):
-        self.rules = spec["options"]["rules"]
-        fla = model == "halo" and "c7" in self.rules
-        super().__init__(model, {"backend": "fla" if fla else "eager"}, directory, input_version)
+class Rules(NativeAdapter):
+    def __init__(self, spec, directory):
+        self.rules, self.batch = spec["execution"]["rules"], spec["execution"].get("batch", 1)
         self.compiles, self.prefix = 0, None
-        self.math, self.fast, self.short_head, self.drop_mask = True, False, False, False
+        self.fast, self.short_head, self.drop_mask, self.gen = False, False, False, False
+        super().__init__(native(spec), directory)
+        self.metadata["variant_sha256"] = digest(spec)
         self.setup()
-        applied, skipped = [], {}
+        self.applied, self.skipped = [], {}
         for name in sorted(self.rules, key=ORDER.index):
             try:
                 getattr(self, name)()
-                applied.append(name)
+                self.applied.append(name)
             except Skip as reason:
-                skipped[name] = str(reason)
-        if self.name not in ("hive", "open") or self.fast:
+                self.skipped[name] = str(reason)
+        if self.name not in ("hive", "open") or self.fast or self.gen:
+            self.entry.config = getattr(self.target, "config", None)
             self.target = self.entry
-        self.metadata.update(rules_applied=applied, rules_skipped=skipped)
 
     def setup(self):
         m = self.model
         if self.name in DEC:
-            if self.name == "halo":
-                self.labels = self.legacy.label_ids
-            elif self.name == "shield":
-                self.labels = self.label_ids
+            if self.name == "hive":
+                self.ids = [self.tokenizer.encode(s, add_special_tokens=False)[0] for s in ("safe", "unsafe")]
             else:
-                self.labels = [self.tokenizer.encode(s, add_special_tokens=False)[0] for s in ("safe", "unsafe")]
+                self.ids = self.label_ids
             self.body = lambda x: m.model(input_ids=x["input_ids"], attention_mask=x.get("attention_mask"),
                                           use_cache=False).last_hidden_state[0]
             self.softcap = getattr(m.config.get_text_config(), "final_logit_softcapping", None)
             self.head = lambda h: self.cap(m.lm_head(h))
             self.inner = lambda x: self.head(last(self.body(x), x))
         elif self.name == "open":
-            self.labels = [self.tokenizer.encode("safe", add_special_tokens=False)[0]]
+            self.ids = [self.tokenizer.encode("safe", add_special_tokens=False)[0]]
             self.inner = lambda x: m(**x, use_cache=True, logits_to_keep=1)
         elif self.name == "gliner":
             forward = m.encoder.forward
@@ -85,7 +84,7 @@ class Rules(Builtin):
             self.inner = lambda x: forward(**x)
             m.forward = lambda *a: self.entry(**dict(zip(LAYA, a)))
         else:
-            self.inner = lambda x: m(**x).logits[0]
+            self.inner = lambda x: m(**x).logits
         self.entry = Entry(self.route)
 
     def cap(self, logits):
@@ -95,9 +94,7 @@ class Rules(Builtin):
 
     def ctx(self):
         if self.name == "halo":
-            return quiet_dispatch(self.legacy.qwen, self.legacy.quiet_implementations)
-        if self.name in ("hive", "open") and self.math:
-            return sdpa_kernel(SDPBackend.MATH)
+            return halo_context(self)
         if self.name == "laya":
             return th.autocast("cuda", dtype=self.agent.dtype, cache_enabled=False)
         return nullcontext()
@@ -124,36 +121,43 @@ class Rules(Builtin):
 
     @property
     def compile_count(self):
-        return getattr(self.legacy, "compile_count", 0) + self.compiles
+        return self._compile_count + self.compiles
 
-    def request(self, text):
+    def _request(self, payloads):
         if self.name in ("gliner", "laya") or self.name in ("hive", "open") and not self.fast:
-            return super().request(text)
+            return super()._request(payloads)
+        x = self._hf_inputs(payloads)
+        if self.name in ("koala", "llama"):
+            logits = self.entry(**x).float()
+            if not th.isfinite(logits).all():
+                raise ValueError("Nonfinite logits")
+            return [{"label": self.labels[p.index(max(p))], "scores": dict(zip(self.labels, p)),
+                     "score_type": "probabilities"} for p in logits.softmax(-1).cpu().tolist()]
+        if len(payloads) != 1:
+            raise ValueError("Decoder rules support batch size 1 only")
+        return [self.request(x)]
+
+    def request(self, x):
         if self.name == "open":
-            return self.request_open(text)
-        logits = self.entry(**self.prepare(text)).float()
+            return self.request_open(x)
+        logits = self.entry(**x).float()
         if not th.isfinite(logits).all():
             raise ValueError("Nonfinite logits")
-        if self.name in ("koala", "llama"):
-            probs = logits.softmax(-1).cpu().tolist()
-            label = self.labels[probs.index(max(probs))]
-            return {"label": label, "scores": dict(zip(self.labels, probs)), "score_type": "probabilities"}
-        pair = logits if self.short_head else logits[self.labels]
+        pair = logits if self.short_head else logits[self.ids]
         if self.name == "halo":
-            v = score_from_logits(pair, self.legacy.threshold)
+            v = score_from_logits(pair, self.spec["scoring"]["threshold"])
             return {**v, "scores": {"safe": v["p_safe"], "unsafe": v["p_unsafe"]}, "score_type": "probabilities"}
         if self.name == "shield":
             probs = pair.softmax(-1).cpu().tolist()
             label = "Yes" if probs[0] > probs[1] else "No"
             return {"label": label, "scores": dict(zip(("Yes", "No"), probs)), "score_type": "probabilities"}
-        token = self.labels[int(pair.argmax())] if self.short_head else int(logits.argmax())
+        token = self.ids[int(pair.argmax())] if self.short_head else int(logits.argmax())
         return parse_generated(self.tokenizer.decode([token], skip_special_tokens=True), "hive", 1)
 
-    def request_open(self, text):
-        x = self.prepare(text)
+    def request_open(self, x):
         out = self.entry(**x)
         token = out.logits[0, -1].argmax().view(1, 1)
-        if token.item() == self.labels[0]:
+        if token.item() == self.ids[0]:
             return parse_generated("safe", "open", 1)
         ids = th.cat([x["input_ids"], token], 1)
         with self.ctx():
@@ -162,26 +166,45 @@ class Rules(Builtin):
         new = ids[0, x["input_ids"].shape[1]:].tolist()
         return parse_generated(self.tokenizer.decode(new, skip_special_tokens=True), "open", len(new))
 
-    def prepare_backend(self, texts):
-        super().prepare_backend(texts)
-        for text in texts:
-            self.request(text)
+    def prepare_batch_backend(self, batches):
+        for batch in batches:
+            self.request_batch(batch)
+        result = super().prepare_batch_backend(batches)
+        self.metadata["backend"].update(rules_applied=self.applied, rules_skipped=self.skipped)
+        return result
 
-    def prove_backend(self, text):
+    def prove_batch_backend(self, batch):
         with th.profiler.profile() as p:
-            self.request(text)
+            self.request_batch(batch)
             th.cuda.synchronize()
-        self.metadata["backend_proof"] = sorted({e.key for e in p.key_averages()})
+        proof = {"operators": sorted({e.key for e in p.key_averages()}),
+                 "rules_applied": self.applied, "rules_skipped": self.skipped}
+        self.metadata["backend_proof"] = proof
+        return proof
+
+    def compiled_generate(self):
+        from transformers import CompileConfig
+        if self.gen:
+            return
+        self.gen = True
+        generate = self.model.generate
+        self.entry.fn = lambda **x: generate(**x)
+        self.model.generate = lambda **x: self.entry(**x)
+        g = self.model.generation_config
+        g.cache_implementation = "static"
+        g.compile_config = CompileConfig(mode="reduce-overhead" if "u1" in self.rules else "default")
 
     def u1(self):
+        if self.name == "open" and not self.fast:
+            return self.compiled_generate()
         self.need_core()
         cache_positions()
         AttentionMaskInterface.register("eager", eager_mask)
         core, graphs, pool, stream = self.core, {}, th.cuda.graph_pool_handle(), th.cuda.Stream()
 
-        def capture(b, x):
+        def capture(n, b, x):
             keys = set(x) if self.name in DEC + ("laya",) else set(SEQ)
-            static = {k: th.zeros(1, b, dtype=th.long, device="cuda") if k in SEQ else th.zeros_like(x[k])
+            static = {k: th.zeros(n, b, dtype=th.long, device="cuda") if k in SEQ else th.zeros_like(x[k])
                       for k in keys}
             if self.name in DEC:
                 static["last"] = th.zeros(1, dtype=th.long, device="cuda")
@@ -197,15 +220,15 @@ class Rules(Builtin):
             return static, graph, out
 
         def run(x):
-            n = x["input_ids"].shape[1]
+            rows, n = x["input_ids"].shape
             b = next(b for b in BUCKETS if b >= n)
-            if b not in graphs:
-                graphs[b] = capture(b, x)
-            static, graph, out = graphs[b]
+            if (rows, b) not in graphs:
+                graphs[rows, b] = capture(rows, b, x)
+            static, graph, out = graphs[rows, b]
             static["input_ids"][:, :n] = x["input_ids"]
             if "attention_mask" in static:
                 static["attention_mask"].zero_()
-                static["attention_mask"][:, :n] = 1
+                static["attention_mask"][:, :n] = x.get("attention_mask", 1)
             if "last" in static:
                 static["last"].fill_(n - 1)
             for k in static.keys() - {"input_ids", "attention_mask", "last"}:
@@ -220,6 +243,8 @@ class Rules(Builtin):
     def u3(self):
         if self.name == "gliner":
             raise Skip("вход строит GLiNER")
+        if self.batch > 1:
+            raise Skip("в батче маска нужна для паддинга")
         self.need_core(graph=False)
         if self.name == "laya":
             if "u1" in self.rules:
@@ -231,6 +256,8 @@ class Rules(Builtin):
         self.drop_mask = True
 
     def u4(self):
+        if self.name == "open" and not self.fast:
+            return self.compiled_generate()
         self.need_core()
         inductor = lookup_backend("inductor")
 
@@ -253,13 +280,13 @@ class Rules(Builtin):
         AttentionInterface.register("sdpa_rep", sdpa_rep)
         AttentionMaskInterface.register("sdpa_rep", sdpa_mask)
         self.model.set_attn_implementation("sdpa_rep")
-        self.math = False
+        self.metadata["attention"] = "sdpa_rep"
 
     def c2(self):
         self.need_core()
         if self.name not in DEC:
             raise Skip("не decoder")
-        a, b = (self.prepare(t)["input_ids"][0] for t in ("Hello there", "Bye now"))
+        a, b = (self._hf_inputs([t])["input_ids"][0] for t in ("Hello there", "Bye now"))
         n = next(i for i, (x, y) in enumerate(zip(a, b)) if x != y) - 1
         model, body = self.model.model, self.body
         cache = StaticCache(config=self.model.config, max_cache_len=n + BUCKETS[-1])
@@ -293,7 +320,7 @@ class Rules(Builtin):
         self.need_core()
         if self.name not in DEC:
             raise Skip("не decoder")
-        w = self.model.lm_head.weight[self.labels].clone()
+        w = self.model.lm_head.weight[self.ids].clone()
         self.head = lambda h: self.cap(h @ w.T)
         self.short_head = True
 
@@ -438,6 +465,19 @@ class Part(nn.Module):
         return out
 
 
-def create(*, model, spec, directory, contract):
-    sys.modules.setdefault(__name__, next(o for o in gc.get_referrers(globals()) if isinstance(o, types.ModuleType)))
-    return Rules(model, spec, directory, contract.get("input_version", 2))
+def native(spec):
+    spec = deepcopy(spec)
+    e = spec["execution"]
+    spec["adapter"], rules = e.pop("model"), e.pop("rules")
+    e.pop("batch", None)
+    if spec["adapter"] == "halo" and "c7" in rules:
+        e["linear_attention"] = "fla"
+    return spec
+
+
+def create_preparer(spec):
+    return native_preparer(native(spec))
+
+
+def create(spec, directory):
+    return Rules(spec, directory)
