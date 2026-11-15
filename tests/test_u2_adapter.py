@@ -214,6 +214,15 @@ class Review(unittest.TestCase):
             made._install_compile()
             self.assertTrue(torch._dynamo.config.fail_on_recompile_limit_hit)
 
+    def test_evidence_reports_compile_not_eager(self):
+        made = self.make()
+        self.assertEqual(made.metadata["backend_requested"], "compile")
+        native = {"runtime": "eager", "kernels": ["k"]}
+        with patch.object(NativeAdapter, "prove_batch_backend", lambda self, batch: native):
+            proof = made.prove_batch_backend(["a"])
+        self.assertEqual(proof["runtime"], "compile")
+        self.assertEqual(proof["native_load_runtime"], "eager")
+
     def test_quantize_source_hash_is_enforced(self):
         value = spec(method="none")
         value["quantization"]["quantize_sha256"] = "0" * 64

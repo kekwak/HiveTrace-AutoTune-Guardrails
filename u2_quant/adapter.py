@@ -51,6 +51,15 @@ class QuantAdapter(NativeAdapter):
         except ValueError as error:
             raise ValueError(f"Precision check failed after quantization method={method}: {error}") from error
         self.backend, self._backend_installed = "compile", False
+        # NativeAdapter грузит модель с runtime=eager (свой compile У1 есть только у gliner);
+        # исполнение — наш torch.compile, поэтому в evidence пишем compile.
+        self.metadata["backend_requested"] = "compile"
+
+    def prove_batch_backend(self, batch):
+        proof = super().prove_batch_backend(batch)
+        proof["native_load_runtime"] = proof.get("runtime")
+        proof["runtime"] = "compile"
+        return proof
 
     def _quant_body(self):
         return self.model.encoder if self.name == "gliner" else self.model.model
