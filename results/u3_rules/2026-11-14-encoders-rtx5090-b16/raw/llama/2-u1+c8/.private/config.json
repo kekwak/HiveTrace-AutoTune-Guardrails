@@ -1,0 +1,85 @@
+{
+  "baseline": {
+    "adapter": "llama",
+    "execution": {
+      "attention": "native",
+      "dtype": "float32",
+      "linear_attention": "reference",
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "template": null,
+    "tokenizer": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    },
+    "weights": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    }
+  },
+  "baseline_ref": "runs/tune-v4-b16/llama/0-baseline",
+  "batch_sizes_by_bucket": {
+    "B1": [
+      16
+    ]
+  },
+  "buckets": {
+    "B1": {
+      "max": 512,
+      "min": 1
+    }
+  },
+  "candidate": {
+    "adapter": {
+      "dependencies": {},
+      "module": "rules/adapter.py",
+      "source_sha256": "67d238ce9a1b7e73207ecb37de03b22991493aae43cfb9fcd28414a811b03bfb"
+    },
+    "execution": {
+      "attention": "native",
+      "batch": 16,
+      "dtype": "float32",
+      "linear_attention": "reference",
+      "model": "llama",
+      "rules": [
+        "u1",
+        "c8"
+      ],
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "template": null,
+    "tokenizer": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    },
+    "weights": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    }
+  },
+  "comparison": "engineering",
+  "data": {
+    "manifest_sha256": "7ea1621bc40b895d91f01d6c664b61ca2b33a519a5cc5977457058a08d71a989",
+    "path": "/workspace/guardrails/data/speed/rules-v4"
+  },
+  "environment": "./u1-rtx-env",
+  "mode": "search",
+  "pilot": false,
+  "profile_trace": false,
+  "quality_batch_sizes": [
+    1
+  ],
+  "schema_version": 4,
+  "seed": 17,
+  "timeout_seconds": 36000
+}

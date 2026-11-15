@@ -1,0 +1,1570 @@
+{
+  "result_version": 4,
+  "status": "passed",
+  "job": {
+    "bucket": "B1",
+    "batch_size": 16,
+    "bucket_max": 512,
+    "stage": "preflight",
+    "variant": "candidate",
+    "seed": 17,
+    "resolved_path": "/workspace/guardrails/runs/tune-v4-b16/koala/1-u1/resolved_run.json",
+    "resolved_sha256": "b3d06c92c01b53264c4342cf26a54ba5c0fba8ea01e8ab001e890def646d3d59",
+    "private_config_path": "/workspace/guardrails/runs/tune-v4-b16/koala/1-u1/.private/config.json",
+    "private_config_sha256": "cb2d128dee18e369d0c8689b5eb8303e150d8e0b97b1ee2dd624fbe4e2ce4381",
+    "input_path": "/workspace/guardrails/runs/tune-v4-b16/koala/1-u1/.private/00000.inputs.json",
+    "input_file_sha256": "a4f20565609f02716d8fa97a08e653fc297125d6aa24f4df818268e9b267c3e4"
+  },
+  "rows": [],
+  "quality_evaluated": false,
+  "precision_policy_version": 1,
+  "resolved_sha256": "b3d06c92c01b53264c4342cf26a54ba5c0fba8ea01e8ab001e890def646d3d59",
+  "runtime": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "vram_bytes": 33670758400,
+    "gpu_uuid": "GPU-d70193d1-98e5-e267-8594-19287ece3ae5",
+    "driver": "595.91.07",
+    "cuda": "13.0",
+    "cudnn": 91900,
+    "python": "3.13.14",
+    "packages": {
+      "torchaudio": "2.11.0+cu130",
+      "pytz": "2026.5",
+      "nvidia-cusparselt-cu13": "0.8.0",
+      "mpmath": "1.3.0",
+      "flatbuffers": "25.12.19",
+      "cuda-toolkit": "13.0.2",
+      "urllib3": "2.8.0",
+      "tzdata": "2026.6",
+      "typing-inspection": "0.4.4",
+      "typing-extensions": "4.16.0",
+      "typer": "0.27.3",
+      "triton": "3.6.0",
+      "transformers": "5.20.1",
+      "tqdm": "4.70.1",
+      "torchvision": "0.26.0+cu130",
+      "torch": "2.11.0+cu130",
+      "tokenizers": "0.23.3",
+      "threadpoolctl": "3.7.0",
+      "sympy": "1.14.0",
+      "six": "1.17.0",
+      "shellingham": "1.5.4",
+      "setuptools": "81.0.0",
+      "sentencepiece": "0.2.2",
+      "sentence-transformers": "5.7.0",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "safetensors": "0.8.0",
+      "rich": "15.0.0",
+      "requests": "2.34.2",
+      "regex": "2026.9.29",
+      "pyyaml": "6.0.3",
+      "python-dateutil": "3.0.0",
+      "pygments": "2.21.0",
+      "pydantic-core": "2.50.1",
+      "pydantic": "2.14.1",
+      "psutil": "7.2.2",
+      "protobuf": "7.36.2",
+      "pillow": "13.0.0",
+      "peft": "0.21.2",
+      "pandas": "2.2.3",
+      "packaging": "26.3",
+      "onnxruntime-gpu": "1.23.2",
+      "onnx": "1.20.1",
+      "nvidia-nvtx": "13.0.85",
+      "nvidia-nvshmem-cu13": "3.4.5",
+      "nvidia-nvjitlink-cu12": "12.9.86",
+      "nvidia-nvjitlink": "13.0.88",
+      "nvidia-nccl-cu13": "2.28.9",
+      "nvidia-cusparse": "12.6.3.3",
+      "nvidia-cusolver": "12.0.4.66",
+      "nvidia-curand-cu12": "10.3.9.90",
+      "nvidia-curand": "10.4.0.35",
+      "nvidia-cufile": "1.15.1.6",
+      "nvidia-cufft-cu12": "11.3.3.83",
+      "nvidia-cufft": "12.0.0.61",
+      "nvidia-cudnn-cu13": "9.19.0.56",
+      "nvidia-cudnn-cu12": "9.19.0.56",
+      "nvidia-cuda-runtime-cu12": "12.8.90",
+      "nvidia-cuda-nvrtc": "13.0.88",
+      "nvidia-cuda-runtime": "13.0.96",
+      "nvidia-cuda-cupti": "13.0.85",
+      "nvidia-cublas-cu12": "12.8.4.1",
+      "nvidia-cublas": "13.1.0.3",
+      "numpy": "2.1.3",
+      "networkx": "3.7",
+      "narwhals": "2.28.0",
+      "ml-dtypes": "0.6.0",
+      "mdurl": "0.1.2",
+      "markupsafe": "3.0.4",
+      "markdown-it-py": "4.2.0",
+      "laya": "0.3.20",
+      "joblib": "1.6.0",
+      "jinja2": "3.1.6",
+      "idna": "3.20",
+      "humanfriendly": "10.0",
+      "huggingface-hub": "1.33.0",
+      "httpx": "0.28.1",
+      "httpcore": "1.0.9",
+      "hf-xet": "1.7.1",
+      "h11": "0.16.0",
+      "gliner2": "2.1.0",
+      "fsspec": "2026.9.0",
+      "flash-linear-attention": "0.4.2",
+      "fla-core": "0.4.2",
+      "filelock": "4.2.4",
+      "einops": "0.8.2",
+      "cuda-pathfinder": "1.8.4",
+      "cuda-bindings": "13.4.4",
+      "coloredlogs": "15.0.1",
+      "cloudpickle": "3.1.2",
+      "click": "8.5.0",
+      "charset-normalizer": "3.5.2",
+      "certifi": "2026.10.23",
+      "anyio": "4.15.1",
+      "annotated-types": "0.8.0",
+      "annotated-doc": "0.0.5",
+      "accelerate": "1.15.0"
+    },
+    "cpu_threads": 2,
+    "interop_threads": 1,
+    "tf32": false,
+    "cudnn_tf32": false,
+    "deterministic": true,
+    "deterministic_warn_only": true,
+    "host_sha256": "753c4b5f53b382fa326a9db0e2a3905911043c1e1e63deb66066783d468bc008",
+    "pid": 5401,
+    "timestamp": 1794644904.8965693,
+    "monitor_method": "nvidia-smi-stream-100ms-v2",
+    "visible_device": 0
+  },
+  "setup_seconds": 1.887685216992395,
+  "torch_setup": {
+    "allocated_bytes": 557576704,
+    "reserved_bytes": 618659840
+  },
+  "size": {
+    "unique_parameter_buffer_storage_bytes": 556801060,
+    "dtypes": [
+      "torch.float32",
+      "torch.int64"
+    ],
+    "checkpoint_files_bytes": {
+      "model.safetensors": 556825292,
+      "pytorch_model.bin": 556870129
+    },
+    "export_files_bytes": {},
+    "original_encoder_retained": false
+  },
+  "backend_proof": {
+    "operators": [
+      "Activity Buffer Request",
+      "Memcpy DtoD (Device -> Device)",
+      "Memcpy DtoH (Device -> Pageable)",
+      "Memcpy DtoH (Device -> Pinned)",
+      "Memcpy HtoD (Pageable -> Device)",
+      "Memset (Unknown)",
+      "aten::_local_scalar_dense",
+      "aten::_softmax",
+      "aten::_to_copy",
+      "aten::abs",
+      "aten::all",
+      "aten::as_strided",
+      "aten::clone",
+      "aten::copy_",
+      "aten::detach_",
+      "aten::empty",
+      "aten::empty_strided",
+      "aten::eq",
+      "aten::fill_",
+      "aten::is_nonzero",
+      "aten::isfinite",
+      "aten::item",
+      "aten::lift_fresh",
+      "aten::mul",
+      "aten::ne",
+      "aten::resize_",
+      "aten::resolve_conj",
+      "aten::resolve_neg",
+      "aten::set_",
+      "aten::softmax",
+      "aten::to",
+      "aten::zero_",
+      "cudaDeviceSynchronize",
+      "cudaGraphLaunch",
+      "cudaLaunchKernel",
+      "cudaMemcpyAsync",
+      "cudaStreamIsCapturing",
+      "cudaStreamSynchronize",
+      "memcpy128",
+      "void (anonymous namespace)::softmax_warp_forward<float, float, float, 4, false, false>(float*, float const*, int, int, int, bool const*, int, bool)",
+      "void (anonymous namespace)::softmax_warp_forward<float, float, float, 9, false, false>(float*, float const*, int, int, int, bool const*, int, bool)",
+      "void at::native::_scatter_gather_elementwise_kernel<128, 8, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<4>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1}>(int, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<4>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1})",
+      "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1} const&)::{lambda(int)#1})",
+      "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > const&)::{lambda(int)#1})",
+      "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+      "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > const&)::{lambda(int)#1})",
+      "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1})",
+      "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+      "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4> >(at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4>)",
+      "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4> >(at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4>)",
+      "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#11}::operator()() const::{lambda(bool)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#11}::operator()() const::{lambda(bool)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+      "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+      "void at::native::vectorized_elementwise_kernel<2, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<2, at::native::CUDAFunctorOnSelf_add<long>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<long>, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)",
+      "void at::native::vectorized_elementwise_kernel<2, at::native::neg_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::neg_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul> >(int, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::AbsFunctor<float>, std::array<char*, 2ul> >(int, at::native::AbsFunctor<float>, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul> >(int, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<float>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<float>, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<bool>, std::array<char*, 1ul> >(int, at::native::FillFunctor<bool>, std::array<char*, 1ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase&)::{lambda(bool)#1}, std::array<char*, 2ul> >(int, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase&)::{lambda(bool)#1}, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::sqrt_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::sqrt_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+      "void at::native::vectorized_gather_kernel<16, long>(char*, char*, long*, int, long, long, long, long, bool)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x128_8x4_tn_align1>(cutlass_80_simt_sgemm_128x128_8x4_tn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_8x4_tn_align1>(cutlass_80_simt_sgemm_128x256_8x4_tn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_tn_align1>(cutlass_80_simt_sgemm_256x128_8x4_tn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x5_nn_align1>(cutlass_80_simt_sgemm_64x64_8x5_nn_align1::Params)",
+      "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 8, 9, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+      "void magma_sgemmEx_kernel<float, float, float, false, false, 6, 3, 5, 3, 3>(int, int, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, int, int, float const*, float const*, float, float, int, cublasLtEpilogue_t, int, void const*, long)"
+    ],
+    "rules_applied": [
+      "u1"
+    ],
+    "rules_skipped": {}
+  },
+  "plans": [
+    {
+      "id": "040d52c50fa17978c8fb6257d1eead930db2fd2e2027b7e4233573dae0209962",
+      "ids": [
+        "80764f67a7dc6971a38f89d20001f341ee187de83a07aca10328565ac1002b57",
+        "96291fd19434d0af2ff597014192caff896f58dd198167494d4600884eb9eba4",
+        "60ac1e08d708bea3fac56e909fd5805326ed46e58857a11aa9e7deafdf7f3208",
+        "5b92251dc045b7af100d444da2bee4781206eb44703d5912172728aadf901651",
+        "821d734d9198957ba18dcf393db4b23502bd2fda4be5c781e6c961534aec025a",
+        "9df5bcc1f44e527452e48cd6e030cb1079fb491ed3f75f16a7d5203a73ea1933",
+        "592d23e38fe6842eaa024e1aa7c5d36684d3496b2d09ed6b8dc10546384e22f5",
+        "bc84fa8aef534d5a143ad629efacabd6e32da02db6c7a3fd8926b932eedbe461",
+        "2402ec8d27e4cc4b68e9d32e654256d745da6e444bfb3df184e0fb2699714c77",
+        "db573872314720bb85c761cf707e4e58a6550aeedeb8ddc7ea836e58a985807e",
+        "bb9d36238bdad4ab21db7ccfa6d67d5405c822f7c1922a4f449168c1eb8953c4",
+        "de5fa49ddac1914d60c295dd8124025d8dd3d544056688bd4a8302d347afb93e",
+        "684fbd74a4a36716acee87db4075603b2d6f72d50b1466a9f5826098e88af078",
+        "1ee87a38a7697063e77faac7c8c29406630ea6d399da67b138695151082fd58c",
+        "658fc3c6a4940766910cc8790118b4490144e8f14e2ecbc45fa4b87fa200a786",
+        "bd6ea96cdc0bdbecef150ff3e9e92c6f65fac0f2cde96b1bdfeb065bf32f95c1"
+      ],
+      "occurrences": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_tokens": [
+        3,
+        3,
+        4,
+        5,
+        5,
+        6,
+        8,
+        10,
+        11,
+        12,
+        13,
+        13,
+        14,
+        16,
+        16,
+        17
+      ],
+      "input_sha256": [
+        "316ab67987292999c3da250c258ebb390c92943965b3e11b6440946af5c13355",
+        "aed158792652fdf7b3fe19c7946b20a7bed8dfaaa7d13f17e38336db701df073",
+        "fb106a9383392511442a0a72997ef2c3edf7974acead0440d88f8ec8b5f95d24",
+        "0b3d69c0bee3537e6719f32b6ef7b4b9e4afc49b32c8bcf82640e2bd01158c5e",
+        "c1068111b9e93c3c6957c69d1d02e868e21aff87830c45a9eef421023de7cf7d",
+        "2f7628d3199b2141af582e828b807f07b3dd10015de0aeee214a04a5a112d244",
+        "b37d876a51c36907cc40f8de614f8844928f109d4f2d65d77fd256aefc11d1f4",
+        "5c5cd3467bdab730b832e71c9436df32a956e7a2e1a76c6b17058e62365d1680",
+        "bf1b762f4fb447397953e3697622de128a8d9171046a912fe992627578a84b0e",
+        "893314cf39cc7798c87d941d75ed06cd04b410985f6fbae3883767007f552d35",
+        "193abe7b7e9a563cc35270ee837f5b88bc13c6ac92ffc44d595ccd94361092a6",
+        "88d34528c783fd4d0278022ef659162bdd63bc234b7d2367821c6789f7bbde36",
+        "da6c1fb1fe00ff3ed6d99d174353262d9e534ea1e8f0f46cc4752fae16457961",
+        "a1eda3593cc0e7735e79e889857ade11ef37ec02dea433dc0e7dbcb6aa66e5de",
+        "2fc909904979134877de0634a50ea4f4ede8dc899247a9e1f53d900ce707ccbb",
+        "209c7b0fd53a5a9ffc6af93e2f024783650be153f332b61fa004a1b7d5261d53"
+      ],
+      "padded_length": 17,
+      "useful_tokens": 156,
+      "padded_tokens": 272,
+      "padding_tokens": 116
+    },
+    {
+      "id": "d4d4204fabe608fed6e08ed22fd7c94d6f3aecfafe99a6a020b879c36b8e3061",
+      "ids": [
+        "850476b0cf301b69f089d6b163d010cf41f29b243e722f288b8ba101bec7cc16",
+        "633ae6a5dce05b8e64448df843247fcec8c890950a917e4c11c227bd3883d695",
+        "b6784b4b3f42e7a1e80da6e00b9e719a4ac7db5579c8adcee3e96aeb2a774ad4",
+        "4e920c79edc0507c1d36a0f091534477f01fcc9f7b51d76be181199507c0fcea",
+        "dcfc57aea52cb6493fc91dae81dc1ba202a77a17ea7a8cc9c23a408235438ad4",
+        "c7f2940ff01d969ca7be3fea3cec3fd86e45aa93e02a71cefa6ae5eab7e7b230",
+        "860d1cd66321f99bb3c23b8179e39e89486bdc517f7ffb69e7f0adc181795e4a",
+        "3b670eea43edb38cc2deeed682202e838b2bf6eb4ee432950cdc41366845cd99",
+        "1526106a7c7f11947d90ba1c1a3ba89b0bcc3fae03d0e1db4ce43918c460378f",
+        "2f8fea6e955edad0cf8710cab5a9454406fdc06b5ad1ad7006439dd5d010a5fe",
+        "33ad4bf7cb44a87574693c10bb666423561d95b0299a905c8d91bb8a19a98fd4",
+        "debf4a433d8f1f7689f73ef906352fccf5aa053676a5f1fa775694e4a4a99429",
+        "5cd2ea5c4065ec9045cf9c819936cd1e2ecbd840af22989801fc783b5192dbe6",
+        "d990299d654358a2b304a2d19ec8282cd328029458d234a71824c257dc0a420e",
+        "91395804572cfc6e770ae6b31f652833599b8e65f59141a3eefe1193c1ab927f",
+        "b56f14a0b917c9cedd8bfa13ba38fc21ff32d7629acb78e46a92a229764cc594"
+      ],
+      "occurrences": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_tokens": [
+        492,
+        493,
+        493,
+        495,
+        496,
+        499,
+        500,
+        501,
+        504,
+        505,
+        505,
+        507,
+        509,
+        509,
+        510,
+        512
+      ],
+      "input_sha256": [
+        "a4719ac71120d6190791ac4288ba71fa1b649d8fd6817d638d7f1f339a1617f6",
+        "560c5d6fc45204431e8874204af3b502f92bd3fcc77335603d6fada186b9a0cb",
+        "8f447594430e1f8c956b5680d2ebdf86c4601f2e95d38001328984e42e1820e2",
+        "7cd4e1cc857afb17d01fa165a8a23d5c0141b7f3efb5ea86cfe254ee333fdbe2",
+        "190c002435d68eb9dbaca2287a6bfcbd58828307b2c9071f094f55b310b63b54",
+        "d43956b09934032e009d1e408691f429661b54e173de93d13d99306837531669",
+        "2796f83f8bc8f76b6ffa310b7740395f288b7977e6923e8ccdee67506d3cbbe5",
+        "d663213bad0c68563cb5eb9465b65824b1778afec662e74670b085ad7f19ec50",
+        "caba78df1dfe25c4a1cc02e0156e2fab95d5a9b0a14020e7b469cb1a8331c16b",
+        "5fc9eebd4c9b1e8efb51d99f0e0c0b68285eee6050c2829e5c15a7316808d91e",
+        "664fcd9b84ff71c860bc656b38ddcb88e597a23e3aff5f7f3b129df5d7828b37",
+        "84498ffb3f3ed91191bd9c4b9d8b27fc338d7bb34abd7f77320598cd5a78e4e0",
+        "2993ee6f7a2e6706af5c88e4cea8823e53a98605179b60e7526b01c61d3ccdf8",
+        "abbe36994d9b22945b2feca920dbb4ad6c1b98e9ef30d67c37328a8386d9aa68",
+        "fb4e319d769b098200a89149d61a2ae6138d040ecf810c393da8c4a67e6de64b",
+        "411c1d26ea144515f831221e30b05415f5dc2cd6547987d71cb48914b99b2f18"
+      ],
+      "padded_length": 512,
+      "useful_tokens": 8030,
+      "padded_tokens": 8192,
+      "padding_tokens": 162
+    },
+    {
+      "id": "95ef66aa488530f70f35a780c0028e625cd8298fc6d489c9c2755d0eb0f199b3",
+      "ids": [
+        "dcfc57aea52cb6493fc91dae81dc1ba202a77a17ea7a8cc9c23a408235438ad4",
+        "7390a8559edae97c7e10f7d42e413d402c5692215ff9c529163acbaf8eed56a8",
+        "21b32777962c329378381674e84f668ec36c862bd3e5f51cc3ecae88b6843ffa",
+        "e4eae57b325227476dff9c8b2511c4e3ff0c50348c1d36a0af6d910360bcd21d",
+        "2402ec8d27e4cc4b68e9d32e654256d745da6e444bfb3df184e0fb2699714c77",
+        "74c079dedbb015df158de5aff5f54bef32df4a99422e6d4c8c18b54568456c52",
+        "f32f739f44f9906f45e4ebbcd654ece121b7dc9f5c65d05d6406d2eb89370698",
+        "44665cd411d0ae8acf68506ea5debfc9f9e70fbc1e2252f6f983c30f1bdef02b",
+        "d362390d82327df41ed061b89bbe54dbffde842d8c813d7d903f5994be4e8dcc",
+        "da653711688d7ba58a9bfb059a9683b902cbdfb9ae3baf0996dadf3628793163",
+        "d71dd5e51e4d7cb8211513ca641c53a7357422886b7e07504ddaf1e88cce3f02",
+        "90a29a70c30db6b97feb604c44c010e1eb76d95c551ff540fb137efa55a7ff2c",
+        "95ed06392549d321af850c319238e6520a108c86e489adb843670b8927222471",
+        "10c1e20a4f4960ecf6c835966f4e50d038b425754f08a4483330259bd96ea9ca",
+        "6a7611eb74ca57f66cfd8c9b0bb7524ebf7ed1e24da8b31e78c08468eb5b85b4",
+        "3735598e4e61edc831809d2fb57327383fa320f96bfcc39096165fea10caabc8"
+      ],
+      "occurrences": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_tokens": [
+        496,
+        227,
+        248,
+        408,
+        11,
+        121,
+        95,
+        146,
+        316,
+        237,
+        304,
+        381,
+        444,
+        58,
+        482,
+        111
+      ],
+      "input_sha256": [
+        "190c002435d68eb9dbaca2287a6bfcbd58828307b2c9071f094f55b310b63b54",
+        "5190e3ad46199e28e9e4a103481aa5ca0a54f67fce6ddf0afdcd9627427eb800",
+        "aeb1e802756a519317a362a0b9a8dce92560718ef811ad7ec4906172691b2ada",
+        "f7fb63dafecf82828ae9974007c7f49ef1bf133dde847fc18de11702f48a64fa",
+        "bf1b762f4fb447397953e3697622de128a8d9171046a912fe992627578a84b0e",
+        "e5cc1af61e3bd47a96716635057d14dab0fe2205e7bf913a86c280eb620b515a",
+        "4aeaabce588f1655d030e009839008e5a6f5401575d820da738bde15d030dbb4",
+        "405b040c9d91ac56c3faaf4edb44e3ddede1c345d504365a412a906d62ed6204",
+        "fbed5dfbf112c400eed647cd0d406d2e3b739f54d4d1ffd8f981f71ecc5114fd",
+        "7f70adfc5b526a6d11d94a3f16c8092ef9f851d2849a803d51f7218e6a0c1b0a",
+        "d53573ac70fa9c129e11eb95046620705e709faf1b1cc3b2598048f0c10c98b2",
+        "356f90949023ddf4566fa31fb2cd397205199a43217fb94000a9fc0600be36bc",
+        "0ebd8876d9a9fc540565868c2ec396d3ec62b717acb9facf353a951087a9feb0",
+        "ef81e04603721d25abd49537dfad66822772db7a012a3eaf69888e7dada2a294",
+        "a6aff5f5186d7b669ca251ce3dcaffc4c352dcdef104e260e21eb8eff1c55549",
+        "6d976805b07236169ad236c99d81cf88514928d7e398019e3ee2c87d24caffd5"
+      ],
+      "padded_length": 496,
+      "useful_tokens": 4085,
+      "padded_tokens": 7936,
+      "padding_tokens": 3851
+    }
+  ],
+  "boundary_checked": 512,
+  "over_limit_rejected": true,
+  "aba_passed": true,
+  "responses": [
+    [
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.015685347840189934,
+          "H2": 0.0017556935781612992,
+          "HR": 0.0042336187325417995,
+          "OK": 0.9580538868904114,
+          "S": 0.003218309720978141,
+          "S3": 0.002501389477401972,
+          "SH": 0.007287266198545694,
+          "V": 0.004350195173174143,
+          "V2": 0.0029141544364392757
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.019879035651683807,
+          "H2": 0.00212463247589767,
+          "HR": 0.0057167052291333675,
+          "OK": 0.9480981230735779,
+          "S": 0.00395939452573657,
+          "S3": 0.002868112875148654,
+          "SH": 0.008114463649690151,
+          "V": 0.005779575556516647,
+          "V2": 0.0034599164500832558
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.00448978366330266,
+          "H2": 0.0007268321933224797,
+          "HR": 0.001323683187365532,
+          "OK": 0.9840789437294006,
+          "S": 0.0014129839837551117,
+          "S3": 0.0010504010133445263,
+          "SH": 0.0036628751549869776,
+          "V": 0.001797980978153646,
+          "V2": 0.0014563443837687373
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.009114967659115791,
+          "H2": 0.0010089075658470392,
+          "HR": 0.0023291450925171375,
+          "OK": 0.9763934016227722,
+          "S": 0.0017395331524312496,
+          "S3": 0.0012550029205158353,
+          "SH": 0.003491124603897333,
+          "V": 0.002881058491766453,
+          "V2": 0.0017869059229269624
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.005468615796416998,
+          "H2": 0.0007511649164371192,
+          "HR": 0.0017321015475317836,
+          "OK": 0.9828252196311951,
+          "S": 0.0014584240270778537,
+          "S3": 0.0009965288918465376,
+          "SH": 0.0029368626419454813,
+          "V": 0.002308686962351203,
+          "V2": 0.001522336038760841
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.009109594859182835,
+          "H2": 0.000903317064512521,
+          "HR": 0.0019246116280555725,
+          "OK": 0.9784663319587708,
+          "S": 0.0015333743067458272,
+          "S3": 0.0010986377019435167,
+          "SH": 0.0028693219646811485,
+          "V": 0.0026338163297623396,
+          "V2": 0.0014610080979764462
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.00440779747441411,
+          "H2": 0.0006521338364109397,
+          "HR": 0.0011959979310631752,
+          "OK": 0.9853090643882751,
+          "S": 0.00159376987721771,
+          "S3": 0.0009643788798712194,
+          "SH": 0.0026297015137970448,
+          "V": 0.0020041251555085182,
+          "V2": 0.0012431934010237455
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.008468798361718655,
+          "H2": 0.0009319770033471286,
+          "HR": 0.002061175648123026,
+          "OK": 0.978226363658905,
+          "S": 0.0017069341847673059,
+          "S3": 0.0008976439130492508,
+          "SH": 0.0034771778155118227,
+          "V": 0.002696574665606022,
+          "V2": 0.0015332907205447555
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.006868682336062193,
+          "H2": 0.0007490170537494123,
+          "HR": 0.0017890409799292684,
+          "OK": 0.9823519587516785,
+          "S": 0.0017162185395136476,
+          "S3": 0.0009625543025322258,
+          "SH": 0.002091032452881336,
+          "V": 0.00208021211437881,
+          "V2": 0.0013912385329604149
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0023488581646233797,
+          "H2": 0.000379827746655792,
+          "HR": 0.0008075624937191606,
+          "OK": 0.9914421439170837,
+          "S": 0.0008656741119921207,
+          "S3": 0.0005538210971280932,
+          "SH": 0.0017930145841091871,
+          "V": 0.0010730287758633494,
+          "V2": 0.0007359720766544342
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.003209817223250866,
+          "H2": 0.00036318576894700527,
+          "HR": 0.0008182882447727025,
+          "OK": 0.9906238913536072,
+          "S": 0.0008468795567750931,
+          "S3": 0.0005254647694528103,
+          "SH": 0.001794003532268107,
+          "V": 0.001151454634964466,
+          "V2": 0.0006670065340586007
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0040624612011015415,
+          "H2": 0.0004715884570032358,
+          "HR": 0.0013095969334244728,
+          "OK": 0.9865527749061584,
+          "S": 0.0012646210379898548,
+          "S3": 0.0007106516277417541,
+          "SH": 0.0028874618001282215,
+          "V": 0.0016858100425451994,
+          "V2": 0.0010550142033025622
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0035425445530563593,
+          "H2": 0.0005363441887311637,
+          "HR": 0.0010464289225637913,
+          "OK": 0.9883943796157837,
+          "S": 0.0012270350707694888,
+          "S3": 0.000794863561168313,
+          "SH": 0.0021127299405634403,
+          "V": 0.0014389113057404757,
+          "V2": 0.0009067910141311586
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0018454310484230518,
+          "H2": 0.0002637069846969098,
+          "HR": 0.0004901316133327782,
+          "OK": 0.9938687682151794,
+          "S": 0.0005639588925987482,
+          "S3": 0.0003744503774214536,
+          "SH": 0.0012798309326171875,
+          "V": 0.0008160221041180193,
+          "V2": 0.0004976490163244307
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.004967658314853907,
+          "H2": 0.0005192586104385555,
+          "HR": 0.001432675402611494,
+          "OK": 0.9857637286186218,
+          "S": 0.0013735536485910416,
+          "S3": 0.0007576395873911679,
+          "SH": 0.0023054007906466722,
+          "V": 0.0018130838871002197,
+          "V2": 0.0010669365292415023
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.004425286315381527,
+          "H2": 0.0004543537797871977,
+          "HR": 0.001136672217398882,
+          "OK": 0.9875627756118774,
+          "S": 0.0009158568573184311,
+          "S3": 0.0006113513954915106,
+          "SH": 0.0025201886892318726,
+          "V": 0.0014906390570104122,
+          "V2": 0.0008829163271002471
+        },
+        "score_type": "probabilities"
+      }
+    ],
+    [
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.002589432056993246,
+          "H2": 0.00046516326256096363,
+          "HR": 0.0009537842124700546,
+          "OK": 0.9895193576812744,
+          "S": 0.0015811379998922348,
+          "S3": 0.0007733779493719339,
+          "SH": 0.0016638829838484526,
+          "V": 0.0013646369334310293,
+          "V2": 0.0010891467100009322
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0015582984779030085,
+          "H2": 0.0003601995122153312,
+          "HR": 0.0005846902495250106,
+          "OK": 0.9931941032409668,
+          "S": 0.001154903438873589,
+          "S3": 0.0006657873163931072,
+          "SH": 0.0010454031871631742,
+          "V": 0.0007971053710207343,
+          "V2": 0.0006395158707164228
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0023554933723062277,
+          "H2": 0.0005127687472850084,
+          "HR": 0.0007371355895884335,
+          "OK": 0.98921799659729,
+          "S": 0.0025153900496661663,
+          "S3": 0.0010491593275219202,
+          "SH": 0.0012426561443135142,
+          "V": 0.0014656232669949532,
+          "V2": 0.0009038118878379464
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.007262255996465683,
+          "H2": 0.0020446183625608683,
+          "HR": 0.003810377325862646,
+          "OK": 0.9633041024208069,
+          "S": 0.006153464782983065,
+          "S3": 0.0035017544869333506,
+          "SH": 0.00566226476803422,
+          "V": 0.0040534124709665775,
+          "V2": 0.00420775543898344
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.00222183158621192,
+          "H2": 0.0005505397566594183,
+          "HR": 0.0007476898026652634,
+          "OK": 0.9889456629753113,
+          "S": 0.002508161123842001,
+          "S3": 0.0009327832376584411,
+          "SH": 0.0014917374355718493,
+          "V": 0.0016069356352090836,
+          "V2": 0.0009946656646206975
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.017139025032520294,
+          "H2": 0.004415974020957947,
+          "HR": 0.007385609671473503,
+          "OK": 0.885982096195221,
+          "S": 0.04314626380801201,
+          "S3": 0.011704330332577229,
+          "SH": 0.006228551734238863,
+          "V": 0.016737928614020348,
+          "V2": 0.0072602867148816586
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.001736841513775289,
+          "H2": 0.0003957308072131127,
+          "HR": 0.0006953401607461274,
+          "OK": 0.9918566942214966,
+          "S": 0.0017940558027476072,
+          "S3": 0.0008526312885805964,
+          "SH": 0.0009082767646759748,
+          "V": 0.001041105599142611,
+          "V2": 0.000719342497177422
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0016551893204450607,
+          "H2": 0.00033299988717772067,
+          "HR": 0.000659362121950835,
+          "OK": 0.9925427436828613,
+          "S": 0.0012342305853962898,
+          "S3": 0.0005681710317730904,
+          "SH": 0.0011911102337762713,
+          "V": 0.0010515727335587144,
+          "V2": 0.0007646244484931231
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0042739976197481155,
+          "H2": 0.0009900148725137115,
+          "HR": 0.002238592831417918,
+          "OK": 0.9788706302642822,
+          "S": 0.004105572588741779,
+          "S3": 0.0019575608894228935,
+          "SH": 0.0028597679920494556,
+          "V": 0.002359556034207344,
+          "V2": 0.002344290493056178
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0017515560612082481,
+          "H2": 0.00031686032889410853,
+          "HR": 0.000608087342698127,
+          "OK": 0.9928078651428223,
+          "S": 0.0010524631943553686,
+          "S3": 0.0006082450272515416,
+          "SH": 0.0013166816206648946,
+          "V": 0.0008544498705305159,
+          "V2": 0.0006836368120275438
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.004091944079846144,
+          "H2": 0.0008363108499906957,
+          "HR": 0.001857935800217092,
+          "OK": 0.9811899662017822,
+          "S": 0.0034332110080868006,
+          "S3": 0.0016839749878272414,
+          "SH": 0.0026569801848381758,
+          "V": 0.002247548196464777,
+          "V2": 0.0020021628588438034
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.002340140054002404,
+          "H2": 0.0003908067010343075,
+          "HR": 0.0008171814261004329,
+          "OK": 0.9911825656890869,
+          "S": 0.001461222069337964,
+          "S3": 0.0006763306446373463,
+          "SH": 0.0012350314063951373,
+          "V": 0.0010895455488935113,
+          "V2": 0.0008072936325334013
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.004501756280660629,
+          "H2": 0.0011017598444595933,
+          "HR": 0.001644491101615131,
+          "OK": 0.9770267605781555,
+          "S": 0.006567928474396467,
+          "S3": 0.00227418914437294,
+          "SH": 0.00207048119045794,
+          "V": 0.002914664801210165,
+          "V2": 0.0018980596214532852
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0015142729971557856,
+          "H2": 0.000356703472789377,
+          "HR": 0.0005859844386577606,
+          "OK": 0.993279755115509,
+          "S": 0.0011350983986631036,
+          "S3": 0.0006664100801572204,
+          "SH": 0.001017619390040636,
+          "V": 0.0008023184491321445,
+          "V2": 0.0006418030243366957
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.002893391065299511,
+          "H2": 0.0005480599356815219,
+          "HR": 0.0009627182153053582,
+          "OK": 0.9866397976875305,
+          "S": 0.0035809865221381187,
+          "S3": 0.0013708375627174973,
+          "SH": 0.0012851087376475334,
+          "V": 0.0016607822617515922,
+          "V2": 0.0010583740659058094
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0016469002002850175,
+          "H2": 0.0003877349372487515,
+          "HR": 0.0006350346375256777,
+          "OK": 0.9927619099617004,
+          "S": 0.0012543966295197606,
+          "S3": 0.0007597449002787471,
+          "SH": 0.001052473671734333,
+          "V": 0.0008328845142386854,
+          "V2": 0.0006688594003207982
+        },
+        "score_type": "probabilities"
+      }
+    ],
+    [
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.00222183158621192,
+          "H2": 0.0005505397566594183,
+          "HR": 0.0007476898026652634,
+          "OK": 0.9889456629753113,
+          "S": 0.002508161123842001,
+          "S3": 0.0009327832376584411,
+          "SH": 0.0014917374355718493,
+          "V": 0.0016069356352090836,
+          "V2": 0.0009946656646206975
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0021625563967972994,
+          "H2": 0.00030325210536830127,
+          "HR": 0.0006776449154131114,
+          "OK": 0.991907000541687,
+          "S": 0.0010582085233181715,
+          "S3": 0.0005200532032176852,
+          "SH": 0.0014644908951595426,
+          "V": 0.0011421313975006342,
+          "V2": 0.0007646613521501422
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.003549099899828434,
+          "H2": 0.0006214507739059627,
+          "HR": 0.001325949328020215,
+          "OK": 0.9862222075462341,
+          "S": 0.0020333805587142706,
+          "S3": 0.0009779687970876694,
+          "SH": 0.0020564566366374493,
+          "V": 0.0016843052580952644,
+          "V2": 0.0015293025644496083
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0054082670249044895,
+          "H2": 0.0012697222409769893,
+          "HR": 0.002703843405470252,
+          "OK": 0.9736018180847168,
+          "S": 0.005119719542562962,
+          "S3": 0.0020352310966700315,
+          "SH": 0.003534745890647173,
+          "V": 0.003926915116608143,
+          "V2": 0.002399654360488057
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.006868694443255663,
+          "H2": 0.0007490183925256133,
+          "HR": 0.0017890441231429577,
+          "OK": 0.9823518395423889,
+          "S": 0.0017162216827273369,
+          "S3": 0.0009625565144233406,
+          "SH": 0.0020910361781716347,
+          "V": 0.0020802170038223267,
+          "V2": 0.0013912416761741042
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.003396609565243125,
+          "H2": 0.0006345535512082279,
+          "HR": 0.0013978623319417238,
+          "OK": 0.9849058985710144,
+          "S": 0.0029365464579313993,
+          "S3": 0.0012660921784117818,
+          "SH": 0.0019888482056558132,
+          "V": 0.002115425653755665,
+          "V2": 0.001358175533823669
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.003636912675574422,
+          "H2": 0.0006331016193144023,
+          "HR": 0.0009701098315417767,
+          "OK": 0.9864559173583984,
+          "S": 0.0027502307202667,
+          "S3": 0.0012277220375835896,
+          "SH": 0.0013573156902566552,
+          "V": 0.001943201757967472,
+          "V2": 0.001025480916723609
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.011543095111846924,
+          "H2": 0.0022918451577425003,
+          "HR": 0.004268365912139416,
+          "OK": 0.9538037776947021,
+          "S": 0.008001343347132206,
+          "S3": 0.003648855723440647,
+          "SH": 0.006536914501339197,
+          "V": 0.006227686069905758,
+          "V2": 0.00367807038128376
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0033655904699116945,
+          "H2": 0.00047910038847476244,
+          "HR": 0.0009052983950823545,
+          "OK": 0.9891238212585449,
+          "S": 0.0017548277974128723,
+          "S3": 0.0008704712381586432,
+          "SH": 0.0012132724514231086,
+          "V": 0.0013425577199086547,
+          "V2": 0.000944953819271177
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0030339888762682676,
+          "H2": 0.0005323938094079494,
+          "HR": 0.0008567199110984802,
+          "OK": 0.9890250563621521,
+          "S": 0.0014813941670581698,
+          "S3": 0.0006712169270031154,
+          "SH": 0.0019254297949373722,
+          "V": 0.001498468336649239,
+          "V2": 0.0009751667967066169
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0015300298109650612,
+          "H2": 0.0003228890709578991,
+          "HR": 0.0006165279191918671,
+          "OK": 0.9931500554084778,
+          "S": 0.001300120959058404,
+          "S3": 0.0006184317753650248,
+          "SH": 0.0008951409836299717,
+          "V": 0.0009386818273924291,
+          "V2": 0.0006280858651734889
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.003584884572774172,
+          "H2": 0.0006973822019062936,
+          "HR": 0.0014188664499670267,
+          "OK": 0.9848623275756836,
+          "S": 0.002587136346846819,
+          "S3": 0.001205709995701909,
+          "SH": 0.0021026097238063812,
+          "V": 0.001914642401970923,
+          "V2": 0.0016264398582279682
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0015110811218619347,
+          "H2": 0.0003386329917702824,
+          "HR": 0.0005645872442983091,
+          "OK": 0.9935401082038879,
+          "S": 0.0010639044921845198,
+          "S3": 0.0006149259279482067,
+          "SH": 0.000980118871666491,
+          "V": 0.00077447370858863,
+          "V2": 0.0006122482009232044
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0033910979982465506,
+          "H2": 0.0004815277352463454,
+          "HR": 0.0011832298478111625,
+          "OK": 0.9873332977294922,
+          "S": 0.001650389051064849,
+          "S3": 0.0008117458783090115,
+          "SH": 0.0022602707613259554,
+          "V": 0.0017533928621560335,
+          "V2": 0.0011350428685545921
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.0043150195851922035,
+          "H2": 0.0007730309152975678,
+          "HR": 0.001805722014978528,
+          "OK": 0.9821380376815796,
+          "S": 0.002697052201256156,
+          "S3": 0.001202346640639007,
+          "SH": 0.002916146069765091,
+          "V": 0.002339546335861087,
+          "V2": 0.0018131238175556064
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "OK",
+        "scores": {
+          "H": 0.005338382441550493,
+          "H2": 0.001322160940617323,
+          "HR": 0.002907482674345374,
+          "OK": 0.9645451903343201,
+          "S": 0.009053085930645466,
+          "S3": 0.003561299992725253,
+          "SH": 0.004849489312618971,
+          "V": 0.005079234484583139,
+          "V2": 0.0033436466474086046
+        },
+        "score_type": "probabilities"
+      }
+    ]
+  ],
+  "unique_inputs": 400,
+  "torch_inference": {
+    "allocated_bytes": 2309077504,
+    "reserved_bytes": 2705326080
+  },
+  "seconds": 4.427827926992904,
+  "memory": {
+    "pid": 5401,
+    "gpu_uuid": "GPU-d70193d1-98e5-e267-8594-19287ece3ae5",
+    "method_id": "nvidia-smi-stream-100ms-v2",
+    "method_version": 2,
+    "method": {
+      "id": "nvidia-smi-stream-100ms-v2",
+      "version": 2,
+      "interval_ms": 100,
+      "timestamp_source": "monotonic_receive"
+    },
+    "requested_interval_seconds": 0.1,
+    "status": "measured",
+    "windows": {
+      "setup": {
+        "sampled_gpu_peak_mib": 98.0,
+        "host_rss_peak_bytes": null,
+        "samples": 1,
+        "valid_gpu_samples": 1,
+        "actual_intervals_seconds": [],
+        "status": "measured"
+      },
+      "inference": {
+        "sampled_gpu_peak_mib": 3310.0,
+        "host_rss_peak_bytes": null,
+        "samples": 16,
+        "valid_gpu_samples": 16,
+        "actual_intervals_seconds": [
+          0.10017926897853613,
+          0.1003536150092259,
+          0.10027044999878854,
+          0.10028782198787667,
+          0.10018782402039506,
+          0.10015851998468861,
+          0.10018841599230655,
+          0.10015451302751899,
+          0.1002492299885489,
+          0.1003148719901219,
+          0.10021437500836328,
+          0.10019507800461724,
+          0.1001942879811395,
+          0.10013113802415319,
+          0.10018919798312709
+        ],
+        "status": "measured"
+      }
+    },
+    "boundaries": {
+      "setup_start": 167542.315162729,
+      "setup_end": 167544.204144072,
+      "inference_start": 167544.204144072,
+      "inference_end": 167545.752946113
+    },
+    "samples": [
+      {
+        "phase": "setup",
+        "received": 167544.130260644,
+        "started": 167544.130260644,
+        "finished": 167544.130260644,
+        "gpu_process_mib": 98.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.230526435,
+        "started": 167544.230526435,
+        "finished": 167544.230526435,
+        "gpu_process_mib": 1268.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.330705704,
+        "started": 167544.330705704,
+        "finished": 167544.330705704,
+        "gpu_process_mib": 1268.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.431059319,
+        "started": 167544.431059319,
+        "finished": 167544.431059319,
+        "gpu_process_mib": 1356.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.531329769,
+        "started": 167544.531329769,
+        "finished": 167544.531329769,
+        "gpu_process_mib": 1422.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.631617591,
+        "started": 167544.631617591,
+        "finished": 167544.631617591,
+        "gpu_process_mib": 3292.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.731805415,
+        "started": 167544.731805415,
+        "finished": 167544.731805415,
+        "gpu_process_mib": 3292.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.831963935,
+        "started": 167544.831963935,
+        "finished": 167544.831963935,
+        "gpu_process_mib": 3292.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167544.932152351,
+        "started": 167544.932152351,
+        "finished": 167544.932152351,
+        "gpu_process_mib": 3294.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.032306864,
+        "started": 167545.032306864,
+        "finished": 167545.032306864,
+        "gpu_process_mib": 3294.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.132556094,
+        "started": 167545.132556094,
+        "finished": 167545.132556094,
+        "gpu_process_mib": 3308.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.232870966,
+        "started": 167545.232870966,
+        "finished": 167545.232870966,
+        "gpu_process_mib": 3310.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.333085341,
+        "started": 167545.333085341,
+        "finished": 167545.333085341,
+        "gpu_process_mib": 3310.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.433280419,
+        "started": 167545.433280419,
+        "finished": 167545.433280419,
+        "gpu_process_mib": 3310.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.533474707,
+        "started": 167545.533474707,
+        "finished": 167545.533474707,
+        "gpu_process_mib": 3310.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.633605845,
+        "started": 167545.633605845,
+        "finished": 167545.633605845,
+        "gpu_process_mib": 3310.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 167545.733795043,
+        "started": 167545.733795043,
+        "finished": 167545.733795043,
+        "gpu_process_mib": 3310.0,
+        "host_rss_bytes": null
+      }
+    ],
+    "errors": [],
+    "sampling_may_miss_short_peaks": true
+  },
+  "metadata": {
+    "variant_sha256": "1b46b8abc0075badef6b0a9afb7aac753b9a4073a69b6547a039cded1b42bb0b",
+    "backend_requested": "eager",
+    "dtype": "float32",
+    "preparation": {
+      "adapter": "koala",
+      "limit": 512,
+      "assets": {
+        "effective_tokenizer": "88c20c05ff448251c69fbf30ff08f0f0ce78bb046521e9a282fc8054bd8c8d31",
+        "effective_chat_template": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "preparation_source": "73509b0160a326b22feffeb3bbdc26038d274f2313b5fa881862f0dadaca0054"
+      }
+    },
+    "batch_policy": {
+      "padding": "longest",
+      "padding_side": "right",
+      "truncation": false,
+      "sort_by_length": false,
+      "implementation": "native",
+      "pad_token_id": 0,
+      "generation_eos_in_count": true
+    },
+    "artifacts": {
+      "weight_files": {
+        "model.safetensors": {
+          "sha256": "ea5f0e4c73533341324519717de164dd3f788f42ff52b3658121dd00ef723c2c",
+          "bytes": 556825292
+        },
+        "pytorch_model.bin": {
+          "sha256": "4d990e67de0fde200e70d95bfe8a65d676a4c3644e2f9483a32658358842a156",
+          "bytes": 556870129
+        }
+      },
+      "weight_inventory_sha256": "5a543d2bf02f961d4492f166e3dd4f9e34f29fe4aa1938aa3e163c76166fd6e8"
+    },
+    "labels": [
+      "H",
+      "H2",
+      "HR",
+      "OK",
+      "S",
+      "S3",
+      "SH",
+      "V",
+      "V2"
+    ],
+    "attention": "eager",
+    "linear_attention": "reference",
+    "buffer_dtypes": [
+      "int64"
+    ],
+    "precision": {
+      "policy": "explicit",
+      "parameter_dtypes": [
+        "float32"
+      ],
+      "autocast_enabled": false,
+      "autocast_dtype": null
+    },
+    "prepared_compile_count": 0,
+    "backend_actual": "eager",
+    "backend": {
+      "runtime": "eager",
+      "attention": "eager",
+      "attention_requested": "native",
+      "linear_attention": "reference",
+      "compile_count": 0,
+      "rules_applied": [
+        "u1"
+      ],
+      "rules_skipped": {}
+    },
+    "backend_proof": {
+      "operators": [
+        "Activity Buffer Request",
+        "Memcpy DtoD (Device -> Device)",
+        "Memcpy DtoH (Device -> Pageable)",
+        "Memcpy DtoH (Device -> Pinned)",
+        "Memcpy HtoD (Pageable -> Device)",
+        "Memset (Unknown)",
+        "aten::_local_scalar_dense",
+        "aten::_softmax",
+        "aten::_to_copy",
+        "aten::abs",
+        "aten::all",
+        "aten::as_strided",
+        "aten::clone",
+        "aten::copy_",
+        "aten::detach_",
+        "aten::empty",
+        "aten::empty_strided",
+        "aten::eq",
+        "aten::fill_",
+        "aten::is_nonzero",
+        "aten::isfinite",
+        "aten::item",
+        "aten::lift_fresh",
+        "aten::mul",
+        "aten::ne",
+        "aten::resize_",
+        "aten::resolve_conj",
+        "aten::resolve_neg",
+        "aten::set_",
+        "aten::softmax",
+        "aten::to",
+        "aten::zero_",
+        "cudaDeviceSynchronize",
+        "cudaGraphLaunch",
+        "cudaLaunchKernel",
+        "cudaMemcpyAsync",
+        "cudaStreamIsCapturing",
+        "cudaStreamSynchronize",
+        "memcpy128",
+        "void (anonymous namespace)::softmax_warp_forward<float, float, float, 4, false, false>(float*, float const*, int, int, int, bool const*, int, bool)",
+        "void (anonymous namespace)::softmax_warp_forward<float, float, float, 9, false, false>(float*, float const*, int, int, int, bool const*, int, bool)",
+        "void at::native::_scatter_gather_elementwise_kernel<128, 8, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<4>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1}>(int, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<4>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1})",
+        "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1} const&)::{lambda(int)#1})",
+        "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::DivFunctor<float> > const&)::{lambda(int)#1})",
+        "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+        "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long> > const&)::{lambda(int)#1})",
+        "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1})",
+        "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+        "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4> >(at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4>)",
+        "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4> >(at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4>)",
+        "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#11}::operator()() const::{lambda(bool)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#11}::operator()() const::{lambda(bool)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+        "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+        "void at::native::vectorized_elementwise_kernel<2, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<2, at::native::CUDAFunctorOnSelf_add<long>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<long>, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)",
+        "void at::native::vectorized_elementwise_kernel<2, at::native::neg_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::neg_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul> >(int, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::AbsFunctor<float>, std::array<char*, 2ul> >(int, at::native::AbsFunctor<float>, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul> >(int, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<float>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<float>, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<float>, std::array<char*, 3ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<bool>, std::array<char*, 1ul> >(int, at::native::FillFunctor<bool>, std::array<char*, 1ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::GeluCUDAKernelImpl(at::TensorIteratorBase&, at::native::GeluType)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase&)::{lambda(bool)#1}, std::array<char*, 2ul> >(int, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase&)::{lambda(bool)#1}, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::sqrt_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::sqrt_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+        "void at::native::vectorized_gather_kernel<16, long>(char*, char*, long*, int, long, long, long, long, bool)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x128_8x4_tn_align1>(cutlass_80_simt_sgemm_128x128_8x4_tn_align1::Params)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_8x4_tn_align1>(cutlass_80_simt_sgemm_128x256_8x4_tn_align1::Params)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_tn_align1>(cutlass_80_simt_sgemm_256x128_8x4_tn_align1::Params)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x5_nn_align1>(cutlass_80_simt_sgemm_64x64_8x5_nn_align1::Params)",
+        "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 8, 9, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+        "void magma_sgemmEx_kernel<float, float, float, false, false, 6, 3, 5, 3, 3>(int, int, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, int, int, float const*, float const*, float, float, int, cublasLtEpilogue_t, int, void const*, long)"
+      ],
+      "rules_applied": [
+        "u1"
+      ],
+      "rules_skipped": {}
+    }
+  }
+}

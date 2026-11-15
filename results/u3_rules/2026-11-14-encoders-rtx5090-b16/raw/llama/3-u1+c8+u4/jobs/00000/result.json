@@ -1,0 +1,1589 @@
+{
+  "result_version": 4,
+  "status": "passed",
+  "job": {
+    "bucket": "B1",
+    "batch_size": 16,
+    "bucket_max": 512,
+    "stage": "preflight",
+    "variant": "candidate",
+    "seed": 17,
+    "resolved_path": "/workspace/guardrails/runs/tune-v4-b16/llama/3-u1+c8+u4/resolved_run.json",
+    "resolved_sha256": "bda1e33240de8b14a610285512b1037c37c10f8a8e2a47f33ab3c292009a5398",
+    "private_config_path": "/workspace/guardrails/runs/tune-v4-b16/llama/3-u1+c8+u4/.private/config.json",
+    "private_config_sha256": "525e8e50bc21ad4e0500506334a85b35c6b5f3a204f38f249416f5c96d28a633",
+    "input_path": "/workspace/guardrails/runs/tune-v4-b16/llama/3-u1+c8+u4/.private/00000.inputs.json",
+    "input_file_sha256": "05893a977623ac035ea513ef297ecf134e664c415f2d3256f98ba556fc5a671a"
+  },
+  "rows": [],
+  "quality_evaluated": false,
+  "precision_policy_version": 1,
+  "resolved_sha256": "bda1e33240de8b14a610285512b1037c37c10f8a8e2a47f33ab3c292009a5398",
+  "runtime": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "vram_bytes": 33670758400,
+    "gpu_uuid": "GPU-d70193d1-98e5-e267-8594-19287ece3ae5",
+    "driver": "595.91.07",
+    "cuda": "13.0",
+    "cudnn": 91900,
+    "python": "3.13.14",
+    "packages": {
+      "torchaudio": "2.11.0+cu130",
+      "pytz": "2026.5",
+      "nvidia-cusparselt-cu13": "0.8.0",
+      "mpmath": "1.3.0",
+      "flatbuffers": "25.12.19",
+      "cuda-toolkit": "13.0.2",
+      "urllib3": "2.8.0",
+      "tzdata": "2026.6",
+      "typing-inspection": "0.4.4",
+      "typing-extensions": "4.16.0",
+      "typer": "0.27.3",
+      "triton": "3.6.0",
+      "transformers": "5.20.1",
+      "tqdm": "4.70.1",
+      "torchvision": "0.26.0+cu130",
+      "torch": "2.11.0+cu130",
+      "tokenizers": "0.23.3",
+      "threadpoolctl": "3.7.0",
+      "sympy": "1.14.0",
+      "six": "1.17.0",
+      "shellingham": "1.5.4",
+      "setuptools": "81.0.0",
+      "sentencepiece": "0.2.2",
+      "sentence-transformers": "5.7.0",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "safetensors": "0.8.0",
+      "rich": "15.0.0",
+      "requests": "2.34.2",
+      "regex": "2026.9.29",
+      "pyyaml": "6.0.3",
+      "python-dateutil": "3.0.0",
+      "pygments": "2.21.0",
+      "pydantic-core": "2.50.1",
+      "pydantic": "2.14.1",
+      "psutil": "7.2.2",
+      "protobuf": "7.36.2",
+      "pillow": "13.0.0",
+      "peft": "0.21.2",
+      "pandas": "2.2.3",
+      "packaging": "26.3",
+      "onnxruntime-gpu": "1.23.2",
+      "onnx": "1.20.1",
+      "nvidia-nvtx": "13.0.85",
+      "nvidia-nvshmem-cu13": "3.4.5",
+      "nvidia-nvjitlink-cu12": "12.9.86",
+      "nvidia-nvjitlink": "13.0.88",
+      "nvidia-nccl-cu13": "2.28.9",
+      "nvidia-cusparse": "12.6.3.3",
+      "nvidia-cusolver": "12.0.4.66",
+      "nvidia-curand-cu12": "10.3.9.90",
+      "nvidia-curand": "10.4.0.35",
+      "nvidia-cufile": "1.15.1.6",
+      "nvidia-cufft-cu12": "11.3.3.83",
+      "nvidia-cufft": "12.0.0.61",
+      "nvidia-cudnn-cu13": "9.19.0.56",
+      "nvidia-cudnn-cu12": "9.19.0.56",
+      "nvidia-cuda-runtime-cu12": "12.8.90",
+      "nvidia-cuda-nvrtc": "13.0.88",
+      "nvidia-cuda-runtime": "13.0.96",
+      "nvidia-cuda-cupti": "13.0.85",
+      "nvidia-cublas-cu12": "12.8.4.1",
+      "nvidia-cublas": "13.1.0.3",
+      "numpy": "2.1.3",
+      "networkx": "3.7",
+      "narwhals": "2.28.0",
+      "ml-dtypes": "0.6.0",
+      "mdurl": "0.1.2",
+      "markupsafe": "3.0.4",
+      "markdown-it-py": "4.2.0",
+      "laya": "0.3.20",
+      "joblib": "1.6.0",
+      "jinja2": "3.1.6",
+      "idna": "3.20",
+      "humanfriendly": "10.0",
+      "huggingface-hub": "1.33.0",
+      "httpx": "0.28.1",
+      "httpcore": "1.0.9",
+      "hf-xet": "1.7.1",
+      "h11": "0.16.0",
+      "gliner2": "2.1.0",
+      "fsspec": "2026.9.0",
+      "flash-linear-attention": "0.4.2",
+      "fla-core": "0.4.2",
+      "filelock": "4.2.4",
+      "einops": "0.8.2",
+      "cuda-pathfinder": "1.8.4",
+      "cuda-bindings": "13.4.4",
+      "coloredlogs": "15.0.1",
+      "cloudpickle": "3.1.2",
+      "click": "8.5.0",
+      "charset-normalizer": "3.5.2",
+      "certifi": "2026.10.23",
+      "anyio": "4.15.1",
+      "annotated-types": "0.8.0",
+      "annotated-doc": "0.0.5",
+      "accelerate": "1.15.0"
+    },
+    "cpu_threads": 2,
+    "interop_threads": 1,
+    "tf32": false,
+    "cudnn_tf32": false,
+    "deterministic": true,
+    "deterministic_warn_only": true,
+    "host_sha256": "753c4b5f53b382fa326a9db0e2a3905911043c1e1e63deb66066783d468bc008",
+    "pid": 2873,
+    "timestamp": 1794644286.866431,
+    "monitor_method": "nvidia-smi-stream-100ms-v2",
+    "visible_device": 0
+  },
+  "setup_seconds": 2.003971703001298,
+  "torch_setup": {
+    "allocated_bytes": 284488704,
+    "reserved_bytes": 297795584
+  },
+  "size": {
+    "unique_parameter_buffer_storage_bytes": 283326984,
+    "dtypes": [
+      "torch.float32",
+      "torch.int64"
+    ],
+    "checkpoint_files_bytes": {
+      "model.safetensors": 283347432
+    },
+    "export_files_bytes": {},
+    "original_encoder_retained": false
+  },
+  "backend_proof": {
+    "operators": [
+      "Activity Buffer Request",
+      "Memcpy DtoD (Device -> Device)",
+      "Memcpy DtoH (Device -> Pageable)",
+      "Memcpy DtoH (Device -> Pinned)",
+      "Memcpy HtoD (Pageable -> Device)",
+      "Memset (Unknown)",
+      "aten::_local_scalar_dense",
+      "aten::_softmax",
+      "aten::_to_copy",
+      "aten::abs",
+      "aten::all",
+      "aten::as_strided",
+      "aten::clone",
+      "aten::copy_",
+      "aten::detach_",
+      "aten::empty",
+      "aten::empty_strided",
+      "aten::eq",
+      "aten::fill_",
+      "aten::is_nonzero",
+      "aten::isfinite",
+      "aten::item",
+      "aten::lift_fresh",
+      "aten::mul",
+      "aten::ne",
+      "aten::resize_",
+      "aten::resolve_conj",
+      "aten::resolve_neg",
+      "aten::set_",
+      "aten::softmax",
+      "aten::to",
+      "aten::zero_",
+      "cudaDeviceSynchronize",
+      "cudaGraphLaunch",
+      "cudaLaunchKernel",
+      "cudaMemcpyAsync",
+      "cudaStreamIsCapturing",
+      "cudaStreamSynchronize",
+      "triton_per_fused_add_addmm_native_layer_norm_view_0",
+      "triton_per_fused_add_addmm_native_layer_norm_view_1",
+      "triton_poi_fused_add_clamp_div_expand_gather_neg_sqrt_squeeze_transpose_1",
+      "triton_poi_fused_addmm_clone_permute_view_1",
+      "triton_poi_fused_addmm_gelu_1",
+      "triton_poi_fused_addmm_gelu_view_0",
+      "triton_poi_fused_clone_0",
+      "triton_poi_fused_clone_div_permute_sqrt_transpose_view_2",
+      "triton_poi_fused_clone_permute_repeat_view_0",
+      "triton_poi_fused_clone_permute_view_0",
+      "triton_poi_fused_clone_permute_view_1",
+      "triton_poi_fused_clone_select_0",
+      "triton_poi_fused_mul_squeeze_unsqueeze_0",
+      "triton_red_fused__softmax__to_copy_add_bitwise_not_exp_masked_fill_prepare_softmax_online_sub_view_0",
+      "triton_red_fused__to_copy_embedding_mul_native_layer_norm_unsqueeze_0",
+      "void (anonymous namespace)::softmax_warp_forward<float, float, float, 1, false, false>(float*, float const*, int, int, int, bool const*, int, bool)",
+      "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4> >(at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4>)",
+      "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul> >(int, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::AbsFunctor<float>, std::array<char*, 2ul> >(int, at::native::AbsFunctor<float>, std::array<char*, 2ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul>)",
+      "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_8x4_tn_align1>(cutlass_80_simt_sgemm_128x256_8x4_tn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_tn_align1>(cutlass_80_simt_sgemm_256x128_8x4_tn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x5_nn_align1>(cutlass_80_simt_sgemm_64x64_8x5_nn_align1::Params)",
+      "void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x5_tn_align1>(cutlass_80_simt_sgemm_64x64_8x5_tn_align1::Params)",
+      "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 8, 9, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+      "void magma_sgemmEx_kernel<float, float, float, true, false, 6, 4, 6, 3, 4>(int, int, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, int, int, float const*, float const*, float, float, int, cublasLtEpilogue_t, int, void const*, long)"
+    ],
+    "rules_applied": [
+      "c8",
+      "u4",
+      "u1"
+    ],
+    "rules_skipped": {}
+  },
+  "plans": [
+    {
+      "id": "abf4a524f95b7efafb56bbab774fa2c31ca5ce63a570dbeed981c3694bd78660",
+      "ids": [
+        "879fa7245ada7d73dd39df68bc44092768b2da744403c3fe3fdb8e9748354c6c",
+        "bce1e85990c5d63ccc64fd9b9e64edab1e1ab16f7f6b3eaf914155d3c0e667d0",
+        "08bb38aa527fb4e76d62876525523c59da6657512abf523003ebdcae855a8597",
+        "fabd2ec4c1c16694946b556c1dea4b344db6a3dc858858d32a61ac690495c43d",
+        "5c5b4e57e380abd25541993a1d6935ee0d823755b7209ebeb30b116f4029717c",
+        "0fa038cdda65b9cf787eebd0c2d37fd9ab88a744305d94d8fef572f63a86d114",
+        "84f3eb4e0f622f91a8eeaac8f0425e66b2f4803e3369dbb5eac4306badc0a02c",
+        "d95ed0a72b5050926f31789fb8879af1acc4be1aca888c68a970d8fd44b5d3be",
+        "5cbdf473f792669c743f52e4fb411ae992cdad2e8e7814320e91988fc12d4a68",
+        "02f4411bd441739eee99a79df053788a8aa25f775256056f494d56ae68b3d825",
+        "4ed82ca2f58f71cb5d0909d082381e40b9adcad2f5cd979e049cb76587611e35",
+        "5c4395b5c6851c0c79951720ca057a4e8cadfa6ebdcad42557b257ea3c78b8cd",
+        "c43bc6e853dbb17277823f0cc1cf0c76f88db8083d8b4ca746aab5210c5cf742",
+        "806eb4172a6c5ecc502fcf246b51d42ed041e43efe227f59c659cd576dd633a8",
+        "cf126eed69f0e6cf164775a62cb5c21dde2d9c6cd7ec71ce8d111f970bc12465",
+        "acaecf3da406c43b2d91134d08957026fa46e0e5c64ef8d2642d85f2077c5e03"
+      ],
+      "occurrences": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_tokens": [
+        5,
+        6,
+        7,
+        7,
+        10,
+        11,
+        12,
+        12,
+        13,
+        14,
+        17,
+        17,
+        17,
+        19,
+        20,
+        21
+      ],
+      "input_sha256": [
+        "b26b7094860d7ac2ab0e6e1ce65b0641e9d4cb96521c6170a09cc3aeb842a728",
+        "5ee5b67eeb0c29243d8823268545ef31fe5b91750d302686468bac92c8086511",
+        "7e2ddf931ab75c1446a7085e67d99a009a2911101e83438f3477ce304ffa2572",
+        "1b97b8ebdac8bb61a57261d603d49010039f241512ab4e2984b1ea36319fb11f",
+        "7ffde65d8948270b7f61b405184fd5a6046317a051397b2b6113fdabe9bf7574",
+        "b3d9b68b2b4d51d00b695bb7bf68260aa3c592e4fd87baaee5919cf038cacd5a",
+        "88b796fbfc09010c0ac1b7dc9c974f100ab38510c91c555bdb26358fe4fd4839",
+        "35879bf37a24e448491ea8d9b52af411b2a34669e5a3781051d2849328fab554",
+        "b337db6e8281ebbbfa10eb9001472d845cf2d11a8d2428e31ac3331ad6e529b1",
+        "d5538e2f14ba5f27e2bbfec35ecbd0f3b26d21c939429a84e67ef05d55dcfc6b",
+        "709cbb09634470eb90d43d11a159f320f7a342624d251e8e3879266e6701594e",
+        "6ff7641af1e6580ffb76c5112efdc0639587aa02abbd80d9bf69a116f88c9095",
+        "517bbdbb0cb2a5b438aa17f823463a0bfb6a531ed222f9ddd04c70748c9c9923",
+        "12fbd81bcbdc131815da7519942c4fd141e76026a167562737569edd5eaf1d0c",
+        "aea7156243f82c9eebe96b2368764c43ed538c592afd9ba020739251d570ac92",
+        "2d01f82e07ea4f7017d817b7f9f2f7e747d466925a2e7cc70505acfa5c6aaa25"
+      ],
+      "padded_length": 21,
+      "useful_tokens": 208,
+      "padded_tokens": 336,
+      "padding_tokens": 128
+    },
+    {
+      "id": "3c07129c8c9bde15d44518b3e6f8581cb4113834ffbe5544ececae1d6272bb94",
+      "ids": [
+        "6659e81ad18bc895ba1bac8c3c50a4b9257e89aac0fc83f837ab3f022737f6bc",
+        "0f3d3091fc35fba6bb5763cd156e7b49ca6e114985aba4972aba329b7e569664",
+        "66c8cb33f5fdf412c5bb63d4babdc14c19e308a2701a7e7acfbe004f884354df",
+        "7fe130907e926cc8678137437fbd02005a5f64fe78c10787ca437feab868b19a",
+        "8dc165eace246611aac9cb81463707cdeaf7432f3feaf80fe9be297a90d87868",
+        "2a160188768c8e9f89be8ea05011f7b06ae56018e14b3dec4284733ce2e0a3d2",
+        "93f607d46bedafa26f1a569a945422fea0fb9122c3d3d1211f3b8b83b37b3226",
+        "3cc056379e0259525a1ec72996568b2de69ff487da82553cf565b39e43babbe9",
+        "5553b127060d2c2d829b3e290fecc869cf19b7ac7a0d8468786d329be2d9d1c4",
+        "c986b9b123b138c6a2015195ace385c78d643a7131e7bae94872805d16b94eb9",
+        "97f744f41e8acbae14a1ac2e5110e999a21585adae0f1962e1efab8036145ec1",
+        "ada4b13cfd1ba9fef04f37ea71950facb343dbc325806422df35064ca404ca64",
+        "19940d963da7d2dade7b6ddc52869dc2a6511cd54d621889d81426a6213eef14",
+        "e46e3819627480a40e0568d1ce949736cea1b784f0f9657a70f3925791058eeb",
+        "8f1bf165c14afedeadd87341532954619159ee858281f1227d453f68ac07ab9f",
+        "c5503213ba47302feed5d6932680b700d514b88600ab9c790a4af21f0f3d372f"
+      ],
+      "occurrences": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_tokens": [
+        490,
+        491,
+        492,
+        495,
+        496,
+        498,
+        498,
+        499,
+        501,
+        501,
+        502,
+        503,
+        504,
+        506,
+        508,
+        512
+      ],
+      "input_sha256": [
+        "b9d641eabcfecc1e0674cb871450b52d3ed2470d4f1d4b6c4d17db793b404985",
+        "466bab155943f8a9f44ea83c8b1d6929cc58458d8552c289ae465ead099a62d5",
+        "528e7c2cf65a1fd637c3068cf5284b20ef551cd91d223215de807e0b44078235",
+        "d54ba2df6812c8190a06e17d73cd32959f0a41c20c02df31cc671eea43d4c3dd",
+        "3722f904dd4deaaaf48fc8daa02cdc7231cc3b9ae51fe4bf452411e88ab39533",
+        "b1c5305932c09a4213378d6b4b49a1ff7c14ce15444b893d3bfca494a6076c7c",
+        "1dd1129a2c278aaa1e35f57c46987ea447fa83a3d9f4e706e2a9273e54e877bb",
+        "7c060a7e4bff7f65c0ef08b05865d1b289f507e0b562f3a8de91a7c086555310",
+        "cb4b56103ee28c87fba15ab460aff9aa6c8cd4ce1032d53b1e9e8708e8abb86e",
+        "cfccc539abb6e208f5d3cede4ca39f2798869130322275b1c8257797c201d072",
+        "7b9b406611e9ccd480cd5829793929cf41e5170317d27173b8a864350f2612b3",
+        "3f72a0e5f7d24ba59a46ee9927d334738944e8bfb6bc9f09a1038853c1cce3c9",
+        "944473bf43c08cf4450b0632dc1fb79b6e10d7da7b61cf8d9929ef02af08508d",
+        "71d9409d30982f3e99fbc57103a8ab2d18ad0d2f659a8a73188014459223a2e3",
+        "78c7b5b3d3474bffef3dbde4b034357c3b62532ee9812a0cc7c2909f3a9eb6ad",
+        "03b492b88d5c57f7dfda7b2f2926038209e5023928995b26f7ceb52dc1ab67d7"
+      ],
+      "padded_length": 512,
+      "useful_tokens": 7996,
+      "padded_tokens": 8192,
+      "padding_tokens": 196
+    },
+    {
+      "id": "8d696173b9936cbd89ab2f8fc323fe556dbb75c29a81960b54809ec0d165943b",
+      "ids": [
+        "da0cfb88e5e180b36bc8c57b0102594b599dd1206cc79049207af7c7c81d042e",
+        "78fd90f7a10fd1283ec69b2af078a6c28fb1f3ffe45541111251a109db8791b4",
+        "21a42866edc9275cd3ffdc5bdd55275c61216456195cc2c5fa1bb1e507b8231f",
+        "e070d626675cee44d371fe4da313fca16177a1ca21c90735c2336afded0e55f0",
+        "25b9c7c91825c372bf6737ecb7303623c960872739b790b4e94649ad5d07ee8d",
+        "79a1ac4e778be15d4c5c61793a5ccc76b4153da9a3c1325c57a57b91fe7984ca",
+        "ed8882098e138e2252b07a67df3eefd50d605575557e700e694709467793b411",
+        "47e725dcb3a01e5e227cedaa5bf85140e844f91686cea6746dd8afb736d68eab",
+        "ceecf277232bc16fdd8c920b5cdf08a1b25bbca8dd6362737e3c31e5cbb1be65",
+        "d79dbd524ab03fc1f719aac6b71820a0efd81d5004ae64b89ce87b05af8a07d1",
+        "d49848607a11b0c83bb788a998434e58b0f08d83c4a972ab6a4c28502dc9369c",
+        "954cae750e923db6e47f07d8db14a45eae5bf10e201a4c8d19ed0c3d7cdb57e4",
+        "9a8f460bcf58e635efa8a06d3ec09b661f4bee4e5fce32291094b6a6f54857dd",
+        "0d00461e3d9ef73207b6e11edc13c312eaf28ce71c2ea7bc8998113ebb3adc0c",
+        "6fd969d6116cc0034c8924e203224734e95fa51de48bce835e82597aa6f5e60d",
+        "3cbf7e46b759003a9299c767aa995c4272c7679910bf966c2dbb0bc0b1fec927"
+      ],
+      "occurrences": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "total_tokens": [
+        206,
+        390,
+        336,
+        211,
+        27,
+        425,
+        122,
+        167,
+        200,
+        266,
+        173,
+        100,
+        353,
+        126,
+        396,
+        217
+      ],
+      "input_sha256": [
+        "6520e9951f4aa5ebc01a077c107eaea29db85fc38d93f648ddad917c5fcd2410",
+        "5c0c9e0d45ed5345ec280cd24dd85abf4c45ced198a6736d52e32955ca021450",
+        "c923f411bf1acb38fd9357dad3670e06287c182bc64625613677e01d1ab29e1a",
+        "b592d8b0a4397e1aae971c04a2195fb18b1bc5672c86ff096dd1b955dc6e03d5",
+        "c2e76162bd3f3abb6a9734aff8b8b652aa71ddf766e0fc5426382b84cd92fe2a",
+        "1ef73e4bdcdefd8129d1bda0c5d1d902f54a5741992da1df6a1529132d61776c",
+        "e0748c5d745228c54958bffb2e45c97ec72d32929c820cecffc429755728fed2",
+        "da32f67227648d143d1036923a03bddb8c6673b6445ae6b5e7cba02560f5e218",
+        "624db8b36d46abff6f0ed913d1b5c964c23a77cf3aee8fcc9dda0da7cd55aebe",
+        "54dcb88fa19f25db6be777888ce4932b74fcbf1f93145ff9278db2b5ce90a327",
+        "dbcc6dae92af51c38b68a72d1369469eb9597e118853c16cff58c2c8c38a14d4",
+        "92d326cbd578cbd25242f9f44a922c94bcc021024445a45f307b54e3067848b8",
+        "99b625a254ef1cf7e647df204f908dec681f234dd74c8bf9024c370baf74a1d8",
+        "e1722b4a20b63ee78e6bf00f971089822c9f5f29971d7172c29c89b65ba9bea2",
+        "3ae5f64d08425cb4ebcbbe47cf475c41b8adc983582125e6464d4a525efc1fb4",
+        "931c6ac2a74eb1a9391ed411bf5710b793c5c07a3250be6c8be8657f5c428559"
+      ],
+      "padded_length": 425,
+      "useful_tokens": 3715,
+      "padded_tokens": 6800,
+      "padding_tokens": 3085
+    }
+  ],
+  "boundary_checked": 512,
+  "over_limit_rejected": true,
+  "aba_passed": true,
+  "responses": [
+    [
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9947913885116577,
+          "LABEL_1": 0.005208639428019524
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9981153011322021,
+          "LABEL_1": 0.0018847085302695632
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9981885552406311,
+          "LABEL_1": 0.0018114754930138588
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9963715076446533,
+          "LABEL_1": 0.0036285421811044216
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9980689883232117,
+          "LABEL_1": 0.0019310676725581288
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9988976716995239,
+          "LABEL_1": 0.0011023207334801555
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9986685514450073,
+          "LABEL_1": 0.0013314798707142472
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.998817503452301,
+          "LABEL_1": 0.0011824577813968062
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9988068342208862,
+          "LABEL_1": 0.0011931753251701593
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9953548908233643,
+          "LABEL_1": 0.004645182751119137
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9981904625892639,
+          "LABEL_1": 0.0018095512641593814
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9981405735015869,
+          "LABEL_1": 0.0018594488501548767
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9983843564987183,
+          "LABEL_1": 0.0016156805213540792
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9982718229293823,
+          "LABEL_1": 0.0017281156033277512
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9947776794433594,
+          "LABEL_1": 0.005222287494689226
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9974920749664307,
+          "LABEL_1": 0.002507938537746668
+        },
+        "score_type": "probabilities"
+      }
+    ],
+    [
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9933156371116638,
+          "LABEL_1": 0.00668432516977191
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9950357675552368,
+          "LABEL_1": 0.004964206367731094
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.995784342288971,
+          "LABEL_1": 0.004215664230287075
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.992317795753479,
+          "LABEL_1": 0.007682258728891611
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9941273927688599,
+          "LABEL_1": 0.005872638896107674
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9026808738708496,
+          "LABEL_1": 0.09731914848089218
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.6591879725456238,
+          "LABEL_1": 0.3408120274543762
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.6565907597541809,
+          "LABEL_1": 0.3434092402458191
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9312483668327332,
+          "LABEL_1": 0.06875158101320267
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9985438585281372,
+          "LABEL_1": 0.0014561580028384924
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9866153001785278,
+          "LABEL_1": 0.013384686782956123
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.8459618091583252,
+          "LABEL_1": 0.15403825044631958
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9981456995010376,
+          "LABEL_1": 0.0018543519545346498
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9956117272377014,
+          "LABEL_1": 0.00438826996833086
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9801490902900696,
+          "LABEL_1": 0.01985093392431736
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9961930513381958,
+          "LABEL_1": 0.003806981723755598
+        },
+        "score_type": "probabilities"
+      }
+    ],
+    [
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9962162375450134,
+          "LABEL_1": 0.0037837191484868526
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9926747679710388,
+          "LABEL_1": 0.0073252711445093155
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.6515864133834839,
+          "LABEL_1": 0.3484136164188385
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9954012632369995,
+          "LABEL_1": 0.004598666913807392
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9985566735267639,
+          "LABEL_1": 0.0014433496398851275
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9981301426887512,
+          "LABEL_1": 0.001869840081781149
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9922440648078918,
+          "LABEL_1": 0.007755981292575598
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9985987544059753,
+          "LABEL_1": 0.0014012540923431516
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9949239492416382,
+          "LABEL_1": 0.005076052621006966
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.8757977485656738,
+          "LABEL_1": 0.12420222908258438
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.8105713725090027,
+          "LABEL_1": 0.1894286721944809
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9977953433990479,
+          "LABEL_1": 0.002204644028097391
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.8732552528381348,
+          "LABEL_1": 0.12674474716186523
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9987439513206482,
+          "LABEL_1": 0.0012561160838231444
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.9980555772781372,
+          "LABEL_1": 0.0019444450736045837
+        },
+        "score_type": "probabilities"
+      },
+      {
+        "label": "LABEL_0",
+        "scores": {
+          "LABEL_0": 0.6957343816757202,
+          "LABEL_1": 0.3042656183242798
+        },
+        "score_type": "probabilities"
+      }
+    ]
+  ],
+  "unique_inputs": 400,
+  "torch_inference": {
+    "allocated_bytes": 1021165056,
+    "reserved_bytes": 1147142144
+  },
+  "seconds": 8.692649132019142,
+  "memory": {
+    "pid": 2873,
+    "gpu_uuid": "GPU-d70193d1-98e5-e267-8594-19287ece3ae5",
+    "method_id": "nvidia-smi-stream-100ms-v2",
+    "method_version": 2,
+    "method": {
+      "id": "nvidia-smi-stream-100ms-v2",
+      "version": 2,
+      "interval_ms": 100,
+      "timestamp_source": "monotonic_receive"
+    },
+    "requested_interval_seconds": 0.1,
+    "status": "measured",
+    "windows": {
+      "setup": {
+        "sampled_gpu_peak_mib": 894.0,
+        "host_rss_peak_bytes": null,
+        "samples": 2,
+        "valid_gpu_samples": 2,
+        "actual_intervals_seconds": [
+          0.10025548402336426
+        ],
+        "status": "measured"
+      },
+      "inference": {
+        "sampled_gpu_peak_mib": 1818.0,
+        "host_rss_peak_bytes": null,
+        "samples": 57,
+        "valid_gpu_samples": 57,
+        "actual_intervals_seconds": [
+          0.1003420970228035,
+          0.10257486699265428,
+          0.09798417400452308,
+          0.10032312097609974,
+          0.10024451502249576,
+          0.10547629598295316,
+          0.0960328130167909,
+          0.09951333599747159,
+          0.10030255297897384,
+          0.26067939001950435,
+          2.917399979196489e-05,
+          0.04682704000151716,
+          0.0984111340076197,
+          0.09617359499679878,
+          0.10028097298345529,
+          0.10658082301961258,
+          0.095124091982143,
+          0.10034112600260414,
+          0.1002628080022987,
+          0.10026842998922803,
+          0.10411096102325246,
+          0.09661007198155858,
+          0.10123442800249904,
+          0.09954711899627,
+          0.10241705999942496,
+          0.10717731001204811,
+          0.09168384299846366,
+          0.10681445099180564,
+          0.28086716201505624,
+          3.849199856631458e-05,
+          0.015646243002265692,
+          0.09905664197867736,
+          0.10560420600813814,
+          0.09448895198875107,
+          0.0996569550188724,
+          0.10436379400198348,
+          0.09766390500590205,
+          0.09985184998367913,
+          0.0999491419934202,
+          0.09960390502237715,
+          0.10034617499331944,
+          0.1005373630032409,
+          0.09999647998483852,
+          0.10108119100914337,
+          0.09956894998322241,
+          0.10168137401342392,
+          0.10000776199740358,
+          0.10029085099813528,
+          0.10273004599730484,
+          0.0968516250140965,
+          0.1016247280058451,
+          0.09893409197684377,
+          0.10197469202103093,
+          0.0985533100028988,
+          0.10031545697711408,
+          0.10033151801326312
+        ],
+        "status": "measured"
+      }
+    },
+    "boundaries": {
+      "setup_start": 166924.285470567,
+      "setup_end": 166926.290951204,
+      "inference_start": 166926.290951204,
+      "inference_end": 166931.947454356
+    },
+    "samples": [
+      {
+        "phase": "setup",
+        "received": 166926.103192822,
+        "started": 166926.103192822,
+        "finished": 166926.103192822,
+        "gpu_process_mib": 12.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "setup",
+        "received": 166926.203448306,
+        "started": 166926.203448306,
+        "finished": 166926.203448306,
+        "gpu_process_mib": 894.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166926.303743626,
+        "started": 166926.303743626,
+        "finished": 166926.303743626,
+        "gpu_process_mib": 962.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166926.404085723,
+        "started": 166926.404085723,
+        "finished": 166926.404085723,
+        "gpu_process_mib": 962.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166926.50666059,
+        "started": 166926.50666059,
+        "finished": 166926.50666059,
+        "gpu_process_mib": 962.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166926.604644764,
+        "started": 166926.604644764,
+        "finished": 166926.604644764,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166926.704967885,
+        "started": 166926.704967885,
+        "finished": 166926.704967885,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166926.8052124,
+        "started": 166926.8052124,
+        "finished": 166926.8052124,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166926.910688696,
+        "started": 166926.910688696,
+        "finished": 166926.910688696,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.006721509,
+        "started": 166927.006721509,
+        "finished": 166927.006721509,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.106234845,
+        "started": 166927.106234845,
+        "finished": 166927.106234845,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.206537398,
+        "started": 166927.206537398,
+        "finished": 166927.206537398,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.467216788,
+        "started": 166927.467216788,
+        "finished": 166927.467216788,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.467245962,
+        "started": 166927.467245962,
+        "finished": 166927.467245962,
+        "gpu_process_mib": 964.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.514073002,
+        "started": 166927.514073002,
+        "finished": 166927.514073002,
+        "gpu_process_mib": 984.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.612484136,
+        "started": 166927.612484136,
+        "finished": 166927.612484136,
+        "gpu_process_mib": 984.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.708657731,
+        "started": 166927.708657731,
+        "finished": 166927.708657731,
+        "gpu_process_mib": 984.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.808938704,
+        "started": 166927.808938704,
+        "finished": 166927.808938704,
+        "gpu_process_mib": 984.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166927.915519527,
+        "started": 166927.915519527,
+        "finished": 166927.915519527,
+        "gpu_process_mib": 1050.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.010643619,
+        "started": 166928.010643619,
+        "finished": 166928.010643619,
+        "gpu_process_mib": 1146.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.110984745,
+        "started": 166928.110984745,
+        "finished": 166928.110984745,
+        "gpu_process_mib": 1146.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.211247553,
+        "started": 166928.211247553,
+        "finished": 166928.211247553,
+        "gpu_process_mib": 1146.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.311515983,
+        "started": 166928.311515983,
+        "finished": 166928.311515983,
+        "gpu_process_mib": 1148.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.415626944,
+        "started": 166928.415626944,
+        "finished": 166928.415626944,
+        "gpu_process_mib": 1148.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.512237016,
+        "started": 166928.512237016,
+        "finished": 166928.512237016,
+        "gpu_process_mib": 1148.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.613471444,
+        "started": 166928.613471444,
+        "finished": 166928.613471444,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.713018563,
+        "started": 166928.713018563,
+        "finished": 166928.713018563,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.815435623,
+        "started": 166928.815435623,
+        "finished": 166928.815435623,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166928.922612933,
+        "started": 166928.922612933,
+        "finished": 166928.922612933,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.014296776,
+        "started": 166929.014296776,
+        "finished": 166929.014296776,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.121111227,
+        "started": 166929.121111227,
+        "finished": 166929.121111227,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.401978389,
+        "started": 166929.401978389,
+        "finished": 166929.401978389,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.402016881,
+        "started": 166929.402016881,
+        "finished": 166929.402016881,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.417663124,
+        "started": 166929.417663124,
+        "finished": 166929.417663124,
+        "gpu_process_mib": 1246.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.516719766,
+        "started": 166929.516719766,
+        "finished": 166929.516719766,
+        "gpu_process_mib": 1054.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.622323972,
+        "started": 166929.622323972,
+        "finished": 166929.622323972,
+        "gpu_process_mib": 1138.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.716812924,
+        "started": 166929.716812924,
+        "finished": 166929.716812924,
+        "gpu_process_mib": 1138.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.816469879,
+        "started": 166929.816469879,
+        "finished": 166929.816469879,
+        "gpu_process_mib": 1150.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166929.920833673,
+        "started": 166929.920833673,
+        "finished": 166929.920833673,
+        "gpu_process_mib": 1150.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.018497578,
+        "started": 166930.018497578,
+        "finished": 166930.018497578,
+        "gpu_process_mib": 1150.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.118349428,
+        "started": 166930.118349428,
+        "finished": 166930.118349428,
+        "gpu_process_mib": 1214.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.21829857,
+        "started": 166930.21829857,
+        "finished": 166930.21829857,
+        "gpu_process_mib": 1214.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.317902475,
+        "started": 166930.317902475,
+        "finished": 166930.317902475,
+        "gpu_process_mib": 1214.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.41824865,
+        "started": 166930.41824865,
+        "finished": 166930.41824865,
+        "gpu_process_mib": 1322.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.518786013,
+        "started": 166930.518786013,
+        "finished": 166930.518786013,
+        "gpu_process_mib": 1322.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.618782493,
+        "started": 166930.618782493,
+        "finished": 166930.618782493,
+        "gpu_process_mib": 1420.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.719863684,
+        "started": 166930.719863684,
+        "finished": 166930.719863684,
+        "gpu_process_mib": 1420.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.819432634,
+        "started": 166930.819432634,
+        "finished": 166930.819432634,
+        "gpu_process_mib": 1422.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166930.921114008,
+        "started": 166930.921114008,
+        "finished": 166930.921114008,
+        "gpu_process_mib": 1710.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.02112177,
+        "started": 166931.02112177,
+        "finished": 166931.02112177,
+        "gpu_process_mib": 1710.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.121412621,
+        "started": 166931.121412621,
+        "finished": 166931.121412621,
+        "gpu_process_mib": 1710.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.224142667,
+        "started": 166931.224142667,
+        "finished": 166931.224142667,
+        "gpu_process_mib": 1806.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.320994292,
+        "started": 166931.320994292,
+        "finished": 166931.320994292,
+        "gpu_process_mib": 1806.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.42261902,
+        "started": 166931.42261902,
+        "finished": 166931.42261902,
+        "gpu_process_mib": 1806.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.521553112,
+        "started": 166931.521553112,
+        "finished": 166931.521553112,
+        "gpu_process_mib": 1706.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.623527804,
+        "started": 166931.623527804,
+        "finished": 166931.623527804,
+        "gpu_process_mib": 1706.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.722081114,
+        "started": 166931.722081114,
+        "finished": 166931.722081114,
+        "gpu_process_mib": 1816.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.822396571,
+        "started": 166931.822396571,
+        "finished": 166931.822396571,
+        "gpu_process_mib": 1818.0,
+        "host_rss_bytes": null
+      },
+      {
+        "phase": "inference",
+        "received": 166931.922728089,
+        "started": 166931.922728089,
+        "finished": 166931.922728089,
+        "gpu_process_mib": 1818.0,
+        "host_rss_bytes": null
+      }
+    ],
+    "errors": [],
+    "sampling_may_miss_short_peaks": true
+  },
+  "metadata": {
+    "variant_sha256": "5cd3fb97cad52da752b5602c94b58c166e32bc997c8fcf05b824d79f952c08f7",
+    "backend_requested": "eager",
+    "dtype": "float32",
+    "preparation": {
+      "adapter": "llama",
+      "limit": 512,
+      "assets": {
+        "effective_tokenizer": "c3d63e50374b0b125fdc419012332d1182b998bd87c5a2b6b516d257bb8110a3",
+        "effective_chat_template": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "preparation_source": "73509b0160a326b22feffeb3bbdc26038d274f2313b5fa881862f0dadaca0054"
+      }
+    },
+    "batch_policy": {
+      "padding": "longest",
+      "padding_side": "right",
+      "truncation": false,
+      "sort_by_length": false,
+      "implementation": "native",
+      "pad_token_id": 0,
+      "generation_eos_in_count": true
+    },
+    "artifacts": {
+      "weight_files": {
+        "model.safetensors": {
+          "sha256": "5120e30bcd536ce285345d9ec104bea6bd6e8f94365b99a340c764f417ea5fa1",
+          "bytes": 283347432
+        }
+      },
+      "weight_inventory_sha256": "1b593a5997dba504745fd029692a561b9e44f4f3357e00305df50915feb9dfcc"
+    },
+    "labels": [
+      "LABEL_0",
+      "LABEL_1"
+    ],
+    "attention": "eager",
+    "linear_attention": "reference",
+    "buffer_dtypes": [
+      "int64"
+    ],
+    "precision": {
+      "policy": "explicit",
+      "parameter_dtypes": [
+        "float32"
+      ],
+      "autocast_enabled": false,
+      "autocast_dtype": null
+    },
+    "prepared_compile_count": 73,
+    "backend_actual": "eager",
+    "backend": {
+      "runtime": "eager",
+      "attention": "eager",
+      "attention_requested": "native",
+      "linear_attention": "reference",
+      "compile_count": 73,
+      "rules_applied": [
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "rules_skipped": {}
+    },
+    "backend_proof": {
+      "operators": [
+        "Activity Buffer Request",
+        "Memcpy DtoD (Device -> Device)",
+        "Memcpy DtoH (Device -> Pageable)",
+        "Memcpy DtoH (Device -> Pinned)",
+        "Memcpy HtoD (Pageable -> Device)",
+        "Memset (Unknown)",
+        "aten::_local_scalar_dense",
+        "aten::_softmax",
+        "aten::_to_copy",
+        "aten::abs",
+        "aten::all",
+        "aten::as_strided",
+        "aten::clone",
+        "aten::copy_",
+        "aten::detach_",
+        "aten::empty",
+        "aten::empty_strided",
+        "aten::eq",
+        "aten::fill_",
+        "aten::is_nonzero",
+        "aten::isfinite",
+        "aten::item",
+        "aten::lift_fresh",
+        "aten::mul",
+        "aten::ne",
+        "aten::resize_",
+        "aten::resolve_conj",
+        "aten::resolve_neg",
+        "aten::set_",
+        "aten::softmax",
+        "aten::to",
+        "aten::zero_",
+        "cudaDeviceSynchronize",
+        "cudaGraphLaunch",
+        "cudaLaunchKernel",
+        "cudaMemcpyAsync",
+        "cudaStreamIsCapturing",
+        "cudaStreamSynchronize",
+        "triton_per_fused_add_addmm_native_layer_norm_view_0",
+        "triton_per_fused_add_addmm_native_layer_norm_view_1",
+        "triton_poi_fused_add_clamp_div_expand_gather_neg_sqrt_squeeze_transpose_1",
+        "triton_poi_fused_addmm_clone_permute_view_1",
+        "triton_poi_fused_addmm_gelu_1",
+        "triton_poi_fused_addmm_gelu_view_0",
+        "triton_poi_fused_clone_0",
+        "triton_poi_fused_clone_div_permute_sqrt_transpose_view_2",
+        "triton_poi_fused_clone_permute_repeat_view_0",
+        "triton_poi_fused_clone_permute_view_0",
+        "triton_poi_fused_clone_permute_view_1",
+        "triton_poi_fused_clone_select_0",
+        "triton_poi_fused_mul_squeeze_unsqueeze_0",
+        "triton_red_fused__softmax__to_copy_add_bitwise_not_exp_masked_fill_prepare_softmax_online_sub_view_0",
+        "triton_red_fused__to_copy_embedding_mul_native_layer_norm_unsqueeze_0",
+        "void (anonymous namespace)::softmax_warp_forward<float, float, float, 1, false, false>(float*, float const*, int, int, int, bool const*, int, bool)",
+        "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4> >(at::native::ReduceOp<bool, at::native::func_wrapper_t<bool, at::native::and_kernel_cuda(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#12}::operator()() const::{lambda(bool, bool)#1}>, unsigned int, bool, 4, 4>)",
+        "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<long>, std::array<char*, 1ul> >(int, at::native::FillFunctor<long>, std::array<char*, 1ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul> >(int, at::native::AUnaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::AbsFunctor<float>, std::array<char*, 2ul> >(int, at::native::AbsFunctor<float>, std::array<char*, 2ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool> >, std::array<char*, 3ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul> >(int, at::native::BinaryFunctor<float, float, bool, at::native::(anonymous namespace)::CompareEqFunctor<float> >, std::array<char*, 3ul>)",
+        "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<float>, std::array<char*, 1ul>)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_128x256_8x4_tn_align1>(cutlass_80_simt_sgemm_128x256_8x4_tn_align1::Params)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_256x128_8x4_tn_align1>(cutlass_80_simt_sgemm_256x128_8x4_tn_align1::Params)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x5_nn_align1>(cutlass_80_simt_sgemm_64x64_8x5_nn_align1::Params)",
+        "void cutlass::Kernel2<cutlass_80_simt_sgemm_64x64_8x5_tn_align1>(cutlass_80_simt_sgemm_64x64_8x5_tn_align1::Params)",
+        "void gemmSN_TN_kernel<float, 128, 16, 2, 4, 8, 9, false, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float> >(cublasGemmSmallNParams<cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float const>, cublasGemvTensorStridedBatched<float>, float>)",
+        "void magma_sgemmEx_kernel<float, float, float, true, false, 6, 4, 6, 3, 4>(int, int, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, BatchedTensor, int, int, int, float const*, float const*, float, float, int, cublasLtEpilogue_t, int, void const*, long)"
+      ],
+      "rules_applied": [
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "rules_skipped": {}
+    }
+  }
+}

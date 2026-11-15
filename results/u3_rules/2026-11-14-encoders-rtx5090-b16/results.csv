@@ -1,0 +1,22 @@
+model,step,rules_applied,rules_skipped,bucket,p95_base_ms,p95_cand_ms,p95_reduction_pct,p50_base_ms,p50_cand_ms,verdicts_changed,verdicts_n,cell_status,run_status,prep_s,run_s,gpu,output
+llama,0,—,,B1/16,41.544,,,38.505,,0,400,baseline_complete,baseline_complete,0.0,61,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/llama/0-baseline
+llama,1,u1,,B1/16,41.544,41.578,-0.08,38.505,39.32,0,400,exploratory,exploratory,4.2,62,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/llama/1-u1
+llama,2,"c8,u1",,B1/16,41.544,42.71,-2.81,38.505,39.321,0,400,exploratory,exploratory,4.2,65,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/llama/2-u1+c8
+llama,3,"c8,u4,u1",,B1/16,41.544,27.164,34.61,38.505,24.324,0,400,exploratory,exploratory,5.0,71,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/llama/3-u1+c8+u4
+llama,4,"c12,c8,u4,u1",,B1/16,41.544,26.227,36.87,38.505,23.317,0,400,exploratory,exploratory,4.3,63,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/llama/4-u1+c8+u4+c12
+llama,5,"c12,c8,u4,u1",u3: в батче маска нужна для паддинга,B1/16,41.544,24.926,40.0,38.505,22.715,0,400,exploratory,exploratory,4.1,60,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/llama/5-u1+c8+u4+c12+u3
+laya,0,—,,B1/16,64.272,,,60.701,,0,400,baseline_complete,baseline_complete,0.0,82,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/laya/0-baseline
+laya,1,u1,,B1/16,64.272,63.536,1.15,60.701,62.607,1,400,exploratory,exploratory,6.6,83,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/laya/1-u1
+laya,2,"c9,u1",,B1/16,64.272,64.032,0.37,60.701,61.725,1,400,exploratory,exploratory,6.5,82,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/laya/2-u1+c9
+laya,3,"c9,u4,u1",,B1/16,64.272,46.974,26.91,60.701,45.947,0,400,exploratory,exploratory,6.8,84,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/laya/3-u1+c9+u4
+koala,0,—,,B1/16,97.852,,,88.802,,0,400,baseline_complete,baseline_complete,0.0,92,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/koala/0-baseline
+koala,1,u1,,B1/16,97.852,94.234,3.7,88.802,93.405,0,400,exploratory,exploratory,9.8,133,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/koala/1-u1
+koala,2,"c8,u1",,B1/16,97.852,93.174,4.78,88.802,92.34,0,400,exploratory,exploratory,9.6,133,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/koala/2-u1+c8
+koala,3,"c8,u4,u1",,B1/16,97.852,74.917,23.44,88.802,73.844,0,400,exploratory,exploratory,13.7,147,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/koala/3-u1+c8+u4
+koala,4,"c8,u4,u1",c12: проекции уже слиты,B1/16,97.852,75.262,23.09,88.802,73.96,0,400,exploratory,exploratory,13.4,147,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/koala/4-u1+c8+u4+c12
+koala,5,"c8,u4,u1",c12: проекции уже слиты; u3: в батче маска нужна для паддинга,B1/16,97.852,75.314,23.03,88.802,74.056,0,400,exploratory,exploratory,14.9,151,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/koala/5-u1+c8+u4+c12+u3
+gliner,0,—,,B1/16,93.068,,,84.845,,0,400,baseline_complete,baseline_complete,0.0,116,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/gliner/0-baseline
+gliner,1,u1,,B1/16,93.068,95.048,-2.13,84.845,91.403,0,400,exploratory,exploratory,9.6,114,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/gliner/1-u1
+gliner,2,"c8,u1",,B1/16,93.068,93.766,-0.75,84.845,90.885,0,400,exploratory,exploratory,9.5,114,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/gliner/2-u1+c8
+gliner,3,"c8,u4,u1",,B1/16,93.068,58.388,37.26,84.845,56.189,0,400,exploratory,exploratory,7.7,101,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/gliner/3-u1+c8+u4
+gliner,4,"c12,c8,u4,u1",,B1/16,93.068,57.116,38.63,84.845,55.03,0,400,exploratory,exploratory,7.5,96,NVIDIA GeForce RTX 5090,runs/tune-v4-b16/gliner/4-u1+c8+u4+c12

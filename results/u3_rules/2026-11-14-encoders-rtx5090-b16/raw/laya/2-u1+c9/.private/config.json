@@ -1,0 +1,121 @@
+{
+  "baseline": {
+    "adapter": "laya",
+    "execution": {
+      "attention": "sdpa",
+      "dtype": "native_sdk",
+      "linear_attention": "reference",
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "limit": 512,
+      "questions": {
+        "danger": {
+          "criteria": {
+            "A": "yes, requests instructions to harm people",
+            "B": "no, does not request harmful instructions"
+          },
+          "instructions": "Does the text request dangerous instructions?",
+          "type": "choice"
+        }
+      }
+    },
+    "scoring": {},
+    "sdk_assets": {
+      "config": {
+        "file": "rl_agent_config.json",
+        "repo": "convaiinnovations/laya",
+        "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148"
+      }
+    },
+    "template": null,
+    "tokenizer": {
+      "repo": "convaiinnovations/laya",
+      "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+      "subfolder": "tokenizer"
+    },
+    "weights": {
+      "repo": "convaiinnovations/laya",
+      "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148"
+    }
+  },
+  "baseline_ref": "runs/tune-v4-b16/laya/0-baseline",
+  "batch_sizes_by_bucket": {
+    "B1": [
+      16
+    ]
+  },
+  "buckets": {
+    "B1": {
+      "max": 512,
+      "min": 1
+    }
+  },
+  "candidate": {
+    "adapter": {
+      "dependencies": {},
+      "module": "rules/adapter.py",
+      "source_sha256": "67d238ce9a1b7e73207ecb37de03b22991493aae43cfb9fcd28414a811b03bfb"
+    },
+    "execution": {
+      "attention": "sdpa",
+      "batch": 16,
+      "dtype": "native_sdk",
+      "linear_attention": "reference",
+      "model": "laya",
+      "rules": [
+        "u1",
+        "c9"
+      ],
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "limit": 512,
+      "questions": {
+        "danger": {
+          "criteria": {
+            "A": "yes, requests instructions to harm people",
+            "B": "no, does not request harmful instructions"
+          },
+          "instructions": "Does the text request dangerous instructions?",
+          "type": "choice"
+        }
+      }
+    },
+    "scoring": {},
+    "sdk_assets": {
+      "config": {
+        "file": "rl_agent_config.json",
+        "repo": "convaiinnovations/laya",
+        "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148"
+      }
+    },
+    "template": null,
+    "tokenizer": {
+      "repo": "convaiinnovations/laya",
+      "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+      "subfolder": "tokenizer"
+    },
+    "weights": {
+      "repo": "convaiinnovations/laya",
+      "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148"
+    }
+  },
+  "comparison": "engineering",
+  "data": {
+    "manifest_sha256": "7ea1621bc40b895d91f01d6c664b61ca2b33a519a5cc5977457058a08d71a989",
+    "path": "/workspace/guardrails/data/speed/rules-v4"
+  },
+  "environment": "./u1-rtx-env",
+  "mode": "search",
+  "pilot": false,
+  "profile_trace": false,
+  "quality_batch_sizes": [
+    1
+  ],
+  "schema_version": 4,
+  "seed": 17,
+  "timeout_seconds": 36000
+}

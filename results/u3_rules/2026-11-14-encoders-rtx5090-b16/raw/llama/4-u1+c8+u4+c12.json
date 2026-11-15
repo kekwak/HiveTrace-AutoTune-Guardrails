@@ -1,0 +1,84 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": "llama",
+    "weights": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    },
+    "tokenizer": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "eager",
+      "dtype": "float32",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      16
+    ]
+  },
+  "mode": "search",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u1-env",
+  "data": {
+    "path": "/workspace/guardrails/data/speed/rules-v4",
+    "manifest_sha256": "7ea1621bc40b895d91f01d6c664b61ca2b33a519a5cc5977457058a08d71a989"
+  },
+  "quality_batch_sizes": [
+    1
+  ],
+  "candidate": {
+    "adapter": {
+      "module": "rules/adapter.py",
+      "source_sha256": "67d238ce9a1b7e73207ecb37de03b22991493aae43cfb9fcd28414a811b03bfb",
+      "dependencies": {}
+    },
+    "weights": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    },
+    "tokenizer": {
+      "repo": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "eager",
+      "dtype": "float32",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference",
+      "model": "llama",
+      "rules": [
+        "u1",
+        "c8",
+        "u4",
+        "c12"
+      ],
+      "batch": 16
+    }
+  }
+}

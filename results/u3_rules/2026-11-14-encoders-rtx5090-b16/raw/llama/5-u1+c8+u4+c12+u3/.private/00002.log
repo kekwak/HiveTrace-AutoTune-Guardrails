@@ -1,0 +1,314 @@
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 1652.28it/s]
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files: 100%|██████████| 11/11 [00:00<00:00, 4081.87it/s]
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 23892.43it/s]
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] Graph break in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL_FUNCTION_EX: a variadic function call, e.g. f(*args):
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] 
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] Unsupported method call
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] 
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] 
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] 
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] User code traceback:
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/tools/benchmark.py", line 172, in <module>
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     raise SystemExit(main())
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/tools/benchmark.py", line 106, in main
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     result = execute(args, parser)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/tools/benchmark.py", line 149, in execute
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     result = execute(args.job)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/v4_worker.py", line 305, in execute
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     latency(adapter, rows, job, guard, result, torch_module, sampler, checkpoint)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/v4_worker.py", line 104, in latency
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     guard.call(adapter.prepare_batch_backend, groups)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/precision.py", line 51, in call
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return function(*args, **kwargs)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 171, in prepare_batch_backend
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     self.request_batch(batch)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/v4_adapters.py", line 142, in request_batch
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     values = self._request(payloads)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 131, in _request
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     logits = self.entry(**x).float()
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return self._call_impl(*args, **kwargs)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return forward_call(*args, **kwargs)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 40, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return self.fn(**x)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 114, in route
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return self.core(x)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 212, in run
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     graphs[rows, b] = capture(rows, b, x)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 201, in capture
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     core(static)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 104, in core
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return self.inner(x)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 87, in <lambda>
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     self.inner = lambda x: m(**x).logits
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 1042, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     outputs = self.deberta(
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 763, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     encoder_outputs = self.encoder(
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 651, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     output_states, attn_weights = layer_module(
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/modeling_layers.py", line 111, in __call__
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return super().__call__(*args, **kwargs)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return self._call_impl(*args, **kwargs)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     return forward_call(*args, **kwargs)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 432, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     attention_output, att_matrix = self.attention(
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 365, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     self_output, att_matrix = self.self(
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 231, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     query_layer = self.transpose_for_scores(self.query_proj(query_states), self.num_attention_heads)
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 414, in forward
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks]     if x.untyped_storage().data_ptr() != self.ptr:
+V1114 08:20:46.912000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [0/0] [__graph_breaks] 
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL_KW: a function call with keyword arguments, e.g. f(x=True):
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks] 
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks] Unsupported method call
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks] 
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks] 
+V1114 08:20:46.964000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [1/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL_KW: a function call with keyword arguments, e.g. f(x=True):
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks] 
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks] Unsupported method call
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks] 
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks] 
+V1114 08:20:47.021000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [2/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] Graph break in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] Graph Break Reason: Failed to handle graph break gracefully. Skipping the function and falling back to eager. Graph break encountered:
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] Unsupported method call
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] *** While handling this graph break, another graph break occurred: ***
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] graph break in loop
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   Explanation: torch.compile detected a graph break in a for/while loop. Skipping the frame and falling back to eager, as graph breaks in loops are not supported.
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   Hint: This graph break may have been caused by an earlier graph break. Resolving the earlier graph break may resolve this one.
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   Developer debug context: frame skipped: forward (/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py line 628)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb7000.html
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] User code traceback:
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/tools/benchmark.py", line 172, in <module>
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     raise SystemExit(main())
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/tools/benchmark.py", line 106, in main
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     result = execute(args, parser)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/tools/benchmark.py", line 149, in execute
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     result = execute(args.job)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/v4_worker.py", line 305, in execute
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     latency(adapter, rows, job, guard, result, torch_module, sampler, checkpoint)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/v4_worker.py", line 104, in latency
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     guard.call(adapter.prepare_batch_backend, groups)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/precision.py", line 51, in call
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return function(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 171, in prepare_batch_backend
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     self.request_batch(batch)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1_benchmark/v4_adapters.py", line 142, in request_batch
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     values = self._request(payloads)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 131, in _request
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     logits = self.entry(**x).float()
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self._call_impl(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return forward_call(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 40, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self.fn(**x)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 114, in route
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self.core(x)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 212, in run
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     graphs[rows, b] = capture(rows, b, x)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 201, in capture
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     core(static)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 104, in core
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self.inner(x)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 87, in <lambda>
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     self.inner = lambda x: m(**x).logits
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self._call_impl(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return forward_call(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 1042, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     outputs = self.deberta(
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self._call_impl(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return forward_call(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 763, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     encoder_outputs = self.encoder(
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self._call_impl(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return forward_call(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 651, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     output_states, attn_weights = layer_module(
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/modeling_layers.py", line 111, in __call__
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return super().__call__(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return self._call_impl(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     return forward_call(*args, **kwargs)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 432, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     attention_output, att_matrix = self.attention(
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 365, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     self_output, att_matrix = self.self(
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 231, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     query_layer = self.transpose_for_scores(self.query_proj(query_states), self.num_attention_heads)
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]   File "/workspace/guardrails/rules/adapter.py", line 414, in forward
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks]     if x.untyped_storage().data_ptr() != self.ptr:
+V1114 08:20:47.771000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5127] [3/0] [__graph_breaks] 
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL_FUNCTION_EX: a variadic function call, e.g. f(*args):
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks] 
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks] Unsupported method call
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks] 
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks] 
+V1114 08:20:47.848000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [7/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL_KW: a function call with keyword arguments, e.g. f(x=True):
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks] 
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks] Unsupported method call
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks] 
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks] 
+V1114 08:20:47.866000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [8/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL_KW: a function call with keyword arguments, e.g. f(x=True):
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks] 
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks] Unsupported method call
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks] 
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks] 
+V1114 08:20:47.884000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [9/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL: a function call, e.g. f(x, y):
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks] 
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks] Unsupported method call
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks] 
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks] 
+V1114 08:20:47.902000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [10/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL: a function call, e.g. f(x, y):
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks] 
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks] Unsupported method call
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks] 
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks] 
+V1114 08:20:47.920000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL: a function call, e.g. f(x, y):
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks] 
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks] Unsupported method call
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks] 
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks] 
+V1114 08:20:48.008000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [13/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles] Recompiling function torch_dynamo_resume_in_forward_at_414 in /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles]     - 12/0: self._modules['lin'].f[0].x is None                      # if x is not f.x:  # rules/adapter.py:441 in forward
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles]     - User stack trace:
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles]     -   File "/workspace/guardrails/rules/adapter.py", line 415, in forward
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles]     -     return self.lin(x)
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles]     -   File "/workspace/guardrails/rules/adapter.py", line 441, in forward
+V1114 08:20:48.038000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [12/1] [__recompiles]     -     if x is not f.x:
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL: a function call, e.g. f(x, y):
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks] 
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks] Unsupported method call
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks] 
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks] 
+V1114 08:20:48.068000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [15/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL: a function call, e.g. f(x, y):
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks] 
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks] Unsupported method call
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks] 
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks] 
+V1114 08:20:48.118000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [16/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:48.146000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [11/1] [__recompiles] Recompiling function forward in /workspace/guardrails/rules/adapter.py:413
+V1114 08:20:48.146000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [11/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 08:20:48.146000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [11/1] [__recompiles]     - 11/0: tensor 'x' size mismatch at index 0. expected 16, actual 1
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL: a function call, e.g. f(x, y):
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks] 
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks] Unsupported method call
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks] 
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks] 
+V1114 08:20:48.149000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [11/1] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks] Graph break (user stack suppressed due to duplicate graph break) in user code at /workspace/guardrails/rules/adapter.py:414
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks] Graph Break Reason: Encountered graph break when attempting to trace CALL: a function call, e.g. f(x, y):
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks] 
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks] Unsupported method call
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks]   Explanation: Dynamo does not know how to trace method `data_ptr` of class `<unknown type>`
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks]   Hint: Avoid calling `<unknown type>.data_ptr` in your code.
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks]   Hint: Please report an issue to PyTorch.
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks] 
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks]   Developer debug context: call_method UntypedStorageVariable() data_ptr [] {}
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks] 
+V1114 08:20:48.169000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/symbolic_convert.py:5134] [17/0] [__graph_breaks]  For more details about this graph break, please visit: https://meta-pytorch.github.io/compile-graph-break-site/gb/gb0156.html
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles] Recompiling function get_rel_pos in /workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py:610
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles]     - 5/0: not ___dict_contains((512, 512, device(type='cuda', index=0), (), (('bucket_size', 256), ('max_position', 512))), G['build_relative_position'].__kwdefaults__['memo'])  # if key not in memo:  # rules/adapter.py:390 in cached
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles]     - User stack trace:
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles]     -   File "/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/models/deberta_v2/modeling_deberta_v2.py", line 620, in get_rel_pos
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles]     -     relative_pos = build_relative_position(
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles]     -   File "/workspace/guardrails/rules/adapter.py", line 390, in cached
+V1114 08:20:48.484000 4019 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [5/1] [__recompiles]     -     if key not in memo:
+{"status": "passed"}
