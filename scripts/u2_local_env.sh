@@ -19,5 +19,6 @@ for p in json.load(open(sys.argv[1]))["packages"]:
 print("torchao==0.17.0")
 print("nbformat")   # только для тестов ноутбуков У1
 print("pip")        # тесты У1 вызывают python -m pip
+print("pyarrow")    # чтение tails_v2 (на поде — во временной uv-среде, не в u2-env)
 EOF
 uv pip install --python "$VENV/bin/python" -r "$VENV/requirements.txt"
