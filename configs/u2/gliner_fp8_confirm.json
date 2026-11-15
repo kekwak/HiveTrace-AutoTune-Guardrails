@@ -1,0 +1,105 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": {
+      "module": "u2_quant/adapter.py",
+      "source_sha256": "f8e71d6684463827217a5bd74d9dd320022e83d4f39347f6404c51c965c2e649",
+      "dependencies": {
+        "torchao": "0.17.0"
+      }
+    },
+    "weights": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "tokenizer": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "compile",
+      "dtype": "bfloat16",
+      "attention": "eager",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    },
+    "sdk_assets": {
+      "config": {
+        "repo": "hivetrace/gliner-guard-omni",
+        "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+        "file": "config.json"
+      }
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1,
+      256
+    ]
+  },
+  "mode": "confirm",
+  "comparison": "quantization",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u2-env",
+  "quality_batch_sizes": [
+    1
+  ],
+  "candidate": {
+    "adapter": {
+      "module": "u2_quant/adapter.py",
+      "source_sha256": "f8e71d6684463827217a5bd74d9dd320022e83d4f39347f6404c51c965c2e649",
+      "dependencies": {
+        "torchao": "0.17.0"
+      }
+    },
+    "weights": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "tokenizer": {
+      "repo": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 512
+    },
+    "scoring": {},
+    "execution": {
+      "runtime": "compile",
+      "dtype": "bfloat16",
+      "attention": "eager",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    },
+    "sdk_assets": {
+      "config": {
+        "repo": "hivetrace/gliner-guard-omni",
+        "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4",
+        "file": "config.json"
+      }
+    },
+    "quantization": {
+      "method": "fp8",
+      "granularity": "per_row",
+      "skip_modules": [],
+      "baseline_identity": "e3f2118349d9b3ffdfecbee9a63a390f9fe634c0ca11037837cbfbcba60f96dd"
+    }
+  },
+  "data": {
+    "path": "/workspace/u2-data/speed",
+    "manifest_sha256": "REPLACE_SPEED_MANIFEST_SHA256"
+  }
+}

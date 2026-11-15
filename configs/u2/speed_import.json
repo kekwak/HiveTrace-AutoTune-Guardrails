@@ -1,0 +1,32 @@
+{
+  "schema_version": 4,
+  "kind": "speed",
+  "source": "/workspace/u2-data/role-corpus/corpus.jsonl",
+  "fields": {
+    "id": "id",
+    "messages": "messages",
+    "provenance": "provenance",
+    "language": "language",
+    "source": "source"
+  },
+  "version": "u2-speed-indices-v1",
+  "provenance": {
+    "description": "U2 bf16c/fp8 input index over the shared role-message corpus",
+    "dataset": "vXofi/guardrails-speed-en-ru",
+    "revision": "7324b8823ded971c05076e0c7f4ace5d9b867863"
+  },
+  "configs": [
+    {
+      "config": "configs/u2/gliner_bf16c_baseline.json",
+      "variant": "baseline",
+      "name": "u2-gliner"
+    },
+    {
+      "config": "configs/u2/hive_bf16c_baseline.json",
+      "variant": "baseline",
+      "name": "u2-hive"
+    }
+  ],
+  "seed": 42,
+  "include_texts": false
+}
