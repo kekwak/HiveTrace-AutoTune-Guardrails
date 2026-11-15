@@ -1,0 +1,85 @@
+{
+  "status": "smoke_with_blockers",
+  "schema_version": 3,
+  "profile": "team-t4-laya",
+  "gpu": "Tesla T4",
+  "gpu_index": 0,
+  "bundle_sha256": "80a276dcda902fa7c128ce6a99220e2e88f929667549be836f65f99d43d7b232",
+  "corpus_revision": "7324b8823ded971c05076e0c7f4ace5d9b867863",
+  "corpus_manifest_sha256": "760adad3e5946384de9fec98aebd9327229cc02c706af094322f2f37e95fc02c",
+  "model_results": {
+    "gliner": {
+      "status": "smoke_passed",
+      "worker_seconds": 20.853829663000056,
+      "timed_inputs": 2,
+      "checkpoint": "hivetrace/gliner-guard-omni",
+      "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4"
+    },
+    "halo": {
+      "status": "smoke_passed",
+      "worker_seconds": 38.895628708000004,
+      "timed_inputs": 8,
+      "checkpoint": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    },
+    "hive": {
+      "status": "smoke_passed",
+      "worker_seconds": 47.05851070099993,
+      "timed_inputs": 8,
+      "checkpoint": "hivetrace/HiveTraceGuard-Pro",
+      "revision": "ed008276c96253e14885e6ade3b7b6d58daa2480"
+    },
+    "koala": {
+      "status": "smoke_passed",
+      "worker_seconds": 11.097177575000046,
+      "timed_inputs": 2,
+      "checkpoint": "KoalaAI/Text-Moderation",
+      "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c"
+    },
+    "laya": {
+      "status": "smoke_passed",
+      "worker_seconds": 19.344127786999934,
+      "timed_inputs": 2,
+      "checkpoint": "convaiinnovations/laya",
+      "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148"
+    },
+    "llama": {
+      "status": "smoke_passed",
+      "worker_seconds": 20.666841891000104,
+      "timed_inputs": 2,
+      "checkpoint": "hipocap/Llama-Prompt-Guard-2-22M",
+      "revision": "05f1919555db0e711b73cbb7ec2424702b918c20"
+    },
+    "open": {
+      "status": "incomplete",
+      "worker_seconds": 69.0235531740002,
+      "timed_inputs": 0,
+      "checkpoint": "openguardrails/OpenGuardrails-Text-4B-0124",
+      "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b"
+    },
+    "shield": {
+      "status": "blocked_auth",
+      "reason": "No HF_TOKEN available in this Kaggle runtime"
+    }
+  },
+  "cpu_tests": {
+    "run": 129,
+    "skipped": 0,
+    "status": "passed"
+  },
+  "offline_rebuild_matches": true,
+  "source_hashes_match_current_code": true,
+  "gpu_session_stopped": true,
+  "scope": "Baseline adapters only; no candidate, screening, speedup or quality acceptance",
+  "quality_evaluated": false,
+  "screening_run": false,
+  "rtx_checked": false,
+  "published": false,
+  "notebook": "https://www.kaggle.com/code/avxofi/u1-current-adapters-smoke-v3/edit",
+  "archives_sha256": {
+    "current-smoke-results.zip": "ffbb1249b6aea4c1526c6c26d2c4818ec90a19f5635f30356662510f116d7a13",
+    "interrupted-smoke.zip": "0ba9dee3d4ede06c10dbd04ca0791b2c76a57f28bf888b0625adda6aad726bbf",
+    "open-reply-diagnostic-v2.zip": "0a16c368a215c3cd5a8486c601e460311553a4dd37a9378dcfecd1230c438096",
+    "open-reply-diagnostic.zip": "9870488064621f7a3ae278557697222211dc559db08a5034dbd5e8c58f0f2aa7"
+  }
+}

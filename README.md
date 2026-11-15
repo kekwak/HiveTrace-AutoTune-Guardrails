@@ -64,3 +64,11 @@ results/t4/tails_v1_stats.csv  состав датасета хвостов
 
 Тексты изменённых вердиктов (`flips.csv` и соответствующие секции `summary.md`) и трейсы профайлера (*.json, ~1.6 ГБ)
 в репозиторий не выложены. `scripts/make_report.py` перенаправлен на пути этой ветки и после переноса не запускался.
+
+## Измеритель У1 v4 (влит из `results/haloguard-gliner-u1` @ `100ce48`)
+
+В ветку влит измеритель У1 v4 (`u1_benchmark/`, `tools/benchmark.py`, `configs/v4/`, `env/`, тесты) без изменений
+его логики — на нём снимаются скорость и качество FP8 на RTX 5090. Запуск и контракты —
+[`docs/u1_handoff.md`](docs/u1_handoff.md), протокол — [`docs/measurement_protocol_v1.md`](docs/measurement_protocol_v1.md),
+исходный README У1 — в [ветке У1](https://github.com/kekwak/HiveTrace-AutoTune-Guardrails/blob/100ce48527ea690f0f3eab730cb794858a2eebc9/README.md).
+План FP8-прогона — [`docs/specs/2026-11-15-quant-5090-spec.md`](docs/specs/2026-11-15-quant-5090-spec.md).
