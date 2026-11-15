@@ -10,6 +10,11 @@ import traceback
 from .core import ROOT, read, sha, write
 
 
+# team-rtx-quant: U2 profile = team_rtx.lock.json plus exactly torchao (u2_quant/lock.py).
+LOCKS = {"team-t4": "team_environment.lock.json", "team-rtx": "team_rtx.lock.json",
+         "team-t4-laya": "team_rtx.lock.json", "team-rtx-quant": "team_rtx_quant.lock.json"}
+
+
 def rtx_name(name):
     import re
     return bool(re.fullmatch(r"(?:NVIDIA\s+)?(?:GeForce\s+)?RTX\s+(?:4090|5090)", name.strip()))
@@ -18,13 +23,13 @@ def rtx_name(name):
 def profile(environment):
     path = Path(environment) / "setup/profile.json"
     value = read(path)["profile"] if path.exists() else "team-t4"
-    if value not in ("team-t4", "team-rtx", "team-t4-laya"):
+    if value not in LOCKS:
         raise ValueError("Unknown saved environment profile")
     return value
 
 
 def expected_lock(environment):
-    name = "team_environment.lock.json" if profile(environment) == "team-t4" else "team_rtx.lock.json"
+    name = LOCKS[profile(environment)]
     return read(ROOT / "env" / name)
 
 
@@ -37,7 +42,7 @@ def rtx_requirements(lock):
 def extended_gpu(name, selected):
     if selected == "team-t4-laya":
         return name.strip() in ("Tesla T4", "NVIDIA T4")
-    if selected == "team-rtx":
+    if selected in ("team-rtx", "team-rtx-quant"):
         return rtx_name(name)
     raise ValueError("Unknown extended environment profile")
 
@@ -109,7 +114,7 @@ def probe(environment, directory):
 def setup_rtx(directory, selected="team-rtx"):
     from followup.team_lock import requirements
     from .process import check_archive_target, finish_archive, invoke
-    if selected not in ("team-rtx", "team-t4-laya"):
+    if selected not in ("team-rtx", "team-t4-laya", "team-rtx-quant"):
         raise ValueError("Unknown extended environment profile")
     directory = Path(directory).resolve()
     check_archive_target(directory)
@@ -122,7 +127,7 @@ def setup_rtx(directory, selected="team-rtx"):
         lock = expected_lock(directory)
         write(folder / "lock.json", lock)
         text = rtx_requirements(lock)
-        if text != (ROOT / "env/team_rtx.lock.txt").read_text():
+        if text != (ROOT / "env" / LOCKS[selected]).with_suffix(".txt").read_text():
             raise ValueError("RTX lock text differs from manifest")
         (folder / "requirements.txt").write_text(text)
         python = directory / "venv/bin/python"

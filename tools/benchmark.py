@@ -61,7 +61,7 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     p = commands.add_parser("setup")
     p.add_argument("--environment", required=True)
-    p.add_argument("--profile", choices=("team-t4", "team-rtx", "team-t4-laya"), default="team-t4")
+    p.add_argument("--profile", choices=("team-t4", "team-rtx", "team-t4-laya", "team-rtx-quant"), default="team-t4")
     p = commands.add_parser("auth-check")
     p.add_argument("--model", default="shield")
     p.add_argument("--config", help="Check the explicitly configured HF sources without loading weights")
