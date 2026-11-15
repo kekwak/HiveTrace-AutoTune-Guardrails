@@ -166,5 +166,60 @@ class HiveScores(unittest.TestCase):
             self.assertEqual(made._request(["a"]), [{"label": "safe"}])
 
 
+class Review(unittest.TestCase):
+    def make(self, value=None):
+        calls = []
+        with patch.object(NativeAdapter, "__init__", fake_init(calls)), \
+                patch.object(NativeAdapter, "check_device", lambda self: None):
+            return qa.create(value or spec(), "/tmp/unused")
+
+    def test_size_counts_fp8_inner_storages(self):
+        import tempfile
+        from pathlib import Path
+        from torchao.quantization import Float8Tensor
+        made = self.make()
+        layer = nn.Linear(64, 64, bias=False).to(torch.bfloat16)
+        layer.weight = nn.Parameter(Float8Tensor.from_hp(layer.weight.detach()), requires_grad=False)
+        made.model = nn.Sequential(layer)
+        with tempfile.TemporaryDirectory() as root:
+            made.weight_path, made.directory = Path(root), Path(root)
+            (Path(root) / "model.safetensors").write_bytes(b"0" * 8)
+            size = made.size()
+        self.assertIn("torch.float8_e4m3fn", size["dtypes"])
+        self.assertLess(size["unique_parameter_buffer_storage_bytes"], 64 * 64 * 2)
+        self.assertGreaterEqual(size["unique_parameter_buffer_storage_bytes"], 64 * 64)
+
+    def test_backend_metadata_carries_quantization_details(self):
+        made = self.make()
+        made.metadata["quantization"] = {"method": "fp8", "granularity": "per_row", "quantized": ["0", "1"],
+                                         "skipped": [], "torchao": "0.17.0"}
+        made.request_batch = lambda batch: None
+        made._shape = lambda batch: (len(batch), 1)
+        made._install_compile = lambda: setattr(made, "_compile_count", 1) or setattr(made, "_backend_installed", True)
+        made.prepare_batch_backend([["a"]])
+        details = made.metadata["backend"]["quantization"]
+        self.assertEqual((details["method"], details["quantized_count"], details["torchao"]), ("fp8", 2, "0.17.0"))
+        self.assertEqual(details["quantized"], ["0", "1"])
+
+    def test_install_compile_refuses_silent_fallback(self):
+        made = self.make()
+        with patch.object(torch._dynamo.config, "suppress_errors", True):
+            with self.assertRaisesRegex(ValueError, "fallback"):
+                made._install_compile()
+
+    def test_install_compile_fails_on_recompile_limit(self):
+        made = self.make()
+        with patch.object(qa, "_inductor", lambda: lambda gm, inputs: gm), \
+                patch.object(torch._dynamo.config, "fail_on_recompile_limit_hit", False):
+            made._install_compile()
+            self.assertTrue(torch._dynamo.config.fail_on_recompile_limit_hit)
+
+    def test_quantize_source_hash_is_enforced(self):
+        value = spec(method="none")
+        value["quantization"]["quantize_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "quantize.py"):
+            self.make(value)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -9,6 +9,8 @@ REPO=/workspace/u2-repo ENV=/workspace/u2-env DATA=/workspace/u2-data LOGS=/work
 export PATH=$HOME/.local/bin:$PATH HF_HOME=/workspace/u2-hf
 mkdir -p "$LOGS" "$DATA"
 step() { echo "== $1 (+${SECONDS}s)" | tee -a "$LOGS/setup-timing.txt"; }
+# Шаг пропускается только при готовом результате; частичные каталоги после сбоя удаляются.
+ready() { grep -Eqs '"status": *"ready"' "$1/manifest.json"; }
 
 step clone
 [ -d "$REPO/.git" ] || git clone --branch research/quantization https://github.com/kekwak/HiveTrace-AutoTune-Guardrails "$REPO"
@@ -22,7 +24,8 @@ uv python install 3.13
 PY13=$(uv python find 3.13)
 
 step env-team-rtx-quant
-[ -f "$ENV/setup/status.json" ] || "$PY13" tools/benchmark.py setup --profile team-rtx-quant --environment "$ENV"
+grep -qs '"status": "passed"' "$ENV/setup/status.json" || {
+  rm -rf "$ENV"; "$PY13" tools/benchmark.py setup --profile team-rtx-quant --environment "$ENV"; }
 grep -q '"status": "passed"' "$ENV/setup/status.json"
 PY="$ENV/venv/bin/python"
 
@@ -31,15 +34,24 @@ step speed-corpus
 
 step tails-v2
 # pyarrow нет в lock У1: parquet читается во временной uv-среде, u2-env не меняется.
-if [ ! -d "$DATA/quality" ]; then
+ready "$DATA/quality" || {
+  rm -rf "$DATA/quality-src" "$DATA/quality"
   uv run --no-project --python 3.13 --with pandas==2.2.3 --with pyarrow --with huggingface_hub python -c \
     "from huggingface_hub import hf_hub_download as d; import shutil; shutil.copy(d('AutotuneGuardrails/tails', 'data/tails.parquet', repo_type='dataset', revision='v2'), '$DATA/tails_v2.parquet')"
   uv run --no-project --python 3.13 --with pandas==2.2.3 --with pyarrow python -m u2_quant.tails "$DATA/tails_v2.parquet" "$DATA/quality-src"
-  "$PY" tools/benchmark.py prepare-data --spec "$DATA/quality-src/import.json" --output "$DATA/quality"
-fi
+  "$PY" tools/benchmark.py prepare-data --spec "$DATA/quality-src/import.json" --output "$DATA/quality"; }
+ready "$DATA/quality"
 
 step speed-indices
-[ -d "$DATA/speed" ] || "$PY" tools/benchmark.py prepare-data --spec configs/u2/speed_import.json --output "$DATA/speed"
+# Индексы привязаны к identity подготовки, включающей sha адаптера: при смене adapter.py — пересборка.
+ADAPTER_SHA=$(sha256sum u2_quant/adapter.py | cut -d' ' -f1)
+[ "$(cat "$DATA/speed.adapter_sha256" 2>/dev/null)" = "$ADAPTER_SHA" ] || rm -rf "$DATA/speed"
+ready "$DATA/speed" || {
+  rm -rf "$DATA/speed"
+  "$PY" -m u2_quant.configs   # speed_import ссылается на конфиги с текущим sha адаптера
+  "$PY" tools/benchmark.py prepare-data --spec configs/u2/speed_import.json --output "$DATA/speed"; }
+ready "$DATA/speed"
+echo "$ADAPTER_SHA" > "$DATA/speed.adapter_sha256"
 
 step configs
 "$PY" -m u2_quant.configs --speed-manifest "$(sha256sum "$DATA/speed/manifest.json" | cut -d' ' -f1)" \

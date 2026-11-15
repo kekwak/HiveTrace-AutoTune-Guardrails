@@ -26,6 +26,7 @@ def variant(model, name):
     if name == "fp8":
         reference = variant(model, "bf16c")
         spec["quantization"] = {"method": "fp8", "granularity": "per_row", "skip_modules": [],
+                                "quantize_sha256": sha(ROOT / "u2_quant/quantize.py"),
                                 "baseline_identity": variant_identity(reference)}
     elif name != "bf16c":
         raise ValueError(f"Unknown variant: {name}")

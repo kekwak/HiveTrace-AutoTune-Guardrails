@@ -62,7 +62,8 @@ def _group(items, base, cand, rng):
     row.update(flips=int(flips.sum()), worse=worse, better=better, flip_rate=flips.mean() if n else float("nan"),
                flip_lo=float(lo), flip_hi=float(hi), p_mcnemar=mcnemar(worse, better),
                d_fnr=_rate(~b, y) - _rate(~a, y), d_fpr=_rate(b, ~y) - _rate(a, ~y),
-               mde=mde(n) if n else float("nan"), zero_flip_bound=3 / n if n else float("nan"),
+               mde=mde(n) if n else float("nan"), mde_fnr=mde(int(y.sum())) if y.any() else float("nan"),
+               mde_fpr=mde(int((~y).sum())) if (~y).any() else float("nan"), zero_flip_bound=3 / n if n else float("nan"),
                auroc_base=_auroc(y, [base[r["id"]] for r in common]),
                auroc_cand=_auroc(y, [cand[r["id"]] for r in common]))
     return row

@@ -56,6 +56,12 @@ class Compare(unittest.TestCase):
         self.assertEqual(round(analyze.mde(97), 3), 0.088)
         self.assertEqual(round(analyze.mde(944), 3), 0.015)
 
+    def test_mde_separate_for_fnr_and_fpr(self):
+        data = rows(243) + rows(97, target="safe", start=243)
+        pooled = analyze.compare(data, preds(data, "unsafe"), preds(data, "unsafe")).loc["pooled"]
+        self.assertEqual(round(pooled["mde_fnr"], 3), 0.040)
+        self.assertEqual(round(pooled["mde_fpr"], 3), 0.088)
+
     def test_analyze_uses_common_ids_and_reports_coverage(self):
         data = rows(40)
         cand = preds(data, "unsafe")

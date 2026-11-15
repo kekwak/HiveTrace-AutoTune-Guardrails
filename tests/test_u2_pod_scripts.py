@@ -54,6 +54,15 @@ class Scripts(unittest.TestCase):
             for target in re.findall(r"/workspace/[\w.-]+", text):
                 self.assertTrue(target.startswith("/workspace/u2-"), (path, target))
 
+    def test_setup_rebuilds_unready_steps(self):
+        text = SETUP.read_text()
+        self.assertIn('ready() {', text)
+        for target in ('"$DATA/quality"', '"$DATA/speed"'):
+            self.assertIn(f"ready {target} ||", text)
+        self.assertIn('rm -rf "$DATA/quality-src" "$DATA/quality"', text)
+        self.assertIn('rm -rf "$DATA/speed"', text)
+        self.assertIn('rm -rf "$ENV"', text)
+
     def test_pack_archives_only_this_model(self):
         with tempfile.TemporaryDirectory() as runs:
             for name in ("gliner-baseline", "gliner-quality-bf16c", "hive-baseline"):

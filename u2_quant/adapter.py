@@ -5,12 +5,13 @@ The U1 native adapter loads the pinned checkpoint in eager mode; this module onl
 adds safe/unsafe probabilities from the same greedy step.
 """
 from copy import deepcopy
+from pathlib import Path
 
 import torch
 
 from u1_benchmark.adapters import parse_generated
 from u1_benchmark.batch_adapters import generated_ids
-from u1_benchmark.core import digest
+from u1_benchmark.core import digest, sha
 from u1_benchmark.v4_adapters import NativeAdapter
 from u1_benchmark.v4_preparation import create_preparer as native_preparer
 from u2_quant import quantize
@@ -39,6 +40,10 @@ class QuantAdapter(NativeAdapter):
         super().__init__(native_spec(spec), directory)
         settings = spec.get("quantization", {})
         method = settings.get("method", "none")
+        expected = settings.get("quantize_sha256")
+        if expected is not None and expected != sha(Path(quantize.__file__)):
+            self.close()
+            raise ValueError("u2_quant/quantize.py differs from the configured quantize_sha256")
         self.metadata["quantization"] = quantize.apply(self._quant_body(), method, settings.get("skip_modules", []))
         self.metadata["variant_sha256"] = digest(spec)
         try:
@@ -54,6 +59,10 @@ class QuantAdapter(NativeAdapter):
         return self.model.encoder if self.name == "gliner" else self.model
 
     def _install_compile(self):
+        if torch._dynamo.config.suppress_errors:
+            raise ValueError("torch._dynamo suppress_errors would allow a silent eager fallback")
+        # Превышение лимита перекомпиляций не должно тихо уходить в eager во время замера.
+        torch._dynamo.config.fail_on_recompile_limit_hit = True
         body, inductor = self._compile_body(), _inductor()
 
         def counted(graph, inputs):
@@ -86,10 +95,36 @@ class QuantAdapter(NativeAdapter):
             raise ValueError("Compiled model never executed: torch.compile produced no graph")
         self._prepared = True
         self.metadata.update(prepared_compile_count=self.compile_count, backend_actual="compile")
+        q = self.metadata["quantization"]
+        # metadata["backend"] попадает в result.json (safe_metadata У1), metadata["quantization"] — нет.
         self.metadata["backend"] = {"runtime": "compile", "attention": self.metadata.get("attention"),
                                     "compile_count": self.compile_count,
-                                    "quantization": self.metadata["quantization"]["method"]}
+                                    "quantization": {"method": q["method"], "granularity": q.get("granularity"),
+                                                     "quantized_count": len(q.get("quantized", [])),
+                                                     "quantized": list(q.get("quantized", [])),
+                                                     "skipped": list(q.get("skipped", [])), "torchao": q.get("torchao")}}
         return {"compile_count": self.compile_count, "runtime": "compile"}
+
+    def size(self):
+        """As NativeAdapter.size, but counts inner storages of tensor subclasses (torchao Float8Tensor)."""
+        from torch.utils._python_dispatch import is_traceable_wrapper_subclass
+
+        def leaves(tensor):
+            if is_traceable_wrapper_subclass(tensor):
+                for name in tensor.__tensor_flatten__()[0]:
+                    yield from leaves(getattr(tensor, name))
+            else:
+                yield tensor
+
+        tensors = [leaf for t in list(self.model.parameters()) + list(self.model.buffers()) for leaf in leaves(t)]
+        storages = {(str(t.device), t.untyped_storage().data_ptr()): t.untyped_storage().nbytes() for t in tensors}
+        checkpoint = {str(p.relative_to(self.weight_path)): p.stat().st_size for p in self.weight_path.rglob("*")
+                      if p.is_file() and p.suffix in (".safetensors", ".bin", ".pt", ".pth")}
+        if not checkpoint:
+            raise ValueError("Loaded checkpoint weight files missing")
+        return {"unique_parameter_buffer_storage_bytes": sum(storages.values()),
+                "dtypes": sorted({str(t.dtype) for t in tensors}), "checkpoint_files_bytes": checkpoint,
+                "export_files_bytes": {}, "original_encoder_retained": False}
 
     def _label_ids(self):
         ids = [self.tokenizer.encode(word, add_special_tokens=False) for word in ("safe", "unsafe")]

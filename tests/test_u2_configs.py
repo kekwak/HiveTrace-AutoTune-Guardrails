@@ -67,6 +67,10 @@ class Build(unittest.TestCase):
         self.assertEqual(cfg["baseline"]["adapter"]["source_sha256"], sha(ROOT / "u2_quant/adapter.py"))
         self.assertEqual(cfg["baseline"]["adapter"]["dependencies"], {"torchao": "0.17.0"})
 
+    def test_fp8_identity_covers_quantize_source(self):
+        cfg = make("gliner", "fp8", "confirm")
+        self.assertEqual(cfg["candidate"]["quantization"]["quantize_sha256"], sha(ROOT / "u2_quant/quantize.py"))
+
     def test_speed_import_references_both_models(self):
         spec = configs.speed_import("/workspace/u2-data/role-corpus/corpus.jsonl", {
             "gliner": "configs/u2/gliner_bf16c_baseline.json", "hive": "configs/u2/hive_bf16c_baseline.json"})
