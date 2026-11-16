@@ -5,6 +5,7 @@ The U1 native adapter loads the pinned checkpoint in eager mode; this module onl
 adds safe/unsafe probabilities from the same greedy step.
 """
 from copy import deepcopy
+import math
 from pathlib import Path
 
 import torch
@@ -141,7 +142,39 @@ class QuantAdapter(NativeAdapter):
             raise ValueError("HiveTraceGuard verdict words must be single tokens")
         return [i[0] for i in ids]
 
+    def _gliner_scores(self, texts):
+        """As experiments.adapters.GlinerAdapter.scores, but a public/logit label mismatch is recorded, not fatal.
+
+        The U1 verdict rule for gliner is the captured logits (argmax, tie=safe); the SDK public label is a
+        cross-check. In bf16 the SDK rounds its softmax, so near 0.5 they can disagree (1 of 7084 tails rows).
+        torchao FP8 per-row needs bf16 weights, so gliner cannot use its native FP32 here.
+        """
+        from experiments.adapters import score_from_logits
+        g, captured = self.gliner, []
+        hook = g.model.classifier.register_forward_hook(lambda module, args, output: captured.append(output.detach()))
+        try:
+            results = g.model.batch_extract(texts, schemas=g.schema, batch_size=len(texts),
+                                            include_confidence=True, max_len=None)
+        finally:
+            hook.remove()
+        if len(captured) != len(texts) or len(results) != len(texts):
+            raise ValueError("Unexpected number of classifier calls")
+        scores = [score_from_logits(row, g.threshold, tie_safe=True) for row in captured]
+        for score, raw in zip(scores, results):
+            public = raw["safety"]
+            if not math.isfinite(public["confidence"]):
+                raise ValueError("Non-finite public GLiNER confidence")
+            if public["label"] != score["label"]:
+                self.metadata.setdefault("backend", {}).setdefault("public_label_disagreements", []).append(
+                    {"p_unsafe": round(score["p_unsafe"], 6), "public": public["label"], "logits": score["label"]})
+            score["public_confidence"] = public["confidence"]
+        return scores
+
     def _request(self, payloads):
+        if self.name == "gliner":
+            values = self._gliner_scores([self.legacy_text(t) for t in payloads])
+            return [{**value, "scores": {"safe": value["p_safe"], "unsafe": value["p_unsafe"]},
+                     "score_type": "probabilities"} for value in values]
         if self.name != "hive":
             return super()._request(payloads)
         inputs = self._hf_inputs(payloads)

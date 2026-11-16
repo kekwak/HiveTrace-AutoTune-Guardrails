@@ -157,14 +157,6 @@ class HiveScores(unittest.TestCase):
             self.assertAlmostEqual(sum(answer["scores"].values()), 1.0, places=6)
         self.assertGreater(answers[0]["scores"]["unsafe"], 0.5)
 
-    def test_gliner_response_unchanged(self):
-        calls = []
-        with patch.object(NativeAdapter, "__init__", fake_init(calls)), \
-                patch.object(NativeAdapter, "check_device", lambda self: None), \
-                patch.object(NativeAdapter, "_request", lambda self, payloads: [{"label": "safe"}]):
-            made = qa.create(spec(), "/tmp/unused")
-            self.assertEqual(made._request(["a"]), [{"label": "safe"}])
-
 
 class Review(unittest.TestCase):
     def make(self, value=None):
@@ -213,6 +205,30 @@ class Review(unittest.TestCase):
                 patch.object(torch._dynamo.config, "fail_on_recompile_limit_hit", False):
             made._install_compile()
             self.assertTrue(torch._dynamo.config.fail_on_recompile_limit_hit)
+
+    def test_gliner_verdict_from_logits_and_disagreement_recorded(self):
+        made = self.make()
+        classifier = nn.Identity()
+        logits = {"near": torch.tensor([0.0, 0.004]), "clear": torch.tensor([2.0, -1.0])}
+
+        def batch_extract(texts, **kwargs):
+            out = []
+            for t in texts:
+                classifier(logits[t])
+                public = "safe" if t == "near" else "safe"     # SDK в bf16 округлил 0.501 до safe
+                out.append({"safety": {"label": public, "confidence": 0.5}})
+            return out
+        made.gliner = SimpleNamespace(model=SimpleNamespace(classifier=classifier, batch_extract=batch_extract),
+                                      schema=None, threshold=0.5)
+        made.legacy_text = lambda payload: payload
+        made.metadata["backend"] = {"runtime": "compile"}
+        answers = made._request(["near", "clear"])
+        self.assertEqual([a["label"] for a in answers], ["unsafe", "safe"])
+        for answer in answers:
+            validate_response(answer)
+            self.assertEqual(answer["score_type"], "probabilities")
+        self.assertEqual(made.metadata["backend"]["public_label_disagreements"],
+                         [{"p_unsafe": round(answers[0]["p_unsafe"], 6), "public": "safe", "logits": "unsafe"}])
 
     def test_evidence_reports_compile_not_eager(self):
         made = self.make()
