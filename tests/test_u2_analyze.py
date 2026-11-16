@@ -41,6 +41,32 @@ class Compare(unittest.TestCase):
         self.assertLess(pooled["p_mcnemar"], 0.01)
         self.assertAlmostEqual(pooled["d_fnr"], 0.10)
 
+    def test_directional_shift_detected_per_side(self):
+        # FP8 сдвигает в сторону safe: на вредных — пропуски (хуже), на безопасных — меньше ложных тревог (лучше).
+        harm, safe = rows(243), rows(243, target="safe", start=243)
+        base, cand = preds(harm, "unsafe"), preds(harm, "unsafe")
+        base.update(preds(safe, "unsafe")); cand.update(preds(safe, "unsafe"))
+        for r in harm[:22]:
+            cand[r["id"]]["score"]["label"] = "safe"
+        for r in safe[:16]:
+            cand[r["id"]]["score"]["label"] = "safe"
+        pooled = analyze.compare(harm + safe, base, cand).loc["pooled"]
+        self.assertGreater(pooled["p_mcnemar"], 0.05)          # смешанный тест сдвиг не видит
+        self.assertEqual((pooled["fnr_worse"], pooled["fnr_better"]), (22, 0))
+        self.assertLess(pooled["p_fnr"], 1e-5)
+        self.assertEqual((pooled["fpr_worse"], pooled["fpr_better"]), (0, 16))
+        self.assertLess(pooled["p_fpr"], 1e-3)
+
+    def test_holm_per_side_monotone(self):
+        data = rows(60, technique="a") + rows(60, technique="b", start=60) + rows(60, target="safe", technique="b", start=120)
+        cand = preds(data, "unsafe")
+        for row in data[:6] + data[60:62]:
+            cand[row["id"]]["score"]["label"] = "safe"
+        table = analyze.compare(data, preds(data, "unsafe"), cand).drop(index="pooled")
+        for _, row in table.iterrows():
+            self.assertGreaterEqual(row["p_holm_fnr"], row["p_fnr"])
+            self.assertLessEqual(row["p_holm_fnr"], 1.0)
+
     def test_holm_monotone(self):
         data = rows(60, technique="a") + rows(60, technique="b", start=60) + rows(60, technique="c", start=120)
         cand = preds(data, "unsafe")

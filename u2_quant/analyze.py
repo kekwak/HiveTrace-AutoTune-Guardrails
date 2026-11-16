@@ -59,6 +59,12 @@ def _group(items, base, cand, rng):
         lo, hi = np.percentile(samples, [2.5, 97.5])
     else:
         lo = hi = float("nan")
+    # Сдвиг порога в одну сторону даёт «хуже» на вредных и «лучше» на безопасных — смешанный McNemar его гасит.
+    # Поэтому отдельно: FNR по вредным строкам, FPR по безопасным.
+    fnr_worse, fnr_better = int((flips & y & ~b).sum()), int((flips & y & b).sum())
+    fpr_worse, fpr_better = int((flips & ~y & b).sum()), int((flips & ~y & ~b).sum())
+    row.update(fnr_worse=fnr_worse, fnr_better=fnr_better, p_fnr=mcnemar(fnr_worse, fnr_better),
+               fpr_worse=fpr_worse, fpr_better=fpr_better, p_fpr=mcnemar(fpr_worse, fpr_better))
     row.update(flips=int(flips.sum()), worse=worse, better=better, flip_rate=flips.mean() if n else float("nan"),
                flip_lo=float(lo), flip_hi=float(hi), p_mcnemar=mcnemar(worse, better),
                d_fnr=_rate(~b, y) - _rate(~a, y), d_fpr=_rate(b, ~y) - _rate(a, ~y),
@@ -83,11 +89,12 @@ def compare(rows, base, cand, slice_key="technique", seed=17):
     groups = {}
     for value in sorted({r["slices"][slice_key] for r in rows}):
         groups[value] = _group([r for r in rows if r["slices"][slice_key] == value], base, cand, rng)
-    holm = _holm({k: v["p_mcnemar"] for k, v in groups.items()})
-    for key, value in groups.items():
-        value["p_holm"] = holm[key]
+    for column, adjusted in (("p_mcnemar", "p_holm"), ("p_fnr", "p_holm_fnr"), ("p_fpr", "p_holm_fpr")):
+        holm = _holm({k: v[column] for k, v in groups.items()})
+        for key, value in groups.items():
+            value[adjusted] = holm[key]
     pooled = _group(rows, base, cand, rng)
-    pooled["p_holm"] = pooled["p_mcnemar"]
+    pooled.update(p_holm=pooled["p_mcnemar"], p_holm_fnr=pooled["p_fnr"], p_holm_fpr=pooled["p_fpr"])
     return pd.DataFrame({**groups, "pooled": pooled}).T
 
 
@@ -110,7 +117,8 @@ def main(argv=None):
     out.mkdir(parents=True, exist_ok=True)
     table.to_csv(out / f"analysis_{args.slice}.csv")
     (out / f"analysis_{args.slice}.md").write_text(table.to_string() + "\n")   # tabulate нет в lock
-    print(table[["n_common", "flips", "worse", "better", "p_mcnemar", "p_holm", "d_fnr", "d_fpr", "mde"]].to_string())
+    print(table[["n_common", "flips", "fnr_worse", "fnr_better", "p_holm_fnr", "d_fnr", "mde_fnr",
+                 "fpr_worse", "fpr_better", "p_holm_fpr", "d_fpr", "mde_fpr"]].to_string())
 
 
 if __name__ == "__main__":
