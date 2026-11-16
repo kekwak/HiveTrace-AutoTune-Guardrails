@@ -1,0 +1,9 @@
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Fetching 8 files: 100%|██████████| 8/8 [00:00<00:00, 2469.96it/s]
+Fetching 16 files:   0%|          | 0/16 [00:00<?, ?it/s]Fetching 16 files: 100%|██████████| 16/16 [00:00<00:00, 3966.48it/s]
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 26172.48it/s]
+V1114 14:06:22.744000 32093 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles] Recompiling function wrapper in /home/kekwak/Desktop/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/transformers/utils/generic.py:937
+V1114 14:06:22.744000 32093 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 14:06:22.744000 32093 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     - 0/0: tensor 'kwargs['past_key_values'].layers[0].keys' size mismatch at index 2. expected 2361, actual 3511
+W1114 14:07:28.403000 32093 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_inductor/cudagraph_utils.py:343] [__cudagraphs] CUDAGraph supports dynamic shapes by recording a new graph for each distinct input size. Recording too many CUDAGraphs may lead to extra overhead. We have observed 9 distinct sizes. Please consider the following options for better performance: a) padding inputs to a few fixed number of shapes; or b) set torch._inductor.config.triton.cudagraph_skip_dynamic_graphs=True. Set torch._inductor.config.triton.cudagraph_dynamic_shape_warn_limit=None to silence this warning.
+{"status": "passed"}

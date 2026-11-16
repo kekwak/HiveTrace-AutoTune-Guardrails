@@ -1,0 +1,114 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": "open",
+    "weights": {
+      "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+      "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+    },
+    "tokenizer": {
+      "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+      "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+    },
+    "template": {
+      "repo": "openguardrails/OpenGuardrails-Text-2510",
+      "revision": "cce015e5c8f47be0b8f9022b991ec552bb3cc0b7",
+      "file": "chat_template.jinja"
+    },
+    "preparation": {
+      "limit": 4096
+    },
+    "scoring": {
+      "max_new_tokens": 10
+    },
+    "execution": {
+      "runtime": "eager",
+      "dtype": "bfloat16",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    },
+    "B2": {
+      "min": 513,
+      "max": 1024
+    },
+    "B3": {
+      "min": 1025,
+      "max": 2048
+    },
+    "B4": {
+      "min": 2049,
+      "max": 4096
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1
+    ],
+    "B2": [
+      1
+    ],
+    "B3": [
+      1
+    ],
+    "B4": [
+      1
+    ]
+  },
+  "mode": "search",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u1-env",
+  "data": {
+    "path": "/home/kekwak/Desktop/guardrails/data/speed/rules-v4-open",
+    "manifest_sha256": "1736dd5fbb0a742bdd115378aa59c81228f7a35004ecbe8b3d62d2373e234687"
+  },
+  "quality_batch_sizes": [
+    1
+  ],
+  "candidate": {
+    "adapter": {
+      "module": "rules/adapter.py",
+      "source_sha256": "10a3823f454c7591357fc698c7a9241d241d56d7e80bf3fe4ffd8c150ea2fed1",
+      "dependencies": {}
+    },
+    "weights": {
+      "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+      "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+    },
+    "tokenizer": {
+      "repo": "kekwak/OpenGuardrails-Text-4B-0124-mirror",
+      "revision": "3b63e17b38b45fb095f82d486c9d7e7da8740ff4"
+    },
+    "template": {
+      "repo": "openguardrails/OpenGuardrails-Text-2510",
+      "revision": "cce015e5c8f47be0b8f9022b991ec552bb3cc0b7",
+      "file": "chat_template.jinja"
+    },
+    "preparation": {
+      "limit": 4096
+    },
+    "scoring": {
+      "max_new_tokens": 10
+    },
+    "execution": {
+      "runtime": "eager",
+      "dtype": "bfloat16",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference",
+      "model": "open",
+      "rules": [
+        "c4"
+      ],
+      "batch": 1
+    }
+  }
+}
