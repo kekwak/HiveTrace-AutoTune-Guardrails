@@ -10,6 +10,7 @@ GRIDS = {"gliner": {"B1": [1, 256]},
          "hive": {"B1": [1, 64], "B2": [1, 32], "B3": [1, 16], "B4": [1, 8]}}
 DATA = {"path": "/workspace/u2-data/speed", "manifest_sha256": "a" * 64}
 QUALITY = {"path": "/workspace/u2-data/quality", "manifest_sha256": "b" * 64}
+QUALITY_GLINER = {"path": "/workspace/u2-data/quality-gliner", "manifest_sha256": "c" * 64}
 
 
 def every():
@@ -21,7 +22,8 @@ def every():
 
 
 def make(model, variant, mode):
-    return configs.build(model, variant, mode, environment="/workspace/u2-env", data=DATA, quality_data=QUALITY,
+    return configs.build(model, variant, mode, environment="/workspace/u2-env", data=DATA,
+                         quality_data=QUALITY_GLINER if model == "gliner" else QUALITY,
                          baseline_ref="/workspace/u2-runs/x" if mode == "search" else None)
 
 
@@ -66,6 +68,18 @@ class Build(unittest.TestCase):
         self.assertEqual(cfg["baseline"]["adapter"]["module"], "u2_quant/adapter.py")
         self.assertEqual(cfg["baseline"]["adapter"]["source_sha256"], sha(ROOT / "u2_quant/adapter.py"))
         self.assertEqual(cfg["baseline"]["adapter"]["dependencies"], {"torchao": "0.17.0"})
+
+    def test_main_points_gliner_to_normalized_corpus(self):
+        import tempfile
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as root, patch.object(configs, "ROOT", ROOT), \
+                patch.object(configs, "write", lambda path, value: written.__setitem__(path.name, value)):
+            written = {}
+            configs.main(["--quality-manifest", "q" * 64, "--quality-manifest-gliner", "g" * 64])
+        self.assertEqual(written["gliner_fp8_quality.json"]["quality_data"],
+                         {"path": "/workspace/u2-data/quality-gliner", "manifest_sha256": "g" * 64})
+        self.assertEqual(written["hive_fp8_quality.json"]["quality_data"],
+                         {"path": "/workspace/u2-data/quality", "manifest_sha256": "q" * 64})
 
     def test_fp8_identity_covers_quantize_source(self):
         cfg = make("gliner", "fp8", "confirm")

@@ -63,13 +63,16 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--speed-manifest", default="REPLACE_SPEED_MANIFEST_SHA256")
     parser.add_argument("--quality-manifest", default="REPLACE_QUALITY_MANIFEST_SHA256")
+    parser.add_argument("--quality-manifest-gliner", default="REPLACE_GLINER_QUALITY_MANIFEST_SHA256")
     args = parser.parse_args(argv)
     data = {"path": "/workspace/u2-data/speed", "manifest_sha256": args.speed_manifest}
-    quality = {"path": "/workspace/u2-data/quality", "manifest_sha256": args.quality_manifest}
+    # gliner: тексты, нормализованные SDK (u2_quant.gliner_corpus); hive: исходные тексты tails_v2.
+    quality = {"gliner": {"path": "/workspace/u2-data/quality-gliner", "manifest_sha256": args.quality_manifest_gliner},
+               "hive": {"path": "/workspace/u2-data/quality", "manifest_sha256": args.quality_manifest}}
     out = ROOT / "configs/u2"
     for model, name, mode in PLAN:
         write(out / f"{model}_{name}_{mode}.json",
-              build(model, name, mode, environment="/workspace/u2-env", data=data, quality_data=quality,
+              build(model, name, mode, environment="/workspace/u2-env", data=data, quality_data=quality[model],
                     baseline_ref=f"/workspace/u2-runs/{model}-baseline"))
     write(out / "speed_import.json", speed_import("/workspace/u2-data/role-corpus/corpus.jsonl",
                                                   {m: f"configs/u2/{m}_bf16c_baseline.json" for m in MODELS}))

@@ -42,6 +42,14 @@ ready "$DATA/quality" || {
   "$PY" tools/benchmark.py prepare-data --spec "$DATA/quality-src/import.json" --output "$DATA/quality"; }
 ready "$DATA/quality"
 
+step gliner-quality
+# SDK GLiNER дописывает точку к ~34% текстов; У1 такие изменения запрещает — даём gliner уже нормализованные тексты.
+ready "$DATA/quality-gliner" || {
+  rm -rf "$DATA/quality-gliner-src" "$DATA/quality-gliner"
+  "$PY" -m u2_quant.gliner_corpus "$DATA/quality/corpus.jsonl" "$DATA/quality-gliner-src"
+  "$PY" tools/benchmark.py prepare-data --spec "$DATA/quality-gliner-src/import.json" --output "$DATA/quality-gliner"; }
+ready "$DATA/quality-gliner"
+
 step speed-indices
 # Индексы привязаны к identity подготовки, включающей sha адаптера: при смене adapter.py — пересборка.
 ADAPTER_SHA=$(sha256sum u2_quant/adapter.py | cut -d' ' -f1)
@@ -55,5 +63,6 @@ echo "$ADAPTER_SHA" > "$DATA/speed.adapter_sha256"
 
 step configs
 "$PY" -m u2_quant.configs --speed-manifest "$(sha256sum "$DATA/speed/manifest.json" | cut -d' ' -f1)" \
-  --quality-manifest "$(sha256sum "$DATA/quality/manifest.json" | cut -d' ' -f1)"
+  --quality-manifest "$(sha256sum "$DATA/quality/manifest.json" | cut -d' ' -f1)" \
+  --quality-manifest-gliner "$(sha256sum "$DATA/quality-gliner/manifest.json" | cut -d' ' -f1)"
 step done

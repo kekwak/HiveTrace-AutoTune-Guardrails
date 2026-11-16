@@ -61,6 +61,9 @@ class Scripts(unittest.TestCase):
             self.assertIn(f"ready {target} ||", text)
         self.assertIn('rm -rf "$DATA/quality-src" "$DATA/quality"', text)
         self.assertIn('rm -rf "$DATA/speed"', text)
+        self.assertIn('ready "$DATA/quality-gliner" ||', text)
+        self.assertIn("u2_quant.gliner_corpus", text)
+        self.assertIn("--quality-manifest-gliner", text)
         self.assertIn('rm -rf "$ENV"', text)
 
     def test_pack_archives_only_this_model(self):
