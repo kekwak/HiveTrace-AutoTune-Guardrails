@@ -87,7 +87,9 @@ class QuantAdapter(NativeAdapter):
 
     def _shape(self, batch):
         if self.name == "gliner":
-            return tuple(self.gliner.prepare([self.legacy_text(t) for t in batch])["input_ids"].shape)
+            # gliner.prepare() У1 запрещает изменение текста, а SDK GLiNER дописывает точку к ~34% текстов tails
+            # (штатное поведение модели). Форму для прогрева берём из индекса У1 — та же нативная подготовка.
+            return (len(batch), max(self.index(t)["total_tokens"] for t in batch))
         return tuple(self._hf_inputs(batch)["input_ids"].shape)
 
     def prepare_batch_backend(self, batches):

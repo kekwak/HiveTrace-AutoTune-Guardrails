@@ -214,6 +214,12 @@ class Review(unittest.TestCase):
             made._install_compile()
             self.assertTrue(torch._dynamo.config.fail_on_recompile_limit_hit)
 
+    def test_gliner_shape_uses_index_not_processor_check(self):
+        made = self.make()
+        made.gliner = SimpleNamespace(prepare=lambda texts: (_ for _ in ()).throw(ValueError("Processor changed or dropped text")))
+        made.index = lambda payload: {"total_tokens": {"a": 7, "bb": 12}[payload]}
+        self.assertEqual(made._shape(["a", "bb"]), (2, 12))
+
     def test_evidence_reports_compile_not_eager(self):
         made = self.make()
         self.assertEqual(made.metadata["backend_requested"], "compile")
