@@ -49,12 +49,17 @@ class Apply(unittest.TestCase):
         self.assertEqual(type(config).__name__, "Float8DynamicActivationFloat8WeightConfig")
         granularity = config.granularity if isinstance(config.granularity, (list, tuple)) else [config.granularity]
         self.assertTrue(granularity and all(isinstance(g, PerRow) for g in granularity), granularity)
+        # нулевые строки паддинга (gliner, батч > 1) дают масштаб 0 и NaN без нижней границы
+        self.assertIsNotNone(config.activation_value_lb)
+        self.assertGreater(config.activation_value_lb, 0)
+        self.assertLess(config.activation_value_lb, 1e-6)
         chosen = [name for name, m in model.named_modules() if kwargs["filter_fn"](m, name)]
         self.assertEqual(chosen, ["1", "3.0"])
         self.assertEqual(info["quantized"], ["1", "3.0"])
         self.assertEqual(info["skipped"], ["3.1"])
         self.assertEqual(info["granularity"], "per_row")
         self.assertEqual(info["torchao"], "0.17.0")
+        self.assertEqual(info["activation_value_lb"], config.activation_value_lb)
 
 
 if __name__ == "__main__":
