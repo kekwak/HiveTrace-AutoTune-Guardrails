@@ -59,7 +59,7 @@ class Build(unittest.TestCase):
 
     def test_quality_config_mapping(self):
         cfg = make("hive", "fp8", "quality")
-        self.assertEqual(cfg["quality_batch_sizes"], [1])
+        self.assertEqual(cfg["quality_batch_sizes"], [64])   # checkpoint У1 после каждого батча — O(N²) при батче 1
         self.assertEqual(cfg["label_mapping"]["positive_label"], "unsafe")
         self.assertNotIn("data", cfg)
 

@@ -11,6 +11,7 @@ from u2_quant.lock import TORCHAO
 
 MODELS, VARIANTS = ("gliner", "hive"), ("bf16c", "fp8")
 ADAPTER = "u2_quant/adapter.py"
+QUALITY_BATCH = [64]
 LABELS = {"labels": ["safe", "unsafe"], "targets": {"safe": "safe", "unsafe": "unsafe"},
           "verdicts": {"safe": "safe", "unsafe": "unsafe"}, "positive_label": "unsafe"}
 SPEED_CORPUS = {"dataset": "vXofi/guardrails-speed-en-ru", "revision": "7324b8823ded971c05076e0c7f4ace5d9b867863"}
@@ -41,7 +42,9 @@ def build(model, name, mode, *, environment, data, quality_data, baseline_ref=No
     if name != "bf16c":
         cfg["candidate"] = variant(model, name)
     if mode == "quality":
-        cfg.update(quality_data=quality_data, label_mapping=deepcopy(LABELS))
+        # Воркер У1 пишет полный checkpoint (метрики по всем строкам) после каждого батча: при батче 1 это
+        # O(N²), ~3 ч на вариант. Батч 64 — штатная опция У1; эталон и FP8 идут на одинаковых батчах.
+        cfg.update(quality_data=quality_data, label_mapping=deepcopy(LABELS), quality_batch_sizes=QUALITY_BATCH)
     else:
         cfg["data"] = data
     if mode == "search":
