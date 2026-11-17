@@ -1,0 +1,18 @@
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 551.01it/s]
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Fetching 8 files: 100%|██████████| 8/8 [00:00<00:00, 1195.38it/s]
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   0%|          | 1/310 [00:00<00:49,  6.30it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1421.54it/s]
+[transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+V1114 13:03:59.439000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 13:03:59.439000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 13:03:59.439000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 512, actual 256
+V1114 13:04:03.768000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 13:04:03.768000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     triggered by the following guard failure(s):
+V1114 13:04:03.768000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/1: tensor 'x['input_ids']' size mismatch at index 1. expected 256, actual 1024
+V1114 13:04:03.768000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 512, actual 1024
+V1114 13:04:10.075000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/3] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 13:04:10.075000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/3] [__recompiles]     triggered by the following guard failure(s):
+V1114 13:04:10.075000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/3] [__recompiles]     - 0/2: tensor 'x['input_ids']' size mismatch at index 1. expected 1024, actual 128
+V1114 13:04:10.075000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/3] [__recompiles]     - 0/1: tensor 'x['input_ids']' size mismatch at index 1. expected 256, actual 128
+V1114 13:04:10.075000 17230 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/3] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 512, actual 128
+{"status": "passed"}

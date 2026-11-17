@@ -1,0 +1,12 @@
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 649.15it/s]
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1421.96it/s]
+Loading weights:   0%|          | 0/474 [00:00<?, ?it/s]Loading weights:  61%|██████▏   | 291/474 [00:00<00:00, 2903.74it/s]Loading weights: 100%|██████████| 474/474 [00:00<00:00, 3346.42it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+V1114 11:27:45.709000 9373 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 11:27:45.709000 9373 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 11:27:45.709000 9373 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 512, actual 256
+V1114 11:28:02.166000 9373 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 11:28:02.166000 9373 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     triggered by the following guard failure(s):
+V1114 11:28:02.166000 9373 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/1: tensor 'x['input_ids']' size mismatch at index 1. expected 256, actual 1024
+V1114 11:28:02.166000 9373 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 512, actual 1024
+{"status": "passed"}

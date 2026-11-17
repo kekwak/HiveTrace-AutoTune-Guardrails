@@ -1,0 +1,127 @@
+{
+  "baseline": {
+    "adapter": "halo",
+    "execution": {
+      "attention": "native",
+      "dtype": "bfloat16",
+      "linear_attention": "native",
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "cue": "Safety: ",
+      "enable_thinking": false,
+      "limit": 4096
+    },
+    "scoring": {
+      "threshold": 0.65
+    },
+    "sdk_assets": {
+      "prompt": {
+        "file": "README.md",
+        "repo": "astroware/HaloGuard1-Gen-0.8B",
+        "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+      }
+    },
+    "template": null,
+    "tokenizer": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    },
+    "weights": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    }
+  },
+  "baseline_ref": "runs/tune-v4/halo/0-baseline",
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1
+    ],
+    "B2": [
+      1
+    ],
+    "B3": [
+      1
+    ],
+    "B4": [
+      1
+    ]
+  },
+  "buckets": {
+    "B1": {
+      "max": 512,
+      "min": 1
+    },
+    "B2": {
+      "max": 1024,
+      "min": 513
+    },
+    "B3": {
+      "max": 2048,
+      "min": 1025
+    },
+    "B4": {
+      "max": 4096,
+      "min": 2049
+    }
+  },
+  "candidate": {
+    "adapter": {
+      "dependencies": {},
+      "module": "rules/adapter.py",
+      "source_sha256": "10a3823f454c7591357fc698c7a9241d241d56d7e80bf3fe4ffd8c150ea2fed1"
+    },
+    "execution": {
+      "attention": "native",
+      "batch": 1,
+      "dtype": "bfloat16",
+      "linear_attention": "native",
+      "model": "halo",
+      "rules": [
+        "c2"
+      ],
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "cue": "Safety: ",
+      "enable_thinking": false,
+      "limit": 4096
+    },
+    "scoring": {
+      "threshold": 0.65
+    },
+    "sdk_assets": {
+      "prompt": {
+        "file": "README.md",
+        "repo": "astroware/HaloGuard1-Gen-0.8B",
+        "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+      }
+    },
+    "template": null,
+    "tokenizer": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    },
+    "weights": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    }
+  },
+  "comparison": "engineering",
+  "data": {
+    "manifest_sha256": "b5c22d20d37201d8e75837dbe08e11d942f71dd8bf688a64cd788419ffeba0ea",
+    "path": "/workspace/guardrails/data/speed/rules-v4"
+  },
+  "environment": "./u1-rtx-env",
+  "mode": "search",
+  "pilot": false,
+  "profile_trace": false,
+  "quality_batch_sizes": [
+    1
+  ],
+  "schema_version": 4,
+  "seed": 17,
+  "timeout_seconds": 36000
+}

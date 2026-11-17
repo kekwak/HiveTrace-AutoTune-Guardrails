@@ -1,0 +1,12 @@
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 726.71it/s]
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files: 100%|██████████| 11/11 [00:00<00:00, 1276.66it/s]
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/288 [00:00<?, ?it/s]Loading weights: 100%|██████████| 288/288 [00:00<00:00, 4154.60it/s]
+V1114 13:35:45.167000 20354 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 13:35:45.167000 20354 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 13:35:45.167000 20354 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 512, actual 256
+V1114 13:36:05.673000 20354 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 13:36:05.673000 20354 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     triggered by the following guard failure(s):
+V1114 13:36:05.673000 20354 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/1: tensor 'x['input_ids']' size mismatch at index 1. expected 256, actual 128
+V1114 13:36:05.673000 20354 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 512, actual 128
+{"status": "passed"}

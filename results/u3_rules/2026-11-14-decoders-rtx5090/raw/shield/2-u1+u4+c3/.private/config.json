@@ -1,0 +1,111 @@
+{
+  "baseline": {
+    "adapter": "shield",
+    "execution": {
+      "attention": "eager",
+      "dtype": "bfloat16",
+      "linear_attention": "reference",
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "guideline": "\"No Dangerous Content\": The prompt shall not contain or seek generation of content that harming oneself and/or others (e.g., accessing or building firearms and explosive devices, promotion of terrorism, instructions for suicide).",
+      "limit": 4096,
+      "response_guideline": "\"No Dangerous Content\": The chatbot shall not generate content that harming oneself and/or others (e.g., accessing or building firearms and explosive devices, promotion of terrorism, instructions for suicide)."
+    },
+    "scoring": {},
+    "template": null,
+    "tokenizer": {
+      "repo": "google/shieldgemma-2b",
+      "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8"
+    },
+    "weights": {
+      "repo": "google/shieldgemma-2b",
+      "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8"
+    }
+  },
+  "baseline_ref": "runs/tune-v4/shield/0-baseline",
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1
+    ],
+    "B2": [
+      1
+    ],
+    "B3": [
+      1
+    ],
+    "B4": [
+      1
+    ]
+  },
+  "buckets": {
+    "B1": {
+      "max": 512,
+      "min": 1
+    },
+    "B2": {
+      "max": 1024,
+      "min": 513
+    },
+    "B3": {
+      "max": 2048,
+      "min": 1025
+    },
+    "B4": {
+      "max": 4096,
+      "min": 2049
+    }
+  },
+  "candidate": {
+    "adapter": {
+      "dependencies": {},
+      "module": "rules/adapter.py",
+      "source_sha256": "10a3823f454c7591357fc698c7a9241d241d56d7e80bf3fe4ffd8c150ea2fed1"
+    },
+    "execution": {
+      "attention": "eager",
+      "batch": 1,
+      "dtype": "bfloat16",
+      "linear_attention": "reference",
+      "model": "shield",
+      "rules": [
+        "u1",
+        "u4",
+        "c3"
+      ],
+      "runtime": "eager",
+      "sdpa_backend": null
+    },
+    "preparation": {
+      "guideline": "\"No Dangerous Content\": The prompt shall not contain or seek generation of content that harming oneself and/or others (e.g., accessing or building firearms and explosive devices, promotion of terrorism, instructions for suicide).",
+      "limit": 4096,
+      "response_guideline": "\"No Dangerous Content\": The chatbot shall not generate content that harming oneself and/or others (e.g., accessing or building firearms and explosive devices, promotion of terrorism, instructions for suicide)."
+    },
+    "scoring": {},
+    "template": null,
+    "tokenizer": {
+      "repo": "google/shieldgemma-2b",
+      "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8"
+    },
+    "weights": {
+      "repo": "google/shieldgemma-2b",
+      "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8"
+    }
+  },
+  "comparison": "engineering",
+  "data": {
+    "manifest_sha256": "b5c22d20d37201d8e75837dbe08e11d942f71dd8bf688a64cd788419ffeba0ea",
+    "path": "/workspace/guardrails/data/speed/rules-v4"
+  },
+  "environment": "./u1-rtx-env",
+  "mode": "search",
+  "pilot": false,
+  "profile_trace": false,
+  "quality_batch_sizes": [
+    1
+  ],
+  "schema_version": 4,
+  "seed": 17,
+  "timeout_seconds": 36000
+}

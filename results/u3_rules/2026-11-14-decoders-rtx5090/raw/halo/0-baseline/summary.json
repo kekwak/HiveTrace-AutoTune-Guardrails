@@ -1,0 +1,6304 @@
+{
+  "schema_version": 4,
+  "result_version": 4,
+  "protocol_version": "u1-static-batch-v4",
+  "resolved_sha256": "91a4e69c4973e453a6bd49e1cb443aba6a502f957e1a5f581c2a2a5841449465",
+  "mode": "baseline",
+  "comparison": "engineering",
+  "status": "baseline_complete",
+  "complete": true,
+  "speed_status": "measured_baseline",
+  "verdict_status": "unchanged",
+  "cells": {
+    "B1/1": {
+      "bucket": "B1",
+      "batch_size": 1,
+      "complete": true,
+      "faster": false,
+      "timing_unit": "batch",
+      "throughput": {
+        "baseline": {
+          "batches": 1200,
+          "texts": 1200,
+          "latency_ms": 63943.56580900003,
+          "useful_tokens": 534369,
+          "padded_tokens": 534369,
+          "requests_per_second": 18.76654804620077,
+          "padding_fraction": 0.0
+        }
+      },
+      "errors": [],
+      "baseline_series_p95_ms": [
+        59.28007359999998,
+        63.91383014999998,
+        61.89501754999999
+      ],
+      "baseline_drift_p95": 0.0781671861824409,
+      "aa": {
+        "baseline_ms": 51.61375634999999,
+        "candidate_ms": 50.523669749999996,
+        "ratio": 0.9788799212247222,
+        "ratio_interval_95": [
+          0.9458175346058298,
+          1.0073553793449546
+        ],
+        "block_ratios": [
+          0.9951229134035788,
+          0.9673941737813028
+        ]
+      },
+      "aa_envelope_p95": 0.03370479903889567,
+      "stability_assessed": false,
+      "noise_flags": null,
+      "uncertainty_note": "Descriptive block bootstrap over 3 series; no baseline stability threshold or independent confirmation",
+      "p50": {
+        "baseline_ms": 51.770191999999994,
+        "baseline_interval_95_ms": [
+          51.325421,
+          52.393045
+        ]
+      },
+      "p95": {
+        "baseline_ms": 62.248076000000005,
+        "baseline_interval_95_ms": [
+          59.28007359999998,
+          63.91383014999998
+        ]
+      },
+      "status": "baseline_complete",
+      "speed_status": "measured_baseline",
+      "verdicts": {
+        "n": 400,
+        "changed_count": 0,
+        "changed_fraction": 0.0,
+        "changed_ids": [],
+        "unstable_ids": [],
+        "max_abs_score_delta": {
+          "safe": 0,
+          "unsafe": 0
+        },
+        "directions": [],
+        "status": "ok"
+      },
+      "verdict_status": "unchanged",
+      "series_evidence": [
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B1",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.408549956046045
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9402826600708067
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.2769905626773834e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 23,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 20,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1807079936
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1881145344
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B1",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.438208387931809
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9716462169308215
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.337014302611351e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 22,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 21,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1807079936
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1881145344
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B1",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.413081933977082
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9656622540205717
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.6200897991657257e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 24,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 20,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1807071744
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1881145344
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B1",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.307850583922118
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9050272891763598
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.4169916287064552e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 22,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 21,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1807071744
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1881145344
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B1",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 8.050743422936648
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.8858706979081035
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 9.810016490519047e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 27,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 336,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1807113728
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1881145344
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B1",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 8.098975692875683
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9343974969815463
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.00010229111649096012
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 27,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 350,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1807113728
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1881145344
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B1",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 2,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.50340096000582
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9655046740081161
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.00013786996714770794
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 27,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2440.0,
+                "valid_gpu_samples": 347,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1807113728
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1881145344
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        }
+      ],
+      "preparation_status": "measured",
+      "memory_status": "measured",
+      "size_status": "measured",
+      "profiles": {
+        "status": "not_requested",
+        "variants": {}
+      },
+      "profile_status": "not_requested"
+    },
+    "B2/1": {
+      "bucket": "B2",
+      "batch_size": 1,
+      "complete": true,
+      "faster": false,
+      "timing_unit": "batch",
+      "throughput": {
+        "baseline": {
+          "batches": 1200,
+          "texts": 1200,
+          "latency_ms": 62487.173379000036,
+          "useful_tokens": 919989,
+          "padded_tokens": 919989,
+          "requests_per_second": 19.20394114679673,
+          "padding_fraction": 0.0
+        }
+      },
+      "errors": [],
+      "baseline_series_p95_ms": [
+        58.20684159999998,
+        56.41091749999999,
+        57.24048605
+      ],
+      "baseline_drift_p95": 0.031836463216539546,
+      "aa": {
+        "baseline_ms": 60.452247,
+        "candidate_ms": 58.164265,
+        "ratio": 0.962152242248332,
+        "ratio_interval_95": [
+          0.933603376570825,
+          1.030047582387314
+        ],
+        "block_ratios": [
+          1.038519556879306,
+          0.9416863687473919
+        ]
+      },
+      "aa_envelope_p95": 0.061924684468116054,
+      "stability_assessed": false,
+      "noise_flags": null,
+      "uncertainty_note": "Descriptive block bootstrap over 3 series; no baseline stability threshold or independent confirmation",
+      "p50": {
+        "baseline_ms": 50.853054,
+        "baseline_interval_95_ms": [
+          50.762244,
+          51.002434
+        ]
+      },
+      "p95": {
+        "baseline_ms": 57.335187999999995,
+        "baseline_interval_95_ms": [
+          56.41091749999999,
+          58.20684159999998
+        ]
+      },
+      "status": "baseline_complete",
+      "speed_status": "measured_baseline",
+      "verdicts": {
+        "n": 400,
+        "changed_count": 0,
+        "changed_fraction": 0.0,
+        "changed_ids": [],
+        "unstable_ids": [],
+        "max_abs_score_delta": {
+          "safe": 0,
+          "unsafe": 0
+        },
+        "directions": [],
+        "status": "ok"
+      },
+      "verdict_status": "unchanged",
+      "series_evidence": [
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B2",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.482491913018748
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9930996659677476
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.532987855374813e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2618.0,
+                "valid_gpu_samples": 24,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2618.0,
+                "valid_gpu_samples": 20,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1849133568
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2067791872
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B2",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 8.608772268053144
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9416520649101585
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 3.681983798742294e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2618.0,
+                "valid_gpu_samples": 23,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2618.0,
+                "valid_gpu_samples": 20,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1849133568
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2067791872
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B2",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.733077944023535
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9825261470396072
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.2660009562969208e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2574.0,
+                "valid_gpu_samples": 23,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2574.0,
+                "valid_gpu_samples": 21,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1848842752
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2021654528
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B2",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.931592679815367
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.0934729578439146
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.7899863198399544e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2574.0,
+                "valid_gpu_samples": 25,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2574.0,
+                "valid_gpu_samples": 21,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1848842752
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2021654528
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B2",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.8580118680838495
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.024554501986131
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.0001079910434782505
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2536.0,
+                "valid_gpu_samples": 29,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2598.0,
+                "valid_gpu_samples": 320,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1851167744
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2046820352
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B2",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.8490899740718305
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.0017631088849157
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.00016760989092290401
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2582.0,
+                "valid_gpu_samples": 27,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2644.0,
+                "valid_gpu_samples": 314,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1851167744
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2095054848
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B2",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 2,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.782448156038299
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.98100353195332
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.00010528997518122196
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2562.0,
+                "valid_gpu_samples": 27,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2624.0,
+                "valid_gpu_samples": 316,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1851167744
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2074083328
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        }
+      ],
+      "preparation_status": "measured",
+      "memory_status": "measured",
+      "size_status": "measured",
+      "profiles": {
+        "status": "not_requested",
+        "variants": {}
+      },
+      "profile_status": "not_requested"
+    },
+    "B3/1": {
+      "bucket": "B3",
+      "batch_size": 1,
+      "complete": true,
+      "faster": false,
+      "timing_unit": "batch",
+      "throughput": {
+        "baseline": {
+          "batches": 1200,
+          "texts": 1200,
+          "latency_ms": 66678.09874399997,
+          "useful_tokens": 1838013,
+          "padded_tokens": 1838013,
+          "requests_per_second": 17.996913868333444,
+          "padding_fraction": 0.0
+        }
+      },
+      "errors": [],
+      "baseline_series_p95_ms": [
+        67.13579709999998,
+        62.166454449999996,
+        61.7892295
+      ],
+      "baseline_drift_p95": 0.08652911912423145,
+      "aa": {
+        "baseline_ms": 53.52244235,
+        "candidate_ms": 59.282296099999996,
+        "ratio": 1.1076156747917913,
+        "ratio_interval_95": [
+          1.045385148242903,
+          1.124959943507849
+        ],
+        "block_ratios": [
+          1.0580780906389509,
+          1.1223427073803087
+        ]
+      },
+      "aa_envelope_p95": 0.12234270738030872,
+      "stability_assessed": false,
+      "noise_flags": null,
+      "uncertainty_note": "Descriptive block bootstrap over 3 series; no baseline stability threshold or independent confirmation",
+      "p50": {
+        "baseline_ms": 54.3581775,
+        "baseline_interval_95_ms": [
+          52.730021,
+          56.4087385
+        ]
+      },
+      "p95": {
+        "baseline_ms": 62.1568265,
+        "baseline_interval_95_ms": [
+          61.7892295,
+          67.13579709999998
+        ]
+      },
+      "status": "baseline_complete",
+      "speed_status": "measured_baseline",
+      "verdicts": {
+        "n": 400,
+        "changed_count": 0,
+        "changed_fraction": 0.0,
+        "changed_ids": [],
+        "unstable_ids": [],
+        "max_abs_score_delta": {
+          "safe": 0,
+          "unsafe": 0
+        },
+        "directions": [],
+        "status": "ok"
+      },
+      "verdict_status": "unchanged",
+      "series_evidence": [
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B3",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 9.495824412908405
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.5520912220235914
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 4.261988215148449e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2728.0,
+                "valid_gpu_samples": 29,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2808.0,
+                "valid_gpu_samples": 19,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1912685568
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2267021312
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B3",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.483200714923441
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.088010060833767
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.174009568989277e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2728.0,
+                "valid_gpu_samples": 25,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2808.0,
+                "valid_gpu_samples": 20,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1912685568
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2267021312
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B3",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.9984592439141124
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.1480523929931223
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.9410002753138542e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2642.0,
+                "valid_gpu_samples": 25,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2642.0,
+                "valid_gpu_samples": 21,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1913203712
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2092957696
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B3",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.421765441074967
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.95835703285411
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.1870015189051628e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2642.0,
+                "valid_gpu_samples": 22,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2642.0,
+                "valid_gpu_samples": 20,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1913203712
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2092957696
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B3",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 8.023201832082123
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9869916529860348
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.00012194993905723095
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2694.0,
+                "valid_gpu_samples": 27,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2774.0,
+                "valid_gpu_samples": 327,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1913957888
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2231369728
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B3",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.36764908884652
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 1.9367285349871963
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 8.863001130521297e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2756.0,
+                "valid_gpu_samples": 27,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2756.0,
+                "valid_gpu_samples": 338,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1913939456
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2212495360
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B3",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 2,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.588624228024855
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.238308279076591
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.00015079998411238194
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2682.0,
+                "valid_gpu_samples": 31,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2682.0,
+                "valid_gpu_samples": 332,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1913959936
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2134900736
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        }
+      ],
+      "preparation_status": "measured",
+      "memory_status": "measured",
+      "size_status": "measured",
+      "profiles": {
+        "status": "not_requested",
+        "variants": {}
+      },
+      "profile_status": "not_requested"
+    },
+    "B4/1": {
+      "bucket": "B4",
+      "batch_size": 1,
+      "complete": true,
+      "faster": false,
+      "timing_unit": "batch",
+      "throughput": {
+        "baseline": {
+          "batches": 1200,
+          "texts": 1200,
+          "latency_ms": 78246.97331699995,
+          "useful_tokens": 3474429,
+          "padded_tokens": 3474429,
+          "requests_per_second": 15.336056452157846,
+          "padding_fraction": 0.0
+        }
+      },
+      "errors": [],
+      "baseline_series_p95_ms": [
+        62.716750499999996,
+        99.722485,
+        67.59634354999999
+      ],
+      "baseline_drift_p95": 0.5900454695910946,
+      "aa": {
+        "baseline_ms": 66.03034154999999,
+        "candidate_ms": 62.77960015,
+        "ratio": 0.9507689749334639,
+        "ratio_interval_95": [
+          0.9321358725234986,
+          0.9530986602148597
+        ],
+        "block_ratios": [
+          0.9520005385869701,
+          0.935021091766485
+        ]
+      },
+      "aa_envelope_p95": 0.06949459087682608,
+      "stability_assessed": false,
+      "noise_flags": null,
+      "uncertainty_note": "Descriptive block bootstrap over 3 series; no baseline stability threshold or independent confirmation",
+      "p50": {
+        "baseline_ms": 59.516788500000004,
+        "baseline_interval_95_ms": [
+          56.4145885,
+          78.3006425
+        ]
+      },
+      "p95": {
+        "baseline_ms": 97.94925950000001,
+        "baseline_interval_95_ms": [
+          62.716750499999996,
+          99.722485
+        ]
+      },
+      "status": "baseline_complete",
+      "speed_status": "measured_baseline",
+      "verdicts": {
+        "n": 400,
+        "changed_count": 0,
+        "changed_fraction": 0.0,
+        "changed_ids": [],
+        "unstable_ids": [],
+        "max_abs_score_delta": {
+          "safe": 0,
+          "unsafe": 0
+        },
+        "directions": [],
+        "status": "ok"
+      },
+      "verdict_status": "unchanged",
+      "series_evidence": [
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B4",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.613225976005197
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.183301085140556
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 1.953006722033024e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2802.0,
+                "valid_gpu_samples": 25,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2802.0,
+                "valid_gpu_samples": 24,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 2031195136
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2260729856
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B4",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 0,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 8.05500526400283
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.050042311893776
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.796994522213936e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2802.0,
+                "valid_gpu_samples": 24,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2802.0,
+                "valid_gpu_samples": 22,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 2031195136
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2260729856
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B4",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "b",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.759543337859213
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.1132559031248093
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.347002737224102e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 3026.0,
+                "valid_gpu_samples": 24,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 3026.0,
+                "valid_gpu_samples": 22,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 2042274304
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2495610880
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B4",
+          "batch_size": 1,
+          "phase": "aa",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.561657493002713
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.113291532965377
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 2.414989285171032e-05
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 3026.0,
+                "valid_gpu_samples": 24,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 3026.0,
+                "valid_gpu_samples": 22,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 2042274304
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2495610880
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B4",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 0,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.413656454067677
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.048845589160919
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.0004161309916526079
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2930.0,
+                "valid_gpu_samples": 28,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 3152.0,
+                "valid_gpu_samples": 334,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 2056590336
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2627731456
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B4",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 1,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 7.772556728916243
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 3.1649643590208143
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.001105292933061719
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2726.0,
+                "valid_gpu_samples": 44,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2988.0,
+                "valid_gpu_samples": 464,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 2057364480
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2455764992
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        },
+        {
+          "source": "run",
+          "stage": "latency",
+          "variant": "baseline",
+          "bucket": "B4",
+          "batch_size": 1,
+          "phase": "baseline",
+          "block": 2,
+          "side": "a",
+          "preparation": {
+            "status": "measured",
+            "setup_seconds": {
+              "status": "measured",
+              "value": 8.588962230831385
+            },
+            "warmup_seconds": {
+              "status": "measured",
+              "value": 2.462699037976563
+            },
+            "backend_preparation_seconds": {
+              "status": "measured",
+              "value": 0.000503042945638299
+            }
+          },
+          "memory": {
+            "status": "measured",
+            "sampler": {
+              "setup": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 2952.0,
+                "valid_gpu_samples": 32,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "inference": {
+                "status": "measured",
+                "sampled_gpu_peak_mib": 3036.0,
+                "valid_gpu_samples": 356,
+                "host_rss_peak_bytes": {
+                  "status": "unavailable",
+                  "value": null
+                }
+              },
+              "status": "measured",
+              "sampling_may_miss_short_peaks": true
+            },
+            "torch_setup": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 1736535552
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 1824522240
+              }
+            },
+            "torch_inference": {
+              "status": "measured",
+              "allocated_bytes": {
+                "status": "measured",
+                "value": 2057020416
+              },
+              "reserved_bytes": {
+                "status": "measured",
+                "value": 2506096640
+              }
+            }
+          },
+          "size": {
+            "unique_parameter_buffer_storage_bytes": {
+              "status": "measured",
+              "value": 1705972224
+            },
+            "checkpoint_files_bytes": {
+              "status": "measured",
+              "files": {
+                "training_args.bin": 6993,
+                "model.safetensors": 2214590296
+              },
+              "total_bytes": 2214597289
+            },
+            "export_files_bytes": {
+              "status": "measured",
+              "files": {},
+              "total_bytes": 0
+            },
+            "status": "measured",
+            "dtypes": [
+              "torch.bfloat16",
+              "torch.float32"
+            ],
+            "original_encoder_retained": false
+          }
+        }
+      ],
+      "preparation_status": "measured",
+      "memory_status": "measured",
+      "size_status": "measured",
+      "profiles": {
+        "status": "not_requested",
+        "variants": {}
+      },
+      "profile_status": "not_requested"
+    }
+  },
+  "all_cells_faster": false,
+  "all_cells_meet_threshold": false,
+  "independently_confirmed": false,
+  "environment": {
+    "cpu_threads": 2,
+    "cuda": "13.0",
+    "cudnn": 91900,
+    "cudnn_tf32": false,
+    "deterministic": true,
+    "deterministic_warn_only": true,
+    "driver": "595.91.07",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "interop_threads": 1,
+    "monitor_method": "nvidia-smi-stream-100ms-v2",
+    "packages": {
+      "accelerate": "1.15.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "certifi": "2026.10.23",
+      "charset-normalizer": "3.5.2",
+      "click": "8.5.0",
+      "cloudpickle": "3.1.2",
+      "coloredlogs": "15.0.1",
+      "cuda-bindings": "13.4.4",
+      "cuda-pathfinder": "1.8.4",
+      "cuda-toolkit": "13.0.2",
+      "einops": "0.8.2",
+      "filelock": "4.2.4",
+      "fla-core": "0.4.2",
+      "flash-linear-attention": "0.4.2",
+      "flatbuffers": "25.12.19",
+      "fsspec": "2026.9.0",
+      "gliner2": "2.1.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.7.1",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "huggingface-hub": "1.33.0",
+      "humanfriendly": "10.0",
+      "idna": "3.20",
+      "jinja2": "3.1.6",
+      "joblib": "1.6.0",
+      "laya": "0.3.20",
+      "markdown-it-py": "4.2.0",
+      "markupsafe": "3.0.4",
+      "mdurl": "0.1.2",
+      "ml-dtypes": "0.6.0",
+      "mpmath": "1.3.0",
+      "narwhals": "2.28.0",
+      "networkx": "3.7",
+      "numpy": "2.1.3",
+      "nvidia-cublas": "13.1.0.3",
+      "nvidia-cublas-cu12": "12.8.4.1",
+      "nvidia-cuda-cupti": "13.0.85",
+      "nvidia-cuda-nvrtc": "13.0.88",
+      "nvidia-cuda-runtime": "13.0.96",
+      "nvidia-cuda-runtime-cu12": "12.8.90",
+      "nvidia-cudnn-cu12": "9.19.0.56",
+      "nvidia-cudnn-cu13": "9.19.0.56",
+      "nvidia-cufft": "12.0.0.61",
+      "nvidia-cufft-cu12": "11.3.3.83",
+      "nvidia-cufile": "1.15.1.6",
+      "nvidia-curand": "10.4.0.35",
+      "nvidia-curand-cu12": "10.3.9.90",
+      "nvidia-cusolver": "12.0.4.66",
+      "nvidia-cusparse": "12.6.3.3",
+      "nvidia-cusparselt-cu13": "0.8.0",
+      "nvidia-nccl-cu13": "2.28.9",
+      "nvidia-nvjitlink": "13.0.88",
+      "nvidia-nvjitlink-cu12": "12.9.86",
+      "nvidia-nvshmem-cu13": "3.4.5",
+      "nvidia-nvtx": "13.0.85",
+      "onnx": "1.20.1",
+      "onnxruntime-gpu": "1.23.2",
+      "packaging": "26.3",
+      "pandas": "2.2.3",
+      "peft": "0.21.2",
+      "pillow": "13.0.0",
+      "protobuf": "7.36.2",
+      "psutil": "7.2.2",
+      "pydantic": "2.14.1",
+      "pydantic-core": "2.50.1",
+      "pygments": "2.21.0",
+      "python-dateutil": "3.0.0",
+      "pytz": "2026.5",
+      "pyyaml": "6.0.3",
+      "regex": "2026.9.29",
+      "requests": "2.34.2",
+      "rich": "15.0.0",
+      "safetensors": "0.8.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "sentence-transformers": "5.7.0",
+      "sentencepiece": "0.2.2",
+      "setuptools": "81.0.0",
+      "shellingham": "1.5.4",
+      "six": "1.17.0",
+      "sympy": "1.14.0",
+      "threadpoolctl": "3.7.0",
+      "tokenizers": "0.23.3",
+      "torch": "2.11.0+cu130",
+      "torchaudio": "2.11.0+cu130",
+      "torchvision": "0.26.0+cu130",
+      "tqdm": "4.70.1",
+      "transformers": "5.20.1",
+      "triton": "3.6.0",
+      "typer": "0.27.3",
+      "typing-extensions": "4.16.0",
+      "typing-inspection": "0.4.4",
+      "tzdata": "2026.6",
+      "urllib3": "2.8.0"
+    },
+    "python": "3.13.14",
+    "tf32": false,
+    "visible_device": 0,
+    "vram_bytes": 33670758400
+  },
+  "data_manifest_sha256": "5ebc3e888523c90e8dbcb68c3b21aedee13ca3b0705324402f5c0a1e6aa99d75",
+  "monitoring_status": "unavailable",
+  "precision": {
+    "precision_status": "recorded_consistent",
+    "precision": {
+      "baseline": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "bfloat16"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      }
+    },
+    "precision_changed": null
+  },
+  "memory_status": "measured",
+  "preparation_status": "measured",
+  "size_status": "measured",
+  "profile_status": "not_requested",
+  "worker_evidence": [
+    {
+      "source": "run",
+      "stage": "preflight",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "preparation": {
+        "status": "partial",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.868373405886814
+        },
+        "warmup_seconds": {
+          "status": "unavailable",
+          "value": null
+        },
+        "backend_preparation_seconds": {
+          "status": "unavailable",
+          "value": null
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2350.0,
+            "valid_gpu_samples": 3,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2452.0,
+            "valid_gpu_samples": 35,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807113728
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.408549956046045
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9402826600708067
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.2769905626773834e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 23,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 20,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807079936
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.438208387931809
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9716462169308215
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.337014302611351e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 22,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 21,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807079936
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.413081933977082
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9656622540205717
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.6200897991657257e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 24,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 20,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807071744
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.307850583922118
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9050272891763598
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.4169916287064552e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 22,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 21,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807071744
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 8.050743422936648
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.8858706979081035
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 9.810016490519047e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 27,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 336,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807113728
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 8.098975692875683
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9343974969815463
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.00010229111649096012
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 27,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 350,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807113728
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B1",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 2,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.50340096000582
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9655046740081161
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.00013786996714770794
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 27,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2440.0,
+            "valid_gpu_samples": 347,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1807113728
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1881145344
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "preflight",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "preparation": {
+        "status": "partial",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.527195269009098
+        },
+        "warmup_seconds": {
+          "status": "unavailable",
+          "value": null
+        },
+        "backend_preparation_seconds": {
+          "status": "unavailable",
+          "value": null
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 1960.0,
+            "valid_gpu_samples": 3,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2576.0,
+            "valid_gpu_samples": 41,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1846029824
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2011168768
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.482491913018748
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9930996659677476
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.532987855374813e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2618.0,
+            "valid_gpu_samples": 24,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2618.0,
+            "valid_gpu_samples": 20,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1849133568
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2067791872
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 8.608772268053144
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9416520649101585
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 3.681983798742294e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2618.0,
+            "valid_gpu_samples": 23,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2618.0,
+            "valid_gpu_samples": 20,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1849133568
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2067791872
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.733077944023535
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9825261470396072
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.2660009562969208e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2574.0,
+            "valid_gpu_samples": 23,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2574.0,
+            "valid_gpu_samples": 21,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1848842752
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2021654528
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.931592679815367
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.0934729578439146
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.7899863198399544e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2574.0,
+            "valid_gpu_samples": 25,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2574.0,
+            "valid_gpu_samples": 21,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1848842752
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2021654528
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.8580118680838495
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.024554501986131
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.0001079910434782505
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2536.0,
+            "valid_gpu_samples": 29,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2598.0,
+            "valid_gpu_samples": 320,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1851167744
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2046820352
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.8490899740718305
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.0017631088849157
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.00016760989092290401
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2582.0,
+            "valid_gpu_samples": 27,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2644.0,
+            "valid_gpu_samples": 314,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1851167744
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2095054848
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B2",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 2,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.782448156038299
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.98100353195332
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.00010528997518122196
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2562.0,
+            "valid_gpu_samples": 27,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2624.0,
+            "valid_gpu_samples": 316,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1851167744
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2074083328
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "preflight",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "preparation": {
+        "status": "partial",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 8.00340990908444
+        },
+        "warmup_seconds": {
+          "status": "unavailable",
+          "value": null
+        },
+        "backend_preparation_seconds": {
+          "status": "unavailable",
+          "value": null
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2176.0,
+            "valid_gpu_samples": 3,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2670.0,
+            "valid_gpu_samples": 57,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1915039232
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2109734912
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 9.495824412908405
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.5520912220235914
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 4.261988215148449e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2728.0,
+            "valid_gpu_samples": 29,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2808.0,
+            "valid_gpu_samples": 19,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1912685568
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2267021312
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.483200714923441
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.088010060833767
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.174009568989277e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2728.0,
+            "valid_gpu_samples": 25,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2808.0,
+            "valid_gpu_samples": 20,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1912685568
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2267021312
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.9984592439141124
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.1480523929931223
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.9410002753138542e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2642.0,
+            "valid_gpu_samples": 25,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2642.0,
+            "valid_gpu_samples": 21,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1913203712
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2092957696
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.421765441074967
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.95835703285411
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.1870015189051628e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2642.0,
+            "valid_gpu_samples": 22,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2642.0,
+            "valid_gpu_samples": 20,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1913203712
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2092957696
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 8.023201832082123
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9869916529860348
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.00012194993905723095
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2694.0,
+            "valid_gpu_samples": 27,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2774.0,
+            "valid_gpu_samples": 327,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1913957888
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2231369728
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.36764908884652
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 1.9367285349871963
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 8.863001130521297e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2756.0,
+            "valid_gpu_samples": 27,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2756.0,
+            "valid_gpu_samples": 338,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1913939456
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2212495360
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B3",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 2,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.588624228024855
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.238308279076591
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.00015079998411238194
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2682.0,
+            "valid_gpu_samples": 31,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2682.0,
+            "valid_gpu_samples": 332,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1913959936
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2134900736
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "preflight",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "preparation": {
+        "status": "partial",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.9860957560595125
+        },
+        "warmup_seconds": {
+          "status": "unavailable",
+          "value": null
+        },
+        "backend_preparation_seconds": {
+          "status": "unavailable",
+          "value": null
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2288.0,
+            "valid_gpu_samples": 3,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2788.0,
+            "valid_gpu_samples": 93,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2057891328
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2233466880
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.613225976005197
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.183301085140556
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 1.953006722033024e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2802.0,
+            "valid_gpu_samples": 25,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2802.0,
+            "valid_gpu_samples": 24,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2031195136
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2260729856
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 0,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 8.05500526400283
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.050042311893776
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.796994522213936e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2802.0,
+            "valid_gpu_samples": 24,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2802.0,
+            "valid_gpu_samples": 22,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2031195136
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2260729856
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "b",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.759543337859213
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.1132559031248093
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.347002737224102e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 3026.0,
+            "valid_gpu_samples": 24,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 3026.0,
+            "valid_gpu_samples": 22,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2042274304
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2495610880
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "phase": "aa",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.561657493002713
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.113291532965377
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 2.414989285171032e-05
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 3026.0,
+            "valid_gpu_samples": 24,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 3026.0,
+            "valid_gpu_samples": 22,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2042274304
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2495610880
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 0,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.413656454067677
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.048845589160919
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.0004161309916526079
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2930.0,
+            "valid_gpu_samples": 28,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 3152.0,
+            "valid_gpu_samples": 334,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2056590336
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2627731456
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 1,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 7.772556728916243
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 3.1649643590208143
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.001105292933061719
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2726.0,
+            "valid_gpu_samples": 44,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2988.0,
+            "valid_gpu_samples": 464,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2057364480
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2455764992
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    },
+    {
+      "source": "run",
+      "stage": "latency",
+      "variant": "baseline",
+      "bucket": "B4",
+      "batch_size": 1,
+      "phase": "baseline",
+      "block": 2,
+      "side": "a",
+      "preparation": {
+        "status": "measured",
+        "setup_seconds": {
+          "status": "measured",
+          "value": 8.588962230831385
+        },
+        "warmup_seconds": {
+          "status": "measured",
+          "value": 2.462699037976563
+        },
+        "backend_preparation_seconds": {
+          "status": "measured",
+          "value": 0.000503042945638299
+        }
+      },
+      "memory": {
+        "status": "measured",
+        "sampler": {
+          "setup": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 2952.0,
+            "valid_gpu_samples": 32,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "inference": {
+            "status": "measured",
+            "sampled_gpu_peak_mib": 3036.0,
+            "valid_gpu_samples": 356,
+            "host_rss_peak_bytes": {
+              "status": "unavailable",
+              "value": null
+            }
+          },
+          "status": "measured",
+          "sampling_may_miss_short_peaks": true
+        },
+        "torch_setup": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 1736535552
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 1824522240
+          }
+        },
+        "torch_inference": {
+          "status": "measured",
+          "allocated_bytes": {
+            "status": "measured",
+            "value": 2057020416
+          },
+          "reserved_bytes": {
+            "status": "measured",
+            "value": 2506096640
+          }
+        }
+      },
+      "size": {
+        "unique_parameter_buffer_storage_bytes": {
+          "status": "measured",
+          "value": 1705972224
+        },
+        "checkpoint_files_bytes": {
+          "status": "measured",
+          "files": {
+            "training_args.bin": 6993,
+            "model.safetensors": 2214590296
+          },
+          "total_bytes": 2214597289
+        },
+        "export_files_bytes": {
+          "status": "measured",
+          "files": {},
+          "total_bytes": 0
+        },
+        "status": "measured",
+        "dtypes": [
+          "torch.bfloat16",
+          "torch.float32"
+        ],
+        "original_encoder_retained": false
+      }
+    }
+  ],
+  "single_to_batch": {},
+  "quantization": {
+    "status": "not_applicable",
+    "quality_preserved": null,
+    "by_batch_size": {}
+  },
+  "macro_verdict_change_fraction_by_batch_size": {},
+  "quality": {
+    "quality_status": "not_evaluated",
+    "quality_evaluated": false,
+    "quality_preserved": null
+  },
+  "errors": [],
+  "source_inventory_sha256": "db577e697a986e70467b3b178f8494b6bf059e3f290e4f984e1a939c417586e3"
+}

@@ -1,0 +1,15 @@
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 633.37it/s]
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Fetching 8 files: 100%|██████████| 8/8 [00:00<00:00, 512.78it/s]
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   0%|          | 1/310 [00:00<01:01,  5.01it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1283.42it/s]
+[transformers] The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+V1114 13:03:12.979000 17082 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 13:03:12.979000 17082 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     triggered by the following guard failure(s):
+V1114 13:03:12.979000 17082 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/1] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 128, actual 256
+/workspace/guardrails/u1-rtx-env/venv/lib/python3.13/site-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+V1114 13:03:18.841000 17082 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles] Recompiling function <lambda> in /workspace/guardrails/rules/adapter.py:73
+V1114 13:03:18.841000 17082 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     triggered by the following guard failure(s):
+V1114 13:03:18.841000 17082 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/1: tensor 'x['input_ids']' size mismatch at index 1. expected 256, actual 1024
+V1114 13:03:18.841000 17082 u1-rtx-env/venv/lib/python3.13/site-packages/torch/_dynamo/guards.py:4760] [0/2] [__recompiles]     - 0/0: tensor 'x['input_ids']' size mismatch at index 1. expected 128, actual 1024
+{"status": "passed"}
