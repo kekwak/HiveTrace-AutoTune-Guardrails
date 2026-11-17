@@ -133,6 +133,11 @@ def latency(adapter, rows, job, guard, result, torch, sampler, checkpoint):
         checkpoint()
 
 
+# U2: полный checkpoint (метрики по всем строкам + перезапись predictions) после каждого батча давал O(N²):
+# ~3 ч на 7121 строку при батче 1. Сохраняем не чаще раза в SAVE_INTERVAL секунд; finally всегда сохраняет.
+SAVE_INTERVAL = 30.0
+
+
 def quality(adapter, rows, job, guard, result, directory, checkpoint, spec=None):
     from .quality import metrics
     from .quality_batches import prepare_plan
@@ -163,7 +168,7 @@ def quality(adapter, rows, job, guard, result, directory, checkpoint, spec=None)
         result["quality_evaluated"] = result["quality"]["overall"]["evaluated"] > 0
         checkpoint()
 
-    active = []
+    active, last_save = [], time.monotonic()
     try:
         if groups:
             guard.call(adapter.prepare_batch_backend, groups)
@@ -174,7 +179,9 @@ def quality(adapter, rows, job, guard, result, directory, checkpoint, spec=None)
             for key, value in zip(active, values, strict=True):
                 predictions[key] = {"id": key, "status": "passed", "score": value}
             active = []
-            save()
+            if time.monotonic() - last_save >= SAVE_INTERVAL:
+                save()
+                last_save = time.monotonic()
     except BaseException as error:
         for key in active:
             predictions[key] = {"id": key, "status": error_status(error), "error_type": type(error).__name__}
