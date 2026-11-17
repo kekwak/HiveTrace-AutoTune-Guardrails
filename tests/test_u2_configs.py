@@ -59,8 +59,9 @@ class Build(unittest.TestCase):
 
     def test_quality_config_mapping(self):
         cfg = make("hive", "fp8", "quality")
-        self.assertEqual(cfg["quality_batch_sizes"], [16])   # hive: KV-кэш generate, батч 64 → до ~53 ГиБ (OOM)
-        self.assertEqual(make("gliner", "fp8", "quality")["quality_batch_sizes"], [64])
+        # батч 1 — как в продукте, без паддинга; checkpoint У1 теперь не O(N²)
+        self.assertEqual(cfg["quality_batch_sizes"], [1])
+        self.assertEqual(make("gliner", "fp8", "quality")["quality_batch_sizes"], [1])
         self.assertEqual(cfg["label_mapping"]["positive_label"], "unsafe")
         self.assertNotIn("data", cfg)
 

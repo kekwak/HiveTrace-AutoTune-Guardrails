@@ -11,8 +11,9 @@ from u2_quant.lock import TORCHAO
 
 MODELS, VARIANTS = ("gliner", "hive"), ("bf16c", "fp8")
 ADAPTER = "u2_quant/adapter.py"
-# gliner — encoder, батч 64; hive — generate с KV-кэшем: худший батч tails при 64 → ~53 ГиБ, при 16 → ~13 ГиБ.
-QUALITY_BATCH = {"gliner": [64], "hive": [16]}
+# Качество на батче 1 — синхронный продуктовый сценарий, без паддинга и зависимости ядер от формы батча.
+# (Батч > 1 был обходом O(N²)-checkpoint'а У1; он устранён в v4_worker. Для hive батч 64 к тому же давал до ~53 ГиБ KV.)
+QUALITY_BATCH = {"gliner": [1], "hive": [1]}
 LABELS = {"labels": ["safe", "unsafe"], "targets": {"safe": "safe", "unsafe": "unsafe"},
           "verdicts": {"safe": "safe", "unsafe": "unsafe"}, "positive_label": "unsafe"}
 SPEED_CORPUS = {"dataset": "vXofi/guardrails-speed-en-ru", "revision": "7324b8823ded971c05076e0c7f4ace5d9b867863"}
@@ -43,7 +44,6 @@ def build(model, name, mode, *, environment, data, quality_data, baseline_ref=No
     if name != "bf16c":
         cfg["candidate"] = variant(model, name)
     if mode == "quality":
-        # Батч > 1 — штатная опция У1; эталон и FP8 идут на одинаковых батчах.
         cfg.update(quality_data=quality_data, label_mapping=deepcopy(LABELS), quality_batch_sizes=QUALITY_BATCH[model])
     else:
         cfg["data"] = data
