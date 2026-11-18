@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from u1_benchmark.core import ROOT, digest, read, sha, write
 from u1_benchmark.process import check_archive_target, finish_archive, invoke
-from u1_benchmark.v4_config import MONITOR_VERSION, PROTOCOL_VERSION, resolve_options
+from u1_benchmark.v4_config import MONITOR_VERSION, PROTOCOL_VERSION, RESULT_VERSION, resolve_options
 from u1_benchmark.v4_evidence import environment_identity, immutable, source_inventory
 from u1_benchmark.v4_planning import schedule
 from u1_benchmark.v4_runner import inputs, input_indices
@@ -44,7 +44,7 @@ def run(configs, environment, output):
             cfg["buckets"] = {"B1": cfg["buckets"]["B1"]}
             cfg["batch_sizes_by_bucket"] = {"B1": [1]}
             data = {"B1": data["B1"]}
-            resolved = {"schema_version": 4, "result_version": 4, "protocol_version": PROTOCOL_VERSION,
+            resolved = {"schema_version": 4, "result_version": RESULT_VERSION, "protocol_version": PROTOCOL_VERSION,
                         "config": public_config(cfg), "config_sha256": digest(cfg),
                         "variant_identities": {"baseline": digest(cfg["baseline"])},
                         "source_inventory": source_inventory(), "environment": runtime,

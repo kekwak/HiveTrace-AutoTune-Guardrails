@@ -67,13 +67,34 @@ class Sampler:
         self.process = self.thread = None
         self._started = self._stopped = False
         self._result = None
+        self.stage_windows = []
+
+    def begin_window(self, stage_id, name, phase="setup"):
+        with self._lock:
+            now = time.monotonic()
+            if self.stage_windows and self.stage_windows[-1]["end"] is None:
+                self.stage_windows[-1]["end"] = now
+            self.stage_windows.append({"stage_id": stage_id, "name": name,
+                                       "phase": phase, "start": now, "end": None})
+
+    def end_window(self):
+        with self._lock:
+            if self.stage_windows and self.stage_windows[-1]["end"] is None:
+                self.stage_windows[-1]["end"] = time.monotonic()
+
+    def _location(self, received):
+        for window in reversed(self.stage_windows):
+            if window["start"] <= received and (window["end"] is None or received < window["end"]):
+                return {"phase": window["phase"], "stage_id": window["stage_id"], "window": window["name"]}
+        if self.stage_windows:
+            return {"phase": "idle", "stage_id": None, "window": "idle"}
+        boundary = self.boundaries.get("inference_start")
+        return {"phase": "inference" if boundary is not None and received >= boundary else "setup"}
 
     def _error(self, code, received=None):
         received = time.monotonic() if received is None else received
         with self._lock:
-            boundary = self.boundaries.get("inference_start")
-            phase = "inference" if boundary is not None and received >= boundary else "setup"
-            self.errors.append({"phase": phase, "received": received,
+            self.errors.append({**self._location(received), "received": received,
                                 "error": code})
 
     def start(self):
@@ -128,13 +149,12 @@ class Sampler:
                 return
             # Resolve phase by receipt time, even if inference() acquired the
             # lock between readline() and this append.
-            boundary = self.boundaries.get("inference_start")
-            phase = "inference" if boundary is not None and received >= boundary else "setup"
-            self.rows.append({"phase": phase, "received": received,
+            location = self._location(received)
+            self.rows.append({**location, "received": received,
                               "started": received, "finished": received,
                               "gpu_process_mib": value, "host_rss_bytes": None})
             if value is None:
-                self.errors.append({"phase": phase, "received": received,
+                self.errors.append({**location, "received": received,
                                     "error": "unavailable_gpu_value"})
 
     def inference(self):
@@ -184,12 +204,18 @@ class Sampler:
                 except OSError:
                     self._error("stream_close_failed")
 
-    def _snapshot(self, in_progress=False):
+    def _snapshot(self, in_progress=False, stage_id=None):
         with self._lock:
             rows = [dict(row) for row in self.rows]
             errors = [dict(error) for error in self.errors]
             boundaries = dict(self.boundaries)
+            stage_windows = [dict(window) for window in self.stage_windows
+                             if stage_id is None or window["stage_id"] == stage_id]
             captured = time.monotonic()
+        if stage_id is not None:
+            rows = [row for row in rows if row.get("stage_id") == stage_id]
+            errors = [error for error in errors if error.get("stage_id") in (None, stage_id)]
+            boundaries = {}
         windows = {}
         for phase in ("setup", "inference"):
             samples = [row for row in rows if row["phase"] == phase]
@@ -214,7 +240,14 @@ class Sampler:
                   "errors": errors, "sampling_may_miss_short_peaks": True}
         if in_progress:
             result.update(status="partial", checkpoint=True, checkpoint_monotonic=captured)
+        if stage_windows:
+            result.update(stage_windows=stage_windows, lifecycle_memory=True)
         return result
+
+    def stage_snapshot(self, path, stage_id, *, complete=False):
+        value = self._snapshot(in_progress=not complete, stage_id=stage_id)
+        write(path, value)
+        return value
 
     def checkpoint(self, path):
         """Atomically save current raw samples; do not close windows or stop sampling.

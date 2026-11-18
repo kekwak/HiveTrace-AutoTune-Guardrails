@@ -3,6 +3,7 @@ from copy import deepcopy
 import gzip
 import json
 from pathlib import Path
+import os
 import time
 
 from .core import digest, read, sha, write
@@ -11,7 +12,7 @@ from .messages import payload
 from .precision import PrecisionGuard
 from .v4_evidence import assert_environment, check_sources, configure_gpu
 from .v4_planning import materialize, smoke_plans
-from .v4_config import PROTOCOL_VERSION, verify_local_sources
+from .v4_config import supported_result, verify_local_sources
 from .v4_privacy import clean_evidence, contains_private, private_values, public_config
 
 
@@ -97,13 +98,23 @@ def preflight(adapter, rows, job, guard, result):
                   aba_passed=True, responses=observed, unique_inputs=len(rows))
 
 
-def latency(adapter, rows, job, guard, result, torch, sampler, checkpoint):
+def latency(adapter, rows, job, guard, result, torch, sampler, checkpoint, lifecycle=None):
     plans = job["batches"]
     groups = [[payload(r) for r in materialize(p, rows)] for p in plans]
     start = time.monotonic()
+    if callable(getattr(sampler, "window", None)):
+        sampler.window("preparation")
+    if lifecycle is not None and not lifecycle.main_prepared:
+        batches = lifecycle.manifest["main_batches"]
+        if batches:
+            main_groups = [[payload(r) for r in materialize(p, rows)] for p in batches]
+            guard.call(adapter.prepare_batch_backend, main_groups)
+        lifecycle.main_prepared = True
     guard.call(adapter.prepare_batch_backend, groups)
     result["backend_preparation_seconds"] = time.monotonic() - start
     start = time.monotonic()
+    if callable(getattr(sampler, "window", None)):
+        sampler.window("warmup")
     for i in range(20):
         responses(guard.call(adapter.request_batch, groups[i % len(groups)]), len(groups[i % len(groups)]))
     torch.cuda.synchronize()
@@ -133,10 +144,12 @@ def latency(adapter, rows, job, guard, result, torch, sampler, checkpoint):
         checkpoint()
 
 
-def quality(adapter, rows, job, guard, result, directory, checkpoint, spec=None):
+def quality(adapter, rows, job, guard, result, directory, checkpoint, spec=None, sampler=None, torch=None):
     from .quality import metrics
     from .quality_batches import prepare_plan
     plan = prepare_plan(adapter, rows, job["quality_batch_size"], job["seed"], guard)
+    if result.get("result_version") == 5:
+        plan["quality_protocol_version"] = 2
     write(directory / "quality_plan.json", plan)
     result.update(quality_batch_size=job["quality_batch_size"], quality_plan_sha256=digest(plan))
     by_id = {r["id"]: r for r in rows}
@@ -165,9 +178,15 @@ def quality(adapter, rows, job, guard, result, directory, checkpoint, spec=None)
 
     active = []
     try:
+        preparation_start = time.monotonic()
         if groups:
             guard.call(adapter.prepare_batch_backend, groups)
             result["backend_proof"] = guard.call(adapter.prove_batch_backend, groups[0])
+        if sampler is not None:
+            torch.cuda.synchronize()
+            result["backend_preparation_seconds"] = time.monotonic() - preparation_start
+            torch.cuda.reset_peak_memory_stats(0)
+            sampler.inference()
         for batch, group in zip(plan["batches"], groups, strict=True):
             active = batch["ids"]
             values = responses(guard.call(adapter.verify_batch, group, [plan["indices"][i] for i in active]), len(group))
@@ -203,9 +222,14 @@ def profile(adapter, rows, job, guard, result, directory, torch):
     result["profiles"] = paths
 
 
-def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_module=None, sampler_factory=None):
+def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_module=None, sampler_factory=None,
+            lifecycle=None):
     job_path = Path(job_path)
     directory, job = job_path.parent, read(job_path)
+    if job.get("stage") == "group":
+        from .v4_lifecycle import execute_group
+        return execute_group(job_path, adapter_factory=adapter_factory, runtime_factory=runtime_factory,
+                             torch_module=torch_module, sampler_factory=sampler_factory)
     result = {"result_version": 4, "status": "running", "job": job, "rows": [],
               "quality_evaluated": False, "precision_policy_version": 1,
               "resolved_sha256": job["resolved_sha256"]}
@@ -246,8 +270,14 @@ def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_modul
         if sha(resolved_path) != job["resolved_sha256"]:
             raise ValueError("Resolved snapshot changed")
         resolved = read(resolved_path)
-        if resolved.get("schema_version") != 4 or resolved.get("result_version") != 4 or resolved.get("protocol_version") != PROTOCOL_VERSION:
+        if not supported_result(resolved):
             raise ValueError("Unsupported resolved snapshot format")
+        result["result_version"] = resolved["result_version"]
+        if lifecycle is not None:
+            from .v4_lifecycle import CACHE_POLICY
+            result.update(lifecycle_id=job["lifecycle_id"], process_id=os.getpid(),
+                          stage_order=job["stage_order"], cache_policy=CACHE_POLICY,
+                          load_owner=job["stage_order"] == 0)
         check_sources(resolved["source_inventory"])
         config = resolved["config"]
         if "config_sha256" in resolved:
@@ -281,8 +311,10 @@ def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_modul
         torch_module.cuda.reset_peak_memory_stats(0)
         load_start = time.monotonic()
         adapter = adapter_factory(config[job["variant"]], directory / ".private")
-        result["setup_seconds"] = time.monotonic() - load_start
-        result["torch_setup"] = torch_peaks(torch_module)
+        owns_load = lifecycle is None or job["stage_order"] == 0
+        result["setup_seconds"] = time.monotonic() - load_start if owns_load else 0.0
+        if owns_load:
+            result["torch_setup"] = torch_peaks(torch_module)
         result["size"] = adapter.size()
         guard = PrecisionGuard(adapter, required=True)
         if job["stage"] == "preflight":
@@ -302,11 +334,17 @@ def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_modul
                 if proof["metadata"].get(field) != safe_metadata(adapter).get(field):
                     raise ValueError("Execution, artifact or preparation changed after preflight")
             result["backend_proof"] = proof["backend_proof"]
-            latency(adapter, rows, job, guard, result, torch_module, sampler, checkpoint)
+            latency(adapter, rows, job, guard, result, torch_module, sampler, checkpoint, lifecycle)
         elif job["stage"] == "quality":
+            if lifecycle is not None:
+                lifecycle.reset_rng()
             torch_module.cuda.reset_peak_memory_stats(0)
-            sampler.inference()
-            quality(adapter, rows, job, guard, result, directory, checkpoint, config[job["variant"]])
+            if lifecycle is not None:
+                sampler.window("preparation")
+            else:
+                sampler.inference()
+            quality(adapter, rows, job, guard, result, directory, checkpoint, config[job["variant"]],
+                    sampler=sampler if lifecycle is not None else None, torch=torch_module)
             result["torch_inference"] = torch_peaks(torch_module)
         elif job["stage"] == "profile":
             profile(adapter, rows, job, guard, result, directory, torch_module)
@@ -319,6 +357,8 @@ def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_modul
         if callable(getattr(adapter, "check_device", None)):
             adapter.check_device()
             guard.check()
+        if lifecycle is not None:
+            lifecycle.check()
         result["status"] = "passed"
     except BaseException as error:
         result.update(status=error_status(error), error_type=type(error).__name__)
@@ -335,11 +375,12 @@ def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_modul
             except Exception as error:
                 result["size_error_type"] = type(error).__name__
             checkpoint()
-            try:
-                adapter.close()
-            except Exception as error:
-                result["close_error_type"] = type(error).__name__
-                if result["status"] == "passed":
-                    result["status"] = "failed"
+            if lifecycle is None:
+                try:
+                    adapter.close()
+                except Exception as error:
+                    result["close_error_type"] = type(error).__name__
+                    if result["status"] == "passed":
+                        result["status"] = "failed"
         checkpoint()
     return read(directory / "result.json")

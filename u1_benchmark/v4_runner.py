@@ -1,4 +1,4 @@
-"""Baseline once, exploratory reuse, explicit paired confirmation."""
+"""Baseline once, independent reference comparison, optional paired confirmation."""
 from copy import deepcopy
 from pathlib import Path
 import shutil
@@ -9,8 +9,8 @@ from .core import ROOT, digest, read, sha, write
 from .process import check_archive_target, finish_archive, invoke
 from .v4_config import PROTOCOL_VERSION, RESULT_VERSION, validate_config
 from .v4_data import DataError, load_speed, verified
-from .v4_evidence import check_reference, copy_reference, immutable, read_reference, source_inventory
-from .v4_planning import cells, schedule
+from .v4_evidence import check_reference, copy_reference, immutable, read_reference, source_inventory, ReferenceMismatch
+from .v4_planning import cells, schedule, execution_groups, group_identity
 from .v4_privacy import public_config
 
 
@@ -50,24 +50,31 @@ def plan(config):
             check_reference(cfg, reference, sources, indices)
     except (ValueError, OSError) as error:
         return {"status": "not_ready", "phase": "reference", "error_type": type(error).__name__,
+                "diagnostic_code": error.code if isinstance(error, ReferenceMismatch) else "reference_invalid",
                 "schema_version": 4, "data_ready": True, "reference_ready": False, "gpu_checked": False}
     jobs = [] if cfg["mode"] == "quality" else schedule(cfg, data, reference["resolved"]["schedule"] if reference else None)
+    groups = execution_groups(cfg, jobs)
     variants = ["candidate"] if cfg["mode"] == "search" else ["baseline"] + (["candidate"] if "candidate" in cfg else [])
     grid = [] if cfg["mode"] == "quality" else cells(cfg)
     result = {"status": "ready", "schema_version": 4, "mode": cfg["mode"], "pilot": cfg["pilot"],
               "effective_settings": cfg, "data_ready": True, "reference_ready": bool(reference),
-              "quality_workers": len(variants) * len(cfg["quality_batch_sizes"]) if cfg["mode"] == "quality" else 0,
-              "preflight_workers": len(grid) * len(variants), "latency_workers": len(jobs),
+              "quality_workers": len(variants) if cfg["mode"] == "quality" else 0,
+              "preflight_stages": len(grid) * len(variants), "latency_stages": len(jobs),
+              "preflight_workers": sum(all(s["stage"] == "preflight" for s in g["stages"]) for g in groups),
+              "latency_workers": sum(any(s["stage"] == "latency" for s in g["stages"]) for g in groups),
+              "model_loads": len(groups), "model_worker_processes": len(groups),
               "warmup_batches": 20 * len(jobs), "timed_batches": sum(len(j["batches"]) for j in jobs),
               "timed_input_occurrences": sum(len(j["ids"]) for j in jobs),
               "memory_workers": 0, "profile_workers": len(grid) * len(variants) if cfg["profile_trace"] else 0,
               "environment_verified": False, "gpu_checked": False}
+    if reference:
+        result["reference_compatibility"] = check_reference(cfg, reference, sources, indices)
     if cfg["mode"] == "quality":
         result["quality_input_occurrences"] = len(data) * len(variants) * len(cfg["quality_batch_sizes"])
     return result
 
 
-def run(config, output_dir, *, preflight_only=False, launcher=invoke):
+def run(config, output_dir, *, preflight_only=False, launcher=invoke, progress=None):
     cfg = validate_config(config)
     if preflight_only:
         cfg["mode"] = "smoke"
@@ -98,9 +105,15 @@ def run(config, output_dir, *, preflight_only=False, launcher=invoke):
                         "--output", private / "runtime.json"], private / "runtime.log")
         environment = read(private / "runtime.json")
         if reference:
-            check_reference(cfg, reference, sources, indices, environment)
+            compatibility = check_reference(cfg, reference, sources, indices, environment)
+            state["reference_compatibility"] = compatibility
             copy_reference(reference, directory)
         jobs = [] if cfg["mode"] == "quality" else schedule(cfg, data, reference["resolved"]["schedule"] if reference else None)
+        groups = execution_groups(cfg, jobs)
+        if progress is not None:
+            progress({"mode": cfg["mode"], "model_loads": len(groups),
+                      "latency_stages": len(jobs), "warmup_batches": 20 * len(jobs),
+                      "reference_compatibility": state.get("reference_compatibility")})
         private_config = private / "config.json"
         private_config_sha = immutable(private_config, cfg)
         resolved = {"schema_version": 4, "result_version": RESULT_VERSION, "protocol_version": PROTOCOL_VERSION,
@@ -109,15 +122,17 @@ def run(config, output_dir, *, preflight_only=False, launcher=invoke):
                     "source_inventory": sources, "environment": environment,
                     "session_id": str(uuid.uuid4()), "created_at": time.time(), "input_indices": indices,
                     "data_manifest_sha256": digest(manifest), "schedule": jobs,
-                    "monitoring_validation": None}
+                    "monitoring_validation": None, "execution_groups": [group_identity(g) for g in groups]}
+        from .v4_lifecycle import CACHE_POLICY
+        resolved["cache_policy"] = CACHE_POLICY
+        if reference:
+            resolved["reference_compatibility"] = check_reference(cfg, reference, sources, indices, environment)
         if cfg["mode"] == "quality":
+            resolved["quality_protocol_version"] = 2
             fields = ("id", "target", "target_role", "target_index", "slices", "content_sha256", "text_sha256")
             resolved["quality_rows"] = [{k: row[k] for k in fields if k in row} for row in data]
         if cfg.get("monitor_validation"):
             check = read(cfg["monitor_validation"])
-            if check.get("monitor_method") != environment["monitor_method"] or check.get("environment") != {
-                    k: v for k, v in environment.items() if k not in {"gpu_uuid", "host_sha256", "pid", "timestamp", "session_id"}}:
-                raise ValueError("Monitoring validation environment mismatch")
             resolved["monitoring_validation"] = check
         state["resolved_sha256"] = immutable(directory / "resolved_run.json", resolved)
         write(directory / "status.json", state)
@@ -135,70 +150,68 @@ def run(config, output_dir, *, preflight_only=False, launcher=invoke):
                 target = directory / "sources" / "external" / (adapter["source_sha256"] + ".py")
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(path, target)
-        variants = ["candidate"] if cfg["mode"] == "search" else ["baseline"] + (["candidate"] if "candidate" in cfg else [])
         counter = 0
+        proofs = {}
 
-        def launch(stage, variant, rows, **extra):
+        def launch_group(group, group_index):
             nonlocal counter
-            target = directory / "jobs" / f"{counter:05d}"
-            counter += 1
-            target.mkdir(parents=True)
-            input_path = private / (target.name + ".inputs.json")
+            lifecycle_id = f"worker-{group_index:05d}"
+            rows = data if cfg["mode"] == "quality" else data[group["bucket"]]
+            input_path = private / (lifecycle_id + ".inputs.json")
             write(input_path, rows)
-            job = {**extra, "stage": stage, "variant": variant, "seed": cfg["seed"],
-                   "resolved_path": str(directory / "resolved_run.json"), "resolved_sha256": state["resolved_sha256"],
-                   "private_config_path": str(private_config), "private_config_sha256": private_config_sha,
-                   "input_path": str(input_path), "input_file_sha256": sha(input_path)}
-            write(target / "job.json", job)
+            targets = []
+            for order, stage in enumerate(group["stages"]):
+                target = directory / "jobs" / f"{counter:05d}"
+                counter += 1
+                target.mkdir(parents=True)
+                job = {**stage, "seed": cfg["seed"], "lifecycle_id": lifecycle_id, "stage_order": order,
+                       "resolved_path": str(directory / "resolved_run.json"), "resolved_sha256": state["resolved_sha256"],
+                       "private_config_path": str(private_config), "private_config_sha256": private_config_sha,
+                       "input_path": str(input_path), "input_file_sha256": sha(input_path)}
+                key = (job["variant"], job.get("bucket"), job.get("batch_size"))
+                if job["stage"] == "preflight":
+                    proofs[key] = target / "result.json"
+                elif job["stage"] == "latency":
+                    job["preflight_path"] = str(proofs[key])
+                write(target / "job.json", job)
+                targets.append(target)
+            manifest_path = private / (lifecycle_id + ".json")
+            write(manifest_path, {"stage": "group", "variant": group["variant"], "lifecycle_id": lifecycle_id,
+                                  "group_index": group_index, "main_batches": group["main_batches"],
+                                  "jobs": [str(t / "job.json") for t in targets]})
             interruption = None
+            launch_error = None
             try:
-                launch_command([python, ROOT / "tools/benchmark.py", "_worker_v4", "--job", target / "job.json"],
-                               private / (target.name + ".log"))
-                result = read(target / "result.json")
+                launch_command([python, ROOT / "tools/benchmark.py", "_worker_v4", "--job", manifest_path],
+                               private / (lifecycle_id + ".log"))
             except (Exception, KeyboardInterrupt) as error:
+                launch_error = error
+                if isinstance(error, (TimeoutError, KeyboardInterrupt)):
+                    interruption = error
+            failed = False
+            for target in targets:
+                job = read(target / "job.json")
                 if (target / "result.json").exists():
                     result = read(target / "result.json")
                 else:
-                    result = {"result_version": 4, "job": job, "resolved_sha256": state["resolved_sha256"]}
-                if result.get("status") in (None, "running", "passed"):
-                    result.update(status="timeout" if isinstance(error, TimeoutError) else "failed", error_type=type(error).__name__)
+                    result = {"result_version": RESULT_VERSION, "job": job, "resolved_sha256": state["resolved_sha256"]}
+                if result.get("status") in (None, "running"):
+                    status = "not_run" if failed else "timeout" if isinstance(launch_error, TimeoutError) else "failed"
+                    result.update(status=status, error_type=type(launch_error).__name__ if launch_error else "IncompleteWorker")
+                failed |= result["status"] != "passed"
                 write(target / "result.json", result)
-                if isinstance(error, (TimeoutError, KeyboardInterrupt)):
-                    interruption = error
-            state["stages"].append({"path": str(target.relative_to(directory)), "stage": stage,
-                                     "variant": variant, "status": result["status"]})
+                state["stages"].append({"path": str(target.relative_to(directory)), "stage": job["stage"],
+                                         "variant": job["variant"], "status": result["status"]})
             write(directory / "status.json", state)
             if interruption is not None:
                 raise interruption
-            return target, result
-
-        if cfg["mode"] == "quality":
-            for size in cfg["quality_batch_sizes"]:
-                for variant in variants:
-                    launch("quality", variant, data, quality_batch_size=size, label_mapping=cfg["label_mapping"])
-        else:
-            for bucket, size in cells(cfg):
-                proofs = {}
-                for variant in variants:
-                    path, result = launch("preflight", variant, data[bucket], bucket=bucket,
-                                          batch_size=size, bucket_max=cfg["buckets"][bucket]["max"])
-                    if result["status"] == "passed":
-                        proofs[variant] = path / "result.json"
-                for scheduled in jobs:
-                    if (scheduled["bucket"], scheduled["batch_size"]) != (bucket, size):
-                        continue
-                    variant = scheduled["variant"]
-                    if variant not in proofs:
-                        continue
-                    metadata = {k: v for k, v in scheduled.items() if k != "variant"}
-                    launch("latency", variant, data[bucket], **metadata, preflight_path=str(proofs[variant]),
-                           preflight_sha256=sha(proofs[variant]))
-                if cfg["profile_trace"]:
-                    for variant in proofs:
-                        launch("profile", variant, data[bucket], bucket=bucket, batch_size=size)
+        for group_index, group in enumerate(groups):
+            launch_group(group, group_index)
         state["status"] = "completed"
     except BaseException as error:
         state.update(status="timeout" if isinstance(error, TimeoutError) else "failed", error_type=type(error).__name__)
+        if isinstance(error, ReferenceMismatch):
+            state["diagnostic_code"] = error.code
     finally:
         state["seconds"] = time.monotonic() - start
         write(directory / "status.json", state)

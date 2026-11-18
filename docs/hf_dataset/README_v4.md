@@ -28,6 +28,11 @@ selections as 8,000 globally distinct conversations or as real production traffi
 
 ## Native Preparation
 
+This table describes the pinned dataset snapshot, not the current execution
+presets. In particular, its Open index uses native0124. Current Open measurements
+use the 0124 mirror with task2510 and require a separately rebuilt input index.
+The original snapshot is unchanged; follow the operational guide below.
+
 Model | Input policy | Required buckets
 --- | --- | ---
 GLiNER Guard Omni, Koala Text-Moderation, Llama Prompt Guard, Laya | Assistant text when present; otherwise user text; native tokenizer/schema/SDK | B1
@@ -100,6 +105,15 @@ for environment setup, HF authorization, verified corpus loading, Open reindexin
 preflight/pilot, baseline or candidate runs, and offline reports. A notebook or
 separate source bundle is not required. Record the Git commit used for a run.
 
+The current CLI uses config schema 4, result version 5 and speed protocol
+`u1-static-batch-v4-reuse-v1`; these are independent of dataset version v4.
+Use `prepare-data` with the complete model config to obtain compatible local indices.
+Run a full baseline once, then candidates with `--baseline-ref` (directory or ZIP).
+Complete compatible v4 baselines are accepted without migration, with lifecycle
+differences reported. Search runs only the candidate; paired `confirm` is optional.
+Baseline/search load once per bucket/batch cell; quality loads once per variant
+for all requested sizes. GPU compatibility of the new reuse lifecycle is unverified.
+
 - **Speed:** `batch_sizes_by_bucket` selects sizes for each model-specific bucket.
   Baseline and candidate receive the same IDs and batches. Padding extends each
   batch only to its longest native input; it does not change bucket membership.
@@ -109,7 +123,8 @@ separate source bundle is not required. Record the Git commit used for a run.
   has no artificial upper bound. Each size processes the same labeled set, including
   its partial final batch. No speed buckets or 400-example quotas are imposed.
 - `quality` does not need this speed corpus. `report` rebuilds a run's summary;
-  `table` aggregates speed baselines, not labeled quality metrics. OOM never silently
+  `table` collects complete saved reports, including their quality sections,
+  without pooling different runs into one quality score. OOM never silently
   reduces a batch size or changes precision. Native batch capability and GPU support
   still require validation for the selected model and configuration.
 

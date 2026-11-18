@@ -53,6 +53,62 @@ def baseline_diagnostics(blocks, aa):
     return result
 
 
+def unpaired(baseline, candidate, q=.95):
+    """Independent block draws, never pairing series from separate runs."""
+    if not baseline or not candidate or any(not b for b in baseline + candidate):
+        raise ValueError("Missing independent measurement series")
+    for block in baseline + candidate:
+        if any(not math.isfinite(v) or v <= 0 for v in block):
+            raise ValueError("Invalid latency")
+
+    @lru_cache(None)
+    def estimate(side, draw):
+        blocks = baseline if side == 0 else candidate
+        return quantile([v for i in draw for v in blocks[i]], q)
+
+    rng = random.Random(42)
+    draws = []
+    for _ in range(2000):
+        a = tuple(sorted(rng.randrange(len(baseline)) for _ in baseline))
+        b = tuple(sorted(rng.randrange(len(candidate)) for _ in candidate))
+        draws.append(estimate(1, b) / estimate(0, a))
+    a, b = (estimate(0, tuple(range(len(baseline)))),
+            estimate(1, tuple(range(len(candidate)))))
+    return {"baseline_ms": a, "candidate_ms": b, "ratio": b / a,
+            "ratio_interval_95": [quantile(draws, .025), quantile(draws, .975)]}
+
+
+def assess_reference(baseline, candidate, aa, threshold=.20):
+    p95, p50 = unpaired(baseline, candidate), unpaired(baseline, candidate, .5)
+    a = [quantile(block, .95) for block in baseline]
+    b = [quantile(block, .95) for block in candidate]
+    drift_a, drift_b = max(a) / min(a) - 1, max(b) / min(b) - 1
+    envelope = max(max(r, 1 / r) - 1 for r in paired(aa)["block_ratios"])
+    gain = 1 - p95["ratio"]
+    reasons = []
+    if gain <= envelope:
+        reasons.append("effect_not_above_aa")
+    if gain <= max(drift_a, drift_b):
+        reasons.append("effect_not_above_observed_drift")
+    if any(value >= p95["baseline_ms"] for value in b):
+        reasons.append("inconsistent_direction_against_reference")
+    if p95["ratio_interval_95"][1] >= 1:
+        reasons.append("interval_includes_no_improvement")
+    status = "inconclusive" if reasons else "pass" if gain > threshold else "below_target"
+    if (-gain > max(envelope, drift_a, drift_b)
+            and all(value > p95["baseline_ms"] for value in b)
+            and p95["ratio_interval_95"][0] > 1):
+        status, reasons = "below_target", ["consistent_slowdown"]
+    return {"status": status, "p95": p95, "p50": p50, "p95_reduction": gain,
+            "baseline_series_p95_ms": a, "candidate_series_p95_ms": b,
+            "baseline_series_p50_ms": [quantile(block, .5) for block in baseline],
+            "candidate_series_p50_ms": [quantile(block, .5) for block in candidate],
+            "baseline_drift_p95": drift_a, "candidate_drift_p95": drift_b,
+            "aa_envelope_p95": envelope, "reasons": reasons, "paired": False,
+            "comparison_design": "unpaired_reference", "between_session_drift_checked": False,
+            "uncertainty_note": "Descriptive independent block bootstrap; few sequential series do not establish cross-session stability or independent replication."}
+
+
 def compare_scores(baseline, candidate):
     if not baseline or set(baseline) != set(candidate):
         raise ValueError("Missing scores or unequal ID sets")

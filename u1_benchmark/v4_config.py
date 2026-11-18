@@ -6,9 +6,19 @@ import re
 from .core import digest, read, sha
 
 SCHEMA_VERSION = 4
-RESULT_VERSION = 4
-PROTOCOL_VERSION = "u1-static-batch-v4"
+RESULT_VERSION = 5
+LEGACY_PROTOCOL_VERSION = "u1-static-batch-v4"
+PROTOCOL_VERSION = "u1-static-batch-v4-reuse-v1"
 MONITOR_VERSION = "nvidia-smi-stream-100ms-v2"
+CACHE_POLICY = {"runtime": "retain_within_worker", "request_state": "independent",
+                "disk_compiler": "worker_private", "filesystem": "uncontrolled",
+                "empty_cache_between_stages": False}
+
+
+def supported_result(value):
+    return value.get("schema_version", 4) == 4 and (
+        value.get("result_version"), value.get("protocol_version")) in {
+            (4, LEGACY_PROTOCOL_VERSION), (RESULT_VERSION, PROTOCOL_VERSION)}
 
 
 class ConfigurationError(ValueError):
