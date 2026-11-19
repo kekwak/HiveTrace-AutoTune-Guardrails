@@ -96,11 +96,17 @@ class QuantAdapter(NativeAdapter):
             raise ValueError("No batches supplied for backend preparation")
         if not self._backend_installed:
             self._install_compile()
+        # Lifecycle У1 вызывает подготовку несколько раз в одном процессе (все основные батчи, затем каждая
+        # стадия); скомпилированный граф живёт весь процесс, поэтому уже прогретые формы не повторяем.
+        warmed = self.__dict__.setdefault("_warmed_shapes", set())
         shapes = {}
         for batch in batches:
-            shapes.setdefault(self._shape(batch), batch)
-        for batch in shapes.values():
+            shape = self._shape(batch)
+            if shape not in warmed:
+                shapes.setdefault(shape, batch)
+        for shape, batch in shapes.items():
             self.request_batch(batch)
+            warmed.add(shape)
         if not self.compile_count:
             raise ValueError("Compiled model never executed: torch.compile produced no graph")
         self._prepared = True

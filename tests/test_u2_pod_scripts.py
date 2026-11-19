@@ -41,6 +41,16 @@ class Scripts(unittest.TestCase):
         self.assertNotRegex(preflight, r"tools/benchmark.py (run|quality)")
         self.assertRegex(dry("pack"), r"tar czf /workspace/u2-runs/gliner-results-[0-9-]+\.tgz -C /workspace/u2-runs --exclude=\*\.tgz gliner-\*")
 
+    def test_batch1_grid_switch(self):
+        out = subprocess.run(["bash", str(RUN), "search-fp8", "hive", "--dry-run"], capture_output=True, text=True,
+                             check=True, cwd=ROOT, env={**os.environ, "U2_GRID": "b1"}).stdout
+        self.assertIn("configs/u2/hive_fp8_search_b1.json", out)
+        self.assertIn("--baseline-ref /workspace/u2-runs/hive-baseline-b1", out)
+        self.assertIn("--output /workspace/u2-runs/hive-search-fp8-b1", out)
+        bad = subprocess.run(["bash", str(RUN), "baseline", "hive", "--dry-run"], capture_output=True, cwd=ROOT,
+                             env={**os.environ, "U2_GRID": "b2"})
+        self.assertNotEqual(bad.returncode, 0)
+
     def test_unknown_stage_or_model_fails(self):
         for args in (["nope", "gliner"], ["baseline", "koala"]):
             result = subprocess.run(["bash", str(RUN), *args, "--dry-run"], capture_output=True, cwd=ROOT)

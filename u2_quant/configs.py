@@ -36,10 +36,16 @@ def variant(model, name):
     return spec
 
 
-def build(model, name, mode, *, environment, data, quality_data, baseline_ref=None):
+GRIDS = ("u1", "b1")   # u1 — пресеты configs/v4 (батч 1 и максимальный); b1 — только батч 1 во всех бакетах
+
+
+def build(model, name, mode, *, environment, data, quality_data, baseline_ref=None, grid="u1"):
+    if grid not in GRIDS:
+        raise ValueError(f"Unknown grid: {grid}")
     v4 = read(ROOT / f"configs/v4/{model}.json")
+    sizes = v4["batch_sizes_by_bucket"] if grid == "u1" else {bucket: [1] for bucket in v4["buckets"]}
     cfg = {"schema_version": 4, "baseline": variant(model, "bf16c"), "buckets": v4["buckets"],
-           "batch_sizes_by_bucket": v4["batch_sizes_by_bucket"], "mode": mode, "comparison": "quantization",
+           "batch_sizes_by_bucket": sizes, "mode": mode, "comparison": "quantization",
            "seed": 17, "timeout_seconds": 36000, "environment": environment, "quality_batch_sizes": [1]}
     if name != "bf16c":
         cfg["candidate"] = variant(model, name)
@@ -74,9 +80,12 @@ def main(argv=None):
                "hive": {"path": "/workspace/u2-data/quality", "manifest_sha256": args.quality_manifest}}
     out = ROOT / "configs/u2"
     for model, name, mode in PLAN:
-        write(out / f"{model}_{name}_{mode}.json",
-              build(model, name, mode, environment="/workspace/u2-env", data=data, quality_data=quality[model],
-                    baseline_ref=f"/workspace/u2-runs/{model}-baseline"))
+        for grid, suffix in (("u1", ""), ("b1", "_b1")):
+            if grid == "b1" and mode == "quality":
+                continue
+            write(out / f"{model}_{name}_{mode}{suffix}.json",
+                  build(model, name, mode, environment="/workspace/u2-env", data=data, quality_data=quality[model],
+                        baseline_ref=f"/workspace/u2-runs/{model}-baseline{suffix.replace('_', '-')}", grid=grid))
     write(out / "speed_import.json", speed_import("/workspace/u2-data/role-corpus/corpus.jsonl",
                                                   {m: f"configs/u2/{m}_bf16c_baseline.json" for m in MODELS}))
 

@@ -1,0 +1,78 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": {
+      "module": "u2_quant/adapter.py",
+      "source_sha256": "dc5fa1261e4bae8b0f47553fe0867361a01a6fa37bed6f2b3bc74ad65234dbb4",
+      "dependencies": {
+        "torchao": "0.17.0"
+      }
+    },
+    "weights": {
+      "repo": "hivetrace/HiveTraceGuard-Pro",
+      "revision": "ed008276c96253e14885e6ade3b7b6d58daa2480"
+    },
+    "tokenizer": {
+      "repo": "hivetrace/HiveTraceGuard-Pro",
+      "revision": "ed008276c96253e14885e6ade3b7b6d58daa2480"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 4096
+    },
+    "scoring": {
+      "max_new_tokens": 1
+    },
+    "execution": {
+      "runtime": "compile",
+      "dtype": "bfloat16",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    },
+    "B2": {
+      "min": 513,
+      "max": 1024
+    },
+    "B3": {
+      "min": 1025,
+      "max": 2048
+    },
+    "B4": {
+      "min": 2049,
+      "max": 4096
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1
+    ],
+    "B2": [
+      1
+    ],
+    "B3": [
+      1
+    ],
+    "B4": [
+      1
+    ]
+  },
+  "mode": "baseline",
+  "comparison": "quantization",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u2-env",
+  "quality_batch_sizes": [
+    1
+  ],
+  "data": {
+    "path": "/workspace/u2-data/speed",
+    "manifest_sha256": "REPLACE_SPEED_MANIFEST_SHA256"
+  }
+}

@@ -126,6 +126,18 @@ class Compile(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "compile"):
                 made.prepare_batch_backend([["a"], ["b", "c"]])
 
+    def test_prepare_skips_shapes_already_warmed(self):
+        made, fake = self.make(compiles=True)
+        calls = []
+        made.request_batch = lambda batch: calls.append(tuple(batch)) or made.target(torch.zeros(len(batch), 4))
+        with patch.object(qa.torch, "compile", fake), patch.object(qa, "_inductor", lambda: lambda gm, inputs: gm):
+            made.prepare_batch_backend([["a"], ["b", "c"]])
+            first = len(calls)
+            made.prepare_batch_backend([["d"], ["e", "f"], ["g", "h", "i"]])   # формы (1,1), (2,1) уже прогреты
+        self.assertEqual(first, 2)
+        self.assertEqual(calls[first:], [("g", "h", "i")])
+        self.assertEqual(made.metadata["backend"]["runtime"], "compile")
+
     def test_prepare_records_compile(self):
         made, fake = self.make(compiles=True)
         with patch.object(qa.torch, "compile", fake), patch.object(qa, "_inductor", lambda: lambda gm, inputs: gm):

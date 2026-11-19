@@ -57,6 +57,22 @@ class Build(unittest.TestCase):
             v4 = json.loads((ROOT / f"configs/v4/{model}.json").read_text())
             self.assertEqual(make(model, "bf16c", "baseline")["buckets"], v4["buckets"])
 
+    def test_batch1_grid_option(self):
+        cfg = configs.build("hive", "fp8", "search", environment="/workspace/u2-env", data=DATA, quality_data=QUALITY,
+                            baseline_ref="/workspace/u2-runs/hive-baseline-b1", grid="b1")
+        validate_config(cfg)
+        self.assertEqual(cfg["batch_sizes_by_bucket"], {"B1": [1], "B2": [1], "B3": [1], "B4": [1]})
+        self.assertEqual(cfg["buckets"], make("hive", "bf16c", "baseline")["buckets"])
+
+    def test_main_writes_batch1_speed_configs(self):
+        from unittest.mock import patch
+        written = {}
+        with patch.object(configs, "write", lambda path, value: written.__setitem__(path.name, value)):
+            configs.main([])
+        self.assertEqual(written["hive_fp8_search_b1.json"]["baseline_ref"], "/workspace/u2-runs/hive-baseline-b1")
+        self.assertEqual(written["hive_bf16c_baseline_b1.json"]["batch_sizes_by_bucket"]["B4"], [1])
+        self.assertNotIn("hive_fp8_quality_b1.json", written)
+
     def test_quality_config_mapping(self):
         cfg = make("hive", "fp8", "quality")
         # батч 1 — как в продукте, без паддинга; checkpoint У1 теперь не O(N²)

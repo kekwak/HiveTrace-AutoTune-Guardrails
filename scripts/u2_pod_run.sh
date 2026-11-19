@@ -11,6 +11,9 @@ cd "$(dirname "$0")/.."
 shopt -s nullglob
 PY="$ENV/venv/bin/python"
 BENCH="$PY tools/benchmark.py"
+# U2_GRID: u1 — пресеты У1 (батч 1 и максимальный), b1 — только батч 1 (конфиги *_b1, каталоги *-b1)
+GRID=${U2_GRID:-u1}
+case "$GRID" in u1) G="" ;; b1) G="-b1" ;; *) echo "unknown grid: $GRID" >&2; exit 2 ;; esac
 C=configs/u2/$MODEL
 run() { echo "+ $*"; [ "$DRY" = "--dry-run" ] || "$@"; }
 [ "$DRY" = "--dry-run" ] || mkdir -p "$RUNS"
@@ -20,16 +23,16 @@ case "$STAGE" in
     run $PY -m u2_quant.preflight
     run $BENCH preflight --config "${C}_fp8_confirm.json" --environment "$ENV" --output "$RUNS/$MODEL-preflight" ;;
   baseline)
-    run $BENCH run --config "${C}_bf16c_baseline.json" --environment "$ENV" --output "$RUNS/$MODEL-baseline" ;;
+    run $BENCH run --config "${C}_bf16c_baseline${G//-/_}.json" --environment "$ENV" --output "$RUNS/$MODEL-baseline$G" ;;
   quality-bf16c)
     run $BENCH quality --config "${C}_bf16c_quality.json" --environment "$ENV" --output "$RUNS/$MODEL-quality-bf16c" ;;
   search-fp8)
-    run $BENCH run --config "${C}_fp8_search.json" --environment "$ENV" --baseline-ref "$RUNS/$MODEL-baseline" \
-      --output "$RUNS/$MODEL-search-fp8" ;;
+    run $BENCH run --config "${C}_fp8_search${G//-/_}.json" --environment "$ENV" --baseline-ref "$RUNS/$MODEL-baseline$G" \
+      --output "$RUNS/$MODEL-search-fp8$G" ;;
   quality-fp8)
     run $BENCH quality --config "${C}_fp8_quality.json" --environment "$ENV" --output "$RUNS/$MODEL-quality-fp8" ;;
   confirm)
-    run $BENCH run --config "${C}_fp8_confirm.json" --environment "$ENV" --mode confirm --output "$RUNS/$MODEL-confirm-fp8" ;;
+    run $BENCH run --config "${C}_fp8_confirm${G//-/_}.json" --environment "$ENV" --mode confirm --output "$RUNS/$MODEL-confirm-fp8$G" ;;
   pack)
     if [ "$DRY" = "--dry-run" ]; then ITEMS=("$MODEL-*"); else ITEMS=(); for d in "$RUNS/$MODEL"-*; do
       [ -d "$d" ] && ITEMS+=("$(basename "$d")"); done; fi
