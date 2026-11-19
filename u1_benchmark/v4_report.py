@@ -1,4 +1,4 @@
-"""Offline v4 evidence reports. No live sources, datasets, models or catalogs.
+"""Offline v4/v5 evidence reports. No live sources, datasets, models or catalogs.
 
 The saved schedule contains latency plans; numbered worker directories carry
 the full jobs and their provenance fields. Quality labels live in
@@ -17,10 +17,10 @@ from zipfile import BadZipFile
 
 from .core import digest, sha, write
 from .precision import PrecisionTracker, validate_precision
-from .statistics import assess, baseline_diagnostics, quantile
-from .v4_config import PROTOCOL_VERSION
+from .statistics import assess, assess_reference, baseline_diagnostics, quantile
+from .v4_config import PROTOCOL_VERSION, LEGACY_PROTOCOL_VERSION, RESULT_VERSION, CACHE_POLICY, supported_result
 from .v4_evidence import assert_environment, environment_identity, reference_folder
-from .v4_planning import cells, schedule, smoke_plans
+from .v4_planning import cells, schedule, smoke_plans, execution_groups, group_identity
 
 
 class InvalidArtifact(ValueError):
@@ -225,9 +225,10 @@ class Evidence:
         self.resolved = read(safe(root, "resolved_run.json"))
         self.state = read(safe(root, "status.json"))
         r = self.resolved
-        require(r.get("schema_version") == r.get("result_version") == 4,
+        require(r.get("schema_version") == 4 and r.get("result_version") in (4, RESULT_VERSION),
                 "unsupported_old_format_explicit_migration_required")
-        require(r.get("protocol_version") == PROTOCOL_VERSION, "unsupported_protocol")
+        require(supported_result(r), "unsupported_protocol")
+        self.legacy = r["result_version"] == 4
         self.sha = sha(safe(root, "resolved_run.json"))
         require(self.state.get("resolved_sha256") == self.sha, "resolved_hash_mismatch")
         self.cfg = frozen_config(r["config"], r.get("variant_identities"))
@@ -271,8 +272,20 @@ class Evidence:
             if not self.cfg["pilot"] and self.cfg["mode"] != "smoke":
                 require(all(len(rows) == len({r["id"] for r in rows}) == 400
                             for rows in self.data.values()), "full_speed_requires_400_unique_ids")
-        expected = schedule(self.cfg, self.data) if self.cfg["mode"] not in ("quality", "smoke") else []
+        expected = schedule(self.cfg, self.data, protocol_version=r["protocol_version"]) if self.cfg["mode"] not in ("quality", "smoke") else []
         require(r["schedule"] == expected, "saved_schedule_mismatch")
+        if not self.legacy:
+            require(r.get("cache_policy") == CACHE_POLICY, "unsupported_cache_policy")
+            if self.cfg["mode"] == "quality":
+                require(r.get("quality_protocol_version") == 2, "unsupported_quality_protocol")
+            groups = execution_groups(self.cfg, expected)
+            require(r.get("execution_groups") == [group_identity(g) for g in groups], "lifecycle_plan_mismatch")
+            wanted = [(f"worker-{i:05d}", order, stage)
+                      for i, g in enumerate(groups) for order, stage in enumerate(g["stages"])]
+            require(len(self.jobs) <= len(wanted), "unexpected_lifecycle_stage")
+            for job, (identity, order, stage) in zip(self.jobs, wanted):
+                require(job.get("lifecycle_id") == identity and job.get("stage_order") == order
+                        and all(job.get(k) == v for k, v in stage.items()), "lifecycle_stage_mismatch")
         require(all((job.get("bucket"), job.get("batch_size")) in cells(self.cfg)
                     for job in self.jobs if job["stage"] in ("preflight", "latency", "profile")), "unexpected_worker_cell")
         self.invalid_cells = set()
@@ -300,10 +313,15 @@ class Evidence:
             require(self.state["stages"][i].get("status") == "passed", "stage_not_passed")
         require(read(safe(self.root, path / "job.json")) == job, "saved_job_mismatch")
         value = read(safe(self.root, path / "result.json"))
-        require(value.get("result_version") == 4, "unsupported_worker_format")
+        require(value.get("result_version") == self.resolved["result_version"], "unsupported_worker_format")
         require(value.get("job") == job and value.get("resolved_sha256") == self.sha
                 and job.get("resolved_sha256") == self.sha and job.get("seed") == self.cfg["seed"],
                 "worker_identity_mismatch")
+        if not self.legacy and value.get("status") == "passed":
+            require(value.get("lifecycle_id") == job.get("lifecycle_id")
+                    and value.get("stage_order") == job.get("stage_order")
+                    and value.get("cache_policy") == self.resolved["cache_policy"]
+                    and value.get("load_owner") is (job.get("stage_order") == 0), "worker_lifecycle_mismatch")
         require(value.get("status") in (("passed", "failed", "oom", "unsupported", "error", "running", "timeout")
                 if allow_partial else ("passed",)), "worker_not_passed")
         require(self.state["stages"][i].get("status") == value["status"], "worker_ledger_status_mismatch")
@@ -471,7 +489,8 @@ def _reference(evidence):
     require(verified["status"] == "baseline_complete", "incomplete_reference")
     for k in ("baseline", "buckets", "batch_sizes_by_bucket", "seed"):
         require(ref.cfg[k] == evidence.cfg[k], "reference_config_mismatch")
-    for k in ("source_inventory", "input_indices", "data_manifest_sha256", "protocol_version"):
+    provenance = ("source_inventory", "input_indices", "data_manifest_sha256", "protocol_version") if evidence.legacy else ("input_indices", "data_manifest_sha256")
+    for k in provenance:
         require(ref.resolved[k] == evidence.resolved[k], "reference_provenance_mismatch")
     assert_environment(ref.resolved["environment"], evidence.resolved["environment"])
     main = ref.resolved["schedule"]
@@ -521,6 +540,15 @@ def _cell(evidence, bucket, size, reference=None):
                     p95_reduction=1 - item["p95"]["ratio"],
                     reference_diagnostics=summary["cells"][f"{bucket}/{size}"],
                     uncertainty_note="Separate runs are not paired; no paired confidence interval or final acceptance.")
+        if not evidence.legacy and not pilot:
+            threshold = .10 if cfg["comparison"] == "parameter" else .20
+            item.update(assess_reference(base["baseline"], series["search"], base["aa"], threshold))
+            item["speed_status"] = item["status"]
+            item["faster"] = not item["reasons"] and item["p95_reduction"] > 0
+            item["reference_compatibility"] = {
+                "status": "compatible", "reference_result_version": ref.resolved["result_version"],
+                "lifecycle_differs": ref.resolved["protocol_version"] != evidence.resolved["protocol_version"],
+                "source_inventory_differs": ref.resolved["source_inventory"] != evidence.resolved["source_inventory"]}
     elif mode == "baseline" and not pilot:
         item.update(baseline_diagnostics(series["baseline"], series["aa"]))
         item.update(status="baseline_complete", speed_status="measured_baseline")
@@ -547,11 +575,25 @@ def _cell(evidence, bucket, size, reference=None):
                 "changed" if verdict["changed_count"] else "unchanged")
     if pilot:
         item.update(status="pilot_complete", speed_status="not_evaluated_pilot", faster=False)
-    elif mode == "confirm":
+    elif mode == "confirm" or (mode == "search" and not evidence.legacy):
         item["status"] = ("rejected" if verdict["status"] != "ok" or item["speed_status"] == "below_target"
-                          else "confirm_pass" if item["speed_status"] == "pass" else "inconclusive")
+                          else ("confirm_pass" if mode == "confirm" else "reference_pass")
+                          if item["speed_status"] == "pass" else "inconclusive")
         if cfg["comparison"] == "quantization":
             item.update(status="quantization_measured", speed_status="measured_no_acceptance_threshold")
+    if not evidence.legacy:
+        if mode in ("search", "confirm"):
+            item["comparison_design"] = "paired" if mode == "confirm" else "unpaired_reference"
+        if mode in ("baseline", "confirm"):
+            a = series["baseline"] if mode == "baseline" else [v[0] for v in series["ab"]]
+            item["baseline_series_p50_ms"] = [quantile(v, .5) for v in a]
+            item["baseline_series_p95_ms"] = [quantile(v, .95) for v in a]
+            if mode == "confirm":
+                b = [v[1] for v in series["ab"]]
+                item["candidate_series_p50_ms"] = [quantile(v, .5) for v in b]
+                p95s = item["candidate_series_p95_ms"] = [quantile(v, .95) for v in b]
+                item["candidate_drift_p95"] = max(p95s) / min(p95s) - 1
+        item["between_session_drift_checked"] = False
     item.update(series_evidence=resources, **_resource_statuses(resources))
     digest(item)  # Reject overflow in derived rates/intervals as invalid evidence.
     evidence.measured[bucket, size] = labels
@@ -614,7 +656,7 @@ def metrics(rows, predictions, mapping):
     return {"status": "evaluated", "quality_preserved": None, "overall": compute(rows), "slices": slices}
 
 
-def _quality_plan(rows, plan, size, seed):
+def _quality_plan(rows, plan, size, seed, version=1):
     # Recreate quality_batches.make_plan without importing adapters/catalogs.
     ids = [r["id"] for r in rows]
     random.Random(seed).shuffle(ids)
@@ -631,7 +673,7 @@ def _quality_plan(rows, plan, size, seed):
         lengths = [indices[key]["total_tokens"] for key in members]
         batches.append({"ids": members, "actual_batch_size": len(members), "lengths": lengths,
                         "padded_length": max(lengths), "inputs_sha256": digest([indices[key] for key in members])})
-    require(plan == {"quality_protocol_version": 1, "batch_size": size, "seed": seed,
+    require(plan == {"quality_protocol_version": version, "batch_size": size, "seed": seed,
                      "ordered_ids": ids, "indices": indices, "excluded": excluded, "batches": batches},
             "quality_plan_mismatch")
 
@@ -705,7 +747,7 @@ def _quality(evidence):
             plan = read(safe(evidence.root, path / "quality_plan.json"))
             require(value.get("quality_batch_size") == key[0]
                     and value.get("quality_plan_sha256") == digest(plan), "quality_plan_hash_mismatch")
-            _quality_plan(rows, plan, key[0], cfg["seed"])
+            _quality_plan(rows, plan, key[0], cfg["seed"], 1 if evidence.legacy else 2)
             predictions = [json.loads(line, object_pairs_hook=_pairs, parse_constant=_constant)
                            for line in safe(evidence.root, path / "predictions.jsonl").read_text().splitlines() if line.strip()]
             require([p["id"] for p in predictions] == plan["ordered_ids"], "quality_prediction_order_mismatch")
@@ -838,12 +880,19 @@ def _worker_evidence(job, value, source="run"):
     sampler["sampling_may_miss_short_peaks"] = True
     counters = {}
     for phase in ("torch_setup", "torch_inference"):
+        if phase == "torch_setup" and value.get("load_owner") is False:
+            counters[phase] = {"status": "not_applicable", "reason": "load_recorded_by_lifecycle_owner"}
+            continue
         raw = value.get(phase)
         raw = raw if isinstance(raw, dict) else {}
         fields = {k: _number(raw, k, integer=True) for k in ("allocated_bytes", "reserved_bytes")}
         counters[phase] = {"status": _availability(v["status"] for v in fields.values()), **fields}
-    memory = {"status": _availability([sampler["status"], *(v["status"] for v in counters.values())]),
+    memory = {"status": _availability([sampler["status"], *(v["status"] for v in counters.values() if v["status"] != "not_applicable")]),
               "sampler": sampler, **counters}
+    if "lifecycle_id" in value:
+        memory.update(lifecycle_id=value["lifecycle_id"], scope="warm_lifecycle",
+                      stage_windows=raw_memory.get("stage_windows", []),
+                      sampler_shutdown=value.get("sampler_shutdown"))
     raw_size = value.get("size")
     raw_size = raw_size if isinstance(raw_size, dict) else {}
     storage = _number(raw_size, "unique_parameter_buffer_storage_bytes", integer=True)
@@ -859,7 +908,7 @@ def _worker_evidence(job, value, source="run"):
     if type(raw_size.get("original_encoder_retained")) is bool:
         size["original_encoder_retained"] = raw_size["original_encoder_retained"]
     return {"source": source, **{k: job[k] for k in ("stage", "variant", "bucket", "batch_size", "phase", "block", "side",
-                                                    "quality_batch_size") if k in job},
+                                                    "quality_batch_size", "lifecycle_id", "stage_order") if k in job},
             "preparation": preparation, "memory": memory, "size": size}
 
 
@@ -933,13 +982,32 @@ def _build(root):
         evidence = Evidence(root)
         cfg = evidence.cfg
         result.update(resolved_sha256=evidence.sha, mode=cfg["mode"], comparison=cfg["comparison"],
+                      result_version=evidence.resolved["result_version"], protocol_version=evidence.resolved["protocol_version"],
                       environment=environment_identity(evidence.resolved["environment"]),
                       data_manifest_sha256=evidence.resolved["data_manifest_sha256"],
                       source_inventory_sha256=digest(evidence.resolved["source_inventory"]),
                       monitoring_status=_monitoring(evidence.resolved))
         run_finished = evidence.state.get("status") in ("completed", "baseline_complete", "baseline_unstable", "confirm_pass",
                 "inconclusive", "rejected", "exploratory", "pilot_complete", "preflight_passed", "quality_complete",
-                "quantization_measured", "incomplete", "partial")
+                "quantization_measured", "incomplete", "partial", "reference_pass")
+        if not evidence.legacy:
+            result.update(monitoring_is_acceptance_gate=False, between_session_drift_checked=False,
+                          model_loads=sum(bool(read(safe(root, p.parent / "result.json")).get("load_owner"))
+                                          for p in evidence.paths if (p.parent / "result.json").is_file()))
+            monitoring = evidence.resolved.get("monitoring_validation")
+            if isinstance(monitoring, dict):
+                matches = monitoring.get("source_inventory_sha256") == digest(evidence.resolved["source_inventory"])
+                result["monitoring_evidence"] = {
+                    "recorded_status": monitoring.get("status") if monitoring.get("status") in ("passed", "unvalidated", "failed") else "unknown",
+                    "source_inventory_matches": matches,
+                    "current_implementation_validated": result["monitoring_status"] == "passed",
+                    "scope": "current_snapshot" if matches else "historical_only"}
+                if not matches and monitoring.get("status") == "passed":
+                    result["monitoring_status"] = "historical_only"
+            if cfg["mode"] in ("search", "confirm"):
+                result["comparison_design"] = "paired" if cfg["mode"] == "confirm" else "unpaired_reference"
+            if cfg["mode"] == "quality":
+                result["quality_protocol_version"] = 2
         stages = evidence.state.get("stages")
         require(isinstance(stages, list) and len(stages) == len(evidence.jobs), "stage_ledger_incomplete")
         for stage, path, job in zip(stages, evidence.paths, evidence.jobs):
@@ -948,6 +1016,13 @@ def _build(root):
         require(cfg["mode"] == "quality" or not any(j["stage"] == "quality" for j in evidence.jobs),
                 "unexpected_quality_stage")
         reference = _reference(evidence) if cfg["mode"] == "search" else None
+        if reference and not evidence.legacy:
+            ref = reference[0]
+            result["reference_compatibility"] = {
+                "status": "compatible", "reference_result_version": ref.resolved["result_version"],
+                "lifecycle_differs": ref.resolved["protocol_version"] != evidence.resolved["protocol_version"],
+                "source_inventory_differs": ref.resolved["source_inventory"] != evidence.resolved["source_inventory"],
+                "baseline_repeated": False}
         if cfg["mode"] == "quality":
             require(all(j["stage"] == "quality" for j in evidence.jobs), "unexpected_quality_stage")
             result["quality"] = _quality(evidence)
@@ -987,17 +1062,18 @@ def _build(root):
                     result.update(status="pilot_complete", speed_status="not_evaluated_pilot")
                 elif cfg["mode"] == "baseline":
                     result.update(status="baseline_complete", speed_status="measured_baseline")
-                elif cfg["mode"] == "search":
+                elif cfg["mode"] == "search" and evidence.legacy:
                     result.update(status="exploratory", speed_status="exploratory")
                 else:
-                    result["all_cells_faster"] = result["monitoring_status"] == "passed" and all(v["faster"] for v in values)
+                    result["all_cells_faster"] = (not evidence.legacy or result["monitoring_status"] == "passed") and all(v["faster"] for v in values)
                     result["all_cells_meet_threshold"] = all(v["speed_status"] == "pass" for v in values)
                     result["speed_status"] = "pass" if result["all_cells_meet_threshold"] else (
                         "below_target" if any(v["speed_status"] == "below_target" for v in values) else "inconclusive")
+                    pass_status = "reference_pass" if cfg["mode"] == "search" else "confirm_pass"
                     result["status"] = ("rejected" if any(v["status"] == "rejected" for v in values)
-                                        else "confirm_pass" if all(v["status"] == "confirm_pass" for v in values)
+                                        else pass_status if all(v["status"] == pass_status for v in values)
                                         else "quantization_measured" if cfg["comparison"] == "quantization" else "inconclusive")
-                    if result["status"] == "confirm_pass" and result["monitoring_status"] != "passed":
+                    if evidence.legacy and result["status"] == "confirm_pass" and result["monitoring_status"] != "passed":
                         result["status"] = "inconclusive"
                         result["errors"].append("monitoring_validation_not_passed")
         for i, job in enumerate(evidence.jobs):
@@ -1055,7 +1131,7 @@ def build(directory, save=True):
         require(not any(p.is_symlink() for p in (json_path, md_path, json_path.with_suffix(".json.tmp"))),
                 "unsafe_report_output")
         write(json_path, result)
-        text = ["# Offline v4 report", "", f"Status: {result['status']}",
+        text = [f"# Offline v{result['result_version']} report", "", f"Status: {result['status']}",
                 f"Speed: {result['speed_status']}; memory: {result['memory_status']}",
                 f"Preparation: {result['preparation_status']}; size: {result['size_status']}; profiles: {result['profile_status']}",
                 f"Quality: {result['quality']['quality_status']}", "",
@@ -1066,6 +1142,15 @@ def build(directory, save=True):
         text += ["", f"All cells faster above noise: {result['all_cells_faster']}",
                  f"All cells meet threshold: {result['all_cells_meet_threshold']}",
                  "No independent confirmation or automatic quality-preservation approval.", *result["errors"]]
+        if result["result_version"] == RESULT_VERSION:
+            text += ["", f"Comparison design: {result.get('comparison_design', 'not_applicable')}",
+                     f"Model loads: {result.get('model_loads', 0)}",
+                     "Monitoring overhead validation is informational, not an acceptance gate.",
+                     "Observed series variability does not rule out a cross-session systematic shift."]
+            if result.get("reference_compatibility", {}).get("lifecycle_differs"):
+                text += ["The v4 reference used fresh processes per series; candidate reuses runtime state.",
+                         "The measured effect includes lifecycle differences; it is not isolated backend acceleration.",
+                         "Memory peaks refer to different runtime lifecycles."]
         md_path.write_text("\n".join(text) + "\n", encoding="utf-8")
     return result
 
@@ -1086,15 +1171,19 @@ def table(inputs, out):
             continue
         identity = {"environment": summary["environment"], "data_manifest_sha256": summary["data_manifest_sha256"],
                     "protocol_version": summary["protocol_version"], "source_inventory_sha256": summary["source_inventory_sha256"]}
+        if summary["result_version"] == 5:
+            identity["comparison_design"] = summary.get("comparison_design")
         key = digest(identity)
         group = groups.setdefault(key, {"identity": identity, "runs": []})
         group["runs"].append({"source": str(source), "resolved_sha256": summary["resolved_sha256"],
                               "mode": summary["mode"], "status": summary["status"], "cells": summary["cells"],
                               "quality": summary["quality"], "precision": summary["precision"],
+                              **{k: summary[k] for k in ("comparison_design", "reference_compatibility", "model_loads") if k in summary},
+                              **{k: summary[k] for k in ("monitoring_status", "monitoring_evidence") if k in summary},
                               **{k: summary[k] for k in ("worker_evidence", "single_to_batch", "quantization",
                                   "macro_verdict_change_fraction_by_batch_size", "profile_status", "preparation_status",
                                   "memory_status", "size_status")}})
-    result = {"schema_version": 4, "result_version": 4, "status": "partial" if rejected else "completed",
+    result = {"schema_version": 4, "result_version": 5, "status": "partial" if rejected else "completed",
               "rows": sum(len(group["runs"]) for group in groups.values()), "omitted": len(rejected),
               "groups": groups, "rejected": rejected}
     target = Path(out)

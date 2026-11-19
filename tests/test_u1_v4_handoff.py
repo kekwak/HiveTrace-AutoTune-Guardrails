@@ -51,8 +51,9 @@ class HandoffTests(unittest.TestCase):
             cfg["data"] = {key: result[key] for key in ("path", "manifest_sha256")}
             actual = plan(cfg)
             self.assertEqual(actual["status"], "ready")
-            self.assertEqual(actual["preflight_workers"], 2)
-            self.assertEqual(actual["latency_workers"], 14)
+            self.assertEqual(actual["preflight_stages"], 2)
+            self.assertEqual(actual["latency_stages"], 14)
+            self.assertEqual(actual["model_loads"], 2)
             self.assertFalse(actual["gpu_checked"])
             self.assertEqual(actual["memory_workers"], 0)
 

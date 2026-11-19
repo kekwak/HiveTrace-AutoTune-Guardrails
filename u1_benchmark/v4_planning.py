@@ -10,6 +10,7 @@ from collections import Counter
 from collections.abc import Mapping
 
 from .core import digest as plan_hash
+from .v4_config import PROTOCOL_VERSION, LEGACY_PROTOCOL_VERSION
 
 
 def _integer(value, name, minimum=None):
@@ -179,8 +180,10 @@ def _reference(jobs, reference_schedule, pilot=False):
             raise ValueError("Reference main plan differs from prepared inputs/seed")
 
 
-def schedule(cfg, data, reference_schedule=None):
-    """Cell-first jobs: baseline AA + main, search main only, confirm AA + AB.
+def schedule(cfg, data, reference_schedule=None, *, protocol_version=PROTOCOL_VERSION):
+    """Cell-first jobs: baseline main + AA, search main only, confirm AA + AB.
+
+    Legacy v4 baseline retains AA before main.
 
     AA has two 30-batch pairs; main/AB has three blocks of max(100, ceil(N/B))
     batches. Pilot replaces these with one 12-batch main block (one AB pair in
@@ -217,6 +220,8 @@ def schedule(cfg, data, reference_schedule=None):
     main = {"baseline": "baseline", "search": "search", "confirm": "ab"}[mode]
     phases = ([] if pilot or mode == "search" else [("aa", 2)])
     phases += [(main, 1 if pilot else 3)]
+    if mode == "baseline" and protocol_version != LEGACY_PROTOCOL_VERSION:
+        phases.reverse()
     jobs = []
     for bucket, size in grid:
         rows = prepared[bucket]
@@ -242,6 +247,54 @@ def schedule(cfg, data, reference_schedule=None):
             raise ValueError("Reference schedule is only supported for search")
         _reference(jobs, reference_schedule, pilot=pilot)
     return jobs
+
+
+def execution_groups(cfg, jobs):
+    """Contiguous stages sharing one loaded variant, with immutable task order."""
+    variants = (["candidate"] if cfg["mode"] == "search" else
+                ["baseline"] + (["candidate"] if "candidate" in cfg else []))
+    if cfg["mode"] == "quality":
+        return [{"variant": variant, "stages": [
+            {"stage": "quality", "variant": variant, "quality_batch_size": size,
+             "label_mapping": cfg["label_mapping"]} for size in cfg["quality_batch_sizes"]],
+                 "main_batches": []} for variant in variants]
+    groups = []
+    for bucket, size in cells(cfg):
+        cell = {"bucket": bucket, "batch_size": size}
+        timed = [job for job in jobs if (job["bucket"], job["batch_size"]) == (bucket, size)]
+        if not timed:
+            for variant in variants:
+                groups.append({**cell, "variant": variant, "main_batches": [], "stages": [
+                    {**cell, "stage": "preflight", "variant": variant,
+                     "bucket_max": cfg["buckets"][bucket]["max"]}]})
+        else:
+            seen = set()
+            active = None
+            for job in timed:
+                variant = job["variant"]
+                if active is None or active["variant"] != variant:
+                    active = {**cell, "variant": variant, "stages": [], "main_batches": [
+                        batch for j in timed if j["variant"] == variant and j["phase"] != "aa"
+                        for batch in j["batches"]]}
+                    groups.append(active)
+                if variant not in seen:
+                    active["stages"].append({**cell, "stage": "preflight", "variant": variant,
+                                             "bucket_max": cfg["buckets"][bucket]["max"]})
+                    seen.add(variant)
+                active["stages"].append({"stage": "latency", **copy.deepcopy(job)})
+        if cfg.get("profile_trace"):
+            for variant in variants:
+                groups.append({**cell, "variant": variant, "main_batches": [],
+                               "stages": [{**cell, "stage": "profile", "variant": variant}]})
+    return groups
+
+
+def group_identity(group):
+    return {"variant": group["variant"], "bucket": group.get("bucket"),
+            "batch_size": group.get("batch_size"),
+            "main_batches_sha256": plan_hash(group["main_batches"]),
+            "stages": [{k: v for k, v in stage.items() if k not in ("batches", "ids")}
+                       for stage in group["stages"]]}
 
 
 def workload(cfg, data, reference_schedule=None):

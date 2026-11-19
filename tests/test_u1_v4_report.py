@@ -11,7 +11,7 @@ import unittest
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from u1_benchmark.core import digest, read, sha, write
-from u1_benchmark.v4_config import PROTOCOL_VERSION, validate_config
+from u1_benchmark.v4_config import LEGACY_PROTOCOL_VERSION as PROTOCOL_VERSION, validate_config
 from u1_benchmark.v4_evidence import environment_identity
 from u1_benchmark.v4_planning import schedule, smoke_plans
 from u1_benchmark.v4_report import _quantization, agreement, build, frozen_config, metrics, table
@@ -68,7 +68,7 @@ class Archive:
         self.cfg = validate_config(cfg)
         self.data = {b: [{"id": f"{b}-{i}", "index": {"input_sha256": digest([b, i]), "total_tokens": 8 + i % 10}}
                          for i in range(count)] for b in self.cfg.get("buckets", {})}
-        plans = schedule(self.cfg, self.data) if mode != "quality" else []
+        plans = schedule(self.cfg, self.data, protocol_version=PROTOCOL_VERSION) if mode != "quality" else []
         environment = env or ENV
         self.resolved = {"schema_version": 4, "result_version": 4, "protocol_version": PROTOCOL_VERSION,
                          "config": self.cfg, "source_inventory": {"old/absent.py": digest("source")},

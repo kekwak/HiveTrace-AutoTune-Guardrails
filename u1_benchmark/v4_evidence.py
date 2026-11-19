@@ -15,7 +15,7 @@ import time
 import zipfile
 
 from .core import ROOT, digest, read, sha, write
-from .v4_config import MONITOR_VERSION, PROTOCOL_VERSION, ConfigurationError
+from .v4_config import MONITOR_VERSION, PROTOCOL_VERSION, LEGACY_PROTOCOL_VERSION, ConfigurationError, supported_result
 
 
 def auth_check(config):
@@ -163,12 +163,12 @@ def reference_folder(path):
         yield root
 
 
-def read_reference(path):
+def _read_reference(path):
     with reference_folder(path) as root:
         resolved = read(root / "resolved_run.json")
         state = read(root / "status.json")
-        if resolved.get("schema_version") != 4 or resolved.get("protocol_version") != PROTOCOL_VERSION:
-            raise ConfigurationError("Unsupported reference format")
+        if not supported_result(resolved):
+            raise ReferenceMismatch("reference_format_unsupported")
         if state.get("resolved_sha256") != sha(root / "resolved_run.json"):
             raise ConfigurationError("Reference snapshot checksum mismatch")
         cfg = resolved["config"]
@@ -188,18 +188,48 @@ def read_reference(path):
                 "sha256": sha(path) if Path(path).is_file() else digest(evidence)}
 
 
+class ReferenceMismatch(ConfigurationError):
+    def __init__(self, code):
+        self.code = code
+        super().__init__(code)
+
+
+def read_reference(path):
+    try:
+        return _read_reference(path)
+    except ReferenceMismatch:
+        raise
+    except (ValueError, OSError, KeyError, TypeError, zipfile.BadZipFile) as error:
+        raise ReferenceMismatch("reference_invalid") from error
+
+
 def check_reference(cfg, reference, sources, inputs, environment=None):
     from .v4_privacy import public_config
     cfg = public_config(cfg)
     old = reference["resolved"]
+    if not isinstance(sources, dict) or not sources:
+        raise ReferenceMismatch("reference_configuration_differs")
     previous = old["config"]
     keys = ("baseline", "buckets", "batch_sizes_by_bucket", "seed")
     if any(previous[k] != cfg[k] for k in keys):
-        raise ConfigurationError("Reference model, grid or seed differs")
-    if old["source_inventory"] != sources or old["input_indices"] != inputs:
-        raise ConfigurationError("Reference engine or prepared inputs differ")
+        raise ReferenceMismatch("reference_configuration_differs")
+    if not supported_result(old):
+        raise ReferenceMismatch("reference_format_unsupported")
+    if old["input_indices"] != inputs:
+        raise ReferenceMismatch("reference_inputs_differ")
+    if previous["data"]["manifest_sha256"] != cfg["data"]["manifest_sha256"]:
+        raise ReferenceMismatch("reference_corpus_differs")
     if environment is not None:
-        assert_environment(environment, old["environment"])
+        if environment.get("gpu") != old["environment"].get("gpu"):
+            raise ReferenceMismatch("reference_gpu_differs")
+        if environment_identity(environment) != environment_identity(old["environment"]):
+            raise ReferenceMismatch("reference_environment_differs")
+    return {"status": "compatible", "reference_result_version": old["result_version"],
+            "reference_protocol": old["protocol_version"],
+            "lifecycle_differs": old["protocol_version"] == LEGACY_PROTOCOL_VERSION,
+            "source_inventory_differs": old["source_inventory"] != sources,
+            "baseline_repeated": False,
+            "warnings": ["reference_uses_fresh_process_per_series"] if old["protocol_version"] == LEGACY_PROTOCOL_VERSION else []}
 
 
 def copy_reference(reference, directory):

@@ -100,6 +100,20 @@ class FakeSampler:
     def inference(self):
         self.events.append("inference")
 
+    def begin_window(self, stage_id, name, phase):
+        self.events.append((stage_id, name, phase))
+
+    def end_window(self):
+        self.events.append("end_window")
+
+    def stage_snapshot(self, path, stage_id, complete=False):
+        result = {"status": "measured" if complete else "partial", "method_id": config.MONITOR_VERSION,
+                  "method_version": 2, "requested_interval_seconds": .1,
+                  "windows": {phase: {"status": "measured", "sampled_gpu_peak_mib": 10,
+                                      "valid_gpu_samples": 1} for phase in ("setup", "inference")}}
+        write(path, result)
+        return result
+
     def stop(self, path):
         self.events.append("stop")
         result = {"status": "measured", "method_id": config.MONITOR_VERSION,
@@ -201,7 +215,7 @@ class Fixture(unittest.TestCase):
         self.counter += 1
         directory.mkdir()
         cfg = self.cfg("quality" if stage == "quality" else "baseline")
-        resolved = {"schema_version": 4, "result_version": 4, "protocol_version": config.PROTOCOL_VERSION,
+        resolved = {"schema_version": 4, "result_version": 4, "protocol_version": config.LEGACY_PROTOCOL_VERSION,
                     "config": cfg, "source_inventory": self.inventory, "environment": RUNTIME}
         resolved_path = directory / "resolved_run.json"
         checksum = evidence.immutable(resolved_path, resolved)
@@ -253,8 +267,9 @@ class Fixture(unittest.TestCase):
             return
         self.assertIn("_worker_v4", args)
         path = Path(args[args.index("--job") + 1])
-        self.launched.append(read(path))
         self.execute(path)
+        job = read(path)
+        self.launched.extend([read(p) for p in job["jobs"]] if job.get("stage") == "group" else [job])
 
     def fake_report(self, directory, save=True):
         cfg = read(Path(directory) / "resolved_run.json")["config"]
@@ -281,10 +296,10 @@ class Fixture(unittest.TestCase):
         data, manifest, indices = self.runner_inputs(cfg, source)
         root = self.root / "reference"
         root.mkdir()
-        resolved = {"schema_version": 4, "result_version": 4, "protocol_version": config.PROTOCOL_VERSION,
+        resolved = {"schema_version": 4, "result_version": 4, "protocol_version": config.LEGACY_PROTOCOL_VERSION,
                     "config": cfg, "source_inventory": self.inventory, "environment": deepcopy(RUNTIME),
                     "input_indices": indices, "data_manifest_sha256": digest(manifest),
-                    "schedule": planning.schedule(cfg, data)}
+                    "schedule": planning.schedule(cfg, data, protocol_version=config.LEGACY_PROTOCOL_VERSION)}
         checksum = evidence.immutable(root / "resolved_run.json", resolved)
         write(root / "status.json", {"status": "baseline_complete", "resolved_sha256": checksum})
         return root
@@ -749,7 +764,7 @@ class EvidenceTests(Fixture):
         with self.assertRaises(ValueError):
             evidence.read_reference(root)
         write(root / "resolved_run.json", {**original, "changed": True})
-        with self.assertRaisesRegex(ValueError, "checksum"):
+        with self.assertRaisesRegex(evidence.ReferenceMismatch, "reference_invalid"):
             evidence.read_reference(root)
 
     def test_reference_identity_covers_sources_inputs_seed_and_environment(self):
@@ -823,6 +838,7 @@ class RunnerTests(Fixture):
                     patch.object(runner, "read_reference", side_effect=error):
                 value = runner.plan(cfg)
             self.assertEqual(value, {"status": "not_ready", "phase": "reference",
+                                     "diagnostic_code": "reference_invalid",
                                      "error_type": type(error).__name__, "schema_version": 4,
                                      "data_ready": True, "reference_ready": False, "gpu_checked": False})
             self.assertNotIn(SECRET, json.dumps(value))
@@ -840,7 +856,8 @@ class RunnerTests(Fixture):
         cfg = self.cfg()
         with patch.object(runner, "inputs", return_value=self.runner_inputs(cfg)):
             result = runner.plan(cfg)
-        self.assertEqual((result["preflight_workers"], result["latency_workers"]), (1, 1))
+        self.assertEqual((result["preflight_workers"], result["latency_workers"]), (0, 1))
+        self.assertEqual(result["model_loads"], 1)
         self.assertEqual((result["warmup_batches"], result["timed_batches"], result["timed_input_occurrences"]), (20, 12, 36))
         self.assertFalse(result["gpu_checked"])
         self.assertEqual(self.adapters, [])
@@ -867,8 +884,8 @@ class RunnerTests(Fixture):
             result = runner.run(cfg, target, launcher=self.launcher)
         self.assertEqual(result["status"], "passed")
         self.assertEqual(len(self.launched), 12)
-        self.assertEqual(len({id(a) for a in self.adapters}), 12)
-        self.assertEqual(len({j["input_path"] for j in self.launched}), 12)
+        self.assertEqual(len({id(a) for a in self.adapters}), 4)
+        self.assertEqual(len({j["input_path"] for j in self.launched}), 4)
         self.assertTrue(all(a.closed for a in self.adapters))
         latency = [j for j in self.launched if j["stage"] == "latency"]
         self.assertEqual([j["variant"] for j in latency[:4]], ["baseline"] * 4)
@@ -888,7 +905,7 @@ class RunnerTests(Fixture):
         self.assertEqual(plan["latency_workers"], 0)
         self.assertEqual(plan["warmup_batches"], 0)
         self.assertEqual([j["stage"] for j in self.launched], ["quality", "quality"])
-        self.assertEqual([[len(g) for g in a.requests] for a in self.adapters], [[3, 2], [4, 1]])
+        self.assertEqual([[len(g) for g in a.requests] for a in self.adapters], [[3, 2, 4, 1]])
         self.assertNotIn(SECRET, self.archive_text(target))
 
     def test_timeout_still_archives_and_excludes_private_logs_inputs(self):
@@ -1002,11 +1019,11 @@ class RealReportRunnerTests(Fixture):
         cfg = self.cfg("search", pilot=False)
         cfg["baseline_ref"] = str(archive)
         target, summary = self.run_real(cfg, "real-search", source)
-        self.assertEqual(summary["status"], "exploratory", summary["errors"])
+        self.assertEqual(summary["status"], "inconclusive", summary["errors"])
         self.assertTrue(summary["complete"])
         self.assertFalse(summary["independently_confirmed"])
         self.assertEqual({j["variant"] for j in self.launched[previous_jobs:]}, {"candidate"})
-        self.assertEqual(len(self.adapters) - previous_loads, 4)
+        self.assertEqual(len(self.adapters) - previous_loads, 1)
         self.assertTrue(all(a.spec["execution"]["runtime"] == "compile" for a in self.adapters[previous_loads:]))
         self.assertEqual(sha(archive), before)
         self.assertEqual(summary["cells"]["custom/3"]["throughput"]["candidate"]["texts"], 1206)
@@ -1026,7 +1043,7 @@ class RealReportRunnerTests(Fixture):
         self.assertEqual(summary["status"], "inconclusive")
         self.assertEqual(summary["verdict_status"], "unchanged")
         self.assertFalse(summary["independently_confirmed"])
-        self.assertEqual(len({id(a) for a in self.adapters}), 12)
+        self.assertEqual(len({id(a) for a in self.adapters}), 4)
         self.assertTrue(all(a.closed for a in self.adapters))
         self.assert_archived_report(target, summary)
 
@@ -1040,7 +1057,7 @@ class RealReportRunnerTests(Fixture):
         cfg["baseline_ref"] = str(baseline.with_suffix(".zip"))
         with patch.object(runner, "inputs", return_value=self.runner_inputs(cfg, source)):
             plan = runner.plan(cfg)
-        self.assertEqual((plan["preflight_workers"], plan["latency_workers"], plan["timed_batches"]), (1, 1, 12))
+        self.assertEqual((plan["preflight_workers"], plan["latency_workers"], plan["timed_batches"]), (0, 1, 12))
         self.assertEqual(plan["timed_input_occurrences"], 36)
         first_job, first_adapter = len(self.launched), len(self.adapters)
         target, summary = self.run_real(cfg, "real-pilot-search", source)
@@ -1050,7 +1067,7 @@ class RealReportRunnerTests(Fixture):
         jobs = self.launched[first_job:]
         self.assertEqual([(job["stage"], job["variant"]) for job in jobs],
                          [("preflight", "candidate"), ("latency", "candidate")])
-        self.assertEqual(len(self.adapters) - first_adapter, 2)
+        self.assertEqual(len(self.adapters) - first_adapter, 1)
         self.assertEqual(jobs[1]["batches"], original["batches"][:12])
         self.assertEqual(jobs[1]["ids"], original["ids"][:36])
         self.assertEqual(jobs[1]["plan_sha256"], digest(original["batches"][:12]))
@@ -1065,8 +1082,8 @@ class RealReportRunnerTests(Fixture):
         cfg["baseline_ref"] = str(baseline)
         first_job, first_adapter = len(self.launched), len(self.adapters)
         target, summary = self.run_real(cfg, "directory-search", source)
-        self.assertEqual(summary["status"], "exploratory", summary["errors"])
-        self.assertEqual(len(self.adapters) - first_adapter, 4)
+        self.assertEqual(summary["status"], "inconclusive", summary["errors"])
+        self.assertEqual(len(self.adapters) - first_adapter, 1)
         self.assertEqual({j["variant"] for j in self.launched[first_job:]}, {"candidate"})
         self.assertEqual(summary["cells"]["custom/3"]["p95"]["ratio"], 1)
         self.assertEqual(self.report.build(target, save=False), summary)

@@ -11,6 +11,7 @@ def public_result(command, result, args):
     fields = {"status", "error_type", "phase", "archive_error_type", "archive_status",
               "batch_protocol_version", "completeness", "all_cells_faster", "all_cells_meet_threshold", "quality_batch_size",
               "quality_protocol_version", "quality_batch_sizes", "quality_status", "quality_complete"}
+    fields |= {"diagnostic_code", "reference_compatibility", "comparison_design", "speed_status"}
     if command == "auth-check":
         fields |= {"model", "revision", "credential_available", "access", "weights_downloaded", "gpu_checked"}
     elif command in ("fetch-data", "prepare-data"):
@@ -20,6 +21,7 @@ def public_result(command, result, args):
                    "quality_workers", "preflight_workers", "latency_workers", "warmup_batches", "timed_batches",
                    "timed_input_occurrences", "memory_workers", "profile_workers", "environment_verified",
                    "gpu_checked", "quality_input_occurrences"}
+        fields |= {"model_loads", "model_worker_processes", "preflight_stages", "latency_stages"}
     elif command == "table":
         fields |= {"rows", "omitted"}
     elif command == "setup":
@@ -56,6 +58,30 @@ def public_result(command, result, args):
     return summary
 
 
+def explain(result):
+    """Only fixed messages and validated numeric fields may reach the console."""
+    messages = {
+        "reference_configuration_differs": "Baseline несовместим: модель, precision/backend, сетка или seed отличаются. Выберите соответствующий reference или исправьте конфиг.",
+        "reference_inputs_differ": "Baseline несовместим: подготовленные входы или их порядок отличаются. Используйте одинаковый корпус и подготовку.",
+        "reference_corpus_differs": "Baseline несовместим: отличается версия корпуса. Укажите baseline для этого корпуса.",
+        "reference_gpu_differs": "Baseline снят на другой GPU. Укажите baseline для текущей модели GPU.",
+        "reference_environment_differs": "Baseline несовместим: среда или мониторинг отличаются. Используйте совпадающее окружение и настройки.",
+        "reference_format_unsupported": "Неизвестный формат baseline. Поддерживаются полный v4 и текущий формат.",
+        "reference_invalid": "Baseline не прочитан или не прошёл проверку целостности/полноты. Укажите полный неповреждённый архив.",
+    }
+    if result.get("diagnostic_code") in messages:
+        print(messages[result["diagnostic_code"]], file=sys.stderr)
+    compatibility = result.get("reference_compatibility")
+    if isinstance(compatibility, dict) and compatibility.get("status") == "compatible":
+        version = compatibility.get("reference_result_version")
+        if type(version) is int and version in (4, 5):
+            print(f"Baseline v{version}: совместим. Повторный запуск baseline не требуется.", file=sys.stderr)
+        if compatibility.get("lifecycle_differs"):
+            print("Отличие: baseline использовал свежие процессы для серий; candidate сохраняет модель. Эффект включает различие lifecycle.", file=sys.stderr)
+    if type(result.get("model_loads")) is int and type(result.get("latency_stages", 0)) is int:
+        print(f"План: загрузок моделей {result['model_loads']}; измерительных серий {result.get('latency_stages', 0)}.", file=sys.stderr)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -77,7 +103,7 @@ def main():
             p.add_argument("--output", required=True)
         p.add_argument("--pilot", action="store_true")
         p.add_argument("--mode", choices=("baseline", "search", "confirm", "smoke"))
-        p.add_argument("--baseline-ref", help="Complete v4 baseline directory or ZIP; search only")
+        p.add_argument("--baseline-ref", help="Complete v4 or current baseline directory/ZIP; detected automatically, search only")
         p.add_argument("--profile-trace", action="store_true", help="Optional separate short/long profiles")
     p = commands.add_parser("report")
     p.add_argument("--output", required=True)
@@ -107,10 +133,12 @@ def main():
     except Exception as error:
         # Exception messages may contain HF credentials or private model inputs.
         result = {"status": "failed", "error_type": type(error).__name__}
+    if args.command in ("plan", "run", "preflight", "quality", "report"):
+        explain(result)
     print(json.dumps(public_result(args.command, result, args), ensure_ascii=False))
     return 0 if result["status"] in ("passed", "completed", "screening_pass", "pilot_complete", "ready",
                                     "smoke_passed", "preflight_passed", "baseline_complete", "quality_complete",
-                                    "quantization_measured", "exploratory", "confirm_pass") else 1
+                                    "quantization_measured", "exploratory", "confirm_pass", "reference_pass") else 1
 
 
 def execute(args, parser):
@@ -136,7 +164,7 @@ def execute(args, parser):
         cfg = resolve_options(args.config, environment=args.environment, mode=mode,
                               baseline_ref=getattr(args, "baseline_ref", None),
                               pilot=getattr(args, "pilot", False), profile_trace=getattr(args, "profile_trace", False))
-        result = plan(cfg) if args.command == "plan" else run(cfg, args.output)
+        result = plan(cfg) if args.command == "plan" else run(cfg, args.output, progress=explain)
     elif args.command == "prepare-data":
         from u1_benchmark.core import read
         from u1_benchmark.v4_data import prepare
