@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from .model_tuning import TorchForwardRunner
+from .rules import RULES, RuledModel, compare_outputs
 
 OPTIMIZATIONS = {"sequence_classification": "batching", "generation": "kv_cache"}
 
@@ -86,7 +87,14 @@ def read_execution(path: str) -> dict[str, Any]:
     for key in ("batch_size", "max_length", "max_new_tokens"):
         if type(config.get(key)) is not int or config[key] < 1:
             raise ValueError(f"Invalid {key}")
-    return {**config, "revision": config.get("revision")}
+    rules = config.get("rules", [])
+    if (
+        not isinstance(rules, list)
+        or any(rule not in RULES for rule in rules)
+        or (rules and runtime != "transformers")
+    ):
+        raise ValueError("Invalid rules")
+    return {**config, "revision": config.get("revision"), "rules": rules}
 
 
 class Inference:
@@ -130,6 +138,12 @@ class Inference:
             "gpu": torch.cuda.get_device_name() if device == "cuda" else None,
             "threads": torch.get_num_threads(),
         }
+
+    def enable_rules(self) -> RuledModel:
+        ruled = RuledModel(self.model, self.config["rules"], self.tokenizer.pad_token_id)
+        if self.config["task"] == "sequence_classification":
+            self.runner.model = ruled
+        return ruled
 
     def predict(self, inputs: list[str]) -> list[dict[str, Any]]:
         import torch
@@ -252,15 +266,28 @@ def predict_inputs(config: dict[str, Any], inputs: list[str]) -> dict[str, Any]:
     if not inputs or any(not text.strip() for text in inputs):
         raise ValueError("Provide non-empty text with --text or stdin")
     inference = load_inference(config)
-    return {
+    result = {
         "execution": {**config, "revision": inference.revision},
         "environment": inference.environment,
-        "outputs": inference.predict(inputs),
     }
+    if not isinstance(inference, Inference) or not config["rules"]:
+        return {**result, "outputs": inference.predict(inputs)}
+    outputs = reference = inference.predict(inputs)
+    ruled = inference.enable_rules()
+    report: dict[str, Any] = {"applied": ruled.applied, "skipped": ruled.skipped}
+    if config["task"] == "sequence_classification":
+        outputs = inference.predict(inputs)
+        report["parity"] = compare_outputs(reference, outputs)
+        if not report["parity"]["passed"]:
+            inference.runner.model = inference.model
+            outputs = reference
+    return {**result, "rules": report, "outputs": outputs}
 
 
 def serve(config: dict[str, Any], port: int) -> None:
     inference = load_inference(config)
+    if isinstance(inference, Inference) and config["rules"]:
+        inference.enable_rules()
 
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self) -> None:

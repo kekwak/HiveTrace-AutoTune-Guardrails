@@ -15,6 +15,7 @@ from .generation import check_generation
 from .manifest import Recorder, write_manifest
 from .model_tuning import tune_model
 from .optimize import optimize
+from .rules import rule_features, select_rules
 from .vllm_probe import probe_vllm
 from .workload import DEFAULT_BATCH_SIZES, DEFAULT_BUCKETS, Workload
 
@@ -61,6 +62,7 @@ def inspect_model(model: str, revision: str | None) -> dict[str, Any]:
         "id2label": config.get("id2label"),
         "problem_type": config.get("problem_type"),
         "custom_code_declared": bool(config.get("auto_map")),
+        "rule_features": rule_features(config),
     }
 
 
@@ -118,11 +120,16 @@ def plan_checks(metadata: dict[str, Any], device: str = "cpu") -> dict[str, Any]
             ]
         )
 
+    execution = execution_plan(metadata, mode, device)
+    rules = select_rules(metadata["rule_features"], execution)
+    if execution is not None:
+        execution["rules"] = rules["rules"]
     return {
         **metadata,
         "status": "unverified" if candidates else "needs_inference_contract",
         "candidates": candidates,
-        "execution": execution_plan(metadata, mode, device),
+        "execution": execution,
+        "rules": rules,
     }
 
 
