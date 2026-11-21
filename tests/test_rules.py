@@ -157,6 +157,19 @@ def test_linear_attention_projections_are_fused() -> None:
     assert ruled.applied == ["c12"]
 
 
+def test_linear_attention_kernels_must_import(monkeypatch: pytest.MonkeyPatch) -> None:
+    import sys
+
+    import torch
+
+    from guardrail_tuner.rules import RuledModel
+
+    monkeypatch.setitem(sys.modules, "fla", None)
+    ruled = RuledModel(torch.nn.Linear(2, 2), ["c7"], None)
+    assert ruled.applied == []
+    assert ruled.skipped["c7"] == "flash-linear-attention does not import: ModuleNotFoundError"
+
+
 def test_compiled_rules_keep_outputs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     import torch
     from transformers import AutoModelForSequenceClassification, AutoTokenizer
