@@ -9,7 +9,8 @@ import sys
 from pathlib import Path
 
 
-def run(payload):
+def run(payload, progress):
+    progress["stage"] = "runtime_import"
     import torch
     import transformers
     from huggingface_hub import snapshot_download
@@ -20,6 +21,7 @@ def run(payload):
     seed = int(os.environ.get("GUARDRAIL_TUNER_SEED", "42"))
     set_seed(seed)
 
+    progress["stage"] = "checkpoint"
     model_id = payload["model"]
     local = Path(model_id).expanduser()
     if local.is_dir():
@@ -40,6 +42,7 @@ def run(payload):
         or not issubclass(cls, transformers.PreTrainedModel)
     ):
         raise ValueError("unsupported_architecture")
+    progress["stage"] = "transformers_reference"
     tokenizer = transformers.AutoTokenizer.from_pretrained(path, trust_remote_code=False)
     model = cls.from_pretrained(path, trust_remote_code=False).float().to("cuda").eval()
     prompts, expected = [], []
@@ -70,6 +73,7 @@ def run(payload):
     del model, inputs, result
     gc.collect()
     torch.cuda.empty_cache()
+    progress["stage"] = "vllm_engine_start"
     engine = vllm.LLM(
         model=path,
         tokenizer=path,
@@ -79,6 +83,7 @@ def run(payload):
         max_model_len=payload["max_length"] + payload["max_new_tokens"],
         **({"runner": "pooling"} if payload["task"] == "classification" else {}),
     )
+    progress["stage"] = "vllm_inference"
     if payload["task"] == "classification":
         outputs = engine.classify(prompts, use_tqdm=False)
     else:
@@ -153,17 +158,18 @@ def run(payload):
 
 
 def main():
-    payload = json.load(sys.stdin)
+    progress = {"stage": "input"}
     try:
+        payload = json.load(sys.stdin)
         with (
             open(os.devnull, "w") as sink,
             contextlib.redirect_stdout(sink),
             contextlib.redirect_stderr(sink),
         ):
-            result = run(payload)
+            result = run(payload, progress)
     except Exception as exc:
-        result = {"status": "failed", "reason": type(exc).__name__}
-    print(json.dumps(result))
+        result = {"status": "failed", "reason": type(exc).__name__, **progress}
+    Path(sys.argv[1]).write_text(json.dumps(result), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -6,6 +6,8 @@ import os
 import signal
 import subprocess
 import sys
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any
 
 from .benchmark import texts
@@ -63,44 +65,46 @@ def probe_vllm(
         "threshold": threshold,
         "tolerance": tolerance,
     }
-    try:
-        proc = subprocess.Popen(
-            [sys.executable, "-m", "guardrail_tuner.vllm_worker"],
-            stdin=subprocess.PIPE,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            start_new_session=os.name == "posix",
-        )
-        output, _ = proc.communicate(input=json.dumps(payload), timeout=timeout)
-    except subprocess.TimeoutExpired:
-        if os.name == "posix":
-            try:
-                os.killpg(proc.pid, signal.SIGKILL)
-            except (OSError, ProcessLookupError):
+    with TemporaryDirectory(prefix="guardrail-probe-") as directory:
+        result_path = Path(directory) / "result.json"
+        try:
+            proc = subprocess.Popen(
+                [sys.executable, "-m", "guardrail_tuner.vllm_worker", str(result_path)],
+                stdin=subprocess.PIPE,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                start_new_session=os.name == "posix",
+            )
+            proc.communicate(input=json.dumps(payload), timeout=timeout)
+        except subprocess.TimeoutExpired:
+            if os.name == "posix":
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except (OSError, ProcessLookupError):
+                    proc.kill()
+            else:
                 proc.kill()
-        else:
-            proc.kill()
-        proc.communicate()
-        return {"status": "failed", "reason": "timeout", "model": model, "dataset": metadata}
-    if proc.returncode:
-        return {
-            "status": "failed",
-            "reason": "worker_failed",
-            "exit_code": proc.returncode,
-            "model": model,
-            "dataset": metadata,
-        }
-    try:
-        result = json.loads(output)
-        if not isinstance(result, dict):
-            raise ValueError("Invalid worker result")
-    except (json.JSONDecodeError, ValueError):
-        return {
-            "status": "failed",
-            "reason": "invalid_worker_output",
-            "model": model,
-            "dataset": metadata,
-        }
+            proc.communicate()
+            return {"status": "failed", "reason": "timeout", "model": model, "dataset": metadata}
+        if proc.returncode:
+            return {
+                "status": "failed",
+                "reason": "worker_failed",
+                "exit_code": proc.returncode,
+                "model": model,
+                "dataset": metadata,
+            }
+        try:
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+            if not isinstance(result, dict):
+                raise ValueError("Invalid worker result")
+        except (OSError, ValueError):
+            return {
+                "status": "failed",
+                "reason": "invalid_worker_output",
+                "model": model,
+                "dataset": metadata,
+            }
     result.update(model=model, dataset=metadata)
     return result

@@ -1,41 +1,54 @@
 """Execute fixed, architecture-based optimization plans."""
 
+import importlib
+import importlib.util
 import json
-import math
+import os
 import platform
-import statistics
-import time
+import sys
+from collections.abc import Iterator
+from contextlib import contextmanager, redirect_stdout
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Any
 
-from .benchmark import texts
-from .datasets import DatasetSource, load_source
-from .manifest import ordered_digest, tree_digest
 from .model_tuning import TorchForwardRunner
 
 OPTIMIZATIONS = {"sequence_classification": "batching", "generation": "kv_cache"}
 
 
-def execution_plan(metadata: dict[str, Any], mode: str | None) -> dict[str, Any] | None:
+def execution_plan(
+    metadata: dict[str, Any], mode: str | None, device: str = "cpu"
+) -> dict[str, Any] | None:
     if mode is None or metadata["custom_code_declared"] or len(metadata["architectures"]) != 1:
         return None
     model = Path(metadata["model"]).expanduser()
-    return {
+    architecture = metadata["architectures"][0]
+    config = {
         "version": 1,
         "model": str(model.resolve()) if model.is_dir() else metadata["model"],
         "revision": metadata["resolved_revision"],
-        "architecture": metadata["architectures"][0],
+        "architecture": architecture,
         "runtime": "transformers",
         "task": mode,
         "optimization": OPTIMIZATIONS[mode],
-        "device": "cpu",
+        "device": device,
         "max_length": 128,
         "max_new_tokens": 8,
         "batch_size": 4 if mode == "sequence_classification" else 1,
-        "warmup": 2,
-        "tolerance": 0.001,
     }
+
+    if (
+        device == "cuda"
+        and mode == "generation"
+        and architecture.endswith("ForCausalLM")
+        and importlib.util.find_spec("vllm") is not None
+    ):
+        with runtime_logs_to_stderr():
+            vllm = importlib.import_module("vllm")
+            if architecture in vllm.ModelRegistry.get_supported_archs():
+                config.update(runtime="vllm", optimization="prefix_caching", dtype="float16")
+    return config
 
 
 def read_execution(path: str) -> dict[str, Any]:
@@ -48,24 +61,31 @@ def read_execution(path: str) -> dict[str, Any]:
     if not isinstance(config, dict) or config.get("version") != 1:
         raise ValueError("No executable plan")
     task = config.get("task")
+    runtime = config.get("runtime")
     if (
         not isinstance(task, str)
         or task not in OPTIMIZATIONS
-        or config.get("optimization") != OPTIMIZATIONS[task]
-        or config.get("runtime") != "transformers"
+        or runtime not in ("transformers", "vllm")
         or config.get("device") not in ("cpu", "cuda")
         or not isinstance(config.get("model"), str)
         or not isinstance(config.get("architecture"), str)
         or (config.get("revision") is not None and not isinstance(config["revision"], str))
     ):
         raise ValueError("Invalid model or runtime configuration")
-    for key in ("batch_size", "max_length", "max_new_tokens", "warmup"):
-        minimum = 0 if key == "warmup" else 1
-        if type(config.get(key)) is not int or config[key] < minimum:
+    if runtime == "vllm":
+        if (
+            task != "generation"
+            or config["device"] != "cuda"
+            or config.get("optimization") != "prefix_caching"
+            or config.get("dtype") not in ("float16", "bfloat16", "float32")
+            or not config["architecture"].endswith("ForCausalLM")
+        ):
+            raise ValueError("Invalid vLLM generation configuration")
+    elif config.get("optimization") != OPTIMIZATIONS[task]:
+        raise ValueError("Invalid Transformers optimization")
+    for key in ("batch_size", "max_length", "max_new_tokens"):
+        if type(config.get(key)) is not int or config[key] < 1:
             raise ValueError(f"Invalid {key}")
-    tolerance = config.get("tolerance")
-    if type(tolerance) not in (int, float) or not math.isfinite(tolerance) or tolerance < 0:
-        raise ValueError("Invalid tolerance")
     return {**config, "revision": config.get("revision")}
 
 
@@ -111,13 +131,13 @@ class Inference:
             "threads": torch.get_num_threads(),
         }
 
-    def predict(self, inputs: list[str], optimized: bool) -> list[dict[str, Any]]:
+    def predict(self, inputs: list[str]) -> list[dict[str, Any]]:
         import torch
 
         config = self.config
         outputs = []
         if config["task"] == "sequence_classification":
-            size = config["batch_size"] if optimized else 1
+            size = config["batch_size"]
             for start in range(0, len(inputs), size):
                 logits = self.runner.run(inputs[start : start + size])
                 for row in logits.tolist():
@@ -132,7 +152,7 @@ class Inference:
             with torch.inference_mode():
                 tokens = self.model.generate(
                     **encoded,
-                    use_cache=optimized,
+                    use_cache=True,
                     do_sample=False,
                     max_new_tokens=config["max_new_tokens"],
                     return_dict_in_generate=False,
@@ -142,69 +162,105 @@ class Inference:
         return outputs
 
 
-def compare(
-    config: dict[str, Any], quality: DatasetSource, performance: DatasetSource, column: str
-) -> dict[str, Any]:
-    qdata, qmeta = load_source(quality)
-    pdata, pmeta = load_source(performance)
-    qinputs = texts(qdata, column, "quality")
-    pinputs = texts(pdata, column, "performance")
-    local = Path(config["model"])
-    model_digest = tree_digest(local) if local.is_dir() else None
-    inference = Inference(config)
-    reference = inference.predict(qinputs, False)
-    candidate = inference.predict(qinputs, True)
-    mismatches = 0
-    error = 0.0
-    for left, right in zip(reference, candidate, strict=True):
-        if config["task"] == "generation":
-            mismatches += left != right
-        else:
-            mismatches += left["label"] != right["label"]
-            error = max(
-                error,
-                max(abs(a - b) for a, b in zip(left["logits"], right["logits"], strict=True)),
-            )
-    passed = mismatches == 0 and error <= config["tolerance"]
-    for _ in range(config["warmup"]):
-        inference.predict(pinputs, False)
-        inference.predict(pinputs, True)
-    timings: dict[str, list[float]] = {"baseline": [], "optimized": []}
-    for order in ((False, True), (True, False), (False, True), (True, False), (False, True)):
-        for optimized in order:
-            start = time.perf_counter()
-            inference.predict(pinputs, optimized)
-            timings["optimized" if optimized else "baseline"].append(time.perf_counter() - start)
-    baseline, optimized_time = (statistics.median(timings[key]) for key in timings)
+class VllmInference:
+    def __init__(self, config: dict[str, Any]) -> None:
+        try:
+            import torch
+            from transformers import AutoConfig
+
+            vllm = importlib.import_module("vllm")
+        except ImportError as exc:
+            raise ValueError("Install vLLM in a compatible CUDA environment") from exc
+
+        if not torch.cuda.is_available():
+            raise ValueError("CUDA is unavailable")
+        metadata = AutoConfig.from_pretrained(
+            config["model"], revision=config["revision"], trust_remote_code=False
+        )
+        if metadata.architectures != [config["architecture"]]:
+            raise ValueError("Checkpoint architecture differs from plan")
+        self.revision = getattr(metadata, "_commit_hash", None) or config["revision"]
+        self.config = config
+        self.engine = vllm.LLM(
+            model=config["model"],
+            revision=self.revision,
+            tokenizer_revision=self.revision,
+            model_impl="vllm",
+            runner="generate",
+            trust_remote_code=False,
+            dtype=config["dtype"],
+            max_model_len=config["max_length"] + config["max_new_tokens"],
+            enable_prefix_caching=True,
+        )
+        self.sampling = vllm.SamplingParams(
+            temperature=0, max_tokens=config["max_new_tokens"], skip_special_tokens=False
+        )
+        self.environment = {
+            "python": platform.python_version(),
+            "torch": torch.__version__,
+            "vllm": vllm.__version__,
+            "cuda": torch.version.cuda,
+            "gpu": torch.cuda.get_device_name(),
+        }
+
+    def predict(self, inputs: list[str]) -> list[dict[str, Any]]:
+        tokenizer = self.engine.get_tokenizer()
+        prompts = [
+            {
+                "prompt_token_ids": tokenizer.encode(
+                    text,
+                    add_special_tokens=True,
+                    truncation=True,
+                    max_length=self.config["max_length"],
+                )
+            }
+            for text in inputs
+        ]
+        results = self.engine.generate(prompts, self.sampling, use_tqdm=False)
+        return [
+            {"token_ids": list(result.outputs[0].token_ids), "text": result.outputs[0].text}
+            for result in results
+        ]
+
+
+def load_inference(config: dict[str, Any]) -> Inference | VllmInference:
+    return VllmInference(config) if config["runtime"] == "vllm" else Inference(config)
+
+
+@contextmanager
+def runtime_logs_to_stderr() -> Iterator[None]:
+    # Redirect native subprocess logs as well as Python output.
+    sys.stdout.flush()
+    saved_stdout = os.dup(1)
+    try:
+        os.dup2(2, 1)
+        with redirect_stdout(sys.stderr):
+            yield
+    finally:
+        os.dup2(saved_stdout, 1)
+        os.close(saved_stdout)
+
+
+def run_inference(config: dict[str, Any], inputs: list[str]) -> dict[str, Any]:
+    if config["runtime"] == "vllm":
+        with runtime_logs_to_stderr():
+            return predict_inputs(config, inputs)
+    return predict_inputs(config, inputs)
+
+
+def predict_inputs(config: dict[str, Any], inputs: list[str]) -> dict[str, Any]:
+    if not inputs or any(not text.strip() for text in inputs):
+        raise ValueError("Provide non-empty text with --text or stdin")
+    inference = load_inference(config)
     return {
         "execution": {**config, "revision": inference.revision},
-        "status": "validated" if passed else "parity_failed",
         "environment": inference.environment,
-        "local_model_digest": model_digest,
-        "datasets": {
-            "quality": {**qmeta, "ordered_rows": ordered_digest(qdata)},
-            "performance": {**pmeta, "ordered_rows": ordered_digest(pdata)},
-        },
-        "text_column": column,
-        "quality": {
-            "passed": passed,
-            "examples": len(qinputs),
-            "mismatches": mismatches,
-            "max_abs_logit_error": error if config["task"] == "sequence_classification" else None,
-        },
-        "performance": {
-            "examples_per_round": len(pinputs),
-            "boundary": "tokenization, model inference and output conversion",
-            "samples_seconds": timings,
-            "baseline_median_seconds": baseline,
-            "optimized_median_seconds": optimized_time,
-            "speedup": baseline / optimized_time,
-        },
+        "outputs": inference.predict(inputs),
     }
 
 
 def serve(config: dict[str, Any], port: int) -> None:
-    inference = Inference(config)
+    inference = load_inference(config)
 
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self) -> None:
@@ -224,7 +280,7 @@ def serve(config: dict[str, Any], port: int) -> None:
                 self.respond(400, {"error": "Expected POST /infer with a list of text inputs"})
                 return
             try:
-                self.respond(200, {"outputs": inference.predict(inputs, True)})
+                self.respond(200, {"outputs": inference.predict(inputs)})
             except (RuntimeError, ValueError):
                 self.respond(500, {"error": "Inference failed"})
 

@@ -371,9 +371,10 @@ PyTorch. `--seed` задаёт seed Python, NumPy и PyTorch в процессе
 
 
 `plan` читает конфиг чекпойнта. Поле `execution` содержит фиксированный
-сценарий для Transformers. Для классификации это батчинг вместо обработки
+сценарий исполнения. Для классификации в Transformers это батчинг вместо обработки
 по одному входу. Для генерации это KV-кэш вместо повторного вычисления
-предыдущих токенов. Сценарии применяются по архитектуре. CLI не перебирает
+предыдущих токенов. С `--device cuda` для зарегистрированных `ForCausalLM`
+план выбирает vLLM с prefix caching. Сценарии применяются по архитектуре. CLI не перебирает
 параметры и не меняет конфигурацию по итогам измерения.
 
 Для демонстрации подходят KoalaAI/Text-Moderation, google/shieldgemma-2b
@@ -387,12 +388,11 @@ for model in KoalaAI/Text-Moderation google/shieldgemma-2b \
   name="${model##*/}"
   uv run --extra inference guardrail-tuner plan "$model" > "$name.plan.json"
   uv run --extra inference guardrail-tuner run --config "$name.plan.json" \
-    --quality-file "$name.quality.jsonl" \
-    --performance-file "$name.performance.jsonl" > "$name.run.json"
+    < "$name.input.txt" > "$name.run.json"
 done
 
 uv run --extra inference guardrail-tuner serve \
-  --config Text-Moderation.run.json --port 8000
+  --config Text-Moderation.plan.json --port 8000
 ```
 
 ```bash
@@ -401,12 +401,10 @@ curl -s http://127.0.0.1:8000/infer \
   -d '{"inputs":["The meeting starts at noon.","Please review the invoice."]}'
 ```
 
-В JSONL ожидается поле `text`. Сравнение использует отдельные наборы для
-проверки выходов и замеров скорости. Классификация возвращает логиты и
-метку argmax. Генерация возвращает токены и декодированный текст. Сравнение
-проверяет паритет этих выходов. Шаблоны, пороги и разбор ответа конкретного
-приложения проверяются отдельно через `compare-app`.
+`run` читает stdin как один текст. Повторяемый флаг `--text` позволяет
+подать несколько текстов за один вызов. Классификация возвращает логиты
+и метку argmax. Генерация возвращает токены и декодированный текст.
+Для проверки прикладных выходов предусмотрена команда `compare-app`.
 
-`serve` принимает план или отчёт прогона с прошедшей проверкой паритета.
-API слушает только localhost. Батчинг работает внутри списка `inputs`
-одного запроса.
+`serve` читает тот же конфиг. API слушает только localhost. Батчинг работает
+внутри списка `inputs` одного запроса.

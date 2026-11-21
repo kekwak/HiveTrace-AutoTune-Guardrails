@@ -1,6 +1,6 @@
 # HiveTrace AutoTune Guardrails
 
-**CLI для сравнения оптимизаций инференса guardrail-моделей на ваших данных.**
+**CLI для настройки и запуска инференса guardrail-моделей.**
 
 [Быстрый старт](#быстрый-старт) · [Руководство по CLI](docs/cli-guide.md) · [Совместимость с vLLM](docs/vllm-compatibility.md) · [Разработка](CONTRIBUTING.md)
 
@@ -16,28 +16,40 @@ uv tool install '.[inference,inference-cpu]'
 guardrail-tuner plan KoalaAI/Text-Moderation > plan.json
 
 guardrail-tuner run --config plan.json \
-  --quality-file quality.jsonl --performance-file speed.jsonl > run.json
+  --text "The meeting starts at noon." > run.json
 
-guardrail-tuner serve --config run.json
+guardrail-tuner serve --config plan.json
 ```
 
 | Команда | Результат |
 | --- | --- |
-| `plan` | JSON-конфиг с оптимизацией по архитектуре чекпойнта |
-| `run --config` | Сравнение с базовым режимом, проверка выходов и замер скорости после прогрева |
-| `serve --config` | Локальный API с настройками из отчёта |
+| `plan` | Одна конфигурация по эвристикам для архитектуры и задачи |
+| `run --config` | Инференс с настройками из конфига и вывод предсказаний |
+| `serve --config` | Локальный API с теми же настройками |
 
-`quality.jsonl` и `speed.jsonl` — отдельные наборы со строковым полем `text`.
-Первый проверяет совпадение выходов, второй задаёт нагрузку для замера.
-Для поддерживаемых моделей Transformers план предлагает батчинг для классификации
-или KV-кэш для генерации. Для KoalaAI пример проверяет логиты и argmax.
-Для проверки решений с порогами используйте `benchmark --output-mode multilabel`.
+Передайте текст через `--text` или stdin. Повторите `--text`, чтобы обработать
+несколько входов за один вызов. Для поддерживаемых моделей Transformers
+план задаёт батчинг для классификации или KV-кэш для генерации.
 
 ```bash
 curl http://127.0.0.1:8000/infer \
   -H 'Content-Type: application/json' \
   -d '{"inputs":["The meeting starts at noon.","Please review the invoice."]}'
 ```
+
+## Запуск через vLLM
+
+В CUDA-окружении с установленным vLLM:
+
+```bash
+guardrail-tuner plan hivetrace/HiveTraceGuard-Pro --device cuda > plan.json
+guardrail-tuner run --config plan.json --text "Please review the invoice."
+guardrail-tuner serve --config plan.json
+```
+
+Для `ForCausalLM` из реестра установленного vLLM план выбирает штатный
+vLLM с prefix caching и FP16. Для остальных поддерживаемых сценариев
+используется Transformers. Проверить выходы отдельно можно через `probe-vllm`.
 
 ## Дополнительные проверки
 

@@ -3,13 +3,14 @@
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 from .application import compare_applications
 from .benchmark import run_benchmark
 from .datasets import SPEED_PRESET, DatasetSource, load_source
-from .execution import compare, execution_plan, read_execution, serve
+from .execution import execution_plan, read_execution, run_inference, serve
 from .generation import check_generation
 from .manifest import Recorder, write_manifest
 from .model_tuning import tune_model
@@ -63,7 +64,7 @@ def inspect_model(model: str, revision: str | None) -> dict[str, Any]:
     }
 
 
-def plan_checks(metadata: dict[str, Any]) -> dict[str, Any]:
+def plan_checks(metadata: dict[str, Any], device: str = "cpu") -> dict[str, Any]:
     architectures = metadata["architectures"]
     candidates = []
     mode = None
@@ -121,7 +122,7 @@ def plan_checks(metadata: dict[str, Any]) -> dict[str, Any]:
         **metadata,
         "status": "unverified" if candidates else "needs_inference_contract",
         "candidates": candidates,
-        "execution": execution_plan(metadata, mode),
+        "execution": execution_plan(metadata, mode, device),
     }
 
 
@@ -135,11 +136,11 @@ def main() -> int:
         subparser = commands.add_parser(command, help=help_text)
         subparser.add_argument("model", help="Hugging Face model ID or local model directory")
         subparser.add_argument("--revision", help="Hugging Face branch, tag or commit")
-    run = commands.add_parser("run", help="Compare a fixed plan against its baseline")
+        if command == "plan":
+            subparser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
+    run = commands.add_parser("run", help="Run inference with the plan configuration")
     run.add_argument("--config", required=True)
-    run.add_argument("--text-column", default="text")
-    for role in ("quality", "performance"):
-        add_dataset_options(run, role)
+    run.add_argument("--text", action="append", help="Input text; repeat for multiple inputs")
     api = commands.add_parser("serve", help="Serve optimized inference on localhost")
     api.add_argument("--config", required=True)
     api.add_argument("--port", type=int, default=8000)
@@ -261,14 +262,13 @@ def main() -> int:
             serve(read_execution(args.config), args.port)
             return 0
         if args.command == "run":
-            result = compare(
-                read_execution(args.config),
-                dataset_source(args, "quality"),
-                dataset_source(args, "performance"),
-                args.text_column,
-            )
+            config = read_execution(args.config)
+            if args.text is None and sys.stdin.isatty():
+                raise ValueError("Provide non-empty text with --text or stdin")
+            inputs = args.text if args.text is not None else [sys.stdin.read()]
+            result = run_inference(config, inputs)
             print(json.dumps(result, indent=2, ensure_ascii=False))
-            return 0 if result["quality"]["passed"] else 1
+            return 0
         run_commands = (
             "benchmark",
             "optimize",
@@ -438,7 +438,7 @@ def main() -> int:
         else:
             result = inspect_model(args.model, args.revision)
             if args.command == "plan":
-                result = plan_checks(result)
+                result = plan_checks(result, args.device)
         if recorder is not None:
             if args.command == "probe-vllm":
                 local = recorder.local_model_path is not None

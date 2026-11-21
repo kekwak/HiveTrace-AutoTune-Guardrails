@@ -51,6 +51,7 @@ def test_vllm_probe_without_cuda_is_unavailable(monkeypatch):
 
 def test_vllm_probe_starts_worker_and_never_recommends_without_quality(monkeypatch):
     import json
+    from pathlib import Path
 
     import torch
 
@@ -75,7 +76,11 @@ def test_vllm_probe_starts_worker_and_never_recommends_without_quality(monkeypat
             returncode = 0
 
             def communicate(self, **kwargs):
-                return json.dumps({"status": "tokens_match", "recommended": False}), None
+                Path(command[-1]).write_text(
+                    json.dumps({"status": "tokens_match", "recommended": False}),
+                    encoding="utf-8",
+                )
+                return "unstructured engine log", None
 
         return Process()
 
@@ -85,5 +90,5 @@ def test_vllm_probe_starts_worker_and_never_recommends_without_quality(monkeypat
     )
     assert result["status"] == "tokens_match"
     assert result["recommended"] is False
-    assert calls[0][0][-1] == "guardrail_tuner.vllm_worker"
+    assert calls[0][0][-2] == "guardrail_tuner.vllm_worker"
     assert "private" not in json.dumps(result)
