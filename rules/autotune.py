@@ -1,5 +1,5 @@
 import functools
-import importlib.util
+import importlib
 from typing import Any
 
 RULES = ("c7", "c12", "c8", "u4", "u1")
@@ -89,8 +89,10 @@ class RuledModel:
         return SequenceClassifierOutput(logits=self.inner(inputs))
 
     def c7(self) -> None:
-        if importlib.util.find_spec("fla") is None:
-            raise Skip("flash-linear-attention is not installed")
+        try:
+            importlib.import_module("fla")
+        except Exception as exc:
+            raise Skip(f"flash-linear-attention does not import: {type(exc).__name__}") from exc
 
     def c12(self) -> None:
         import torch

@@ -1,0 +1,69 @@
+{
+  "model": "protectai/deberta-v3-base-prompt-injection-v2",
+  "resolved_revision": "90c9989b1a342275dd0d1a95aad283c04e075671",
+  "model_type": "deberta-v2",
+  "architectures": [
+    "DebertaV2ForSequenceClassification"
+  ],
+  "id2label": {
+    "0": "SAFE",
+    "1": "INJECTION"
+  },
+  "problem_type": null,
+  "custom_code_declared": false,
+  "rule_features": {
+    "relative_positions": true,
+    "linear_attention": false
+  },
+  "status": "unverified",
+  "candidates": [
+    {
+      "runtime": "onnxruntime",
+      "mode": "sequence_classification",
+      "next_check": "Export or load ONNX and compare logits against Transformers."
+    },
+    {
+      "runtime": "vllm",
+      "mode": "pooling_classify",
+      "next_check": "Verify checkpoint support and compare the required outputs."
+    },
+    {
+      "runtime": "torch_compile",
+      "mode": "sequence_classification",
+      "next_check": "Compile the model forward and compare outputs against eager PyTorch."
+    },
+    {
+      "runtime": "tensorrt",
+      "mode": "sequence_classification",
+      "next_check": "Verify ONNX export and CUDA support, then compare TensorRT outputs against eager PyTorch."
+    }
+  ],
+  "execution": {
+    "version": 1,
+    "model": "protectai/deberta-v3-base-prompt-injection-v2",
+    "revision": "90c9989b1a342275dd0d1a95aad283c04e075671",
+    "architecture": "DebertaV2ForSequenceClassification",
+    "runtime": "transformers",
+    "task": "sequence_classification",
+    "optimization": "batching",
+    "device": "cuda",
+    "max_length": 128,
+    "max_new_tokens": 8,
+    "batch_size": 4,
+    "rules": [
+      "c12",
+      "c8",
+      "u4",
+      "u1"
+    ]
+  },
+  "rules": {
+    "rules": [
+      "c12",
+      "c8",
+      "u4",
+      "u1"
+    ],
+    "skipped": {}
+  }
+}

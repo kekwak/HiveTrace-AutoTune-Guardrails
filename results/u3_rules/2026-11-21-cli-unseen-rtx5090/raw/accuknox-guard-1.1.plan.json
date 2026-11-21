@@ -1,0 +1,38 @@
+{
+  "model": "Accuknoxtechnologies/accuknox-guard-1.1",
+  "resolved_revision": "e4e43d89a1f2c0ae2025b50ec884d8de32d2cde3",
+  "model_type": "qwen3_5",
+  "architectures": [
+    "Qwen3_5Model"
+  ],
+  "id2label": null,
+  "problem_type": null,
+  "custom_code_declared": true,
+  "rule_features": {
+    "relative_positions": false,
+    "linear_attention": true
+  },
+  "inference_contract": "system_one",
+  "status": "needs_inference_contract",
+  "candidates": [
+    {
+      "runtime": "d3",
+      "mode": "system_one",
+      "next_check": "Run the checkpoint with the author's D3 runtime and validate system_one scores and decisions. The vLLM Transformers backend requires input_ids, which D3Model.forward does not accept."
+    }
+  ],
+  "execution": null,
+  "rules": {
+    "rules": [
+      "c7",
+      "c12"
+    ],
+    "skipped": {
+      "u4": "no inference contract: the forward to wrap is unknown",
+      "u1": "no inference contract: the forward to wrap is unknown"
+    },
+    "requires": [
+      "flash-linear-attention"
+    ]
+  }
+}

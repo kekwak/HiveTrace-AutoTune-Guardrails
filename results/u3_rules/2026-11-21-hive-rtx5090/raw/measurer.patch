@@ -1,0 +1,13 @@
+diff --git a/u1_benchmark/v4_privacy.py b/u1_benchmark/v4_privacy.py
+index 7a8cc9e..77f7d90 100644
+--- a/u1_benchmark/v4_privacy.py
++++ b/u1_benchmark/v4_privacy.py
+@@ -13,6 +13,8 @@ RESPONSE_KEYS = {"label", "scores", "score_type", "category", "generated_tokens"
+ def public_config(config):
+     def visit(value, hidden=False):
+         if isinstance(value, dict):
++            if hidden and {"repo", "revision"} <= value.keys():
++                return deepcopy(value)
+             return {k: visit(v, hidden or k in PROMPT_KEYS) for k, v in value.items()}
+         if isinstance(value, list):
+             return [visit(v, hidden) for v in value]
