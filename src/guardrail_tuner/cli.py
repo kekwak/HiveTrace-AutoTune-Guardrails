@@ -54,6 +54,10 @@ def inspect_model(model: str, revision: str | None) -> dict[str, Any]:
     ):
         raise ValueError("architectures must be a list of strings")
 
+    auto_map = config.get("auto_map")
+    auto_model = auto_map.get("AutoModel") if isinstance(auto_map, dict) else None
+    is_d3 = isinstance(auto_model, str) and auto_model.rsplit("--", 1)[-1] == "modeling_d3.D3Model"
+
     return {
         "model": model,
         "resolved_revision": resolved_revision,
@@ -63,11 +67,31 @@ def inspect_model(model: str, revision: str | None) -> dict[str, Any]:
         "problem_type": config.get("problem_type"),
         "custom_code_declared": bool(config.get("auto_map")),
         "rule_features": rule_features(config),
+        **({"inference_contract": "system_one"} if is_d3 else {}),
     }
 
 
 def plan_checks(metadata: dict[str, Any], device: str = "cpu") -> dict[str, Any]:
     architectures = metadata["architectures"]
+    if metadata.get("inference_contract") == "system_one":
+        return {
+            **metadata,
+            "status": "needs_inference_contract",
+            "candidates": [
+                {
+                    "runtime": "d3",
+                    "mode": "system_one",
+                    "next_check": (
+                        "Run the checkpoint with the author's D3 runtime and validate "
+                        "system_one scores and decisions. The vLLM Transformers backend "
+                        "requires input_ids, which D3Model.forward does not accept."
+                    ),
+                },
+            ],
+            "execution": None,
+            "rules": select_rules(metadata["rule_features"], None),
+        }
+
     candidates = []
     mode = None
 

@@ -56,3 +56,26 @@ def test_plan_conditional_generation_is_unverified(tmp_path):
     plan = json.loads(result.stdout)
     assert plan["status"] == "unverified"
     assert all(candidate["mode"] == "generation" for candidate in plan["candidates"])
+
+
+@pytest.mark.parametrize(
+    "auto_model",
+    ["modeling_d3.D3Model", "org/runtime--modeling_d3.D3Model"],
+)
+def test_plan_detects_d3_contract_without_importing_model_code(tmp_path, auto_model):
+    (tmp_path / "config.json").write_text(
+        json.dumps(
+            {
+                "architectures": ["Qwen3_5Model"],
+                "auto_map": {"AutoModel": auto_model},
+            }
+        )
+    )
+    result = run_cli("plan", tmp_path, "--device", "cuda")
+    assert result.returncode == 0, result.stderr
+    plan = json.loads(result.stdout)
+    assert plan["inference_contract"] == "system_one"
+    assert plan["status"] == "needs_inference_contract"
+    assert plan["execution"] is None
+    assert [candidate["runtime"] for candidate in plan["candidates"]] == ["d3"]
+    assert "input_ids" in plan["candidates"][0]["next_check"]
