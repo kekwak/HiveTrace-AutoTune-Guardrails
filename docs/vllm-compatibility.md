@@ -1,12 +1,12 @@
 # Совместимость моделей с vLLM
 
-Проверка от 21 ноября 2026 года охватывает **23 чекпойнта**. GPU-прогоны
+Проверка от 21 ноября 2026 года охватывает **24 чекпойнта**. GPU-прогоны
 выполнялись в Colab на Tesla T4 с vLLM 0.34.0 и FP16. Прямые прогоны
 использовали eager, один нейтральный текст и до четырёх новых токенов.
 Успех означает, что модель загрузилась и вернула результат в указанном
 режиме. Качество модерации, паритет с эталоном и ускорение не измерялись.
 
-Полный чекпойнт запустился и вернул результат **4** | Запуск завершился ошибкой до результата **8** | Запуск не проверен из-за доступа **5** | Проверен только конфиг **6**
+Полный чекпойнт запустился и вернул результат **4** | Запуск завершился ошибкой до результата **9** | Запуск не проверен из-за доступа **5** | Проверен только конфиг **6**
 
 ## Полный чекпойнт запустился и вернул результат (4)
 
@@ -17,7 +17,7 @@
 | [HaloGuard1 Gen 0.8B](https://huggingface.co/astroware/HaloGuard1-Gen-0.8B) | `85ff68dd063a7e58487a4251824fd36a20977d5c` | Нативный vLLM с `language_model_only=True`. Полный текстовый инференс вернул 2 токена. Обычный запуск остановился на image processor. |
 | [HaloGuard1 Gen 4B](https://huggingface.co/astroware/HaloGuard1-Gen-4B) | `f157c1f8e81a5d13456bc659059461e2622cd36b` | Нативный vLLM с `language_model_only=True`. Прямой текстовый инференс вернул 2 токена. |
 
-## Запуск завершился ошибкой до результата (8)
+## Запуск завершился ошибкой до результата (9)
 
 | Модель | Ревизия | Наблюдение |
 | --- | --- | --- |
@@ -28,6 +28,7 @@
 | [Octavio Santana DeBERTa](https://huggingface.co/Octavio-Santana/deberta-v3-base-prompt-injection-detection) | `c9f71de4e20cc011dbd9b458179bc68eee2cf4c9` | Оригинальный конфиг объявляет `DebertaV2ForSequenceClassification`. Transformers backend остановился на валидации `ModelConfig`. |
 | [Lunaris Guard](https://huggingface.co/auren-research/lunaris-guard) | `7616e3df98e58d5b4fbcca20470acdae4a9c0bda` | Transformers backend выбрал `TransformersEmbeddingModel`. Вложенный `from_pretrained` упал на meta device. Обе головы остались непроверенными. |
 | [AccuKnox Guard 1.1](https://huggingface.co/Accuknoxtechnologies/accuknox-guard-1.1) | `e4e43d89a1f2c0ae2025b50ec884d8de32d2cde3` | Transformers backend остановился на проверке `D3Model.forward`: нет аргумента `input_ids`. |
+| [AccuKnox Guard 1.2](https://huggingface.co/Accuknoxtechnologies/accuknox-guard-1.2) | `824db9ea82ac832e9e01cfa4883149d461a77fbe` | На T4 vLLM 0.34.0 выбрал `TransformersMultiModalForSequenceClassification` (`model_impl="transformers"`, pooling, `trust_remote_code=True`). `auto_map.AutoModel` указывает на `D3Model`. EngineCore остановился при проверке `D3Model.forward`: нет аргумента `input_ids`. Выход полной модели не получен. |
 | [Nandi Mini 150M](https://huggingface.co/FrontiersMind/Nandi-Mini-150M-GuardRails) | `e77ee070b9f332b3314fd28473737efd2bf94677` | Transformers backend выбрал `TransformersForCausalLM` и остановился на загрузке весов: в обёртке отсутствует `lm_head_proj`. |
 
 ## Запуск не проверен из-за доступа (5)
