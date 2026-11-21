@@ -9,6 +9,7 @@ from typing import Any
 from .application import compare_applications
 from .benchmark import run_benchmark
 from .datasets import SPEED_PRESET, DatasetSource, load_source
+from .execution import compare, execution_plan, read_execution, serve
 from .generation import check_generation
 from .manifest import Recorder, write_manifest
 from .model_tuning import tune_model
@@ -120,6 +121,7 @@ def plan_checks(metadata: dict[str, Any]) -> dict[str, Any]:
         **metadata,
         "status": "unverified" if candidates else "needs_inference_contract",
         "candidates": candidates,
+        "execution": execution_plan(metadata, mode),
     }
 
 
@@ -133,6 +135,14 @@ def main() -> int:
         subparser = commands.add_parser(command, help=help_text)
         subparser.add_argument("model", help="Hugging Face model ID or local model directory")
         subparser.add_argument("--revision", help="Hugging Face branch, tag or commit")
+    run = commands.add_parser("run", help="Compare a fixed plan against its baseline")
+    run.add_argument("--config", required=True)
+    run.add_argument("--text-column", default="text")
+    for role in ("quality", "performance"):
+        add_dataset_options(run, role)
+    api = commands.add_parser("serve", help="Serve optimized inference on localhost")
+    api.add_argument("--config", required=True)
+    api.add_argument("--port", type=int, default=8000)
     datasets_parser = commands.add_parser(
         "datasets", help="Load and inspect quality and performance datasets"
     )
@@ -245,6 +255,20 @@ def main() -> int:
     recorder = None
     output_dir_was_usable = False
     try:
+        if args.command == "serve":
+            if not 0 <= args.port <= 65535:
+                raise ValueError("Invalid port")
+            serve(read_execution(args.config), args.port)
+            return 0
+        if args.command == "run":
+            result = compare(
+                read_execution(args.config),
+                dataset_source(args, "quality"),
+                dataset_source(args, "performance"),
+                args.text_column,
+            )
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0 if result["quality"]["passed"] else 1
         run_commands = (
             "benchmark",
             "optimize",
