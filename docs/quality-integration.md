@@ -16,18 +16,25 @@ def adapt(predict, label_map):
             status = "ok" if verdict is not None else "invalid_output"
             predictions.append(Prediction(item.id, status, verdict, truncated=None))
         return predictions
+
     return predict_batch
 
 
 rows = [
-    QualityRow(row["id"], row["text"], {"harm": "unsafe", "safe": "safe"}[row["label"]],
-               {key: row[key] for key in ("technique", "lang", "benchmark")})
+    QualityRow(
+        row["id"],
+        row["text"],
+        {"harm": "unsafe", "safe": "safe"}[row["label"]],
+        {key: row[key] for key in ("technique", "lang", "benchmark")},
+    )
     for row in dataset
 ]
 report = evaluate_quality(
-    rows, adapt(baseline.predict, baseline_label_map),
+    rows,
+    adapt(baseline.predict, baseline_label_map),
     adapt(candidate.predict, candidate_label_map),
-    batch_size=16, output_dir=run_dir / "quality",
+    batch_size=16,
+    output_dir=run_dir / "quality",
     dataset_metadata={"source": source, "revision": resolved_revision},
 )
 ```
