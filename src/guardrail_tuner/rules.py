@@ -221,6 +221,7 @@ class RuledModel:
 def compare_outputs(
     reference: list[dict[str, Any]], candidate: list[dict[str, Any]]
 ) -> dict[str, Any]:
+    """Compare supplied outputs; run/serve never invoke an implicit reference pass."""
     valid = bool(reference) and len(reference) == len(candidate)
     for a, b in zip(reference, candidate):
         valid = valid and "label" in a and "label" in b

@@ -455,24 +455,17 @@ def test_explicit_binary_quality_aggregation_and_mismatched_inputs(tmp_path):
     )
 
 
-def test_historical_run_does_not_return_baseline_after_parity_failure(monkeypatch):
-    from types import SimpleNamespace
-    from unittest.mock import Mock
-
+def test_historical_saved_parity_failure_blocks_before_model_load(tmp_path, monkeypatch):
     from guardrail_tuner import execution as legacy
 
-    runtime = legacy.Inference.__new__(legacy.Inference)
-    runtime.revision, runtime.environment = "fixture", {}
-    runtime.predict = Mock(
-        side_effect=[[{"label": 0, "logits": [1.0, 0.0]}], [{"label": 1, "logits": [0.0, 1.0]}]]
-    )
-    runtime.enable_rules = Mock(return_value=SimpleNamespace(applied=["c12"], skipped={}))
-    monkeypatch.setattr(legacy, "Inference", lambda config: runtime)
-    with pytest.raises(ValueError, match="parity failed"):
-        legacy.run_inference(
-            {"runtime": "transformers", "rules": ["c12"], "task": "sequence_classification"},
-            ["hello"],
-        )
+    load = Mock(side_effect=AssertionError("Model must not load"))
+    monkeypatch.setattr(legacy, "Inference", load)
+    target = tmp_path / "failed-plan.json"
+    for evidence in ({"status": "parity_failed"}, {"rules": {"parity": {"passed": False}}}):
+        target.write_text(json.dumps(evidence))
+        with pytest.raises(ValueError, match="failed output parity"):
+            legacy.read_execution(str(target))
+    load.assert_not_called()
 
 
 def test_serve_loads_once_and_releases_runtime(monkeypatch):

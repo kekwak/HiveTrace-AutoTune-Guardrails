@@ -4,8 +4,8 @@ from pathlib import Path
 import pytest
 
 from guardrail_tuner.cli import inspect_model, plan_checks
-from guardrail_tuner.execution import read_execution, run_inference, serve
-from guardrail_tuner.rules import rule_features, select_rules
+from guardrail_tuner.execution import Inference, read_execution, run_inference, serve
+from guardrail_tuner.rules import RuledModel, rule_features, select_rules
 
 DEBERTA = {"architectures": ["DebertaV2ForSequenceClassification"], "relative_attention": True}
 LINEAR = {
@@ -201,7 +201,9 @@ def test_compiled_rules_keep_outputs(tmp_path: Path, monkeypatch: pytest.MonkeyP
         assert ruled.skipped["u1"] == "CUDA is unavailable"
 
 
-def test_run_compares_rules_with_eager(tmp_path: Path) -> None:
+def test_run_predicts_once_after_enabling_rules(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     model_dir = tmp_path / "model"
     tiny_deberta(model_dir, 2)
     config = json.loads((model_dir / "config.json").read_text())
@@ -210,8 +212,18 @@ def test_run_compares_rules_with_eager(tmp_path: Path) -> None:
     )
     path = tmp_path / "plan.json"
     path.write_text(json.dumps(plan))
-    result = run_inference(read_execution(str(path)), ["hello world", "world hello world"])
+    predict = Inference.predict
+    calls = []
+
+    def predict_with_rules(inference: Inference, inputs: list[str]) -> list[dict]:
+        assert isinstance(inference.runner.model, RuledModel)
+        calls.append(inputs)
+        return predict(inference, inputs)
+
+    monkeypatch.setattr(Inference, "predict", predict_with_rules)
+    inputs = ["hello world", "world hello world"]
+    result = run_inference(read_execution(str(path)), inputs)
+    assert calls == [inputs]
     assert result["rules"]["applied"] == ["c12", "c8"]
-    assert result["rules"]["parity"]["passed"]
-    assert result["rules"]["parity"]["label_changes"] == 0
+    assert "parity" not in result["rules"]
     assert len(result["outputs"]) == 2
