@@ -17,7 +17,8 @@
 | `serve --config PLAN.json --port 8000` | Держит один вариант в памяти; HTTP `POST /infer` на localhost | Да |
 
 `run/serve` по умолчанию выбирают candidate; `--variant baseline` явно выбирает
-baseline. Никакого reference-прогона на каждом запросе. `--messages FILE.json`
+baseline. `run` выводит `outputs`, а `--debug` добавляет метаданные.
+Никакого reference-прогона на каждом запросе. `--messages FILE.json`
 у `run` принимает одну переписку. HTTP принимает `{"inputs":["..."]}` или
 `{"messages":[{"role":"user","content":"..."}]}`.
 

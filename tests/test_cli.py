@@ -97,3 +97,38 @@ def test_plan_detects_d3_contract_without_importing_model_code(tmp_path, auto_mo
     assert plan["execution"] is None
     assert [candidate["runtime"] for candidate in plan["candidates"]] == ["d3"]
     assert "system_one" in plan["candidates"][0]["next_check"]
+
+
+@pytest.mark.parametrize(
+    "version,metadata",
+    [
+        (1, {"execution": {"version": 1}, "environment": {"gpu": None}, "rules": {"applied": []}}),
+        (2, {"metadata": {"runtime": "native"}, "quality_evaluated": False}),
+    ],
+)
+@pytest.mark.parametrize("debug", [False, True])
+def test_run_outputs_metadata_only_in_debug(
+    tmp_path, monkeypatch, capsys, version, metadata, debug
+):
+    from guardrail_tuner import cli, u1_bridge
+
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps({"execution": {"version": version}}))
+    outputs = [{"label": "OK", "logits": [1.0, 0.0]}]
+    result = {"outputs": outputs, **metadata}
+    calls = []
+
+    def infer(config, inputs):
+        calls.append(inputs)
+        return result
+
+    monkeypatch.setattr(cli, "read_execution", lambda path: {"version": 1})
+    monkeypatch.setattr(cli, "run_inference", infer)
+    monkeypatch.setattr(u1_bridge, "execution", lambda *args: {"version": 2})
+    monkeypatch.setattr(u1_bridge, "run_native", infer)
+    args = ["guardrail-tuner", "run", "--config", str(plan_path), "--text", "test"]
+    monkeypatch.setattr(sys, "argv", args + (["--debug"] if debug else []))
+
+    assert cli.main() == 0
+    assert calls == [["test"]]
+    assert json.loads(capsys.readouterr().out) == (result if debug else {"outputs": outputs})
