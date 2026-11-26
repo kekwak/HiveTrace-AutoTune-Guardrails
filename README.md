@@ -47,8 +47,9 @@ uv run --locked --no-sync guardrail-tuner serve --config protectai-plan.json
 [Полные baseline ProtectAI и AccuKnox](results/u1_handoff/2026-11-26-new-families-baseline/README.md):
 10/10 ячеек комплектны на RTX 5090. Эти результаты не подтверждают новые правила
 общего CLI. [Новый полный eval](results/u1_handoff/2026-11-26-cli-eval/README.md):
-ProtectAI прошёл обе ячейки, AccuKnox ещё измеряется; `run/serve` GPU-проверка
-не завершена. Актуальный статус интеграции указан в операционной инструкции.
+ProtectAI прошёл обе ячейки. Полный повтор AccuKnox комплектен (8/8), но кандидат
+не прошёл критерии ускорения; flips нет. `run/serve` проверены на GPU для обеих
+моделей. Актуальный статус интеграции указан в операционной инструкции.
 
 ## Исторические результаты
 

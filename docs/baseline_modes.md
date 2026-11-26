@@ -6,6 +6,17 @@ confirm необязателен. Полный совместимый baseline v
 reference с явным предупреждением о разных lifecycle. Это не разрешает подменять
 precision, веса или подготовку. [Действующий порядок запусков](u1_handoff.md#4-baseline--поиск--подтверждение).
 
+## Новые семейства, 26 ноября
+
+К восьми исходным пресетам добавлены [ProtectAI и AccuKnox](u1_handoff.md#новые-семейства-protectai-и-accuknox).
+ProtectAI: FP32, HF sequence classification, softmax/argmax, `team-rtx`.
+AccuKnox: авторский D3 probabilities/readout, BF16 backbone + FP32 readout,
+нативные SDPA/FLA, отдельная среда `team-d3`. Это не generate/vLLM.
+Оба [полных baseline](../results/u1_handoff/2026-11-26-new-families-baseline/README.md)
+прошли свою сетку на RTX 5090. Предложения правил общего CLI не меняют эти
+baseline задним числом; [eval кандидата](../results/u1_handoff/2026-11-26-cli-eval/README.md)
+хранится отдельно.
+
 ## Schema 4: исполнение авторов HF/SDK, 12 ноября
 
 Источники истины для запуска: [полные пресеты](../configs/v4) и закреплённый
