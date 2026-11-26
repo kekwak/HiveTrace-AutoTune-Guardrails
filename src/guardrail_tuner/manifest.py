@@ -140,7 +140,6 @@ def environment() -> dict[str, Any]:
         "onnxruntime",
         "onnxruntime-gpu",
         "optimum-onnx",
-        "vllm",
     ):
         try:
             versions[name] = importlib.metadata.version(name)
@@ -393,7 +392,6 @@ class Recorder:
             "optimize": "sequential; includes tokenization, model execution and output transfer",
             "tune-model": "sequential; includes tokenization, model execution and output transfer",
             "check-generation": "no performance measurement",
-            "probe-vllm": "no performance measurement",
         }.get(self.command)
         if self.command == "compare-app":
             boundary = (result.get("settings") or {}).get("measurement")

@@ -41,7 +41,6 @@ def test_plan_classification_candidates_are_unverified(tmp_path):
     assert plan["status"] == "unverified"
     assert {candidate["runtime"] for candidate in plan["candidates"]} == {
         "onnxruntime",
-        "vllm",
         "torch_compile",
         "tensorrt",
     }
@@ -55,7 +54,10 @@ def test_plan_conditional_generation_is_unverified(tmp_path):
     assert result.returncode == 0
     plan = json.loads(result.stdout)
     assert plan["status"] == "unverified"
+    runtimes = {candidate["runtime"] for candidate in plan["candidates"]}
+    assert runtimes == {"torch_compile", "tensorrt"}
     assert all(candidate["mode"] == "generation" for candidate in plan["candidates"])
+    assert plan["execution"]["runtime"] == "transformers"
 
 
 @pytest.mark.parametrize(
@@ -78,4 +80,4 @@ def test_plan_detects_d3_contract_without_importing_model_code(tmp_path, auto_mo
     assert plan["status"] == "needs_inference_contract"
     assert plan["execution"] is None
     assert [candidate["runtime"] for candidate in plan["candidates"]] == ["d3"]
-    assert "input_ids" in plan["candidates"][0]["next_check"]
+    assert "system_one" in plan["candidates"][0]["next_check"]

@@ -2,7 +2,7 @@
 
 **CLI для настройки и запуска инференса guardrail-моделей.**
 
-[Быстрый старт](#быстрый-старт) · [Руководство по CLI](docs/cli-guide.md) · [Совместимость с vLLM](docs/vllm-compatibility.md) · [Разработка](CONTRIBUTING.md)
+[Быстрый старт](#быстрый-старт) · [Руководство по CLI](docs/cli-guide.md) · [Разработка](CONTRIBUTING.md)
 
 ## Быстрый старт
 
@@ -37,27 +37,12 @@ curl http://127.0.0.1:8000/infer \
   -d '{"inputs":["The meeting starts at noon.","Please review the invoice."]}'
 ```
 
-## Запуск через vLLM
-
-В CUDA-окружении с установленным vLLM:
-
-```bash
-guardrail-tuner plan hivetrace/HiveTraceGuard-Pro --device cuda > plan.json
-guardrail-tuner run --config plan.json --text "Please review the invoice."
-guardrail-tuner serve --config plan.json
-```
-
-Для `ForCausalLM` из реестра установленного vLLM план выбирает штатный
-vLLM с prefix caching и FP16. Для остальных поддерживаемых сценариев
-используется Transformers. Проверить выходы отдельно можно через `probe-vllm`.
-
 ## Дополнительные проверки
 
 | Команда | Назначение |
 | --- | --- |
 | `inspect`, `datasets` | Прочитать конфиг модели и проверить источники данных |
 | `benchmark`, `optimize` | Сравнить PyTorch и ONNX Runtime для классификации |
-| `probe-vllm` | Проверить запуск vLLM и сравнить выходы с Transformers |
 | `tune-model`, `check-generation`, `compare-app` | Проверить компиляцию, кэш генерации или прикладные выходы |
 
 Установка для CUDA, параметры сравнения и пример на трёх моделях доступны

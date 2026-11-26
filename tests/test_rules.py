@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 from guardrail_tuner.cli import inspect_model, plan_checks
-from guardrail_tuner.execution import read_execution, run_inference
+from guardrail_tuner.execution import read_execution, run_inference, serve
 from guardrail_tuner.rules import rule_features, select_rules
 
 DEBERTA = {"architectures": ["DebertaV2ForSequenceClassification"], "relative_attention": True}
@@ -43,7 +43,7 @@ def test_cpu_and_generation_do_not_fall_back_to_compile() -> None:
 
 
 def test_external_runtime_gets_no_rules() -> None:
-    plan = select_rules(rule_features(DEBERTA), execution("generation", runtime="vllm"))
+    plan = select_rules(rule_features(DEBERTA), execution("generation", runtime="onnxruntime"))
     assert plan["rules"] == []
 
 
@@ -62,6 +62,14 @@ def test_plan_writes_rules_into_execution(tmp_path: Path) -> None:
     plan = plan_checks(inspect_model(str(tmp_path), None), "cpu")
     assert plan["execution"]["rules"] == ["c12", "c8"]
     assert plan["rules"]["skipped"]["u4"] == "measured only on CUDA"
+
+
+def test_direct_execution_rejects_removed_runtime() -> None:
+    config = execution("generation", runtime="vllm")
+    with pytest.raises(ValueError, match="Unsupported runtime"):
+        run_inference(config, ["hello"])
+    with pytest.raises(ValueError, match="Unsupported runtime"):
+        serve(config, 0)
 
 
 def test_unknown_rules_are_rejected(tmp_path: Path) -> None:
