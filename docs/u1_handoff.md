@@ -16,6 +16,164 @@ Halo/Open/Hive/Shield используют BF16, Laya сохраняет native 
 Остальные новые режимы этим не проверены. OOM прежнего Open FP16+math не является
 пределом нового baseline. Размер батча при ошибке не уменьшается автоматически.
 
+## Новые семейства: ProtectAI и AccuKnox
+
+Основной путь подключения новой модели — полный конфиг семейства, не новая ветка
+по имени checkpoint. `hf_sequence_classification` загружает
+`AutoModelForSequenceClassification`; `d3_decision` использует закреплённый d3 runtime.
+Старые восемь адаптеров и их контракты не изменены. `plan` показывает `capabilities`
+без весов: `runtime_check_required` не означает, что CUDA backend уже проверен.
+
+| Пресет | Нативный контракт | Кандидаты для проверки |
+| --- | --- | --- |
+| [ProtectAI](../configs/v4/protectai.json) | FP32; SAFE/INJECTION; softmax/argmax, первый индекс при tie; assistant, если он есть, иначе user; лимит 512 | [compile](../configs/v4/protectai_compile.json), [ORT CUDA](../configs/v4/protectai_ort.json) полного tensor-forward до logits |
+| [AccuKnox](../configs/v4/accuknox.json) | BF16 backbone + FP32 readout; авторский d3, block при p≥0,5; лимит 4096 | compile текстового tensor-forward; reference/FLA только linear attention; ORT не поддержан |
+
+ProtectAI закреплён на `90c9989b1a342275dd0d1a95aad283c04e075671`, AccuKnox — на
+`e4e43d89a1f2c0ae2025b50ec884d8de32d2cde3`. Исходники, шаблоны, SDK-assets и правила
+ответа входят в идентичность конфигурации. Несовместимые overrides отклоняются.
+За основу взяты [карточка ProtectAI](https://huggingface.co/protectai/deberta-v3-base-prompt-injection-v2/tree/90c9989b1a342275dd0d1a95aad283c04e075671)
+и [карточка/код AccuKnox](https://huggingface.co/Accuknoxtechnologies/accuknox-guard-1.1/tree/e4e43d89a1f2c0ae2025b50ec884d8de32d2cde3).
+Обе модели заявлены для английского; RU здесь — нагрузка скорости. Различные
+injection/blocking-задачи и scores между моделями не сравниваются.
+
+AccuKnox не вызывает Qwen `generate`: на каждый независимый state приходится один
+BLOCK/RESPONSE-вопрос, затем один общий батч probabilities/readout. User-only —
+строка с BLOCK; пара — объект user/assistant с RESPONSE; assistant-only — объект
+assistant с RESPONSE, без вымышленного запроса. Сохраняются noncausal full attention,
+causal linear attention, авторский SDPA-dispatch и нативный выбор linear kernels.
+`readout.safetensors` учитывается в памяти и паспорте precision отдельно от backbone.
+Паспорт precision v2 хранит роли тензоров; старые паспорта не подтверждают этот режим.
+
+### Среда и CPU-индексы
+
+ProtectAI использует `team-rtx`. Для d3 предусмотрен отдельный `team-d3`:
+Linux/Python 3.13, прежний CUDA PyTorch, Transformers 5.17.0, FLA 0.5.2.
+Не устанавливайте эти версии поверх существующего venv.
+[Lock и способ его сборки](../env/team_d3.README.md) готовы: 61 пакет, SHA256
+артефактов и исходный structured pip report. Версии автоматически не подбираются.
+Установка из lock прошла на RTX 5090 25 ноября. Первый smoke выявил CUDA-сбои;
+на [другой физической 5090](../results/u1_handoff/2026-11-26-new-gpu-smoke/README.md)
+с теми же исходниками и средами ProtectAI B1 и AccuKnox B1–B3 прошли с batch=2.
+Индексный блокер AccuKnox B4 закрыт [пересборкой в d3-env](../results/u1_handoff/2026-11-26-d3-reindex/README.md):
+повторный B4×2 smoke прошёл. Затем [полный baseline](../results/u1_handoff/2026-11-26-new-families-baseline/README.md)
+завершил всю указанную сетку на RTX 5090. Кандидаты оптимизации пока не проверены. Установка сама по себе
+не подтверждает работу модели; CUDA-сбои первого размещения не объявлены аппаратным дефектом.
+
+```bash
+python3.13 tools/benchmark.py setup --profile team-d3 --environment ./u1-d3-env
+```
+
+Команда выше выполняется на целевой GPU-машине. Для CPU-индексации
+нужны tokenizer и закреплённый код подготовки, но не веса. У d3
+`execution.trust_remote_code=true` разрешает исполнение только проверенных SHA256
+исходников из manifest; README не исполняется.
+
+[Рецепт исходной сборки](../configs/v4/data_new_families.json) использует прежние
+12000 сообщений с теми же ID и происхождением. Снимок от 25 ноября сохраняется,
+но его D3-индекс нельзя использовать с целевой 5.17.0 без пересборки.
+Текущие семь конфигов используют `data/speed/new-families-d3-20261126`, manifest
+`846e234bd0dff69ca1d22d460e49b9c4dfdc85e08576f10f01f46bc0dd5cbc2c`.
+Сообщения и списки ID прежние; HF-публикация не изменена.
+
+Для запуска из чистого клона восстановите проверенные снимки без повторной
+токенизации. `fetch-data` скачивает закреплённый публичный корпус; если он уже
+есть, пропустите первую команду. В Git находятся только индексы, manifest и
+списки ID, без дублирования текстов. Восстановление не загружает модели и не
+требует GPU, проверяет SHA256 и не перезаписывает существующие снимки.
+
+```bash
+python tools/benchmark.py fetch-data --output data/speed/role-corpus
+python results/u1_handoff/2026-11-26-d3-reindex/restore_data.py \
+  --source data/speed/role-corpus --output-root data/speed
+```
+
+После этого семь конфигов готовы к `plan` и запуску в соответствующей среде.
+Восстановлены оба снимка: первоначальный нужен только для воспроизведения
+истории и повторной проверки пересборки; измерения используют `new-families-d3-20261126`.
+Это доставка уже проверенных индексов, не новая GPU-проверка.
+
+Необязательная повторная CPU-пересборка D3 в другом, ещё не существующем каталоге:
+
+```bash
+./u1-d3-env/venv/bin/python results/u1_handoff/2026-11-26-d3-reindex/rebuild.py \
+  --repo . --source data/speed/new-families-20261125 \
+  --output data/speed/new-families-d3-20261126-check
+```
+
+Не переиспользуйте существующий output. Для этого снимка ожидается тот же
+`manifest_sha256`, что указан выше; после восстановления менять конфиги не нужно.
+Для нового корпуса перенесите его `path` и `manifest_sha256` во все сравниваемые
+конфиги. Продолжать можно только с готовыми обязательными бакетами;
+дефицит даёт `not_ready`, а не усечённые входы.
+Измеренная baseline-сетка на RTX 5090: ProtectAI B1 `[1,256]`, AccuKnox B1 `[1,64]`,
+B2 `[1,32]`, B3 `[1,16]`, B4 `[1,8]`. Все 10 ячеек комплектны, без OOM;
+кандидаты на этой сетке пока не измерены. Размеры редактируются в JSON.
+
+Команда требует сохранённую исходную сборку; её SHA256 строго проверяется.
+Для нового произвольного корпуса используйте `prepare-data` отдельно в среде
+соответствующей модели, а не токенизацию всех семейств одной версией Transformers.
+Новая сборка: все пять модельных бакетов содержат по 400
+уникальных эффективных входов; две последовательные сборки дали одинаковые файлы.
+У AccuKnox B1 отсутствуют длины 1–64; гистограмма B4:
+`[68,68,68,68,68,40,13,7]`. Эти пробелы не заполнялись padding.
+D3 переиндексирован на Linux/Python 3.13.15 / Transformers 5.17.0 / Tokenizers 0.23.3;
+индекс ProtectAI сохранён. [Сверка изменений и GPU-smoke](../results/u1_handoff/2026-11-26-d3-reindex/README.md).
+Реальный worker по-прежнему сверяет каждый фактический вход с индексом и останавливается при несовпадении.
+
+### Запуск владельцем GPU
+
+После подготовки среды/индексов используйте существующий протокол:
+
+```bash
+python tools/benchmark.py plan --config configs/v4/protectai.json --environment ./u1-env
+./u1-env/venv/bin/python tools/benchmark.py preflight --config configs/v4/protectai.json --environment ./u1-env --output runs/protectai-smoke
+./u1-env/venv/bin/python tools/benchmark.py run --config configs/v4/protectai.json --environment ./u1-env --pilot --output runs/protectai-pilot
+./u1-env/venv/bin/python tools/benchmark.py run --config configs/v4/protectai.json --environment ./u1-env --output runs/protectai-baseline
+./u1-env/venv/bin/python tools/benchmark.py run --config configs/v4/protectai_compile.json --environment ./u1-env --baseline-ref runs/protectai-baseline --output runs/protectai-compile
+python tools/benchmark.py report --output runs/protectai-compile
+```
+
+Для AccuKnox замените конфиг и venv на d3-вариант. Baseline не отключает нативный
+fast path; наличие FLA в кандидате само по себе не доказывает изменение исполнения.
+
+Готовые [baseline ZIP от 26 ноября](../results/u1_handoff/2026-11-26-new-families-baseline/README.md)
+можно использовать как `--baseline-ref` при совпадении условий. В них сохранён
+высокий A/A-envelope p95 у AccuKnox B1–B3 с batch=1 (33–47%): комплектность
+`baseline_complete` не означает низкий шум или автоматическое одобрение кандидата.
+Готовы [compile](../configs/v4/accuknox_compile.json),
+[reference linear attention](../configs/v4/accuknox_reference.json) и
+[FLA](../configs/v4/accuknox_fla.json). Скрытый override `D3_CUDNN_SDPA=1`
+отклоняется: текущий контракт использует авторскую стандартную политику без cuDNN SDPA.
+Preflight проверяет фактический dispatch. ORT классификатора проверяет все формы,
+размещение узлов и `metadata-cpu-v1`; в измеряемой сессии профайлер выключен.
+Качество подключается отдельно с явным mapping; успешный smoke не является quality-approval.
+
+### Своя модель и нестандартный runtime
+
+Для HF-классификации задайте weights/tokenizer с полными revisions, `preparation`
+(`limit`, `text_selection`, `add_special_tokens`), `scoring` и `execution`.
+`text_selection`: `assistant_else_user`, `user` либо `assistant`; отсутствие нужной
+роли учитывается как неприменимость. `scoring.method`: `softmax_argmax` для любого
+числа классов или `softmax_threshold` с двумя ожидаемыми `labels`, `positive_label`
+и `threshold`. Метки сверяются с checkpoint; неизвестные параметры не игнорируются.
+
+Пограничные примеры preflight синтетические: их формат выбирается через preparer
+среди разрешённых конфигом user-only, assistant-only и user+assistant. Поэтому
+assistant-only и pair-only не требуют добавлять user-only в контракт. Это не
+преобразование корпуса: реальные сообщения, роли и контекст остаются неизменными.
+Точная длина и отказ при превышении обязательны; ошибки подготовки не скрываются.
+
+Для другого runtime остаётся [внешний Python-модуль](../examples/u1_classifier_extension.py)
+с `create_preparer/create`, хешем и явными зависимостями. Общий
+`u1_benchmark.family_adapter.FamilyAdapter` предоставляет индексацию, проверку
+фактических IDs/masks, границ, размеры, precision и очистку. Подкласс предоставляет
+реальный `forward_batch`, preparer и модуль, получающий входные тензоры;
+дополнительный readout передаётся как `extra_tensors`. Нет наблюдаемых тензоров —
+нет подтверждения проверки. Для нестандартного backend необходимы собственные
+подготовка и доказательство исполнения, а не fallback на цикл одиночных запросов.
+Автоматический подбор оптимизаций не входит в этот интерфейс.
+
 ## Быстрый старт: одна модель
 
 Все команды ниже выполняются **из корня клона этой ветки**, на Linux x86_64
