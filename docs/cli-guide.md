@@ -364,7 +364,6 @@ PyTorch. `--seed` задаёт seed Python, NumPy и PyTorch в процессе
 
 ## Демонстрация на трёх моделях
 
-
 `plan` читает конфиг чекпойнта. Поле `execution` содержит фиксированный
 сценарий исполнения. Для классификации в Transformers это батчинг вместо обработки
 по одному входу. Для генерации это KV-кэш вместо повторного вычисления
@@ -377,10 +376,9 @@ PyTorch. `--seed` задаёт seed Python, NumPy и PyTorch в процессе
 с одним входом. Для слоёв linear attention план требует пакет
 `flash-linear-attention`. Если пакет не импортируется, `run` пропускает правило
 с причиной. Поле `rules` плана объясняет, почему правило не выбрано.
-`run` сначала считает ответ обычным PyTorch, затем применяет правила и сверяет
-метки. При расхождении он возвращает исходный ответ. Поле `rules` результата
-показывает применённые и пропущенные правила. `serve` применяет правила без
-сверки, поэтому план сначала проверяют через `run`.
+`run --config` применяет правила из плана и выполняет оптимизированный
+инференс. Поля `rules.applied` и `rules.skipped` показывают, какие правила
+применились и какие были пропущены.
 
 Если `execution` построить нельзя (кастомный код или архитектура без задачи),
 план выбирает только правила, которые меняют модули бэкбона: объединение
@@ -389,22 +387,23 @@ PyTorch. `--seed` задаёт seed Python, NumPy и PyTorch в процессе
 не запускает. Правила применяют к уже загруженной модели:
 `RuledModel(model, plan["rules"]["rules"], None)`.
 
-Для демонстрации подходят KoalaAI/Text-Moderation, google/shieldgemma-2b
-и внешний чекпойнт distilbert/distilbert-base-uncased-finetuned-sst-2-english
-семейства DistilBERT. Для ShieldGemma нужен доступ к весам и входы,
-подготовленные по шаблону модели.
+Для демонстрации используются KoalaAI и ProtectAI из исходного списка и
+внешний чекпойнт BART Large MNLI. Правило `c12` применяется на ProtectAI и BART.
 
 ```bash
-for model in KoalaAI/Text-Moderation google/shieldgemma-2b \
-  distilbert/distilbert-base-uncased-finetuned-sst-2-english; do
-  name="${model##*/}"
-  uv run --extra inference guardrail-tuner plan "$model" > "$name.plan.json"
+while read -r name model revision; do
+  uv run --extra inference guardrail-tuner plan "$model" --revision "$revision" \
+    > "$name.plan.json" || break
   uv run --extra inference guardrail-tuner run --config "$name.plan.json" \
-    < "$name.input.txt" > "$name.run.json"
-done
+    --text 'The meeting starts at noon.' --text 'Please review the invoice.' \
+    > "$name.run.json" || break
+done <<'MODELS'
+koala KoalaAI/Text-Moderation 838ade0edb66dcffc5532d08ff6ed5c899abfb5c
+protectai protectai/deberta-v3-base-prompt-injection-v2 90c9989b1a342275dd0d1a95aad283c04e075671
+bart facebook/bart-large-mnli d7645e127eaf1aefc7862fd59a17a5aa8558b8ce
+MODELS
 
-uv run --extra inference guardrail-tuner serve \
-  --config Text-Moderation.plan.json --port 8000
+uv run --extra inference guardrail-tuner serve --config koala.plan.json --port 8000
 ```
 
 ```bash
@@ -413,8 +412,6 @@ curl -s http://127.0.0.1:8000/infer \
   -d '{"inputs":["The meeting starts at noon.","Please review the invoice."]}'
 ```
 
-`run` применяет настройки из `execution` и выполняет инференс с ними.
-Для правил он выводит `rules.applied` и `rules.skipped`.
 `run` читает stdin как один текст. Повторяемый флаг `--text` позволяет
 подать несколько текстов за один вызов. Классификация возвращает логиты
 и метку argmax. Генерация возвращает токены и декодированный текст.
