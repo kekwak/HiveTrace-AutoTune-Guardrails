@@ -133,7 +133,7 @@ def plan_checks(metadata: dict[str, Any], device: str = "cpu") -> dict[str, Any]
     return {
         **metadata,
         "status": "unverified" if candidates else "needs_inference_contract",
-        "candidates": candidates,
+        **({"candidates": candidates} if execution is None else {}),
         "execution": execution,
         "rules": rules,
     }
