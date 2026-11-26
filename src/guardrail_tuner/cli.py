@@ -1,4 +1,4 @@
-"""Inspect model metadata and report unverified runtime candidates."""
+"""Plan optimizations, evaluate their effect, and run guardrail models."""
 
 import argparse
 import hashlib
@@ -144,7 +144,7 @@ def main() -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     for command, help_text in (
         ("inspect", "Read model metadata"),
-        ("plan", "Suggest runtime checks based on model metadata"),
+        ("plan", "Create a U1 plan from config or suggest metadata-based checks"),
     ):
         subparser = commands.add_parser(command, help=help_text)
         subparser.add_argument(
