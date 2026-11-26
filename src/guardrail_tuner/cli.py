@@ -513,12 +513,17 @@ def main() -> int:
     except (OSError, ValueError, KeyError, TypeError) as exc:
         if native_command:
             actions = {
-                "CheckoutRequired": "Run this U1 command from a repository checkout, not a standalone wheel.",
-                "PinnedEnvironmentMissing": "Run tools/benchmark.py setup for the configured environment profile.",
+                "CheckoutRequired": (
+                    "Run this U1 command from a repository checkout, not a standalone wheel."
+                ),
+                "PinnedEnvironmentMissing": (
+                    "Run tools/benchmark.py setup for the configured environment profile."
+                ),
             }
             action = actions.get(
                 type(exc).__name__,
-                "Verify the config, pinned environment and saved result status; no fallback was used.",
+                "Verify the config, pinned environment and saved result status; "
+                "no fallback was used.",
             )
             print(
                 json.dumps(

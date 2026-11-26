@@ -58,6 +58,7 @@ jobs:
       - name: Create separate CPU fixture environment
         run: |
           uv venv .venv-u1 --python 3.13
+          uv pip install --python .venv-u1/bin/python pip==25.3
           uv pip install --python .venv-u1/bin/python torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu
           uv pip install --python .venv-u1/bin/python transformers==5.20.1 gliner2==2.1.0 laya==0.3.20 pytest==9.0.2 nbformat==5.11.1
       - name: U1 CPU tests (no weights, no CUDA)
