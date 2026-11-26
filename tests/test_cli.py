@@ -31,7 +31,7 @@ def test_inspect_allows_missing_architecture_list(tmp_path, value):
     assert json.loads(result.stdout)["architectures"] == []
 
 
-def test_plan_classification_candidates_are_unverified(tmp_path):
+def test_plan_classification_hides_candidates_when_executable(tmp_path):
     (tmp_path / "config.json").write_text(
         json.dumps({"architectures": ["DebertaV2ForSequenceClassification"]})
     )
@@ -39,11 +39,8 @@ def test_plan_classification_candidates_are_unverified(tmp_path):
     assert result.returncode == 0
     plan = json.loads(result.stdout)
     assert plan["status"] == "unverified"
-    assert {candidate["runtime"] for candidate in plan["candidates"]} == {
-        "onnxruntime",
-        "torch_compile",
-        "tensorrt",
-    }
+    assert plan["execution"]["task"] == "sequence_classification"
+    assert "candidates" not in plan
 
 
 def test_plan_conditional_generation_is_unverified(tmp_path):
@@ -54,10 +51,29 @@ def test_plan_conditional_generation_is_unverified(tmp_path):
     assert result.returncode == 0
     plan = json.loads(result.stdout)
     assert plan["status"] == "unverified"
-    runtimes = {candidate["runtime"] for candidate in plan["candidates"]}
-    assert runtimes == {"torch_compile", "tensorrt"}
-    assert all(candidate["mode"] == "generation" for candidate in plan["candidates"])
+    assert plan["execution"]["task"] == "generation"
     assert plan["execution"]["runtime"] == "transformers"
+    assert "candidates" not in plan
+
+
+def test_plan_preserves_candidates_without_execution(tmp_path):
+    (tmp_path / "config.json").write_text(
+        json.dumps(
+            {
+                "architectures": ["CustomForSequenceClassification"],
+                "auto_map": {"AutoConfig": "configuration_custom.CustomConfig"},
+            }
+        )
+    )
+    result = run_cli("plan", tmp_path)
+    assert result.returncode == 0, result.stderr
+    plan = json.loads(result.stdout)
+    assert plan["execution"] is None
+    assert {candidate["runtime"] for candidate in plan["candidates"]} == {
+        "onnxruntime",
+        "torch_compile",
+        "tensorrt",
+    }
 
 
 @pytest.mark.parametrize(
