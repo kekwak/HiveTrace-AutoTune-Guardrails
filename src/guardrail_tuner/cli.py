@@ -139,6 +139,11 @@ def plan_checks(metadata: dict[str, Any], device: str = "cpu") -> dict[str, Any]
     }
 
 
+def _print_run_result(result: dict[str, Any], debug: bool) -> None:
+    output = result if debug else {"outputs": result["outputs"]}
+    print(json.dumps(output, indent=2, ensure_ascii=False))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog="guardrail-tuner", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -165,6 +170,7 @@ def main() -> int:
     offline.add_argument("input")
     run = commands.add_parser("run", help="Run inference with the plan configuration")
     run.add_argument("--config", required=True)
+    run.add_argument("--debug", action="store_true", help="Include inference metadata in JSON")
     run.add_argument("--text", action="append", help="Input text; repeat for multiple inputs")
     run.add_argument("--messages", help="JSON file containing one ordered conversation")
     run.add_argument("--variant", choices=("baseline", "candidate"), default="candidate")
@@ -321,8 +327,7 @@ def main() -> int:
                         if args.text is not None
                         else [sys.stdin.read()]
                     )
-                    result = run_native(selected, inputs)
-                    print(json.dumps(result, indent=2, ensure_ascii=False))
+                    _print_run_result(run_native(selected, inputs), args.debug)
                 return 0
             if args.command == "run" and args.messages:
                 raise ValueError("Role messages require a native version 2 plan")
@@ -336,8 +341,7 @@ def main() -> int:
             if args.text is None and sys.stdin.isatty():
                 raise ValueError("Provide non-empty text with --text or stdin")
             inputs = args.text if args.text is not None else [sys.stdin.read()]
-            result = run_inference(config, inputs)
-            print(json.dumps(result, indent=2, ensure_ascii=False))
+            _print_run_result(run_inference(config, inputs), args.debug)
             return 0
         run_commands = (
             "benchmark",
