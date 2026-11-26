@@ -98,7 +98,11 @@ class PersistentJSONLRunner:
         if not self.thread.is_alive():
             for pipe in (self.process.stdin, self.process.stdout):
                 if pipe is not None:
-                    pipe.close()
+                    try:
+                        pipe.close()
+                    except OSError:
+                        # Closing stdin can flush buffered bytes into an exited child.
+                        pass
 
     def _stop(self, *, force: bool) -> None:
         try:

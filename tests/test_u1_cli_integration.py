@@ -3,7 +3,7 @@
 import json
 from copy import deepcopy
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -14,6 +14,29 @@ from u1_benchmark.core import read, write
 from u1_benchmark.v4_config import preparation_identity, validate_config
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_runner_cleanup_preserves_original_error_on_broken_pipe():
+    import queue
+
+    from guardrail_tuner.jsonl_process import PersistentJSONLRunner
+
+    runner = PersistentJSONLRunner.__new__(PersistentJSONLRunner)
+    runner.closed = False
+    runner.process = Mock()
+    runner.process.poll.return_value = 3
+    runner.process.stdin.close.side_effect = BrokenPipeError()
+    runner.process.stdout.close.side_effect = OSError()
+    runner.requests = queue.Queue()
+    runner.thread = Mock()
+    runner.thread.is_alive.return_value = False
+    with patch.object(runner, "_stop"):
+        with pytest.raises(ValueError, match="original failure"):
+            with runner:
+                raise ValueError("original failure")
+        runner.close()
+    runner.process.stdin.close.assert_called_once()
+    runner.process.stdout.close.assert_called_once()
 
 
 def preset(name="protectai"):
