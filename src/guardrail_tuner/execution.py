@@ -56,7 +56,10 @@ def read_execution(path: str) -> dict[str, Any]:
     document = json.loads(Path(path).expanduser().read_text(encoding="utf-8"))
     if not isinstance(document, dict):
         raise ValueError("Expected a JSON plan")
-    if document.get("status") == "parity_failed":
+    if (
+        document.get("status") == "parity_failed"
+        or document.get("rules", {}).get("parity", {}).get("passed") is False
+    ):
         raise ValueError("This run failed output parity")
     config = document.get("execution")
     if not isinstance(config, dict) or config.get("version") != 1:
@@ -122,7 +125,7 @@ class Inference:
             raise ValueError("Architecture unavailable in installed Transformers")
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(config["model"], **options)
         self.model = (
-            cls.from_pretrained(config["model"], use_safetensors=True, **options)
+            getattr(cls, "from_pretrained")(config["model"], use_safetensors=True, **options)
             .float()
             .to(device)
             .eval()
@@ -279,8 +282,7 @@ def predict_inputs(config: dict[str, Any], inputs: list[str]) -> dict[str, Any]:
         outputs = inference.predict(inputs)
         report["parity"] = compare_outputs(reference, outputs)
         if not report["parity"]["passed"]:
-            inference.runner.model = inference.model
-            outputs = reference
+            raise ValueError("Rule output parity failed; no fallback output was returned")
     return {**result, "rules": report, "outputs": outputs}
 
 

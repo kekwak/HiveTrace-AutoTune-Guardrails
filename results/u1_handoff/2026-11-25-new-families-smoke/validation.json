@@ -1,0 +1,135 @@
+{
+  "date": "2026-11-25",
+  "scope": "native smoke only; batch size 2",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "driver": "595.112.07",
+  "quality_evaluated": false,
+  "benchmark_executed": false,
+  "pod": {
+    "id": "c4p7lqu1cm90av",
+    "status": "EXITED",
+    "verified_at": "2026-11-25T14:42:16Z"
+  },
+  "archives": {
+    "protectai-results.zip": {
+      "sha256": "3cd2663104c662253bb4740651a1b821352b395f24afec613c19abee03d27dab",
+      "bytes": 380100,
+      "files": 92,
+      "crc_passed": true
+    },
+    "accuknox-results.zip": {
+      "sha256": "00c7da54043bf2fd0d10df8d1df1c745d771937c7a39b8e684239d32b8d5e22f",
+      "bytes": 626492,
+      "files": 101,
+      "crc_passed": true
+    },
+    "d3-env.zip": {
+      "sha256": "6600cdb1daa6d2e5fc0cf4c07b3508f5a1ecee00d925423ebb60dc3bd062809c",
+      "bytes": 386594,
+      "files": 18,
+      "crc_passed": true
+    },
+    "diagnostics.zip": {
+      "sha256": "22412b0c8cee3b1f5197bfdd65d96df3f387bc0ee533c00f6fd66a5383d1b651",
+      "bytes": 25116,
+      "files": 31,
+      "crc_passed": true
+    }
+  },
+  "models": {
+    "protectai": {
+      "status": "incomplete",
+      "offline_report_identical": true,
+      "source_files_verified": 83,
+      "workers": [
+        {
+          "bucket": "B1",
+          "batch_size": 2,
+          "status": "failed",
+          "error_type": "AcceleratorError",
+          "seconds": 71.1471975200111
+        }
+      ]
+    },
+    "accuknox": {
+      "status": "incomplete",
+      "offline_report_identical": true,
+      "source_files_verified": 83,
+      "workers": [
+        {
+          "bucket": "B1",
+          "batch_size": 2,
+          "status": "failed",
+          "error_type": "AcceleratorError",
+          "seconds": 78.99447912396863
+        },
+        {
+          "bucket": "B2",
+          "batch_size": 2,
+          "status": "failed",
+          "error_type": "AcceleratorError",
+          "seconds": 55.381581924972124
+        },
+        {
+          "bucket": "B3",
+          "batch_size": 2,
+          "status": "failed",
+          "error_type": "AcceleratorError",
+          "seconds": 51.487624200060964
+        },
+        {
+          "bucket": "B4",
+          "batch_size": 2,
+          "status": "failed",
+          "error_type": "AcceleratorError",
+          "seconds": 51.232728017959744
+        }
+      ]
+    }
+  },
+  "diagnostics": {
+    "accuknox-load-diagnostic.json": {
+      "status": "failed",
+      "error_type": "OfflineModeIsEnabled",
+      "phase": "load",
+      "cuda_launch_blocking": true
+    },
+    "accuknox-load-online.json": {
+      "status": "failed",
+      "error_type": "AcceleratorError",
+      "phase": "load",
+      "cuda_launch_blocking": true
+    },
+    "protectai-async-adapter.json": {
+      "status": "failed",
+      "error_type": "AcceleratorError",
+      "mode": "adapter",
+      "cuda_launch_blocking": false
+    },
+    "protectai-async-native-worker-env.json": {
+      "status": "passed",
+      "mode": "native",
+      "cuda_launch_blocking": false
+    },
+    "protectai-async-native.json": {
+      "status": "passed",
+      "mode": "native",
+      "cuda_launch_blocking": false
+    },
+    "protectai-diagnostic.json": {
+      "status": "failed",
+      "error_type": "AcceleratorError"
+    },
+    "protectai-native-diagnostic.json": {
+      "status": "passed",
+      "cuda_launch_blocking": true
+    }
+  },
+  "d3_setup": {
+    "status": "passed",
+    "profile": "team-d3",
+    "gpu_verified_for_models": false,
+    "lock_sha256": "71c16f5291ad174e7f91f811325569b2c9c96e09ba26d7f1cd01843e63de2d6b",
+    "cuda_primitive_passed": true
+  }
+}

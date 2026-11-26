@@ -1,0 +1,22 @@
+{
+  "schema_version": 3,
+  "model": "gliner",
+  "baseline": {
+    "backend": "eager"
+  },
+  "mode": "quality",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "quality_data": {
+    "path": "data/team-quality",
+    "manifest_sha256": "SHA256_QUALITY_MANIFEST"
+  },
+  "quality_batch_sizes": [1, 16, 64, 128],
+  "label_mapping": {
+    "targets": {"benign": "negative", "harmful": "positive"},
+    "verdicts": {"safe": "negative", "unsafe": "positive"},
+    "labels": ["negative", "positive"],
+    "positive_label": "positive"
+  }
+}

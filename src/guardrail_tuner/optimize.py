@@ -68,6 +68,7 @@ def optimize(
                 rigorous=True,
                 ort_provider=ort_provider,
                 workload=workload,
+                artifact_dir=str(destination / "artifacts" / f"{level}-{threads}"),
             )
         except Exception as exc:
             failures.append(
@@ -231,4 +232,40 @@ def optimize(
         (destination / "config.yaml").write_text(
             yaml.safe_dump(config, allow_unicode=True, sort_keys=False), encoding="utf-8"
         )
+        artifact = profiled.get("execution_artifacts", {}).get(chosen["runtime"])
+        if artifact is not None:
+            artifact_source = {
+                **artifact,
+                "path": str(Path(artifact["path"]).relative_to(destination.resolve())),
+            }
+            execution = {
+                "version": 2,
+                "batch_size": 1,
+                "comparison": "engineering",
+                "variant": {
+                    "adapter": "exported_sequence_classification",
+                    "weights": artifact_source,
+                    "tokenizer": artifact_source,
+                    "template": None,
+                    "preparation": {"limit": max_length, "truncation": True},
+                    "scoring": {"method": output_mode, "threshold": threshold},
+                    "execution": {
+                        "runtime": chosen["runtime"],
+                        "device": device,
+                        "providers": profiled["providers"],
+                        "provider_options": profiled.get("provider_options", {}),
+                        "graph_optimization": chosen.get("graph_optimization", "all"),
+                        "intra_op_threads": chosen.get("intra_op_threads", 0),
+                    },
+                },
+                "provenance": {
+                    "model": first["model"],
+                    "revision": first["model_revision"],
+                    "versions": first["versions"],
+                    "protocol": "historical-p99-selection",
+                },
+            }
+            (destination / "execution.json").write_text(
+                json.dumps({"execution": execution}, indent=2)
+            )
     return {"status": status, "selected": chosen, "output_dir": str(destination)}

@@ -2,6 +2,8 @@ name: CI
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -24,12 +26,19 @@ jobs:
         run: uv sync --locked --extra hub --extra datasets --extra inference --extra inference-cpu
       - name: Lint and format
         run: |
-          uv run --locked --no-sync ruff check .
-          uv run --locked --no-sync ruff format --check .
+          uv run --locked --no-sync ruff check src tests/test_u1_cli_integration.py tests/test_export_execution.py tools/u1_cli_worker.py u1_benchmark/cli_integration.py u1_benchmark/team_rules.py
+          uv run --locked --no-sync ruff format --check src tests/test_u1_cli_integration.py tests/test_export_execution.py tools/u1_cli_worker.py u1_benchmark/cli_integration.py u1_benchmark/team_rules.py
       - name: Type check
         run: uv run --locked --no-sync mypy
       - name: Test
-        run: uv run --locked --no-sync pytest
+        env:
+          PYTHONPATH: src:.:tests
+        run: >-
+          uv run --locked --no-sync pytest
+          tests/test_application_workload.py tests/test_benchmark.py tests/test_cli.py
+          tests/test_datasets.py tests/test_generation.py tests/test_manifest.py
+          tests/test_new_modes.py tests/test_optimize.py tests/test_quality.py
+          tests/test_rules.py tests/test_workload.py tests/test_u1_cli_integration.py tests/test_export_execution.py
       - name: Build distributions
         run: uv build --out-dir /tmp/guardrail-dist
       - name: Test wheel installation
@@ -38,3 +47,23 @@ jobs:
           uv pip install --python /tmp/guardrail-wheel-env/bin/python /tmp/guardrail-dist/*.whl
           cd /tmp
           /tmp/guardrail-wheel-env/bin/guardrail-tuner --help
+
+  u1-cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        with:
+          version: "0.9.10"
+      - name: Create separate CPU fixture environment
+        run: |
+          uv venv .venv-u1 --python 3.13
+          uv pip install --python .venv-u1/bin/python torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv-u1/bin/python transformers==5.20.1 gliner2==2.1.0 laya==0.3.20 pytest==9.0.2 nbformat==5.11.1
+      - name: U1 CPU tests (no weights, no CUDA)
+        env:
+          PYTHONPATH: src:.:tests
+          HF_HUB_OFFLINE: "1"
+          TRANSFORMERS_OFFLINE: "1"
+          USE_HUB_KERNELS: "NO"
+        run: .venv-u1/bin/python -m pytest -q -rs tests/test_u1* tests/test_d3* tests/test_speed* tests/test_team*

@@ -1,14 +1,18 @@
 """Single-flight persistent JSONL subprocess with bounded request time and cleanup."""
 
 import json
+import os
 import queue
+import signal
 import subprocess
 import threading
 from typing import Any
 
 
 class PersistentJSONLRunner:
-    def __init__(self, command: list[str], timeout: float) -> None:
+    def __init__(
+        self, command: list[str], timeout: float, *, env: dict[str, str] | None = None
+    ) -> None:
         self.timeout = timeout
         self.closed = False
         self.requests: queue.Queue[str | None] = queue.Queue(maxsize=1)
@@ -21,6 +25,8 @@ class PersistentJSONLRunner:
                 stderr=subprocess.DEVNULL,
                 text=True,
                 bufsize=1,
+                env=env,
+                start_new_session=os.name == "posix",
             )
         except OSError as exc:
             raise ValueError(f"Runner failed: {type(exc).__name__}") from exc
@@ -76,12 +82,14 @@ class PersistentJSONLRunner:
             return
         self.closed = True
         if self.process.poll() is None:
-            self.process.terminate()
+            self._stop(force=False)
             try:
                 self.process.wait(timeout=1)
             except subprocess.TimeoutExpired:
-                self.process.kill()
+                self._stop(force=True)
                 self.process.wait()
+        if os.name == "posix":
+            self._stop(force=True)
         try:
             self.requests.put_nowait(None)
         except queue.Full:
@@ -91,6 +99,17 @@ class PersistentJSONLRunner:
             for pipe in (self.process.stdin, self.process.stdout):
                 if pipe is not None:
                     pipe.close()
+
+    def _stop(self, *, force: bool) -> None:
+        try:
+            if os.name == "posix":
+                os.killpg(self.process.pid, signal.SIGKILL if force else signal.SIGTERM)
+            elif force:
+                self.process.kill()
+            else:
+                self.process.terminate()
+        except ProcessLookupError:
+            pass
 
     def __enter__(self) -> "PersistentJSONLRunner":
         return self

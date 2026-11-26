@@ -1,0 +1,108 @@
+{
+  "selected_files": 83,
+  "secret_findings": [],
+  "zip_crc_files": {
+    "results/u1_handoff/2026-11-25-cuda-loading-diagnostic/diagnostic.zip": 25,
+    "results/u1_handoff/2026-11-25-new-families-smoke/accuknox-results.zip": 101,
+    "results/u1_handoff/2026-11-25-new-families-smoke/d3-env.zip": 18,
+    "results/u1_handoff/2026-11-25-new-families-smoke/diagnostics.zip": 31,
+    "results/u1_handoff/2026-11-25-new-families-smoke/protectai-results.zip": 92,
+    "results/u1_handoff/2026-11-25-new-families-t4-diagnostic/diagnostic.zip": 110,
+    "results/u1_handoff/2026-11-26-d3-reindex/accuknox-b4-smoke.zip": 92,
+    "results/u1_handoff/2026-11-26-d3-reindex/input-indices.zip": 16,
+    "results/u1_handoff/2026-11-26-new-families-baseline/accuknox-baseline.zip": 281,
+    "results/u1_handoff/2026-11-26-new-families-baseline/protectai-baseline.zip": 137,
+    "results/u1_handoff/2026-11-26-new-gpu-smoke/accuknox-smoke.zip": 101,
+    "results/u1_handoff/2026-11-26-new-gpu-smoke/diagnostic.zip": 30,
+    "results/u1_handoff/2026-11-26-new-gpu-smoke/protectai-smoke.zip": 92
+  },
+  "json_python_syntax": "passed",
+  "baselines": {
+    "protectai": {
+      "source_inventory_equal": true,
+      "offline_report_equal": true,
+      "sha256": "a93a5a949672e0f7d5cc264ba2735329a22f8181fd46d816b7c9751f957d41a7"
+    },
+    "accuknox": {
+      "source_inventory_equal": true,
+      "offline_report_equal": true,
+      "sha256": "4bb29bd0a270123b7af40be96d02cf144d955f041db81710380d46a2b9c8724d"
+    }
+  },
+  "configurations": {
+    "protectai.json:baseline": "ready",
+    "protectai_compile.json:baseline": "ready",
+    "protectai_compile.json:candidate": "ready",
+    "protectai_ort.json:baseline": "ready",
+    "protectai_ort.json:candidate": "ready",
+    "accuknox.json:baseline": "ready",
+    "accuknox_compile.json:baseline": "ready",
+    "accuknox_compile.json:candidate": "ready",
+    "accuknox_fla.json:baseline": "ready",
+    "accuknox_fla.json:candidate": "ready",
+    "accuknox_reference.json:baseline": "ready",
+    "accuknox_reference.json:candidate": "ready"
+  },
+  "status": "passed",
+  "cpu_tests": {
+    "count": 566,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "seconds": 80.534,
+    "log_sha256": "479e72221b52fb15f1ceb11dd7bdf6d5669e0c4ed8d85d1dbe809fc1fa8ab1bc",
+    "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 USE_HUB_KERNELS=NO python -B -m unittest discover -s tests -v",
+    "isolated_selected_checkout": true,
+    "empty_hf_torch_caches": true,
+    "gpu_used": false,
+    "python": "3.14.5",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.20.1",
+      "tokenizers": "0.23.3"
+    }
+  },
+  "baseline_plans": {
+    "protectai": {
+      "status": "ready",
+      "data_ready": true,
+      "gpu_checked": false,
+      "model_loads": 2,
+      "latency_stages": 14,
+      "warmup_batches": 280,
+      "timed_batches": 1740
+    },
+    "accuknox": {
+      "status": "ready",
+      "data_ready": true,
+      "gpu_checked": false,
+      "model_loads": 8,
+      "latency_stages": 56,
+      "warmup_batches": 1120,
+      "timed_batches": 6960
+    }
+  },
+  "restored_snapshots_match_originals": true,
+  "whitespace_exception": {
+    "file": "u1_benchmark/d3_family.py",
+    "kind": "one existing blank line at EOF preserved for exact GPU source identity"
+  },
+  "privacy_scan_scope": "Selected files and all ZIP member bytes; token/key signatures, no credential values emitted",
+  "quality_evaluated": false,
+  "documentation": {
+    "local_links_checked": 171,
+    "link_errors": [],
+    "cli_help_commands": [
+      "setup",
+      "auth-check",
+      "fetch-data",
+      "prepare-data",
+      "plan",
+      "preflight",
+      "run",
+      "quality",
+      "report",
+      "table"
+    ]
+  }
+}

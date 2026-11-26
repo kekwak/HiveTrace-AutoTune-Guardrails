@@ -1,0 +1,277 @@
+{
+  "status": "partial",
+  "quality_evaluated": false,
+  "speed_measured": false,
+  "production_changed_during_diagnostic": false,
+  "pod_id": "10vvh64st660kt",
+  "diagnostics": {
+    "archive_sha256": "751a2c48eab099183d18dbc4d740d34e7927474af7fb2c2f8d7e76f3333a04cd",
+    "crc_passed": true,
+    "jobs": [
+      {
+        "name": "replay-protectai-native",
+        "status": "passed",
+        "started_at": 1795640554.1508162,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795640629.7470603
+      },
+      {
+        "name": "replay-protectai-adapter",
+        "status": "passed",
+        "started_at": 1795640629.7542958,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795640692.1755662
+      },
+      {
+        "name": "replay-accuknox-native",
+        "status": "passed",
+        "started_at": 1795640692.1879344,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795640819.6972144
+      },
+      {
+        "name": "replay-accuknox-adapter",
+        "status": "passed",
+        "started_at": 1795640819.7069023,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795640887.8935618
+      },
+      {
+        "name": "protectai-direct-0",
+        "status": "passed",
+        "started_at": 1795640887.9024765,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795640946.0291328
+      },
+      {
+        "name": "protectai-warm-0",
+        "status": "passed",
+        "started_at": 1795640946.0393786,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795641005.353074
+      },
+      {
+        "name": "protectai-warm-1",
+        "status": "passed",
+        "started_at": 1795641005.3610325,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795641062.022829
+      },
+      {
+        "name": "protectai-direct-1",
+        "status": "passed",
+        "started_at": 1795641062.0315504,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795641123.802699
+      },
+      {
+        "name": "protectai-direct-2",
+        "status": "passed",
+        "started_at": 1795641123.8087597,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795641185.6779084
+      },
+      {
+        "name": "protectai-warm-2",
+        "status": "passed",
+        "started_at": 1795641185.683662,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795641240.2287602
+      },
+      {
+        "name": "primitives-async",
+        "status": "passed",
+        "started_at": 1795641240.237293,
+        "exit_code": 0,
+        "phase": "bmm",
+        "error_type": null,
+        "finished_at": 1795641259.869253
+      },
+      {
+        "name": "protectai-adapter-async",
+        "status": "passed",
+        "started_at": 1795641259.8791614,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795641326.8283155
+      },
+      {
+        "name": "accuknox-adapter-async",
+        "status": "passed",
+        "started_at": 1795641326.836003,
+        "exit_code": 0,
+        "phase": "request",
+        "error_type": null,
+        "finished_at": 1795641393.0235162
+      }
+    ]
+  },
+  "models": {
+    "protectai": {
+      "archive_sha256": "cf9e498cf1ab8e69211b5a51021dca24b9e2d43ee971e984e7a47526d140c77d",
+      "crc_passed": true,
+      "offline_report_equal": true,
+      "environment_equal_to_failed_smoke": true,
+      "resolved_differences_from_failed_smoke": [
+        "created_at",
+        "environment",
+        "session_id"
+      ],
+      "status": "preflight_passed",
+      "workers": [
+        {
+          "bucket": "B1",
+          "batch_size": 2,
+          "status": "passed",
+          "gpu_uuid": "GPU-b63988b2-d0a5-0c61-fb92-0db1cfca6893",
+          "boundary_checked": 512,
+          "over_limit_rejected": true,
+          "aba_passed": true,
+          "seconds": 58.273899272084236,
+          "error_type": null,
+          "backend": {
+            "runtime": "eager",
+            "attention": "eager",
+            "linear_attention": "reference",
+            "sdpa_operators": []
+          }
+        }
+      ],
+      "memory_status": "measured",
+      "cells": {
+        "B1/2": {
+          "status": "preflight_passed",
+          "memory_status": "measured"
+        }
+      }
+    },
+    "accuknox": {
+      "archive_sha256": "560c4f033741aac4b388bcd99965bca1d79e51f53b2f3dc2ef5f0842d5315726",
+      "crc_passed": true,
+      "offline_report_equal": true,
+      "environment_equal_to_failed_smoke": true,
+      "resolved_differences_from_failed_smoke": [
+        "created_at",
+        "environment",
+        "session_id"
+      ],
+      "status": "partial",
+      "workers": [
+        {
+          "bucket": "B1",
+          "batch_size": 2,
+          "status": "passed",
+          "gpu_uuid": "GPU-b63988b2-d0a5-0c61-fb92-0db1cfca6893",
+          "boundary_checked": 512,
+          "over_limit_rejected": true,
+          "aba_passed": true,
+          "seconds": 101.94830447493587,
+          "error_type": null,
+          "backend": {
+            "runtime": "eager",
+            "attention": "sdpa",
+            "linear_attention": "native",
+            "sdpa_operators": [
+              "aten::_scaled_dot_product_efficient_attention"
+            ]
+          }
+        },
+        {
+          "bucket": "B2",
+          "batch_size": 2,
+          "status": "passed",
+          "gpu_uuid": "GPU-b63988b2-d0a5-0c61-fb92-0db1cfca6893",
+          "boundary_checked": 1024,
+          "over_limit_rejected": true,
+          "aba_passed": true,
+          "seconds": 99.01063385501038,
+          "error_type": null,
+          "backend": {
+            "runtime": "eager",
+            "attention": "sdpa",
+            "linear_attention": "native",
+            "sdpa_operators": [
+              "aten::_scaled_dot_product_efficient_attention"
+            ]
+          }
+        },
+        {
+          "bucket": "B3",
+          "batch_size": 2,
+          "status": "passed",
+          "gpu_uuid": "GPU-b63988b2-d0a5-0c61-fb92-0db1cfca6893",
+          "boundary_checked": 2048,
+          "over_limit_rejected": true,
+          "aba_passed": true,
+          "seconds": 103.67504554206971,
+          "error_type": null,
+          "backend": {
+            "runtime": "eager",
+            "attention": "sdpa",
+            "linear_attention": "native",
+            "sdpa_operators": [
+              "aten::_scaled_dot_product_efficient_attention"
+            ]
+          }
+        },
+        {
+          "bucket": "B4",
+          "batch_size": 2,
+          "status": "failed",
+          "gpu_uuid": "GPU-b63988b2-d0a5-0c61-fb92-0db1cfca6893",
+          "boundary_checked": null,
+          "over_limit_rejected": null,
+          "aba_passed": null,
+          "seconds": 54.74049441399984,
+          "error_type": "ValueError",
+          "backend": {
+            "runtime": null,
+            "attention": null,
+            "linear_attention": null,
+            "sdpa_operators": null
+          }
+        }
+      ],
+      "memory_status": "measured",
+      "cells": {
+        "B1/2": {
+          "status": "preflight_passed",
+          "memory_status": "measured"
+        },
+        "B2/2": {
+          "status": "preflight_passed",
+          "memory_status": "measured"
+        },
+        "B3/2": {
+          "status": "preflight_passed",
+          "memory_status": "measured"
+        },
+        "B4/2": {
+          "status": "incomplete",
+          "memory_status": "unavailable"
+        }
+      }
+    }
+  }
+}

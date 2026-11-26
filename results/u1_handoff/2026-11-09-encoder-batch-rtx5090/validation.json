@@ -1,0 +1,651 @@
+{
+  "date": "2026-11-09",
+  "status": "smoke_passed",
+  "models": 4,
+  "cells_passed": 20,
+  "batch_sizes": [
+    1,
+    8,
+    16,
+    32,
+    64
+  ],
+  "bucket": "B1",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "gpu_uuid": "GPU-7a135cd9-bf4d-57db-3642-3d8f31969cad",
+  "driver": "595.91.07",
+  "runtime": {
+    "profile": "team-rtx",
+    "python": "3.13.15",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "cudnn": 91900,
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "compute_capability": [
+      12,
+      0
+    ],
+    "total_memory_bytes": 33670758400,
+    "seed": 42,
+    "cpu_threads": 2,
+    "tf32": false,
+    "deterministic": "warn_only",
+    "hub_kernels": false,
+    "visible_device": 0,
+    "cuda_primitive_passed": true,
+    "model_tested": false,
+    "ort_cuda_tested": false
+  },
+  "install_report_matches_lock": true,
+  "worker_inventories_match_lock": true,
+  "locked_packages": 97,
+  "source_files": 82,
+  "source_checksums_match_local": true,
+  "offline_reports_equal": true,
+  "archive_crc_passed": true,
+  "archives": {
+    "outputs-r2.zip": {
+      "bytes": 16589000,
+      "sha256": "ef74b71ea6bd4e8ca5564273ebe60c9abc72c1b5ae2ea46fbf890b580caa85ba"
+    },
+    "outputs.zip": {
+      "bytes": 698258,
+      "sha256": "5559a0de02b49289b287bd6f9cc60d9f22480655c9bb234505f760b22a575231"
+    }
+  },
+  "results": {
+    "gliner": {
+      "1": {
+        "status": "passed",
+        "seconds": 109.9108846229501,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 1994.0,
+          "inference": 1994.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "6222b7b6042b605aa34b39d094027c4d1e74cafe97bf7d9965d05840c40531fc"
+      },
+      "8": {
+        "status": "passed",
+        "seconds": 65.47803197288886,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 2694.0,
+          "inference": 2694.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "3a8c9f5ef3a8d5b3d654891ce428c2715171026807e810175455ba08cab16ad0"
+      },
+      "16": {
+        "status": "passed",
+        "seconds": 64.84937683190219,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 3454.0,
+          "inference": 3454.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "cd2e984b7c8098ca9678061cb6424b769c8bde53a632b35106113d1e179c2330"
+      },
+      "32": {
+        "status": "passed",
+        "seconds": 63.45478542498313,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 5068.0,
+          "inference": 5068.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "f917d27dfec5aa139eabaf2ba9f88dd4521e5dafdfcaa785f9e1bc7e2cf7edab"
+      },
+      "64": {
+        "status": "passed",
+        "seconds": 73.43718053097837,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 8344.0,
+          "inference": 8344.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "b8b035663fa08f01f3e628a4bda57e2abd5dbcaddda87135e0bebbded1d40507"
+      }
+    },
+    "koala": {
+      "1": {
+        "status": "passed",
+        "seconds": 69.68602945795283,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 1354.0,
+          "inference": 1354.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "c91b7d4f40325d6b7b5344ae5f670e8e5526eda76282688ff0446d3fe6213e6d"
+      },
+      "8": {
+        "status": "passed",
+        "seconds": 62.39170526503585,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 2180.0,
+          "inference": 2180.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "3ccf3fd969d9c5689244bb2c9dc90a4f40079bde601c570bc94f6ae2f1d96117"
+      },
+      "16": {
+        "status": "passed",
+        "seconds": 52.46261930000037,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 3106.0,
+          "inference": 3106.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "c66aae64cd3b545a9c5caac7edcc5e05567f10b6b4db4ccc9ea40f6942e2d008"
+      },
+      "32": {
+        "status": "passed",
+        "seconds": 53.310253964038566,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 4988.0,
+          "inference": 4988.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "7d3e51951fb002383f078b9299d6d54084098b11326f6a7669a4df2acfb8b4c7"
+      },
+      "64": {
+        "status": "passed",
+        "seconds": 77.42605532682501,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 8992.0,
+          "inference": 8992.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "1670989c98238dc5fc09963f1e8823f1c9e84c9f6c6f0c9b0427cd01312f636a"
+      }
+    },
+    "llama": {
+      "1": {
+        "status": "passed",
+        "seconds": 59.92166602588259,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 1032.0,
+          "inference": 1032.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "d049205c273c77da23710126cd39d58c3924368a9edcefe33f789c1c7bc670a5"
+      },
+      "8": {
+        "status": "passed",
+        "seconds": 70.35181664302945,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 1374.0,
+          "inference": 1374.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "b2d415936b77a70992638502f37c336edeac2d2143d3e8ec0747c2caf082b37b"
+      },
+      "16": {
+        "status": "passed",
+        "seconds": 59.711633164901286,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 1768.0,
+          "inference": 1768.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "cda3921cbcfdf5481629bd2b0f7a2ee51e9c3832f22fe0e411bee27ec246b018"
+      },
+      "32": {
+        "status": "passed",
+        "seconds": 56.64570288313553,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 2578.0,
+          "inference": 2578.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "58812de54d41010752356ea125bcbc64f9ba0ca081bf0434c20e7ade2a03699a"
+      },
+      "64": {
+        "status": "passed",
+        "seconds": 60.442703202134,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 4204.0,
+          "inference": 4204.0
+        },
+        "precision": null,
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 0
+        },
+        "result_sha256": "38598fc478680066220159b0a8f4f46a33dbf3aa8c963d24a1f39411e7a8d18d"
+      }
+    },
+    "laya": {
+      "1": {
+        "status": "passed",
+        "seconds": 57.91484832717106,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 2426.0,
+          "inference": 2426.0
+        },
+        "precision": {
+          "parameter_dtypes": [
+            "float32"
+          ],
+          "autocast_enabled": true,
+          "autocast_dtype": "bfloat16",
+          "policy": "native_sdk"
+        },
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 50283
+        },
+        "result_sha256": "13ca4f088c89fff5cf8dfe763c7e2fd439e65203f356275f85e9050347298d30"
+      },
+      "8": {
+        "status": "passed",
+        "seconds": 58.093455565860495,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 2614.0,
+          "inference": 2614.0
+        },
+        "precision": {
+          "parameter_dtypes": [
+            "float32"
+          ],
+          "autocast_enabled": true,
+          "autocast_dtype": "bfloat16",
+          "policy": "native_sdk"
+        },
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 50283
+        },
+        "result_sha256": "880e003bb9344951ff7bc5601559d077d68fbe88029d681201d6fad33291bb3f"
+      },
+      "16": {
+        "status": "passed",
+        "seconds": 56.37917519896291,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 2824.0,
+          "inference": 2824.0
+        },
+        "precision": {
+          "parameter_dtypes": [
+            "float32"
+          ],
+          "autocast_enabled": true,
+          "autocast_dtype": "bfloat16",
+          "policy": "native_sdk"
+        },
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 50283
+        },
+        "result_sha256": "6367009618b9d9ad60c110f7fa1763505b7e71357b591b1c384f75468ab2093f"
+      },
+      "32": {
+        "status": "passed",
+        "seconds": 70.25082525704056,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 3308.0,
+          "inference": 3308.0
+        },
+        "precision": {
+          "parameter_dtypes": [
+            "float32"
+          ],
+          "autocast_enabled": true,
+          "autocast_dtype": "bfloat16",
+          "policy": "native_sdk"
+        },
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 50283
+        },
+        "result_sha256": "11d41804e7bda2e2a158ca8bb12a80f89bc96dadc24a4e6a3f514f97de689420"
+      },
+      "64": {
+        "status": "passed",
+        "seconds": 62.39976068213582,
+        "boundary": {
+          "tokens": 512,
+          "model_limit": 512,
+          "over_limit_rejected": true
+        },
+        "aba_passed": true,
+        "sampled_gpu_peak_mib": {
+          "setup": 4278.0,
+          "inference": 4278.0
+        },
+        "precision": {
+          "parameter_dtypes": [
+            "float32"
+          ],
+          "autocast_enabled": true,
+          "autocast_dtype": "bfloat16",
+          "policy": "native_sdk"
+        },
+        "backend_actual": "eager",
+        "batch_policy": {
+          "padding": "longest",
+          "padding_side": "right",
+          "truncation": false,
+          "sort_by_length": false,
+          "implementation": "native",
+          "generation_eos_in_count": true,
+          "pad_token_id": 50283
+        },
+        "result_sha256": "e893f9ddfd5fc147e424f48330a1b45aacb489734fa7e320ce7be8be7311443b"
+      }
+    }
+  },
+  "quality_evaluated": false,
+  "screening_performed": false,
+  "compile_ort_batch_gpu_tested": false,
+  "decoder_batch_gpu_tested": false,
+  "pod": {
+    "id": "0seo2i6v1lt50y",
+    "created_at": "2026-11-08T22:57:34.697Z",
+    "terminated_confirmed_at": "2026-11-08T23:47:35Z",
+    "gpu_hourly_usd": 1.19,
+    "estimated_compute_and_container_usd": 0.996,
+    "billing_finalized": false
+  },
+  "retained_environment": {
+    "network_volume_id": "dng6q8yq2c",
+    "data_center": "EUR-NO-1",
+    "size_gb": 80,
+    "estimated_monthly_usd": 5.6,
+    "root": "/workspace/u1-encoder-smoke-2026-11-09",
+    "venv": "u1-env/venv",
+    "repo": "repo",
+    "hf_cache": "hf-cache",
+    "container_image": "runpod/pytorch:1.0.7-cu1300-torch291-ubuntu2404-cluster"
+  },
+  "first_attempt": {
+    "status": "failed",
+    "phase": "fetch-data",
+    "reason": "bundle omitted configs/data/role_speed_v4.json",
+    "measurement_code_changed": false,
+    "preserved_archive": "outputs.zip"
+  }
+}

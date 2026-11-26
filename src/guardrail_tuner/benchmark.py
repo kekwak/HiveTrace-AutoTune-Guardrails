@@ -50,6 +50,7 @@ def run_benchmark(
     rigorous: bool = False,
     ort_provider: str = "auto",
     workload: Workload | None = None,
+    artifact_dir: str | None = None,
 ) -> dict[str, Any]:
     try:
         import numpy as np
@@ -309,12 +310,19 @@ def run_benchmark(
             output_mode,
             threshold,
         )
+    artifacts = None
+    if artifact_dir is not None:
+        from .exported_classifier import save_artifacts
+
+        artifacts = save_artifacts(model, ort_model, tokenizer, Path(artifact_dir))
     return {
         "model": model_id,
+        **({"execution_artifacts": artifacts} if artifacts is not None else {}),
         "model_revision": resolved_revision,
         "device": device,
         "gpu": torch.cuda.get_device_name(0) if device == "cuda" else None,
         "providers": actual_providers,
+        "provider_options": ort_model.model.get_provider_options(),
         "provider_note": (
             "TensorRT EP is enabled; node-level TensorRT coverage is not verified"
             if ort_provider == "tensorrt"

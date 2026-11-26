@@ -165,16 +165,31 @@ def main() -> int:
         ("plan", "Suggest runtime checks based on model metadata"),
     ):
         subparser = commands.add_parser(command, help=help_text)
-        subparser.add_argument("model", help="Hugging Face model ID or local model directory")
+        subparser.add_argument(
+            "model",
+            nargs="?" if command == "plan" else None,
+            help="Hugging Face model ID or local model directory",
+        )
         subparser.add_argument("--revision", help="Hugging Face branch, tag or commit")
         if command == "plan":
             subparser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
+            subparser.add_argument("--config", help="Complete U1 baseline configuration")
+            subparser.add_argument("--output", help="Write an executable version 2 plan")
+    evaluation = commands.add_parser("eval", help="Measure a plan with the U1 protocol")
+    evaluation.add_argument("--config", required=True)
+    evaluation.add_argument("--output", required=True)
+    evaluation.add_argument("--baseline-ref")
+    offline = commands.add_parser("report", help="Rebuild a saved U1 report without model loading")
+    offline.add_argument("input")
     run = commands.add_parser("run", help="Run inference with the plan configuration")
     run.add_argument("--config", required=True)
     run.add_argument("--text", action="append", help="Input text; repeat for multiple inputs")
+    run.add_argument("--messages", help="JSON file containing one ordered conversation")
+    run.add_argument("--variant", choices=("baseline", "candidate"), default="candidate")
     api = commands.add_parser("serve", help="Serve optimized inference on localhost")
     api.add_argument("--config", required=True)
     api.add_argument("--port", type=int, default=8000)
+    api.add_argument("--variant", choices=("baseline", "candidate"), default="candidate")
     datasets_parser = commands.add_parser(
         "datasets", help="Load and inspect quality and performance datasets"
     )
@@ -286,7 +301,65 @@ def main() -> int:
 
     recorder = None
     output_dir_was_usable = False
+    native_command = args.command in ("eval", "report") or (
+        args.command == "plan" and bool(args.config)
+    )
     try:
+        if args.command == "plan" and args.config:
+            from .u1_bridge import make_plan, read_document, write_document
+
+            if args.model or args.revision:
+                raise ValueError("Use either model/revision or --config")
+            raw = read_document(args.config)
+            source = raw["baseline"]["weights"]
+            metadata = inspect_model(source.get("repo", source.get("path")), source.get("revision"))
+            result = make_plan(raw, metadata)
+            if args.output:
+                write_document(args.output, result)
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0
+        if args.command == "eval":
+            from .u1_bridge import evaluate
+
+            result = evaluate(args.config, args.output, args.baseline_ref)
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0 if result.get("complete") else 1
+        if args.command == "report":
+            from .u1_bridge import offline_report
+
+            result = offline_report(args.input)
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0
+        if args.command in ("run", "serve"):
+            from .u1_bridge import execution, read_document, run_native, serve_native
+
+            document = read_document(args.config)
+            native = (
+                document.get("plan_version") == 2
+                or document.get("execution", {}).get("version") == 2
+            )
+            if native:
+                native_command = True
+                selected = execution(document, args.variant, Path(args.config).resolve().parent)
+                if args.command == "serve":
+                    if not 0 <= args.port <= 65535:
+                        raise ValueError("Invalid port")
+                    serve_native(selected, args.port)
+                else:
+                    if args.messages and args.text:
+                        raise ValueError("Use --messages or --text, not both")
+                    inputs = (
+                        [json.loads(Path(args.messages).read_text())]
+                        if args.messages
+                        else args.text
+                        if args.text is not None
+                        else [sys.stdin.read()]
+                    )
+                    result = run_native(selected, inputs)
+                    print(json.dumps(result, indent=2, ensure_ascii=False))
+                return 0
+            if args.command == "run" and args.messages:
+                raise ValueError("Role messages require a native version 2 plan")
         if args.command == "serve":
             if not 0 <= args.port <= 65535:
                 raise ValueError("Invalid port")
@@ -467,9 +540,15 @@ def main() -> int:
                     **options,
                 )
         else:
+            if not args.model:
+                raise ValueError("Provide a model or plan --config")
             result = inspect_model(args.model, args.revision)
             if args.command == "plan":
                 result = plan_checks(result, args.device)
+                if args.output:
+                    from .u1_bridge import write_document
+
+                    write_document(args.output, result)
         if recorder is not None:
             if args.command == "probe-vllm":
                 local = recorder.local_model_path is not None
@@ -492,7 +571,19 @@ def main() -> int:
                 result["manifest_path"] = str(manifest_path)
             else:
                 result["run_manifest"] = manifest
-    except (OSError, ValueError) as exc:
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        if native_command:
+            print(
+                json.dumps(
+                    {"status": "failed", "error_type": type(exc).__name__, "command": args.command}
+                ),
+                file=sys.stdout,
+            )
+            parser.exit(
+                1,
+                "guardrail-tuner: verify the config, pinned environment and saved "
+                "result status; no fallback was used.\n",
+            )
         if recorder is not None and recorder.token is not None:
             try:
                 failed_path = (
