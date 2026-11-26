@@ -255,16 +255,18 @@ class NativeAdapter:
         self.metadata['batch_backend_proof'] = proof
         return proof
 
-    def boundary(self, bucket_max):
+    def boundary(self, bucket_max, *, payload_factory=None):
         if type(bucket_max) is not int or not 0 < bucket_max <= self.limit:
             raise ValueError('Bucket edge must be inside model input limit')
 
         def find(target):
-            for unit in ('a ', 'hello ', 'text ', '0 '):
+            for unit in ('a ', 'hello ', 'text ', '0 ', 'x'):
                 lo, hi = 0, target * 2
                 while lo <= hi:
                     mid = (lo + hi) // 2
                     value = unit * mid + '.'
+                    if payload_factory is not None:
+                        value = payload_factory(value)
                     n = self.index(value)['total_tokens']
                     if n == target:
                         return value
@@ -308,6 +310,12 @@ class NativeAdapter:
 
 
 def load_adapter(spec, directory):
+    if spec.get('adapter') == 'hf_sequence_classification':
+        from .classifier_family import ClassificationAdapter
+        return ClassificationAdapter(spec, directory)
+    if spec.get('adapter') == 'd3_decision':
+        from .d3_family import D3Adapter
+        return D3Adapter(spec, directory)
     if not isinstance(spec.get('adapter'), dict):
         return NativeAdapter(spec, directory)
     adapter = external_module(spec).create(deepcopy(spec), Path(directory))

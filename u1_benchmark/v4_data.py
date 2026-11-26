@@ -345,12 +345,21 @@ def _factory(spec):
 
 def _native(entry, rows, factory):
     preparer = factory(entry["spec"])
+    preparation_evidence = {}
     try:
         if not callable(getattr(preparer, "parity", None)):
             raise DataError("CPU preparer must expose parity()")
         parity = preparer.parity()
         if not isinstance(parity, dict) or parity.get("status") != "passed":
             raise DataError("Native preparation parity failed")
+        metadata = getattr(preparer, 'metadata', {})
+        if isinstance(metadata, dict) and metadata.get('dependencies'):
+            import importlib.metadata
+            import platform
+            preparation_evidence = {'cpu_python': platform.python_version(),
+                'dependency_versions': {name: importlib.metadata.version(name) for name in
+                    ('transformers', 'tokenizers') if name in metadata['dependencies']},
+                'preparation_assets_sha256': digest(metadata.get('assets', {}))}
         values = [dict(preparer.index(row)) for row in rows]
         index = _index(values, rows)
         for value in values:
@@ -365,7 +374,7 @@ def _native(entry, rows, factory):
         if callable(close):
             close()
     # Do not copy arbitrary adapter metadata or exception messages into public files.
-    return values, index, {"status": "passed", "scope": "CPU native input preparation"}
+    return values, index, {"status": "passed", "scope": "CPU native input preparation", **preparation_evidence}
 
 
 def _blocker(error, stage):

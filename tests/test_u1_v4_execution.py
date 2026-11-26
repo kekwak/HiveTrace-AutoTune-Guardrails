@@ -812,13 +812,15 @@ class EvidenceTests(Fixture):
 class RunnerTests(Fixture):
     def test_plan_missing_data_is_not_ready_but_invalid_config_raises(self):
         from u1_benchmark.v4_data import DataError
+        from u1_benchmark.capabilities import variants
         cfg = self.cfg()
         for error in (DataError(SECRET), FileNotFoundError(SECRET)):
             with self.subTest(error=type(error).__name__), patch.object(runner, "inputs", side_effect=error):
                 value = runner.plan(cfg)
             self.assertEqual(value, {"status": "not_ready", "phase": "data",
                                      "error_type": type(error).__name__, "schema_version": 4,
-                                     "data_ready": False, "gpu_checked": False})
+                                     "data_ready": False, "gpu_checked": False,
+                                     "capabilities": variants(cfg)})
             self.assertNotIn(SECRET, json.dumps(value))
         with patch.object(runner, "inputs") as inputs:
             with self.assertRaises(config.ConfigurationError):

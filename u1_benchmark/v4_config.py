@@ -69,12 +69,15 @@ def variant(spec):
             raise ConfigurationError("External adapter requires module, hash and dependencies")
         if not re.fullmatch(r"[0-9a-f]{64}", adapter["source_sha256"]):
             raise ConfigurationError("Invalid adapter hash")
-    elif adapter not in {"halo", "gliner", "koala", "llama", "laya", "hive", "open", "shield"}:
+    elif adapter not in {"halo", "gliner", "koala", "llama", "laya", "hive", "open", "shield",
+                         "hf_sequence_classification", "d3_decision"}:
         raise ConfigurationError("Unknown explicit adapter")
     source(spec["weights"])
     source(spec["tokenizer"])
     source(spec["template"], template=True)
-    for asset in spec.get("sdk_assets", {}).values():
+    for key, asset in spec.get("sdk_assets", {}).items():
+        if adapter == 'd3_decision' and key == 'manifest':
+            continue  # The family validates this explicit filename -> SHA256 inventory.
         source(asset)
     if not positive(spec["preparation"].get("limit")):
         raise ConfigurationError("Explicit positive input limit required")

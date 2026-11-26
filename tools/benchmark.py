@@ -20,7 +20,7 @@ def public_result(command, result, args):
         fields |= {"schema_version", "mode", "pilot", "effective_settings", "data_ready", "reference_ready",
                    "quality_workers", "preflight_workers", "latency_workers", "warmup_batches", "timed_batches",
                    "timed_input_occurrences", "memory_workers", "profile_workers", "environment_verified",
-                   "gpu_checked", "quality_input_occurrences"}
+                   "gpu_checked", "quality_input_occurrences", "capabilities"}
         fields |= {"model_loads", "model_worker_processes", "preflight_stages", "latency_stages"}
     elif command == "table":
         fields |= {"rows", "omitted"}
@@ -87,7 +87,7 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     p = commands.add_parser("setup")
     p.add_argument("--environment", required=True)
-    p.add_argument("--profile", choices=("team-t4", "team-rtx", "team-t4-laya"), default="team-t4")
+    p.add_argument("--profile", choices=("team-t4", "team-rtx", "team-t4-laya", "team-d3"), default="team-t4")
     p = commands.add_parser("auth-check")
     p.add_argument("--model", default="shield")
     p.add_argument("--config", help="Check the explicitly configured HF sources without loading weights")

@@ -117,7 +117,11 @@ def frozen_config(cfg, variant_identities=None):
             source(spec[key])
         source(spec["template"], template=True)
         require(isinstance(spec.get("sdk_assets", {}), dict), "invalid_frozen_assets")
-        for asset in spec.get("sdk_assets", {}).values():
+        for key, asset in spec.get("sdk_assets", {}).items():
+            if adapter == 'd3_decision' and key == 'manifest':
+                require(isinstance(asset, dict) and bool(asset)
+                        and all(isinstance(k, str) and checksum(v) for k, v in asset.items()), 'invalid_frozen_assets')
+                continue
             source(asset)
         require(isinstance(spec["preparation"], dict) and type(spec["preparation"].get("limit")) is int
                 and spec["preparation"]["limit"] > 0 and isinstance(spec["scoring"], dict), "invalid_frozen_preparation")
@@ -987,6 +991,8 @@ def _build(root):
                       data_manifest_sha256=evidence.resolved["data_manifest_sha256"],
                       source_inventory_sha256=digest(evidence.resolved["source_inventory"]),
                       monitoring_status=_monitoring(evidence.resolved))
+        if 'capabilities' in evidence.resolved:
+            result['capabilities'] = evidence.resolved['capabilities']
         run_finished = evidence.state.get("status") in ("completed", "baseline_complete", "baseline_unstable", "confirm_pass",
                 "inconclusive", "rejected", "exploratory", "pilot_complete", "preflight_passed", "quality_complete",
                 "quantization_measured", "incomplete", "partial", "reference_pass")

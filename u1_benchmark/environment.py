@@ -18,18 +18,23 @@ def rtx_name(name):
 def profile(environment):
     path = Path(environment) / "setup/profile.json"
     value = read(path)["profile"] if path.exists() else "team-t4"
-    if value not in ("team-t4", "team-rtx", "team-t4-laya"):
+    if value not in ("team-t4", "team-rtx", "team-t4-laya", "team-d3"):
         raise ValueError("Unknown saved environment profile")
     return value
 
 
 def expected_lock(environment):
-    name = "team_environment.lock.json" if profile(environment) == "team-t4" else "team_rtx.lock.json"
+    selected = profile(environment)
+    name = {"team-t4": "team_environment.lock.json", "team-d3": "team_d3.lock.json"}.get(
+        selected, "team_rtx.lock.json")
     return read(ROOT / "env" / name)
 
 
 def rtx_requirements(lock):
     from followup.team_lock import requirements
+    if lock.get("profile") == "team-d3":
+        return requirements(lock).replace("# Original smoke passed; redeployment from this lock has NOT been verified.",
+            "# Prepared d3 lock; installation and GPU compatibility have NOT been verified.")
     return requirements(lock).replace("# Original smoke passed; redeployment from this lock has NOT been verified.",
         "# Derived RTX lock: installation, Laya runtime and GPU compatibility NOT verified.")
 
@@ -37,7 +42,7 @@ def rtx_requirements(lock):
 def extended_gpu(name, selected):
     if selected == "team-t4-laya":
         return name.strip() in ("Tesla T4", "NVIDIA T4")
-    if selected == "team-rtx":
+    if selected in ("team-rtx", "team-d3"):
         return rtx_name(name)
     raise ValueError("Unknown extended environment profile")
 
@@ -109,7 +114,7 @@ def probe(environment, directory):
 def setup_rtx(directory, selected="team-rtx"):
     from followup.team_lock import requirements
     from .process import check_archive_target, finish_archive, invoke
-    if selected not in ("team-rtx", "team-t4-laya"):
+    if selected not in ("team-rtx", "team-t4-laya", "team-d3"):
         raise ValueError("Unknown extended environment profile")
     directory = Path(directory).resolve()
     check_archive_target(directory)
@@ -122,8 +127,9 @@ def setup_rtx(directory, selected="team-rtx"):
         lock = expected_lock(directory)
         write(folder / "lock.json", lock)
         text = rtx_requirements(lock)
-        if text != (ROOT / "env/team_rtx.lock.txt").read_text():
-            raise ValueError("RTX lock text differs from manifest")
+        lock_text = "team_d3.lock.txt" if selected == "team-d3" else "team_rtx.lock.txt"
+        if text != (ROOT / "env" / lock_text).read_text():
+            raise ValueError("Environment lock text differs from manifest")
         (folder / "requirements.txt").write_text(text)
         python = directory / "venv/bin/python"
         invoke([sys.executable, "-m", "venv", "--without-pip", directory / "venv"], folder / "venv.log", 120)

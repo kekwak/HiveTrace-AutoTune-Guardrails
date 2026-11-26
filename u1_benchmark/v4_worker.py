@@ -43,7 +43,8 @@ def safe_metadata(adapter):
             "batch_policy", "preparation", "backend_requested", "backend_actual", "variant_sha256", "buffer_dtypes",
             "batch_backend_proof", "batch_dispatch", "ort_evidence", "batch_ort_checked_shapes", "ort",
             "ort_profile_active_during_latency", "prepared_compile_count",
-            "runtime", "dtype", "padding_side", "implementation", "source_inventory", "artifacts", "labels")
+            "runtime", "dtype", "padding_side", "implementation", "source_inventory", "artifacts", "labels",
+            "capabilities", "compile")
     value = {k: deepcopy(v) for k, v in adapter.metadata.items() if k in keys}
     return value
 
@@ -240,6 +241,7 @@ def execute(job_path, *, adapter_factory=None, runtime_factory=None, torch_modul
     def checkpoint():
         if adapter is not None:
             result["metadata"] = safe_metadata(adapter)
+            result['precision_policy_version'] = adapter.metadata.get('precision', {}).get('version', 1)
         snapshot = deepcopy(result)
         texts = private_values(rows, config)
         allowed = public_labels(adapter, config.get(job["variant"])) if adapter is not None else ()

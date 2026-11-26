@@ -11,7 +11,7 @@ ENTRY = ROOT / "tools/benchmark.py"
 
 
 def setup(directory, profile="team-t4"):
-    if profile in ("team-rtx", "team-t4-laya"):
+    if profile in ("team-rtx", "team-t4-laya", "team-d3"):
         from .environment import setup_rtx
         return setup_rtx(directory, profile)
     if profile != "team-t4":

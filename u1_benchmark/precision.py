@@ -16,6 +16,10 @@ class PrecisionError(ValueError):
 
 def validate_precision(value):
     fields = {"parameter_dtypes", "autocast_enabled", "autocast_dtype", "policy"}
+    if isinstance(value, dict) and 'version' in value:
+        if type(value['version']) is not int or value['version'] != 2:
+            raise PrecisionError('Unknown precision evidence version')
+        fields |= {'version', 'tensor_roles'}
     if not isinstance(value, dict) or set(value) != fields:
         raise PrecisionError("Execution precision passport is required")
     dtypes = value["parameter_dtypes"]
@@ -28,6 +32,19 @@ def validate_precision(value):
         raise PrecisionError("Invalid autocast in precision passport")
     if value["policy"] not in ("native_sdk", "explicit"):
         raise PrecisionError("Invalid precision policy")
+    if value.get('version') == 2:
+        roles = value['tensor_roles']
+        if not isinstance(roles, dict) or not roles:
+            raise PrecisionError('Named tensor roles are required for mixed precision')
+        for name, role in roles.items():
+            if (not isinstance(name, str) or not name or not isinstance(role, dict) or
+                    set(role) != {'dtypes', 'device_type'} or role['device_type'] not in ('cpu', 'cuda', 'mps')):
+                raise PrecisionError('Invalid tensor precision role')
+            dtypes = role['dtypes']
+            if (not isinstance(dtypes, list) or not dtypes or
+                    any(not isinstance(t, str) or t not in PARAMETER_DTYPES for t in dtypes) or
+                    dtypes != sorted(set(dtypes))):
+                raise PrecisionError('Invalid role dtypes')
     return deepcopy(value)
 
 
@@ -62,9 +79,11 @@ class PrecisionTracker:
     def add(self, variant, result):
         value = result.get("metadata", {}).get("precision")
         version = result.get("precision_policy_version")
-        if version not in (None, 1):
+        if version not in (None, 1, 2):
             raise PrecisionError("Unknown execution precision policy version")
-        value = validate_precision(value) if version == 1 or value is not None else None
+        value = validate_precision(value) if version in (1, 2) or value is not None else None
+        if value is not None and version is not None and value.get('version', 1) != version:
+            raise PrecisionError('Worker precision version does not match passport')
         if variant in self.variants and self.variants[variant] != value:
             raise PrecisionError("Execution precision differs between workers of one variant")
         if any((other is None) != (value is None) for other in self.variants.values()):

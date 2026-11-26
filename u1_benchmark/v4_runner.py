@@ -38,11 +38,13 @@ def inputs(cfg):
 
 def plan(config):
     cfg = validate_config(config)
+    from .capabilities import variants
+    capabilities = variants(cfg)
     try:
         data, manifest, indices = inputs(cfg)
     except (DataError, OSError) as error:
         return {"status": "not_ready", "phase": "data", "error_type": type(error).__name__,
-                "schema_version": 4, "data_ready": False, "gpu_checked": False}
+                "schema_version": 4, "data_ready": False, "gpu_checked": False, "capabilities": capabilities}
     sources = source_inventory()
     try:
         reference = read_reference(cfg["baseline_ref"]) if cfg["mode"] == "search" else None
@@ -57,7 +59,7 @@ def plan(config):
     variants = ["candidate"] if cfg["mode"] == "search" else ["baseline"] + (["candidate"] if "candidate" in cfg else [])
     grid = [] if cfg["mode"] == "quality" else cells(cfg)
     result = {"status": "ready", "schema_version": 4, "mode": cfg["mode"], "pilot": cfg["pilot"],
-              "effective_settings": cfg, "data_ready": True, "reference_ready": bool(reference),
+              "effective_settings": cfg, "capabilities": capabilities, "data_ready": True, "reference_ready": bool(reference),
               "quality_workers": len(variants) if cfg["mode"] == "quality" else 0,
               "preflight_stages": len(grid) * len(variants), "latency_stages": len(jobs),
               "preflight_workers": sum(all(s["stage"] == "preflight" for s in g["stages"]) for g in groups),
@@ -124,6 +126,8 @@ def run(config, output_dir, *, preflight_only=False, launcher=invoke, progress=N
                     "data_manifest_sha256": digest(manifest), "schedule": jobs,
                     "monitoring_validation": None, "execution_groups": [group_identity(g) for g in groups]}
         from .v4_lifecycle import CACHE_POLICY
+        from .capabilities import variants
+        resolved['capabilities'] = variants(cfg)
         resolved["cache_policy"] = CACHE_POLICY
         if reference:
             resolved["reference_compatibility"] = check_reference(cfg, reference, sources, indices, environment)

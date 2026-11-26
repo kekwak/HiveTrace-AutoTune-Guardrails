@@ -121,6 +121,12 @@ def validate_settings(spec):
     result = deepcopy(spec)
     if isinstance(result.get('adapter'), dict):
         return result  # External modules own their native option namespace.
+    if result.get('adapter') == 'hf_sequence_classification':
+        from .family_preparation import validate_classifier
+        return validate_classifier(result)
+    if result.get('adapter') == 'd3_decision':
+        from .d3_family import validate_d3
+        return validate_d3(result)
     _keys(result, ('adapter', 'weights', 'tokenizer', 'template', 'preparation', 'scoring',
                    'execution', 'sdk_assets'), 'native variant')
     name = result.get('adapter')
@@ -293,8 +299,11 @@ class Preparer:
         self.assets[key] = sha(path)
         return path
 
+    def choice(self, value):
+        return select(self.name, value)
+
     def render(self, value):
-        choice = select(self.name, value)
+        choice = self.choice(value)
         effective = choice['effective_messages']
         if self.name == 'halo':
             return self.tokenizer.apply_chat_template(
@@ -338,7 +347,7 @@ class Preparer:
         if row is not None and 'id' in row:
             common['id'] = row['id']
         try:
-            choice = select(self.name, source)
+            choice = self.choice(source)
         except UnsupportedInput as error:
             return {**common, 'supported': False, 'reason': str(error), 'total_tokens': None,
                     'input_sha256': None, 'ids_sha256': None, 'mask_sha256': None}
@@ -419,6 +428,12 @@ class Preparer:
 
 
 def create_preparer(spec):
+    if spec.get('adapter') == 'hf_sequence_classification':
+        from .family_preparation import ClassificationPreparer
+        return ClassificationPreparer(spec)
+    if spec.get('adapter') == 'd3_decision':
+        from .d3_family import D3Preparer
+        return D3Preparer(spec)
     if isinstance(spec.get('adapter'), dict):
         result = external_module(spec).create_preparer(deepcopy(spec))
         if any(not callable(getattr(result, key, None)) for key in ('index', 'prepare', 'parity')):
