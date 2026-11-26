@@ -39,7 +39,7 @@ guardrail-tuner plan ./local-checkpoint
 На этом этапе CLI загружает только конфиг.
 
 `plan` предлагает проверки по типу архитектуры из конфига. Среди кандидатов
-есть vLLM, ONNX Runtime, `torch.compile` и TensorRT через ONNX. Для
+есть ONNX Runtime, `torch.compile` и TensorRT через ONNX. Для
 `torch.compile` план предусматривает сравнение с PyTorch eager, а для TensorRT
 сначала нужно проверить экспорт и запуск на CUDA. Статус
 `unverified` означает, что совместимость нужно подтвердить запуском.
@@ -81,8 +81,7 @@ flowchart LR
 `auto_map.AutoModel = "modeling_d3.D3Model"`, включая ссылки на класс в
 другом репозитории. Проверка читает конфиг без импорта кода модели.
 План указывает авторский D3 runtime как кандидат для проверки и оставляет
-`execution: null`. vLLM Transformers backend ожидает `input_ids`,
-которого нет в сигнатуре `D3Model.forward`.
+`execution: null`.
 
 ## Датасеты качества и скорости
 
@@ -325,7 +324,7 @@ guardrail-tuner compare-app \
 увеличивает потребление оперативной и видеопамяти. Для `compare-app` A/A
 сравнивает два отдельных процесса и только выбранные пользователем поля.
 
-### Проверка генерации и vLLM
+### Проверка генерации
 
 `guardrail-tuner check-generation org/model --device cpu --quality-file quality.jsonl`
 сравнивает последовательности и scores greedy-генерации с cache и без cache
@@ -333,21 +332,10 @@ guardrail-tuner compare-app \
 скомпилированный `forward` с cache. Это не проверка формата прикладного ответа
 или производительности.
 
-`guardrail-tuner probe-vllm org/model --quality-file quality.jsonl` автоматически
-запускает vLLM в изолированном процессе при наличии CUDA и установленного vLLM
-и сравнивает greedy token IDs с Transformers FP32. Совпадение токенов не
-подтверждает confidence, прикладное качество или ускорение, поэтому команда не
-выбирает vLLM автоматически. vLLM устанавливается отдельно в совместимом Linux
-CUDA-окружении; версия и совместимость модели должны проверяться на целевой машине.
-Для классификаторов можно указать `--task classification --output-mode
-multiclass` или `multilabel`: проверяются вероятности и решения при заданных
-`--threshold` и `--max-score-error`. Совместимость pooling API зависит от версии
-vLLM и модели; ошибки запуска не считаются подтверждённой несовместимостью модели.
-
 ### Manifest запуска
 
 `optimize`, `tune-model` и `compare-app` сохраняют `run_manifest.json` в каталоге
-результатов. Для `benchmark`, `check-generation` и `probe-vllm` manifest включён
+результатов. Для `benchmark` и `check-generation` manifest включён
 в JSON-ответ; чтобы записать его в файл, передайте `--manifest ./run-manifest.json`.
 Этот флаг также позволяет выбрать другой путь для команд с каталогом результатов.
 Существующие файлы не перезаписываются.
@@ -397,8 +385,7 @@ PyTorch. `--seed` задаёт seed Python, NumPy и PyTorch в процессе
 `plan` читает конфиг чекпойнта. Поле `execution` содержит фиксированный
 сценарий исполнения. Для классификации в Transformers это батчинг вместо обработки
 по одному входу. Для генерации это KV-кэш вместо повторного вычисления
-предыдущих токенов. С `--device cuda` для зарегистрированных `ForCausalLM`
-план выбирает vLLM с prefix caching. Сценарии применяются по архитектуре. CLI не перебирает
+предыдущих токенов. Сценарии применяются по архитектуре. CLI не перебирает
 параметры и не меняет конфигурацию по итогам измерения.
 
 Для Transformers план добавляет в `execution.rules` lossless-правила по признакам

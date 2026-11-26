@@ -6,6 +6,7 @@
 [протокол измерений](docs/measurement_protocol_v1.md) ·
 [полные конфиги моделей](configs/v4) ·
 [остальные команды CLI](docs/cli-guide.md) · [разработка](CONTRIBUTING.md)
+![Демонстрация plan и run на трёх моделях](docs/assets/cli-demo.gif)
 
 ## Основной сценарий
 
@@ -53,6 +54,13 @@ uv run --locked --no-sync guardrail-tuner serve --config protectai-plan.json
 [GLiNER: профилирование](results/profiling/GLiNER-Guard-Omni/README.md) ·
 [GLiNER ONNX/compile](results/comparison/gliner/REPORT.md) ·
 [T4 screening измерителя](docs/benchmark.md)
+## Дополнительные проверки
+
+| Команда | Назначение |
+| --- | --- |
+| `inspect`, `datasets` | Прочитать конфиг модели и проверить источники данных |
+| `benchmark`, `optimize` | Сравнить PyTorch и ONNX Runtime для классификации |
+| `tune-model`, `check-generation`, `compare-app` | Проверить компиляцию, кэш генерации или прикладные выходы |
 
 Исторические исходники, артефакты и approvals сохраняются. Их проценты ускорения
 не переносятся на новые модели, среды, данные или конфигурации.

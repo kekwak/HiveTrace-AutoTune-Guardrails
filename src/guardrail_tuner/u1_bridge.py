@@ -16,10 +16,18 @@ from .jsonl_process import PersistentJSONLRunner
 from .rules import select_rules
 
 
+class CheckoutRequired(ValueError):
+    pass
+
+
+class PinnedEnvironmentMissing(ValueError):
+    pass
+
+
 def checkout() -> Path:
     root = Path(__file__).resolve().parents[2]
     if not (root / "tools/benchmark.py").is_file() or not (root / "u1_benchmark").is_dir():
-        raise ValueError(
+        raise CheckoutRequired(
             "U1 commands require a repository checkout; use its documented entry point"
         )
     if str(root) not in sys.path:
@@ -140,7 +148,7 @@ def execution(document: dict[str, Any], variant: str, base: Path | None = None) 
 def _python(environment: str) -> str:
     path = Path(environment).expanduser() / "venv/bin/python"
     if not path.is_file():
-        raise ValueError("Pinned environment is missing; run benchmark setup for its profile")
+        raise PinnedEnvironmentMissing("Run benchmark setup for the configured environment profile")
     return str(path)
 
 

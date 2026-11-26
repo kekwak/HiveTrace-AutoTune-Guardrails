@@ -444,9 +444,9 @@ def test_historical_run_does_not_return_baseline_after_parity_failure(monkeypatc
         side_effect=[[{"label": 0, "logits": [1.0, 0.0]}], [{"label": 1, "logits": [0.0, 1.0]}]]
     )
     runtime.enable_rules = Mock(return_value=SimpleNamespace(applied=["c12"], skipped={}))
-    monkeypatch.setattr(legacy, "load_inference", lambda config: runtime)
+    monkeypatch.setattr(legacy, "Inference", lambda config: runtime)
     with pytest.raises(ValueError, match="parity failed"):
-        legacy.predict_inputs(
+        legacy.run_inference(
             {"runtime": "transformers", "rules": ["c12"], "task": "sequence_classification"},
             ["hello"],
         )
@@ -464,6 +464,7 @@ def test_serve_loads_once_and_releases_runtime(monkeypatch):
     runtime.predict.side_effect = lambda rows: [{"label": "safe"} for _ in rows]
     load = Mock(return_value=runtime)
     monkeypatch.setattr(u1_bridge, "load_native", load)
+    monkeypatch.setattr("socket.getfqdn", lambda address: "localhost")
     servers = queue.Queue()
     http_server = u1_bridge.HTTPServer
 
