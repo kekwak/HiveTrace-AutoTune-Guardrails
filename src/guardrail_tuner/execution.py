@@ -43,7 +43,10 @@ def read_execution(path: str) -> dict[str, Any]:
     document = json.loads(Path(path).expanduser().read_text(encoding="utf-8"))
     if not isinstance(document, dict):
         raise ValueError("Expected a JSON plan")
-    if document.get("status") == "parity_failed":
+    if (
+        document.get("status") == "parity_failed"
+        or document.get("rules", {}).get("parity", {}).get("passed") is False
+    ):
         raise ValueError("This run failed output parity")
     config = document.get("execution")
     if not isinstance(config, dict) or config.get("version") != 1:

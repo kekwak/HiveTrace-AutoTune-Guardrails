@@ -1,0 +1,95 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": "hf_sequence_classification",
+    "weights": {
+      "repo": "protectai/deberta-v3-base-prompt-injection-v2",
+      "revision": "90c9989b1a342275dd0d1a95aad283c04e075671"
+    },
+    "tokenizer": {
+      "repo": "protectai/deberta-v3-base-prompt-injection-v2",
+      "revision": "90c9989b1a342275dd0d1a95aad283c04e075671"
+    },
+    "sdk_assets": {},
+    "template": null,
+    "preparation": {
+      "limit": 512,
+      "text_selection": "assistant_else_user",
+      "add_special_tokens": true
+    },
+    "scoring": {
+      "method": "softmax_argmax",
+      "labels": [
+        "SAFE",
+        "INJECTION"
+      ]
+    },
+    "execution": {
+      "runtime": "eager",
+      "dtype": "float32",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference"
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1,
+      256
+    ]
+  },
+  "mode": "search",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u1-env",
+  "data": {
+    "path": "data/speed/new-families-d3-20261126",
+    "manifest_sha256": "846e234bd0dff69ca1d22d460e49b9c4dfdc85e08576f10f01f46bc0dd5cbc2c"
+  },
+  "quality_batch_sizes": [
+    1
+  ],
+  "candidate": {
+    "adapter": "hf_sequence_classification",
+    "weights": {
+      "repo": "protectai/deberta-v3-base-prompt-injection-v2",
+      "revision": "90c9989b1a342275dd0d1a95aad283c04e075671"
+    },
+    "tokenizer": {
+      "repo": "protectai/deberta-v3-base-prompt-injection-v2",
+      "revision": "90c9989b1a342275dd0d1a95aad283c04e075671"
+    },
+    "sdk_assets": {},
+    "template": null,
+    "preparation": {
+      "limit": 512,
+      "text_selection": "assistant_else_user",
+      "add_special_tokens": true
+    },
+    "scoring": {
+      "method": "softmax_argmax",
+      "labels": [
+        "SAFE",
+        "INJECTION"
+      ]
+    },
+    "execution": {
+      "runtime": "compile",
+      "dtype": "float32",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "reference",
+      "compile_backend": "inductor",
+      "compile_mode": "default",
+      "dynamic": true,
+      "fullgraph": true
+    }
+  }
+}

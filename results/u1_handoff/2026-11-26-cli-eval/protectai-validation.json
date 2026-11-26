@@ -1,0 +1,419 @@
+{
+  "archive": "protectai-eval.zip",
+  "sha256": "2bddcc24511ddbd8ff76be8b5ae740c21051e35e97cf85961e48c06bcea86c3d",
+  "bytes": 68935491,
+  "zip_crc_ok": true,
+  "saved_report_fields_unchanged": true,
+  "rebuild_added_fields": [
+    "rule_evidence"
+  ],
+  "status": "reference_pass",
+  "complete": true,
+  "quality_evaluated": false,
+  "comparison_design": "unpaired_reference",
+  "baseline_reused": true,
+  "cells": {
+    "B1/1": {
+      "status": "reference_pass",
+      "p50": {
+        "baseline_ms": 40.497001,
+        "candidate_ms": 5.283533500000001,
+        "ratio": 0.1304672783053738,
+        "ratio_interval_95": [
+          0.1207109094048378,
+          0.13726652896013064
+        ]
+      },
+      "p95": {
+        "baseline_ms": 56.88458155,
+        "candidate_ms": 8.756069499999999,
+        "ratio": 0.1539269387488357,
+        "ratio_interval_95": [
+          0.1418983656037809,
+          0.1646541442456394
+        ]
+      },
+      "p95_reduction": 0.8460730612511643,
+      "verdict_status": "unchanged",
+      "verdicts": {
+        "n": 400,
+        "changed_count": 0,
+        "changed_fraction": 0.0,
+        "changed_ids": [],
+        "unstable_ids": [],
+        "max_abs_score_delta": {
+          "SAFE": 1.8775463104248047e-06,
+          "INJECTION": 1.8477439880371094e-06
+        },
+        "directions": [],
+        "status": "ok"
+      },
+      "memory_status": "measured",
+      "candidate_drift_p95": 0.12473298570745994,
+      "baseline_drift_p95": 0.10560734864822474,
+      "aa_envelope_p95": 0.11104361017384079,
+      "reasons": []
+    },
+    "B1/256": {
+      "status": "reference_pass",
+      "p50": {
+        "baseline_ms": 1400.6506505,
+        "candidate_ms": 929.9792219999999,
+        "ratio": 0.663962296142881,
+        "ratio_interval_95": [
+          0.6596447754484716,
+          0.6677351003414991
+        ]
+      },
+      "p95": {
+        "baseline_ms": 1488.1672322,
+        "candidate_ms": 949.2892571000001,
+        "ratio": 0.637891519554989,
+        "ratio_interval_95": [
+          0.6317590889812144,
+          0.6601189404315893
+        ]
+      },
+      "p95_reduction": 0.362108480445011,
+      "verdict_status": "unchanged",
+      "verdicts": {
+        "n": 400,
+        "changed_count": 0,
+        "changed_fraction": 0.0,
+        "changed_ids": [],
+        "unstable_ids": [],
+        "max_abs_score_delta": {
+          "SAFE": 2.6226043701171875e-06,
+          "INJECTION": 2.6226043701171875e-06
+        },
+        "directions": [],
+        "status": "ok"
+      },
+      "memory_status": "measured",
+      "candidate_drift_p95": 0.010951622115821458,
+      "baseline_drift_p95": 0.04264366323522539,
+      "aa_envelope_p95": 0.006052376309492624,
+      "reasons": []
+    }
+  },
+  "rule_evidence": [
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 1,
+      "stage": "preflight",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "already_active": [],
+      "skipped": {},
+      "compile_count": 4
+    },
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 1,
+      "stage": "latency",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "already_active": [],
+      "skipped": {},
+      "compile_count": 4
+    },
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 1,
+      "stage": "latency",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "already_active": [],
+      "skipped": {},
+      "compile_count": 4
+    },
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 1,
+      "stage": "latency",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "already_active": [],
+      "skipped": {},
+      "compile_count": 4
+    },
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 256,
+      "stage": "preflight",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4"
+      ],
+      "already_active": [],
+      "skipped": {
+        "u1": "batch_size != 1"
+      },
+      "compile_count": 4
+    },
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 256,
+      "stage": "latency",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4"
+      ],
+      "already_active": [],
+      "skipped": {
+        "u1": "batch_size != 1"
+      },
+      "compile_count": 4
+    },
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 256,
+      "stage": "latency",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4"
+      ],
+      "already_active": [],
+      "skipped": {
+        "u1": "batch_size != 1"
+      },
+      "compile_count": 4
+    },
+    {
+      "variant": "candidate",
+      "bucket": "B1",
+      "batch_size": 256,
+      "stage": "latency",
+      "requested": [
+        "c12",
+        "c8",
+        "u4",
+        "u1"
+      ],
+      "applied": [
+        "c12",
+        "c8",
+        "u4"
+      ],
+      "already_active": [],
+      "skipped": {
+        "u1": "batch_size != 1"
+      },
+      "compile_count": 4
+    }
+  ],
+  "jobs": [
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 117.41551869106479,
+      "setup_seconds": 40.090691286022775,
+      "backend_preparation_seconds": null,
+      "warmup_seconds": null,
+      "load_owner": true,
+      "job": {
+        "stage": "preflight",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 1,
+        "block": null,
+        "lifecycle_id": "worker-00000",
+        "stage_order": 0
+      }
+    },
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 45.170627851970494,
+      "setup_seconds": 0.0,
+      "backend_preparation_seconds": 17.26336556393653,
+      "warmup_seconds": 0.10410107497591525,
+      "load_owner": false,
+      "job": {
+        "stage": "latency",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 1,
+        "block": 0,
+        "lifecycle_id": "worker-00000",
+        "stage_order": 1
+      }
+    },
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 31.86785695294384,
+      "setup_seconds": 0.0,
+      "backend_preparation_seconds": 2.0301262059947476,
+      "warmup_seconds": 0.09389513195492327,
+      "load_owner": false,
+      "job": {
+        "stage": "latency",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 1,
+        "block": 1,
+        "lifecycle_id": "worker-00000",
+        "stage_order": 2
+      }
+    },
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 31.55164188402705,
+      "setup_seconds": 0.0,
+      "backend_preparation_seconds": 1.8075467670569196,
+      "warmup_seconds": 0.09909767098724842,
+      "load_owner": false,
+      "job": {
+        "stage": "latency",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 1,
+        "block": 2,
+        "lifecycle_id": "worker-00000",
+        "stage_order": 3
+      }
+    },
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 146.89122634090018,
+      "setup_seconds": 35.97663005895447,
+      "backend_preparation_seconds": null,
+      "warmup_seconds": null,
+      "load_owner": true,
+      "job": {
+        "stage": "preflight",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 256,
+        "block": null,
+        "lifecycle_id": "worker-00001",
+        "stage_order": 0
+      }
+    },
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 260.8664754970232,
+      "setup_seconds": 0.0,
+      "backend_preparation_seconds": 113.92524505697656,
+      "warmup_seconds": 18.479166119010188,
+      "load_owner": false,
+      "job": {
+        "stage": "latency",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 256,
+        "block": 0,
+        "lifecycle_id": "worker-00001",
+        "stage_order": 1
+      }
+    },
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 175.13064421294257,
+      "setup_seconds": 0.0,
+      "backend_preparation_seconds": 28.684829512960277,
+      "warmup_seconds": 18.417716572992504,
+      "load_owner": false,
+      "job": {
+        "stage": "latency",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 256,
+        "block": 1,
+        "lifecycle_id": "worker-00001",
+        "stage_order": 2
+      }
+    },
+    {
+      "status": "passed",
+      "error_type": null,
+      "seconds": 177.5940104170004,
+      "setup_seconds": 0.0,
+      "backend_preparation_seconds": 28.315632881014608,
+      "warmup_seconds": 18.758542304043658,
+      "load_owner": false,
+      "job": {
+        "stage": "latency",
+        "variant": "candidate",
+        "bucket": "B1",
+        "batch_size": 256,
+        "block": 2,
+        "lifecycle_id": "worker-00001",
+        "stage_order": 3
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "status": "cpu_validated_gpu_pending",
+  "schema_version": 4,
+  "protocol_version": "u1-static-batch-v4",
+  "source_inventory_sha256": "9e57773605fd94153e4e5f20b57f537cbf7eb1619c553795b90242530343b3d1",
+  "cpu": {
+    "status": "passed",
+    "tests": 480,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "test_seconds": 69.502,
+    "scope": "clean temporary copy of tracked files plus explicit v4 additions",
+    "command": "python -B -m unittest discover -s tests -v",
+    "hf_offline": true,
+    "log_sha256": "fe3b6f1b7b20de43f86d9ed020547868031baecb095900496ffe85e6cc00005c"
+  },
+  "data": {
+    "status": "ready",
+    "manifest_sha256": "23785e17e3ef29b302da253189fadb7c5ed17691155e7205faa5ac508641a74b",
+    "independent_local_builds": 2,
+    "repeat_manifest_identical": true,
+    "messages": 12000,
+    "preparations": 8,
+    "model_buckets": 20,
+    "unique_effective_inputs_per_bucket": 400,
+    "old_token_ids_masks_lengths_match": true,
+    "old_bucket_ids_preserved": true,
+    "hf_publication_changed": false
+  },
+  "smoke_plans": {
+    "cpu_status": "ready",
+    "cells": ["gliner/B1/256", "koala/B1/256", "llama/B1/256", "laya/B1/256", "open/B1/64", "open/B2/32", "open/B3/16", "open/B4/8"],
+    "timed_series": 0
+  },
+  "gpu": {
+    "status": "not_run",
+    "reason": "existing_hosts_gpu_capacity_unavailable",
+    "additional_budget_usd_authorized": 2,
+    "start_attempts": [
+      {"pod_id": "psiyxr1gsibggh", "http_status": 400, "error": "There are not enough free GPUs on the host machine to start this pod.", "confirmed_status": "EXITED"},
+      {"pod_id": "2ra2t50pd79ir1", "http_status": 400, "error": "There are not enough free GPUs on the host machine to start this pod.", "confirmed_status": "EXITED"}
+    ],
+    "queue_created": false,
+    "monitoring_status": "unvalidated",
+    "full_benchmarks_authorized": false,
+    "quality_evaluated": false
+  },
+  "independent_review": {
+    "scope": "runner/worker/evidence integration, privacy and boundary preparation",
+    "findings_addressed": true,
+    "gpu_acceptance_implied": false
+  },
+  "push_performed": false
+}

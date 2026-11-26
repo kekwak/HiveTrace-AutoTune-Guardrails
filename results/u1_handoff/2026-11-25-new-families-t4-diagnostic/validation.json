@@ -1,0 +1,85 @@
+{
+  "status": "diagnostic_passed",
+  "diagnostic_only": true,
+  "approval": false,
+  "quality_evaluated": false,
+  "rtx_compatibility_confirmed": false,
+  "archive_sha256": "354fcfd7dee7799050270c1cdc9371273883e270ae85bd488350e7fc4e5ff4b1",
+  "crc_passed": true,
+  "source_checksums_verified": 92,
+  "models": {
+    "protectai": {
+      "native": "passed",
+      "adapter": "passed",
+      "requests_per_route": 2,
+      "batch_size": 2,
+      "native_adapter_verdicts_equal": true,
+      "max_abs_score_difference": 2.8954349251542055e-08,
+      "score_comparison": "native logits softmax computed offline in FP64",
+      "precision": {
+        "policy": "explicit",
+        "parameter_dtypes": [
+          "float32"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null
+      },
+      "attention": "eager",
+      "transformers": "5.20.1"
+    },
+    "accuknox": {
+      "native": "passed",
+      "adapter": "passed",
+      "requests_per_route": 2,
+      "batch_size": 2,
+      "native_adapter_verdicts_equal": true,
+      "max_abs_score_difference": 3.444747809222548e-08,
+      "score_comparison": "native probabilities versus adapter scores",
+      "precision": {
+        "version": 2,
+        "policy": "native_sdk",
+        "parameter_dtypes": [
+          "bfloat16"
+        ],
+        "autocast_enabled": false,
+        "autocast_dtype": null,
+        "tensor_roles": {
+          "backbone": {
+            "dtypes": [
+              "bfloat16"
+            ],
+            "device_type": "cuda"
+          },
+          "readout": {
+            "dtypes": [
+              "float32"
+            ],
+            "device_type": "cuda"
+          },
+          "backbone_buffers": {
+            "dtypes": [
+              "float32"
+            ],
+            "device_type": "cuda"
+          }
+        }
+      },
+      "attention": "sdpa",
+      "transformers": "5.17.0"
+    }
+  },
+  "cuda_launch_blocking": true,
+  "async_loading": "default",
+  "gpu": "Tesla T4",
+  "driver": "580.178.04",
+  "torch": "2.11.0+cu130",
+  "cuda": "13.0",
+  "python": "3.13.16",
+  "caveats": [
+    "Two short neutral requests per route, not full corpus smoke",
+    "CUDA_LAUNCH_BLOCKING=1 changes execution synchronization",
+    "T4 has no native BF16 support; SDK BF16 backbone nevertheless executed on CUDA",
+    "Diagnostic hardware checker is separate; production profiles are unchanged",
+    "Memory sampling and performance were not measured; runtime monitor_method is descriptive only"
+  ]
+}

@@ -1,5 +1,6 @@
 import functools
 import importlib
+import math
 from typing import Any
 
 RULES = ("c7", "c12", "c8", "u4", "u1")
@@ -60,11 +61,21 @@ def select_rules(features: dict[str, bool], execution: dict[str, Any] | None) ->
 class RuledModel:
     """Sequence classification forward with rules; calls return an object with `.logits`."""
 
-    def __init__(self, model: Any, rules: list[str], pad_token_id: int | None) -> None:
+    def __init__(
+        self,
+        model: Any,
+        rules: list[str],
+        pad_token_id: int | None,
+        *,
+        forward: Any = None,
+        strict: bool = False,
+    ) -> None:
         self.model = model
         self.rules = rules
         self.pad = pad_token_id or 0
-        self.inner = lambda x: model(**x).logits
+        self.inner = forward if forward is not None else lambda x: model(**x).logits
+        self.strict = strict
+        self.compile_count = 0
         self.graphs: dict[int, Any] | None = None
         self.applied: list[str] = []
         self.skipped: dict[str, str] = {}
@@ -73,6 +84,8 @@ class RuledModel:
                 getattr(self, name)()
                 self.applied.append(name)
             except Skip as reason:
+                if strict:
+                    raise ValueError(f"Requested rule {name} is unsupported") from reason
                 self.skipped[name] = str(reason)
 
     def __call__(self, **inputs: Any) -> Any:
@@ -83,6 +96,8 @@ class RuledModel:
             try:
                 return SequenceClassifierOutput(logits=self.replay(inputs))
             except RuntimeError as exc:
+                if self.strict:
+                    raise
                 self.graphs = None
                 self.applied.remove("u1")
                 self.skipped["u1"] = f"graph capture failed: {type(exc).__name__}"
@@ -117,6 +132,9 @@ class RuledModel:
     def c8(self) -> None:
         import torch
 
+        if self.strict:
+            cache_relative_projections(self.model)
+            return
         memo_cls, _, _ = modules()
         encoders = [m for m in self.model.modules() if hasattr(m, "get_rel_embedding")]
         if not encoders:
@@ -135,10 +153,27 @@ class RuledModel:
 
     def u4(self) -> None:
         import torch
+        from torch._dynamo.backends.registry import lookup_backend
 
         inner = self.inner
+        if not self.strict:
+            self.inner = torch.compile(
+                lambda x: inner(x), dynamic=False if "u1" in self.rules else None
+            )
+            return
+        if self.strict and torch._dynamo.config.suppress_errors:
+            raise ValueError("Compile fallback must be disabled")
+        backend = lookup_backend("inductor")
+
+        def counted(graph: Any, inputs: Any) -> Any:
+            self.compile_count += 1
+            return backend(graph, inputs)
+
         self.inner = torch.compile(
-            lambda x: inner(x), dynamic=False if "u1" in self.rules else None
+            lambda x: inner(x),
+            backend=counted,
+            dynamic=True,
+            fullgraph=True,
         )
 
     def u1(self) -> None:
@@ -146,7 +181,8 @@ class RuledModel:
 
         if not torch.cuda.is_available():
             raise Skip("CUDA is unavailable")
-        cache_positions()
+        if not self.strict:
+            cache_positions()
         self.graphs = {}
         self.pool = torch.cuda.graph_pool_handle()
         self.stream = torch.cuda.Stream()
@@ -156,13 +192,15 @@ class RuledModel:
 
         assert self.graphs is not None
         length = inputs["input_ids"].shape[1]
-        bucket = next(b for b in BUCKETS if b >= length)
+        bucket = length if self.strict else next(b for b in BUCKETS if b >= length)
         if bucket not in self.graphs:
             static = {
                 key: torch.zeros(1, bucket, dtype=value.dtype, device=value.device)
                 for key, value in inputs.items()
             }
             static["input_ids"].fill_(self.pad)
+            for key, value in inputs.items():
+                static[key][:, :length].copy_(value)
             self.stream.wait_stream(torch.cuda.current_stream())
             with torch.cuda.stream(self.stream):
                 for _ in range(3):
@@ -178,6 +216,105 @@ class RuledModel:
             static[key][:, :length] = value
         graph.replay()
         return out.clone()
+
+
+def compare_outputs(
+    reference: list[dict[str, Any]], candidate: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Compare supplied outputs; run/serve never invoke an implicit reference pass."""
+    valid = bool(reference) and len(reference) == len(candidate)
+    for a, b in zip(reference, candidate):
+        valid = valid and "label" in a and "label" in b
+        x, y = a.get("logits"), b.get("logits")
+        valid = valid and isinstance(x, list) and isinstance(y, list)
+        if not isinstance(x, list) or not isinstance(y, list):
+            continue
+        valid = valid and bool(x) and len(x) == len(y)
+        valid = valid and all(type(v) in (int, float) and math.isfinite(v) for v in x + y)
+    if not valid:
+        return {
+            "passed": False,
+            "reason": "invalid_outputs",
+            "label_changes": None,
+            "max_abs_logit_error": None,
+        }
+    changes = sum(a["label"] != b["label"] for a, b in zip(reference, candidate))
+    error = max(
+        (
+            abs(x - y)
+            for a, b in zip(reference, candidate)
+            for x, y in zip(a["logits"], b["logits"])
+        ),
+        default=0.0,
+    )
+    return {"passed": changes == 0, "label_changes": changes, "max_abs_logit_error": error}
+
+
+def cache_relative_projections(model: Any) -> None:
+    """Cache only the explicit relative-attention call, not input-dependent projections."""
+    import torch
+
+    class RelativeProjection(torch.nn.Module):
+        def __init__(self, linear: Any, relative: Any) -> None:
+            super().__init__()
+            self.linear = linear
+            self.relative_call = False
+            self.register_buffer("projected", linear(relative).detach().clone(), persistent=False)
+
+        def forward(self, inputs: Any) -> Any:
+            if self.relative_call:
+                if inputs.shape != self.projected_input_shape:
+                    raise ValueError("Relative projection input shape changed")
+                return self.projected.clone()
+            return self.linear(inputs)
+
+    found = 0
+    with torch.no_grad():
+        for encoder in [m for m in model.modules() if hasattr(m, "get_rel_embedding")]:
+            rel = encoder.get_rel_embedding()
+            if rel is None:
+                continue
+            for attention in list(encoder.modules()):
+                if not hasattr(attention, "disentangled_attention_bias"):
+                    continue
+                if not hasattr(attention, "pos_ebd_size") or attention.training:
+                    raise ValueError("c8 requires the eval DeBERTa-v2 relative-attention contract")
+                relative = rel[: attention.pos_ebd_size * 2].unsqueeze(0)
+                names = (
+                    ("query_proj", "key_proj")
+                    if attention.share_att_key
+                    else tuple(
+                        name
+                        for name in ("pos_query_proj", "pos_key_proj")
+                        if hasattr(attention, name)
+                    )
+                )
+                projections = []
+                for name in names:
+                    projection = RelativeProjection(getattr(attention, name), relative)
+                    projection.projected_input_shape = relative.shape
+                    setattr(attention, name, projection)
+                    projections.append(projection)
+                original = attention.disentangled_attention_bias
+
+                def bias(
+                    *args: Any,
+                    original: Any = original,
+                    projections: Any = projections,
+                    **kwargs: Any,
+                ) -> Any:
+                    for projection in projections:
+                        projection.relative_call = True
+                    try:
+                        return original(*args, **kwargs)
+                    finally:
+                        for projection in projections:
+                            projection.relative_call = False
+
+                attention.disentangled_attention_bias = bias
+                found += len(projections)
+    if not found:
+        raise ValueError("c8 found no supported relative projections")
 
 
 def cache_positions() -> None:

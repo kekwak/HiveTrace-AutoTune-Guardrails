@@ -1,0 +1,20 @@
+{
+  "version": "u1-speed-v3",
+  "dependencies": {"transformers": "5.20.1", "tokenizers": "0.23.3", "huggingface-hub": "1.33.0"},
+  "models": {
+    "halo": {"repo": "astroware/HaloGuard1-Gen-0.8B", "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c", "limit": 4096},
+    "gliner": {"repo": "hivetrace/gliner-guard-omni", "revision": "763f8aa9a7714dd2c3264f3751acdd5d854c5ac4", "limit": 512, "dependencies": {"gliner2": "2.1.0"}},
+    "koala": {"repo": "KoalaAI/Text-Moderation", "revision": "838ade0edb66dcffc5532d08ff6ed5c899abfb5c", "limit": 512},
+    "llama": {"repo": "hipocap/Llama-Prompt-Guard-2-22M", "revision": "05f1919555db0e711b73cbb7ec2424702b918c20", "limit": 512, "provenance": {"source": "public_mirror_explicitly_selected", "original_repo": "meta-llama/Llama-Prompt-Guard-2-22M", "original_equivalence_verified": false, "teammate_commit": "2f65d6fe30f29f2d36f8ee397db6380b81e1a2d7"}},
+    "laya": {"repo": "convaiinnovations/laya", "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148", "subfolder": "tokenizer", "limit": 512, "dependencies": {"laya": "0.3.20"}},
+    "hive": {"repo": "hivetrace/HiveTraceGuard-Pro", "revision": "ed008276c96253e14885e6ade3b7b6d58daa2480", "limit": 4096},
+    "open": {"repo": "openguardrails/OpenGuardrails-Text-4B-0124", "revision": "9bdd1fb549e01b5f6aae4e9c395998492a08830b", "limit": 4096, "template_repo": "openguardrails/OpenGuardrails-Text-2510", "template_revision": "cce015e5c8f47be0b8f9022b991ec552bb3cc0b7"},
+    "shield": {"repo": "google/shieldgemma-2b", "revision": "d1dffc9c8c9237a90aab09c61383791e718ef9e8", "limit": 4096}
+  },
+  "buckets": {
+    "B1": {"min": 1, "max": 512, "models": ["halo", "gliner", "koala", "llama", "laya", "hive", "open", "shield"]},
+    "B2": {"min": 513, "max": 1024, "models": ["halo", "hive", "open", "shield"]},
+    "B3": {"min": 1025, "max": 2048, "models": ["halo", "hive", "open", "shield"]},
+    "B4": {"min": 2049, "max": 4096, "models": ["halo", "hive", "open", "shield"]}
+  }
+}

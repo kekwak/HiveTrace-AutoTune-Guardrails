@@ -1,0 +1,119 @@
+{
+  "schema_version": 4,
+  "baseline": {
+    "adapter": "halo",
+    "weights": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    },
+    "tokenizer": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 4096,
+      "cue": "Safety: ",
+      "enable_thinking": false
+    },
+    "scoring": {
+      "threshold": 0.65
+    },
+    "execution": {
+      "runtime": "eager",
+      "dtype": "bfloat16",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "native"
+    },
+    "sdk_assets": {
+      "prompt": {
+        "repo": "astroware/HaloGuard1-Gen-0.8B",
+        "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c",
+        "file": "README.md"
+      }
+    }
+  },
+  "buckets": {
+    "B1": {
+      "min": 1,
+      "max": 512
+    },
+    "B2": {
+      "min": 513,
+      "max": 1024
+    },
+    "B3": {
+      "min": 1025,
+      "max": 2048
+    },
+    "B4": {
+      "min": 2049,
+      "max": 4096
+    }
+  },
+  "batch_sizes_by_bucket": {
+    "B1": [
+      1,
+      64
+    ],
+    "B2": [
+      1,
+      32
+    ],
+    "B3": [
+      1,
+      16
+    ],
+    "B4": [
+      1,
+      8
+    ]
+  },
+  "mode": "search",
+  "comparison": "engineering",
+  "seed": 17,
+  "timeout_seconds": 36000,
+  "environment": "/workspace/u1-env",
+  "data": {
+    "path": "data/speed/role-corpus-v4-20261112",
+    "manifest_sha256": "23785e17e3ef29b302da253189fadb7c5ed17691155e7205faa5ac508641a74b"
+  },
+  "quality_batch_sizes": [
+    1
+  ],
+  "candidate": {
+    "adapter": "halo",
+    "weights": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    },
+    "tokenizer": {
+      "repo": "astroware/HaloGuard1-Gen-0.8B",
+      "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c"
+    },
+    "template": null,
+    "preparation": {
+      "limit": 4096,
+      "cue": "Safety: ",
+      "enable_thinking": false
+    },
+    "scoring": {
+      "threshold": 0.65
+    },
+    "execution": {
+      "runtime": "eager",
+      "dtype": "bfloat16",
+      "attention": "native",
+      "sdpa_backend": null,
+      "linear_attention": "fla"
+    },
+    "sdk_assets": {
+      "prompt": {
+        "repo": "astroware/HaloGuard1-Gen-0.8B",
+        "revision": "85ff68dd063a7e58487a4251824fd36a20977d5c",
+        "file": "README.md"
+      }
+    }
+  }
+}
