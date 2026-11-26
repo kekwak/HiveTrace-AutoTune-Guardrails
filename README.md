@@ -4,6 +4,8 @@
 
 [Быстрый старт](#быстрый-старт) · [Руководство по CLI](docs/cli-guide.md) · [Разработка](CONTRIBUTING.md)
 
+![Демонстрация plan и run на трёх моделях](docs/assets/cli-demo.gif)
+
 ## Быстрый старт
 
 **`plan → run --config → serve --config`**
