@@ -34,6 +34,11 @@ def execution_plan(
     }
 
 
+def _require_supported_runtime(config: dict[str, Any]) -> None:
+    if config.get("runtime") != "transformers":
+        raise ValueError("Unsupported runtime. Generate a new plan with guardrail-tuner plan.")
+
+
 def read_execution(path: str) -> dict[str, Any]:
     document = json.loads(Path(path).expanduser().read_text(encoding="utf-8"))
     if not isinstance(document, dict):
@@ -43,8 +48,7 @@ def read_execution(path: str) -> dict[str, Any]:
     config = document.get("execution")
     if not isinstance(config, dict) or config.get("version") != 1:
         raise ValueError("No executable plan")
-    if config.get("runtime") != "transformers":
-        raise ValueError("Unsupported runtime. Generate a new plan with guardrail-tuner plan.")
+    _require_supported_runtime(config)
     task = config.get("task")
     if (
         not isinstance(task, str)
@@ -68,6 +72,7 @@ def read_execution(path: str) -> dict[str, Any]:
 
 class Inference:
     def __init__(self, config: dict[str, Any]) -> None:
+        _require_supported_runtime(config)
         try:
             import torch
             import transformers
@@ -90,8 +95,9 @@ class Inference:
         if not isinstance(cls, type) or not issubclass(cls, transformers.PreTrainedModel):
             raise ValueError("Architecture unavailable in installed Transformers")
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(config["model"], **options)
+        from_pretrained = getattr(cls, "from_pretrained")
         self.model = (
-            cls.from_pretrained(config["model"], use_safetensors=True, **options)
+            from_pretrained(config["model"], use_safetensors=True, **options)
             .float()
             .to(device)
             .eval()
