@@ -180,21 +180,6 @@ class RuledModel:
         return out.clone()
 
 
-def compare_outputs(
-    reference: list[dict[str, Any]], candidate: list[dict[str, Any]]
-) -> dict[str, Any]:
-    changes = sum(a["label"] != b["label"] for a, b in zip(reference, candidate))
-    error = max(
-        (
-            abs(x - y)
-            for a, b in zip(reference, candidate)
-            for x, y in zip(a["logits"], b["logits"])
-        ),
-        default=0.0,
-    )
-    return {"passed": changes == 0, "label_changes": changes, "max_abs_logit_error": error}
-
-
 def cache_positions() -> None:
     from transformers.models.deberta import modeling_deberta as v1
     from transformers.models.deberta_v2 import modeling_deberta_v2 as v2

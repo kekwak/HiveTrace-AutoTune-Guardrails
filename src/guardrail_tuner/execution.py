@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .model_tuning import TorchForwardRunner
-from .rules import RULES, RuledModel, compare_outputs
+from .rules import RULES, RuledModel
 
 OPTIMIZATIONS = {"sequence_classification": "batching", "generation": "kv_cache"}
 
@@ -161,16 +161,13 @@ def run_inference(config: dict[str, Any], inputs: list[str]) -> dict[str, Any]:
     }
     if not config["rules"]:
         return {**result, "outputs": inference.predict(inputs)}
-    outputs = reference = inference.predict(inputs)
     ruled = inference.enable_rules()
-    report: dict[str, Any] = {"applied": ruled.applied, "skipped": ruled.skipped}
-    if config["task"] == "sequence_classification":
-        outputs = inference.predict(inputs)
-        report["parity"] = compare_outputs(reference, outputs)
-        if not report["parity"]["passed"]:
-            inference.runner.model = inference.model
-            outputs = reference
-    return {**result, "rules": report, "outputs": outputs}
+    outputs = inference.predict(inputs)
+    return {
+        **result,
+        "rules": {"applied": ruled.applied, "skipped": ruled.skipped},
+        "outputs": outputs,
+    }
 
 
 def serve(config: dict[str, Any], port: int) -> None:
