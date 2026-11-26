@@ -11,7 +11,8 @@
 `plan --config` создаёт полный план версии 2. `eval` измеряет его по протоколу У1,
 при `--baseline-ref` не повторяет baseline. `report` пересобирает отчёт offline.
 `run/serve` исполняют выбранный вариант, но не измеряют ускорение и не выполняют
-скрытый reference-прогон. Без quality-набора `quality_evaluated=false`.
+скрытый reference-прогон. `run` выводит только `outputs`. Флаг `run --debug`
+добавляет метаданные, включая `quality_evaluated=false` для планов версии 2.
 
 Этот путь запускается из клона; модельные зависимости находятся в отдельных
 venv. Не устанавливайте CLI и extras поверх закреплённого модельного окружения.
@@ -415,8 +416,8 @@ PyTorch. `--seed` задаёт seed Python, NumPy и PyTorch в процессе
 `flash-linear-attention`. Если пакет не импортируется, `run` пропускает правило
 с причиной. Поле `rules` плана объясняет, почему правило не выбрано.
 `run --config` применяет правила из плана и выполняет оптимизированный
-инференс. Поля `rules.applied` и `rules.skipped` показывают, какие правила
-применились и какие были пропущены.
+инференс. С флагом `--debug` поля `rules.applied` и `rules.skipped` показывают,
+какие правила применились и какие были пропущены.
 
 Если `execution` построить нельзя (кастомный код или архитектура без задачи),
 план выбирает только правила, которые меняют модули бэкбона: объединение
@@ -432,7 +433,7 @@ PyTorch. `--seed` задаёт seed Python, NumPy и PyTorch в процессе
 while read -r name model revision; do
   uv run --extra inference guardrail-tuner plan "$model" --revision "$revision" \
     > "$name.plan.json" || break
-  uv run --extra inference guardrail-tuner run --config "$name.plan.json" \
+  uv run --extra inference guardrail-tuner run --debug --config "$name.plan.json" \
     --text 'The meeting starts at noon.' --text 'Please review the invoice.' \
     > "$name.run.json" || break
 done <<'MODELS'
