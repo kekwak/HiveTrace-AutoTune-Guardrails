@@ -43,7 +43,7 @@ def test_cpu_and_generation_do_not_fall_back_to_compile() -> None:
 
 
 def test_external_runtime_gets_no_rules() -> None:
-    plan = select_rules(rule_features(DEBERTA), execution("generation", runtime="vllm"))
+    plan = select_rules(rule_features(DEBERTA), execution("generation", runtime="onnxruntime"))
     assert plan["rules"] == []
 
 

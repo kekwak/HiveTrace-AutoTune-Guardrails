@@ -16,7 +16,6 @@ from .manifest import Recorder, write_manifest
 from .model_tuning import tune_model
 from .optimize import optimize
 from .rules import rule_features, select_rules
-from .vllm_probe import probe_vllm
 from .workload import DEFAULT_BATCH_SIZES, DEFAULT_BUCKETS, Workload
 
 
@@ -83,8 +82,7 @@ def plan_checks(metadata: dict[str, Any], device: str = "cpu") -> dict[str, Any]
                     "mode": "system_one",
                     "next_check": (
                         "Run the checkpoint with the author's D3 runtime and validate "
-                        "system_one scores and decisions. The vLLM Transformers backend "
-                        "requires input_ids, which D3Model.forward does not accept."
+                        "system_one scores and decisions."
                     ),
                 },
             ],
@@ -104,24 +102,8 @@ def plan_checks(metadata: dict[str, Any], device: str = "cpu") -> dict[str, Any]
                 "next_check": "Export or load ONNX and compare logits against Transformers.",
             }
         )
-        candidates.append(
-            {
-                "runtime": "vllm",
-                "mode": "pooling_classify",
-                "next_check": "Verify checkpoint support and compare the required outputs.",
-            }
-        )
     elif any(name.endswith(("ForCausalLM", "ForConditionalGeneration")) for name in architectures):
         mode = "generation"
-        candidates.append(
-            {
-                "runtime": "vllm",
-                "mode": "generation",
-                "next_check": (
-                    "Probe the model with the application's prompt and validate its output."
-                ),
-            }
-        )
 
     if mode is not None:
         candidates.extend(
@@ -205,23 +187,6 @@ def main() -> int:
     generation_parser.add_argument("--compile", action="store_true")
     add_dataset_options(generation_parser, "quality")
     add_run_options(generation_parser)
-    vllm_parser = commands.add_parser("probe-vllm", help="Launch vLLM and compare greedy tokens")
-    vllm_parser.add_argument("model")
-    vllm_parser.add_argument("--revision")
-    vllm_parser.add_argument("--text-column", default="text")
-    vllm_parser.add_argument("--max-length", type=int, default=512)
-    vllm_parser.add_argument("--max-new-tokens", type=int, default=8)
-    vllm_parser.add_argument(
-        "--task", choices=("generation", "classification"), default="generation"
-    )
-    vllm_parser.add_argument(
-        "--output-mode", choices=("multiclass", "multilabel"), default="multiclass"
-    )
-    vllm_parser.add_argument("--threshold", type=float, default=0.5)
-    vllm_parser.add_argument("--max-score-error", type=float, default=0.001)
-    vllm_parser.add_argument("--timeout", type=float, default=600)
-    add_dataset_options(vllm_parser, "quality")
-    add_run_options(vllm_parser)
     application_parser = commands.add_parser(
         "compare-app", help="Compare JSONL application commands"
     )
@@ -306,7 +271,6 @@ def main() -> int:
             "tune-model",
             "compare-app",
             "check-generation",
-            "probe-vllm",
         )
         if args.command in run_commands:
             if hasattr(args, "output_dir"):
@@ -317,9 +281,7 @@ def main() -> int:
             if args.manifest and Path(args.manifest).expanduser().exists():
                 raise ValueError("Manifest path already exists")
             roles = (
-                ("quality",)
-                if args.command in ("check-generation", "probe-vllm")
-                else ("quality", "performance")
+                ("quality",) if args.command == "check-generation" else ("quality", "performance")
             )
             manifest_sources = {role: dataset_source(args, role) for role in roles}
             recorder = Recorder(args.command, args.seed, manifest_sources, manifest_options(args))
@@ -344,21 +306,7 @@ def main() -> int:
                     "resolved_revision": args.model_revision,
                     "verified": False,
                 }
-        if args.command == "probe-vllm":
-            result = probe_vllm(
-                args.model,
-                args.revision,
-                dataset_source(args, "quality"),
-                args.text_column,
-                args.max_length,
-                args.max_new_tokens,
-                args.timeout,
-                args.task,
-                args.output_mode,
-                args.threshold,
-                args.max_score_error,
-            )
-        elif args.command == "check-generation":
+        if args.command == "check-generation":
             result = check_generation(
                 args.model,
                 args.revision,
@@ -471,16 +419,6 @@ def main() -> int:
             if args.command == "plan":
                 result = plan_checks(result, args.device)
         if recorder is not None:
-            if args.command == "probe-vllm":
-                local = recorder.local_model_path is not None
-                recorder.model = {
-                    "source": "local" if local else "user_declared",
-                    "id": None if local else args.model,
-                    "requested_revision": args.revision,
-                    "resolved_revision": result.get("model_revision"),
-                    "verified": "architecture" in result
-                    and (local or result.get("model_revision") is not None),
-                }
             manifest = recorder.build(result)
             if args.manifest or hasattr(args, "output_dir"):
                 manifest_path = (
@@ -527,8 +465,6 @@ def main() -> int:
     if args.command == "check-generation" and (
         not result["cache"]["passed"] or (args.compile and not result["candidate"]["passed"])
     ):
-        return 1
-    if args.command == "probe-vllm" and result["status"] not in ("tokens_match", "scores_match"):
         return 1
     return 0
 
