@@ -23,17 +23,22 @@ class TorchForwardRunner:
         self.device = device
         self.max_length = max_length
 
-    def run(self, text: Any) -> Any:
-        import torch
-
-        inputs = self.tokenizer(
+    def encode(self, text: Any) -> Any:
+        return self.tokenizer(
             text,
             return_tensors="pt",
             truncation=True,
             max_length=self.max_length,
             padding=isinstance(text, list) and len(text) > 1,
         )
-        inputs = {key: value.to(self.device) for key, value in inputs.items()}
+
+    def run(self, text: Any) -> Any:
+        return self.forward(self.encode(text))
+
+    def forward(self, encoded: Any) -> Any:
+        import torch
+
+        inputs = {key: value.to(self.device) for key, value in encoded.items()}
         with torch.inference_mode():
             output = self.model(**inputs)
         logits = getattr(output, "logits", None)

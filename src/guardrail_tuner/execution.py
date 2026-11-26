@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .model_tuning import TorchForwardRunner
+from .protocol import ROUTES, APIRequestError, serve_request
 from .rules import RULES, RuledModel
 
 OPTIMIZATIONS = {"sequence_classification": "batching", "generation": "kv_cache"}
@@ -106,7 +107,7 @@ class Inference:
             .eval()
         )
         self.runner = TorchForwardRunner(self.model, self.tokenizer, device, config["max_length"])
-        self.labels = metadata.id2label
+        self.labels = metadata.id2label or {}
         self.environment = {
             "python": platform.python_version(),
             "torch": torch.__version__,
@@ -124,8 +125,6 @@ class Inference:
         return ruled
 
     def predict(self, inputs: list[str]) -> list[dict[str, Any]]:
-        import torch
-
         config = self.config
         outputs = []
         if config["task"] == "sequence_classification":
@@ -138,20 +137,33 @@ class Inference:
             return outputs
 
         for text in inputs:
-            encoded = self.tokenizer(
-                text, return_tensors="pt", truncation=True, max_length=config["max_length"]
-            ).to(config["device"])
-            with torch.inference_mode():
-                tokens = self.model.generate(
-                    **encoded,
-                    use_cache=True,
-                    do_sample=False,
-                    max_new_tokens=config["max_new_tokens"],
-                    return_dict_in_generate=False,
-                )
-            ids = tokens[0, encoded.input_ids.shape[1] :].tolist()
+            ids, _ = self.generate(text, config["max_new_tokens"])
             outputs.append({"token_ids": ids, "text": self.tokenizer.decode(ids)})
         return outputs
+
+    def generate(
+        self, text: str, limit: int, *, add_special_tokens: bool = True
+    ) -> tuple[list[int], int]:
+        import torch
+
+        encoded = self.tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            max_length=self.config["max_length"],
+            add_special_tokens=add_special_tokens,
+        ).to(self.config["device"])
+        prompt_tokens = encoded.input_ids.shape[1]
+        with torch.inference_mode():
+            tokens = self.model.generate(
+                **encoded,
+                use_cache=True,
+                do_sample=False,
+                max_new_tokens=limit,
+                return_dict_in_generate=False,
+            )
+        start = 1 if self.model.config.is_encoder_decoder else prompt_tokens
+        return tokens[0, start:].tolist(), prompt_tokens
 
 
 def run_inference(config: dict[str, Any], inputs: list[str]) -> dict[str, Any]:
@@ -180,6 +192,9 @@ def serve(config: dict[str, Any], port: int) -> None:
 
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self) -> None:
+            if self.path in ROUTES:
+                self.serve_protocol()
+                return
             try:
                 length = int(self.headers.get("Content-Length", "0"))
                 if self.path != "/infer" or not 0 < length <= 1_000_000:
@@ -199,6 +214,32 @@ def serve(config: dict[str, Any], port: int) -> None:
                 self.respond(200, {"outputs": inference.predict(inputs)})
             except (RuntimeError, ValueError):
                 self.respond(500, {"error": "Inference failed"})
+
+        def serve_protocol(self) -> None:
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if not 0 < length <= 1_000_000:
+                    raise ValueError("Invalid request body length")
+                body = json.loads(self.rfile.read(length))
+            except (ValueError, UnicodeError, RecursionError):
+                self.protocol_error(400, "Expected a JSON request")
+                return
+            try:
+                result = serve_request(inference, self.path, body)
+            except APIRequestError as exc:
+                self.protocol_error(400, str(exc))
+                return
+            except (RuntimeError, ValueError, OSError):
+                self.protocol_error(500, "Inference failed")
+                return
+            self.respond(200, result)
+
+        def protocol_error(self, status: int, message: str) -> None:
+            kind = "BadRequestError" if status == 400 else "InternalServerError"
+            self.respond(
+                status,
+                {"error": {"message": message, "type": kind, "param": None, "code": status}},
+            )
 
         def respond(self, status: int, result: dict[str, Any]) -> None:
             payload = json.dumps(result, ensure_ascii=False).encode("utf-8")
