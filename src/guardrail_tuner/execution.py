@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .model_tuning import TorchForwardRunner
+from .moderations import Moderation
 from .rules import RULES, RuledModel
 
 OPTIMIZATIONS = {"sequence_classification": "batching", "generation": "kv_cache"}
@@ -106,7 +107,7 @@ class Inference:
             .eval()
         )
         self.runner = TorchForwardRunner(self.model, self.tokenizer, device, config["max_length"])
-        self.labels = metadata.id2label
+        self.labels = metadata.id2label or {}
         self.environment = {
             "python": platform.python_version(),
             "torch": torch.__version__,
@@ -123,7 +124,9 @@ class Inference:
             self.runner.model = ruled
         return ruled
 
-    def predict(self, inputs: list[str]) -> list[dict[str, Any]]:
+    def predict(
+        self, inputs: list[str], *, skip_special_tokens: bool = False
+    ) -> list[dict[str, Any]]:
         import torch
 
         config = self.config
@@ -149,8 +152,14 @@ class Inference:
                     max_new_tokens=config["max_new_tokens"],
                     return_dict_in_generate=False,
                 )
-            ids = tokens[0, encoded.input_ids.shape[1] :].tolist()
-            outputs.append({"token_ids": ids, "text": self.tokenizer.decode(ids)})
+            start = 1 if self.model.config.is_encoder_decoder else encoded.input_ids.shape[1]
+            ids = tokens[0, start:].tolist()
+            outputs.append(
+                {
+                    "token_ids": ids,
+                    "text": self.tokenizer.decode(ids, skip_special_tokens=skip_special_tokens),
+                }
+            )
         return outputs
 
 
@@ -174,12 +183,29 @@ def run_inference(config: dict[str, Any], inputs: list[str]) -> dict[str, Any]:
 
 
 def serve(config: dict[str, Any], port: int) -> None:
+    settings = config.get("moderation")
+    if "moderation" in config and not isinstance(settings, dict):
+        raise ValueError("moderation must be an object")
+    moderation = (
+        Moderation(settings, config["model"], config["task"]) if settings is not None else None
+    )
     inference = Inference(config)
+    if moderation is not None and config["task"] == "sequence_classification":
+        metadata = inference.model.config
+        if metadata.num_labels < 2 or metadata.problem_type not in (
+            None,
+            "single_label_classification",
+        ):
+            raise ValueError("Moderation requires a single-label classifier")
+        moderation.validate_labels(inference.labels, metadata.num_labels)
     if config["rules"]:
         inference.enable_rules()
 
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self) -> None:
+            if self.path == "/v1/moderations":
+                self.moderate()
+                return
             try:
                 length = int(self.headers.get("Content-Length", "0"))
                 if self.path != "/infer" or not 0 < length <= 1_000_000:
@@ -199,6 +225,35 @@ def serve(config: dict[str, Any], port: int) -> None:
                 self.respond(200, {"outputs": inference.predict(inputs)})
             except (RuntimeError, ValueError):
                 self.respond(500, {"error": "Inference failed"})
+
+        def moderate(self) -> None:
+            if moderation is None:
+                self.moderation_error(404, "Moderation is not configured for this plan")
+                return
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if not 0 < length <= 1_000_000:
+                    raise ValueError("Invalid request body length")
+                body = json.loads(self.rfile.read(length))
+            except (ValueError, UnicodeError, RecursionError):
+                self.moderation_error(400, "Expected a JSON moderation request")
+                return
+            try:
+                inputs = moderation.prepare(body)
+            except ValueError as exc:
+                self.moderation_error(400, str(exc))
+                return
+            try:
+                outputs = inference.predict(inputs, skip_special_tokens=True)
+                response = moderation.response(outputs, inference.labels)
+            except (RuntimeError, ValueError):
+                self.moderation_error(500, "Model output did not match the moderation plan")
+                return
+            self.respond(200, response)
+
+        def moderation_error(self, status: int, message: str) -> None:
+            kind = "server_error" if status == 500 else "invalid_request_error"
+            self.respond(status, {"error": {"message": message, "type": kind}})
 
         def respond(self, status: int, result: dict[str, Any]) -> None:
             payload = json.dumps(result, ensure_ascii=False).encode("utf-8")
