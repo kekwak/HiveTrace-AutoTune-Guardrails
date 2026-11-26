@@ -19,7 +19,7 @@
 ## Контракты и среда
 
 Baseline и candidate задаются полностью, без наследования: adapter, weights,
-tokenizer/SDK-assets, template, preparation/scoring, execution. Восемь пресетов
+tokenizer/SDK-assets, template, preparation/scoring, execution. Готовые пресеты
 не ограничивают checkpoint. Параметры применяются либо отклоняются явно; нет
 автоматической смены backend, dtype, усечки или CPU fallback.
 CPU-preparer и inference используют одну подготовку. Preparation identity
