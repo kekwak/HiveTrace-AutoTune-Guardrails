@@ -3,6 +3,7 @@
 Общий CLI для выбора конфигурации, измерения эффекта и запуска guardrail-моделей.
 
 **[Запуск plan → eval → report](docs/u1_handoff.md#общий-cli-plan--eval--report)** ·
+[команды за минуту](docs/cli_quick_reference.md) ·
 [протокол измерений](docs/measurement_protocol_v1.md) ·
 [полные конфиги моделей](configs/v4) ·
 [остальные команды CLI](docs/cli-guide.md) · [разработка](CONTRIBUTING.md)
