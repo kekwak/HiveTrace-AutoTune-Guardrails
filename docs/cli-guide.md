@@ -458,3 +458,27 @@ curl -s http://127.0.0.1:8000/infer \
 
 `serve` читает тот же конфиг. API слушает только localhost. Батчинг работает
 внутри списка `inputs` одного запроса.
+
+## HTTP-маршруты для планов Transformers
+
+`serve --config plan.json` выбирает доступные маршруты по `execution.task`.
+Он использует модель и оптимизации из плана. `POST /infer` возвращает исходный
+выход модели как раньше.
+
+| Задача | Маршрут | Текстовый запрос | Результат |
+| --- | --- | --- | --- |
+| Классификация | `POST /classify` | `{"input":"текст"}` или список строк в `input` | `data` с индексом, меткой и вероятностями по классам |
+| Генерация | `POST /v1/completions` | `{"prompt":"промпт"}` или список строк в `prompt` | `choices[].text` |
+| Генерация с чат-шаблоном | `POST /v1/chat/completions` | `{"messages":[{"role":"user","content":"промпт"}]}` | `choices[].message.content` |
+
+```bash
+curl -sS http://127.0.0.1:8000/classify \
+  -H 'Content-Type: application/json' \
+  -d '{"input":["The meeting starts at noon.","Please review the invoice."]}'
+```
+
+Если указан `model`, он должен совпадать с `execution.model`. Поддерживается
+текстовый запрос без стриминга. Генерация детерминирована (`temperature: 0`).
+Параметр `max_tokens` или `max_completion_tokens` ограничивает число новых
+токенов в пределах `execution.max_new_tokens`. Для чата используется шаблон
+токенизатора модели. Дополнительные параметры возвращают HTTP 400.
